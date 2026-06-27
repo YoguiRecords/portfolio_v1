@@ -1,5 +1,7 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
+**Version courante : v0.1.0** (infrastructure — voir `docs/patch_notes/patch_note_V0_1.md`).
+
 ## État courant
 Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). Tout reste **vert**
 (typecheck + build). Pas encore d'infra Docker complète ni de features applicatives.

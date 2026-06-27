@@ -22,6 +22,7 @@
 
 ## Transverse
 - [ ] Tests (Vitest + Playwright) sur les parcours critiques.
-- [ ] Docs `docs/technical/` (ARCHITECTURE, SECURITY, API_REFERENCE).
+- [x] Docs initiales : `docs/technical/{ARCHITECTURE,SECURITY}.md`, `docs/erd/`, `docs/patch_notes/`.
+- [ ] Docs à créer avec les features : `docs/technical/API_REFERENCE.md`, `E2E_TESTING.md`.
 - [ ] Appliquer la **DA** (`.claude/rules/DESIGN_SYSTEM.md`) via le thème Tailwind quand on construit le site.
 - [ ] (Optionnel) Décider du passage TS 6 / ESLint 10 (majeures dispo, gardées en 5/9 testées par Next 16).
