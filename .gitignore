@@ -1,0 +1,66 @@
+# ── Dependencies ──
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ── Secrets / env (NE JAMAIS COMMITTER) ──
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ── Next.js (par app) ──
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+
+# ── Turbo / monorepo cache ──
+.turbo/
+
+# ── Prisma ──
+# Le schéma est versionné ; le client généré ne l'est pas
+packages/db/generated/
+**/.prisma/
+
+# ── Tests / coverage ──
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ── TypeScript ──
+*.tsbuildinfo
+
+# ── Logs ──
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Docker / volumes locaux ──
+# Données persistées montées en local (jamais committer la DB / le stockage)
+docker/volumes/
+data/
+minio-data/
+postgres-data/
+caddy-data/
+
+# ── IDE / OS ──
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
