@@ -31,7 +31,10 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 - **Phase B livrée** : service **`converter`** (`services/converter`, Node/Fastify/**sharp**,
   image→webp + strip EXIF + validation mime/taille/dimensions). Interne uniquement. Dockerfile
   multi-stage non-root (pnpm `deploy --legacy`). Vérifié end-to-end (200 image/webp).
-- **Reste** : Phase C — images `web`/`admin` (Next standalone) + proxy Caddy.
+- **Phase C livrée** : images **`web`/`admin`** (Next **standalone** monorepo, multi-stage non-root)
+  + **proxy Caddy** (routage `web`/`admin`/`umami` par Host + `/media`→MinIO, en-têtes sécu).
+  Sites en `http://` pilotés par env (dev) → domaines nus = HTTPS auto (prod). Vérifié : web/admin/stats `200`.
+- **Infra Docker complète** : 7 services up. Reste : créer le bucket MinIO `media`, durcissement prod, rôles DB.
 
 ## Ports (dev local, sans conflit OXO/KORTEKS)
 - `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
@@ -44,7 +47,7 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 > Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Infra Docker Phase B (`converter`) vérifiée verte end-to-end (branche `feature/docker-converter` → `dev`).
+- Infra Docker Phase C (images web/admin + proxy Caddy) vérifiée verte (branche `feature/docker-apps-proxy` → `dev`).
 
 ## Prochaines étapes
-Voir `TASKS.md` — Phase C (images `web`/`admin` + proxy Caddy), puis features.
+Voir `TASKS.md` — bucket MinIO `media`, rôles DB moindre-privilège, auth BO, puis features (pages + CRUD).

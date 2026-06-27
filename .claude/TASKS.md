@@ -9,8 +9,8 @@
 ## Infrastructure Docker
 - [x] Phase A : `docker-compose.yml` (db + minio + umami), réseaux `edge`/`internal`, base/rôle `umami`.
 - [x] Phase B : service **`converter`** (`services/converter`, Node/Fastify/sharp) + Dockerfile + ajout au compose.
-- [ ] Phase C : Dockerfiles multi-stage non-root **web**/**admin** (Next standalone) + ajout au compose.
-- [ ] Phase C : **proxy Caddy** (routage 3 sous-domaines + `/media`, HTTPS auto, en-têtes sécu).
+- [x] Phase C : Dockerfiles multi-stage non-root **web**/**admin** (Next standalone) + ajout au compose.
+- [x] Phase C : **proxy Caddy** (routage 3 sous-domaines + `/media`, en-têtes sécu ; HTTPS auto en prod).
 - [ ] MinIO : créer le bucket `media` (lecture publique) + clé d'écriture serveur à privilège minimal.
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 

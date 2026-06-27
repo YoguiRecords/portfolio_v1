@@ -1,0 +1,41 @@
+# Reverse proxy unique point d'entrée.
+# DEV  : sites en `http://…` (port 80, pas de TLS) → test via en-tête Host sur 8090.
+# PROD : surcharger {$*_SITE} avec le domaine nu (ex. `yohan-debusscher.com`) → Caddy
+#        sert en HTTPS (:443) avec certificats Let's Encrypt automatiques.
+
+{
+	admin off
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}
+
+# Site public + médias (bucket public MinIO sous /media/*)
+{$WEB_SITE:http://yohan-debusscher.com} {
+	import security_headers
+	handle /media/* {
+		reverse_proxy minio:9000
+	}
+	handle {
+		reverse_proxy web:3100
+	}
+}
+
+# Back office
+{$ADMIN_SITE:http://bo.yohan-debusscher.com} {
+	import security_headers
+	reverse_proxy admin:3101
+}
+
+# Statistiques (Umami : collecte publique + dashboard derrière son auth)
+{$STATS_SITE:http://stats.yohan-debusscher.com} {
+	import security_headers
+	reverse_proxy umami:3000
+}
