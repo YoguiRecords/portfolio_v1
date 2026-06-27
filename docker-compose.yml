@@ -14,6 +14,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       UMAMI_DB_USER: ${UMAMI_DB_USER}
       UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD}
+      WEB_DB_PASSWORD: ${WEB_DB_PASSWORD}
+      ADMIN_DB_PASSWORD: ${ADMIN_DB_PASSWORD}
     ports:
       - "5436:5432" # DEV uniquement (outils). Interne en prod.
     volumes:
@@ -47,6 +49,25 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # Init one-shot : crée le bucket `media` en lecture publique (images).
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    entrypoint:
+      - sh
+      - -c
+      - |
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD" &&
+        mc mb --ignore-existing local/media &&
+        mc anonymous set download local/media
+    networks: [internal]
+    restart: "no"
 
   converter:
     build:
@@ -90,6 +111,8 @@ services:
     environment:
       PORT: "3100"
       HOSTNAME: 0.0.0.0
+      # Site public → rôle lecture seule.
+      DATABASE_URL: postgresql://app_web:${WEB_DB_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
     depends_on:
       db:
         condition: service_healthy
@@ -103,6 +126,8 @@ services:
     environment:
       PORT: "3101"
       HOSTNAME: 0.0.0.0
+      # Back office → rôle lecture/écriture.
+      DATABASE_URL: postgresql://app_admin:${ADMIN_DB_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
     depends_on:
       db:
         condition: service_healthy

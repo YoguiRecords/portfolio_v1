@@ -34,7 +34,10 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 - **Phase C livrée** : images **`web`/`admin`** (Next **standalone** monorepo, multi-stage non-root)
   + **proxy Caddy** (routage `web`/`admin`/`umami` par Host + `/media`→MinIO, en-têtes sécu).
   Sites en `http://` pilotés par env (dev) → domaines nus = HTTPS auto (prod). Vérifié : web/admin/stats `200`.
-- **Infra Docker complète** : 7 services up. Reste : créer le bucket MinIO `media`, durcissement prod, rôles DB.
+- **Phase D livrée (durcissement)** : bucket MinIO **`media`** (lecture publique, init one-shot `minio-init`)
+  + **rôles DB moindre-privilège** (`app_web` lecture seule, `app_admin` RW ; `web`/`admin` câblés avec
+    leur `DATABASE_URL` scopé). Vérifié : app_web INSERT refusé, /media/objet → 200.
+- **Infra Docker complète & durcie** : 8 services. Reste : clé d'écriture MinIO scopée (vs root), durcissement prod (db hors edge).
 
 ## Ports (dev local, sans conflit OXO/KORTEKS)
 - `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
@@ -47,7 +50,7 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 > Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Infra Docker Phase C (images web/admin + proxy Caddy) vérifiée verte (branche `feature/docker-apps-proxy` → `dev`).
+- Infra Phase D (bucket `media` public + rôles DB moindre-privilège) vérifiée verte (branche `feature/infra-hardening` → `dev`).
 
 ## Prochaines étapes
-Voir `TASKS.md` — bucket MinIO `media`, rôles DB moindre-privilège, auth BO, puis features (pages + CRUD).
+Voir `TASKS.md` — **auth BO** (sessions + MFA), puis **features** (pages site + CRUD BO + pipeline upload).

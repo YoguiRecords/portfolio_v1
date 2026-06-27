@@ -3,7 +3,7 @@
 > Backlog actionnable. Retirer chaque tâche dès qu'elle est livrée (pas d'historique ici).
 
 ## Base de données
-- [ ] Rôles Postgres séparés (`web` lecture seule, `admin` RW, `umami`) — à câbler avec l'infra Docker.
+- [x] Rôles Postgres séparés (`app_web` lecture seule, `app_admin` RW, `umami`) + câblage `DATABASE_URL`.
 - [ ] (Option DX) Décider d'ajouter `dotenv` pour auto-charger `.env` dans les commandes Prisma.
 
 ## Infrastructure Docker
@@ -11,7 +11,8 @@
 - [x] Phase B : service **`converter`** (`services/converter`, Node/Fastify/sharp) + Dockerfile + ajout au compose.
 - [x] Phase C : Dockerfiles multi-stage non-root **web**/**admin** (Next standalone) + ajout au compose.
 - [x] Phase C : **proxy Caddy** (routage 3 sous-domaines + `/media`, en-têtes sécu ; HTTPS auto en prod).
-- [ ] MinIO : créer le bucket `media` (lecture publique) + clé d'écriture serveur à privilège minimal.
+- [x] MinIO : bucket `media` (lecture publique) via `minio-init`.
+- [ ] MinIO : clé d'écriture serveur à privilège minimal (vs root) pour le back office.
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 
 ## Fonctionnalités
