@@ -28,7 +28,10 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
   `edge`/`internal`. Migration `init` appliquée. `.env`/`.env.example` à la racine.
   - Note dev : `db` est aussi sur `edge` pour publier 5436 (un réseau `internal` n'est pas
     routable depuis l'hôte) → en prod, retirer `edge` + port (override).
-- **Reste** : Phase B `converter` (Node/Fastify/sharp) ; Phase C images `web`/`admin` + proxy Caddy.
+- **Phase B livrée** : service **`converter`** (`services/converter`, Node/Fastify/**sharp**,
+  image→webp + strip EXIF + validation mime/taille/dimensions). Interne uniquement. Dockerfile
+  multi-stage non-root (pnpm `deploy --legacy`). Vérifié end-to-end (200 image/webp).
+- **Reste** : Phase C — images `web`/`admin` (Next standalone) + proxy Caddy.
 
 ## Ports (dev local, sans conflit OXO/KORTEKS)
 - `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
@@ -41,7 +44,7 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 > Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Infra Docker Phase A (db + minio + umami) vérifiée verte (branche `feature/docker-infra` → `dev`).
+- Infra Docker Phase B (`converter`) vérifiée verte end-to-end (branche `feature/docker-converter` → `dev`).
 
 ## Prochaines étapes
-Voir `TASKS.md` — Phase B (`converter`), puis Phase C (images `web`/`admin` + proxy Caddy), puis features.
+Voir `TASKS.md` — Phase C (images `web`/`admin` + proxy Caddy), puis features.

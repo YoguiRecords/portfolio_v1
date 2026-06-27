@@ -1,0 +1,16 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+packages/db/generated
+**/.prisma
+.git
+.github
+.worktrees
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+coverage
+test-results
+playwright-report

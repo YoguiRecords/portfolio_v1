@@ -1,10 +1,12 @@
 packages:
   - apps/*
   - packages/*
+  - services/*
 
 # Scripts de build natifs explicitement approuvés (pnpm 11 — sécurité : rien ne build sans aval).
 allowBuilds:
   "@prisma/engines": true
+  esbuild: true
   prisma: true
   sharp: true
   unrs-resolver: true
