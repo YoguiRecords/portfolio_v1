@@ -36,7 +36,9 @@ Le BO est accessible en ligne (façon WordPress) → durcissement obligatoire :
 - Requêtes **paramétrées** (Prisma natif) → pas d'injection SQL.
 - **Aucun secret en dur** ni dans une image Docker — `.env` git-ignoré / Docker secrets.
 - En-têtes de sécurité au proxy (CSP, HSTS, X-Frame-Options, nosniff) — cf. `STACK_PROXY.md`.
-- Newsletter : **double opt-in** + anti-énumération d'emails + rate-limit sur l'inscription.
+- Contenu HTML/markdown : le **CV HTML** (éditable au BO, auteur = admin de confiance) est rendu
+  **isolé** (iframe `srcdoc` + CSP) ; les **articles markdown** passent par un renderer sûr
+  (pas d'injection HTML brute non assainie).
 - Dépendances : pas de nouvelle dépendance sans validation ; vérifier les CVE connues avant ajout.
 - Conteneurs **non-root**, images minimales (cf. `STACK_DOCKER.md`).
 

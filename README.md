@@ -1,6 +1,6 @@
 # Portfolio — Yohan Debusscher
 
-Portfolio personnel : CV, projets et newsletter. Site public + back office, conteneurisé,
+Portfolio personnel : CV, projets et news (articles). Site public + back office, conteneurisé,
 derrière un reverse proxy. **La sécurité est la priorité directrice du projet.**
 
 ## Stack

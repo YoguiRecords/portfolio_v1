@@ -10,7 +10,7 @@ config), se poser d'abord : « est-ce que ça augmente la surface d'attaque ? »
 - Détail de la posture : `.claude/rules/STACK_SECURITY.md`.
 
 ## Stack & contexte projet
-Site portfolio (CV, projets, newsletter) + back office, conteneurisé, derrière proxy.
+Site portfolio (CV, projets, news/articles) + back office, conteneurisé, derrière proxy.
 Ne PAS charger ces fiches en permanence — les lire UNIQUEMENT si nécessaire pour la tâche.
 
 ### Fiches techno (`.claude/rules/`)
@@ -23,6 +23,7 @@ Ne PAS charger ces fiches en permanence — les lire UNIQUEMENT si nécessaire p
 - Git : `.claude/rules/STACK_GIT.md`
 - Testing : `.claude/rules/STACK_TESTING.md`
 - Documentation : `.claude/rules/STACK_DOCUMENTATION.md`
+- Direction artistique (DA / design) : `.claude/rules/DESIGN_SYSTEM.md`
 
 ### Playbooks (normes FORBIDDEN, patterns) — `.claude/playbooks/`
 Lire le playbook pertinent en parallèle de la fiche STACK quand on travaille sur cette techno :
@@ -105,6 +106,11 @@ docker compose up        # stack locale complète
 pnpm --filter web dev    # site public en dev
 pnpm --filter admin dev  # back office en dev
 ```
+
+## Principe produit — tout éditable via le BO
+**Tout le contenu éditable est géré via le back office (`admin`)** : profil/identité, projets,
+articles/news, médias, CV (HTML stocké en DB). Aucune donnée de contenu codée en dur dans le code.
+Seuls les éléments non éditables (DA, structure) restent au niveau du code/config.
 
 ## Principes (non-négociables)
 SOLID, DRY, KISS, YAGNI strictement appliqués. Naming explicite, pas de magic

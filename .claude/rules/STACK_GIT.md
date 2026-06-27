@@ -17,7 +17,7 @@ Naming: lowercase, hyphens, max 50 chars
 
 **Types:** feat | fix | refactor | style | test | docs | chore | perf
 
-**Scopes:** web | admin | db | core | auth | proxy | storage | converter | newsletter | docker | docs
+**Scopes:** web | admin | db | core | auth | proxy | storage | converter | articles | docker | docs
 
 **Subject:** imperative, no period, max 50 chars
 

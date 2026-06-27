@@ -1,31 +1,43 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
 ## État courant
-Monorepo bootstrappé et **vérifié vert** (typecheck + lint + build sur tout le workspace).
-Pas encore de schéma métier, d'infra Docker, ni de features applicatives.
+Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). Tout reste **vert**
+(typecheck + build). Pas encore d'infra Docker complète ni de features applicatives.
 
 ## Stack en place
 - Monorepo **pnpm** workspaces : `apps/web` (public), `apps/admin` (back office),
   `packages/db` (Prisma), `packages/core` (types/utils partagés).
 - **Next.js 16.2.9** (App Router, TS strict), **Tailwind v4**, React 19.2.
 - **Prisma 7.8** (générateur `prisma-client` ESM + driver adapter `@prisma/adapter-pg`,
-  config dans `prisma.config.ts`, modèle placeholder `HealthCheck`).
+  config `prisma.config.ts`). Migration `init` appliquée.
 - Outillage : ESLint 9 (flat), Prettier 3.9 (+ plugin Tailwind), TypeScript 5.9.
 - Node 22 ciblé (CI/Docker), Node 24 en local.
 
-## Ports (dev local, sans conflit avec OXO/KORTEKS)
-- `web` 3100 · `admin` 3101 · (Docker ultérieur) umami 3102 · minio 9100/9101 · proxy 8090.
-- Postgres : interne (non publié).
+## Modèle de données (schema.prisma)
+- **Profile** (singleton, identité site) + `cvHtml` (CV HTML éditable au BO) + `cvPdfUrl` ; **SocialLink**.
+- **Project** + **ProjectImage** + **Technology** (m2m).
+- **Article** (news, tags `String[]`, statut DRAFT/PUBLISHED).
+- **MediaAsset** (chaque webp converti, tracé ; référencé par avatar/cover/galerie).
+- Enums natifs : `ProjectStatus`, `ArticleStatus`.
+- **CV** : pas de modèles structurés (Experience/Education/Skill retirés) — le HTML premium est conservé
+  tel quel et stocké en DB (approche éditable au BO).
+
+## Base de dev
+- Container ad-hoc **`portfolio-dev-db`** (postgres:16, hôte **5436**, db/role `portfolio`).
+  À formaliser dans `docker-compose.yml` (tâche infra). `.env` (git-ignoré) dans `packages/db`.
+
+## Ports (dev local, sans conflit OXO/KORTEKS)
+- `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
 
 ## Décisions notables
-- **Versions** : tout à la dernière, sauf TS et ESLint laissés en 5/9 (versions testées par Next 16) ;
-  TS 6 / ESLint 10 dispo mais non adoptés (risque bleeding-edge) — voir TASKS.
-- Packages workspace exposés en **source TS** (`transpilePackages` côté apps).
-- Build scripts natifs approuvés explicitement (`allowBuilds` pnpm 11).
+- **Tout le contenu éditable passe par le BO** (principe produit, cf. CLAUDE.md).
+- **Versions** : dernières, sauf TS/ESLint en 5/9 (testées par Next 16). Voir TASKS.
+- Packages workspace en **source TS** (`transpilePackages`). Build scripts natifs : `allowBuilds` pnpm 11.
+
+> Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Bootstrap monorepo (apps + packages, install, generate, typecheck/lint/build verts).
-  Branche `feature/monorepo-bootstrap` → `dev`.
+- Schéma Prisma métier + migration `init` (branche `feature/prisma-schema` → `dev`).
 
 ## Prochaines étapes
-Voir `TASKS.md` — priorité : schéma Prisma métier, puis infra Docker (compose + Caddy + MinIO + converter + Umami).
+Voir `TASKS.md` — priorité : **infra Docker** (compose + Caddy + MinIO + converter + Umami), puis features.
