@@ -7,9 +7,9 @@
 ## Routage (sous-domaines)
 | Hôte | Cible | Accès |
 |---|---|---|
-| `yohan-debusscher.com` | `web:3000` | public |
-| `bo.yohan-debusscher.com` | `admin:3001` | public (auth durcie côté app) |
-| `stats.yohan-debusscher.com` | `umami:3000` | collecte publique / dashboard derrière login Umami |
+| `yohan-debusscher.com` | `web:3100` | public |
+| `bo.yohan-debusscher.com` | `admin:3101` | public (auth durcie côté app) |
+| `stats.yohan-debusscher.com` | `umami:3000` | collecte publique / dashboard derrière login Umami (port interne Umami) |
 | `…/media/*` | `minio` (bucket public) | **lecture seule** des images |
 
 ## HTTPS

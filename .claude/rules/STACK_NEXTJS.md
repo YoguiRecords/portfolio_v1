@@ -1,8 +1,9 @@
 # STACK.md — Next.js / Monorepo / TypeScript
 
 ## Overview
-- Monorepo pnpm workspaces | Next.js 15 (App Router) | TypeScript (strict) | Tailwind CSS v4
-- Deux apps Next.js : `apps/web` (public, port 3000) et `apps/admin` (back office, port 3001)
+- Monorepo pnpm workspaces | Next.js 16 (App Router) | TypeScript (strict) | Tailwind CSS v4
+- Deux apps Next.js : `apps/web` (public, port 3100) et `apps/admin` (back office, port 3101)
+- Ports dev choisis pour éviter les conflits avec d'autres stacks Docker locales (OXO occupe 3000/3001)
 
 ## Structure
 ```

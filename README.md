@@ -6,7 +6,7 @@ derrière un reverse proxy. **La sécurité est la priorité directrice du proje
 ## Stack
 
 - **Monorepo** pnpm workspaces (`apps/*`, `packages/*`)
-- **Next.js 15** (App Router, TypeScript strict) — `apps/web` (public) & `apps/admin` (back office)
+- **Next.js 16** (App Router, TypeScript strict) — `apps/web` (public) & `apps/admin` (back office)
 - **PostgreSQL 16 + Prisma** — `packages/db`
 - **Tailwind CSS v4**
 - **MinIO** (stockage images) + container **converter** (image → webp)

@@ -1,0 +1,19 @@
+// Prisma 7 — nouveau générateur `prisma-client` (ESM, output requis).
+// Le client généré (../generated/prisma) est git-ignoré ; régénérer via `pnpm --filter @portfolio/db db:generate`.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Modèle placeholder — le schéma métier complet (Project, CvEntry, NewsletterSubscriber)
+/// sera défini dans une tâche dédiée. Présent uniquement pour valider la génération du client.
+model HealthCheck {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+}

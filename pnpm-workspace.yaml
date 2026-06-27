@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Scripts de build natifs explicitement approuvés (pnpm 11 — sécurité : rien ne build sans aval).
+allowBuilds:
+  "@prisma/engines": true
+  prisma: true
+  sharp: true
+  unrs-resolver: true
+
+# Paquets trop récents exclus du gate "minimum release age".
+minimumReleaseAgeExclude:
+  - prettier@3.9.0
