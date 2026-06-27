@@ -37,6 +37,15 @@ packages/
 - Script de tracking Umami injecté dans `apps/web` (layout racine), pointant sur
   `stats.yohan-debusscher.com`. Cookieless → pas de bandeau cookies.
 
+## Environnements & URLs (convention)
+Les URLs sont **pilotées par l'environnement**, jamais en dur :
+- **Dev** : liens **internes `localhost:<port>`** (web `http://localhost:3100`,
+  admin `http://localhost:3101`, umami `http://localhost:3102`, minio `http://localhost:9100`).
+- **Prod** : **URLs directes** (`https://yohan-debusscher.com`, `https://bo.yohan-debusscher.com`,
+  `https://stats.yohan-debusscher.com`).
+- Implémentation : variables d'env (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL`, etc.)
+  définies par environnement (`.env` dev / secrets prod). Aucune URL codée en dur dans le code.
+
 ## Test coverage
 - Cible 80 % services/stores. Composants : tester le comportement, pas l'implémentation.
 - Voir `STACK_TESTING.md`.
