@@ -7,12 +7,12 @@
 - [ ] (Option DX) Décider d'ajouter `dotenv` pour auto-charger `.env` dans les commandes Prisma.
 
 ## Infrastructure Docker
-- [ ] `docker-compose.yml` : 7 services + réseaux `edge` / `internal` (formaliser la DB dev, actuellement container ad-hoc `portfolio-dev-db:5436`).
-- [ ] Dockerfiles multi-stage non-root (web, admin, converter).
-- [ ] Caddyfile : routage 3 sous-domaines + `/media`, HTTPS auto, en-têtes sécu.
-- [ ] Container `converter` (image → webp + strip EXIF).
-- [ ] MinIO : bucket `media` public en lecture, credentials écriture serveur (ports 9100/9101).
-- [ ] Umami : service + base `umami` + rôle dédié (port hôte 3102).
+- [x] Phase A : `docker-compose.yml` (db + minio + umami), réseaux `edge`/`internal`, base/rôle `umami`.
+- [ ] Phase B : service **`converter`** (`services/converter`, Node/Fastify/sharp) + Dockerfile + ajout au compose.
+- [ ] Phase C : Dockerfiles multi-stage non-root **web**/**admin** (Next standalone) + ajout au compose.
+- [ ] Phase C : **proxy Caddy** (routage 3 sous-domaines + `/media`, HTTPS auto, en-têtes sécu).
+- [ ] MinIO : créer le bucket `media` (lecture publique) + clé d'écriture serveur à privilège minimal.
+- [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 
 ## Fonctionnalités
 - [ ] Site public (`web`) : page d'accueil (hero/footer depuis `Profile`), **page CV** (rend le HTML stocké, isolé + bouton PDF), pages projets, news/articles.

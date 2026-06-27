@@ -22,9 +22,13 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 - **CV** : pas de modèles structurés (Experience/Education/Skill retirés) — le HTML premium est conservé
   tel quel et stocké en DB (approche éditable au BO).
 
-## Base de dev
-- Container ad-hoc **`portfolio-dev-db`** (postgres:16, hôte **5436**, db/role `portfolio`).
-  À formaliser dans `docker-compose.yml` (tâche infra). `.env` (git-ignoré) dans `packages/db`.
+## Infra Docker (phasée)
+- **Phase A livrée** : `docker-compose.yml` avec **db** (postgres:16, hôte 5436), **minio**
+  (9100/9101), **umami** (3102) + base/rôle `umami` dédiés (init `datas/init/`). Réseaux
+  `edge`/`internal`. Migration `init` appliquée. `.env`/`.env.example` à la racine.
+  - Note dev : `db` est aussi sur `edge` pour publier 5436 (un réseau `internal` n'est pas
+    routable depuis l'hôte) → en prod, retirer `edge` + port (override).
+- **Reste** : Phase B `converter` (Node/Fastify/sharp) ; Phase C images `web`/`admin` + proxy Caddy.
 
 ## Ports (dev local, sans conflit OXO/KORTEKS)
 - `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
@@ -37,7 +41,7 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 > Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Schéma Prisma métier + migration `init` (branche `feature/prisma-schema` → `dev`).
+- Infra Docker Phase A (db + minio + umami) vérifiée verte (branche `feature/docker-infra` → `dev`).
 
 ## Prochaines étapes
-Voir `TASKS.md` — priorité : **infra Docker** (compose + Caddy + MinIO + converter + Umami), puis features.
+Voir `TASKS.md` — Phase B (`converter`), puis Phase C (images `web`/`admin` + proxy Caddy), puis features.
