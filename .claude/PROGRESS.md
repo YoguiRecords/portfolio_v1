@@ -55,9 +55,14 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
 ## Ports (dev local)
 `web` 3100 · `admin` 3101 · umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
 
+## Site public — fiches projet (P3)
+- `/projets/[slug]` rendue depuis la DB (publiés only, 404 propre). **Renderer de blocs modulaires**
+  (12 types, `data` JSON validé Zod `@portfolio/core`, fail-safe). Hero d'étude de cas + nav suivant.
+  1 composant + CSS Module par bloc (standard `CODE-STANDARDS`).
+
 ## Dernière livraison
-- **v0.3.0** (P0+P1+P2) : outillage de test, complément DB (agenda/média/programmation/RDV),
-  page d'accueil publique rendue depuis la DB. 35 Vitest + 2 Playwright verts, committée et poussée sur `llm`.
+- **v0.3.1** (P3) : fiches projet (blocs modulaires Zod) + image-processor (convertisseur OXO réutilisé,
+  remonté sur Docker). Tests verts (core/db/admin/web), E2E home→projet + 404, CI **verte**. Poussée sur `llm`.
 
 ## Prochaines étapes
 Voir `TASKS.md` — suite des plans : **P3** (fiches projet), P4 (news/agenda), Pi18n, P5 (témoignages),

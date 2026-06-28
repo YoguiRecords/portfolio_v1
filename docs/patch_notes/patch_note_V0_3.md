@@ -1,5 +1,17 @@
 # Patch notes — v0.3.x
 
+## v0.3.1 — Fiches projet (étude de cas par blocs) (2026-06-29)
+
+- **Page projet** `/projets/[slug]` rendue depuis la DB (rôle `app_web`, publiés uniquement),
+  404 propre sur slug inconnu/non publié.
+- **Renderer de blocs modulaires** : 12 types (`CONTEXT`, `PROCESS`, `ANALYSIS`, `GAME_DESIGN`,
+  `ARCHITECTURE`, `SECURITY`, `DESIGN_UX`, `METRICS`, `RECOMMENDATIONS`, `RESULTS`, `GALLERY`,
+  `TEXT`), chaque `data` JSON **validé par un schéma Zod** partagé (`@portfolio/core`) ; bloc
+  invalide/inconnu → ignoré (fail-safe, jamais de throw). 1 composant + CSS Modules par bloc.
+- **Hero d'étude de cas** (type, titre, standfirst, méta, sig, tags, cover) + nav « projet suivant ».
+- **Image-processor** (convertisseur webp réutilisé d'OXO) remonté sur le Docker portfolio (interne).
+- Tests : +schémas blocs (4), loader projet (2), renderer (1) ; E2E : home→projet + 404.
+
 ## v0.3.0 — Outillage de test, DB agenda/média/programmation & home publique (2026-06-29)
 
 Trois livraisons de la construction du portfolio : l'outillage de test partagé (P0), le

@@ -3,7 +3,7 @@
 > Backlog actionnable. Retirer chaque tâche dès qu'elle est livrée (pas d'historique ici).
 
 ## Plans restants (ordre d'exécution)
-- [ ] **P3** — Web : fiches projet (blocs modulaires, 4 types) → `/projets/[slug]`.
+- [x] **P3** — Web : fiches projet (blocs modulaires, 12 types Zod) → `/projets/[slug]`. ✅
 - [ ] **P4** — Web : News/Articles + Agenda/Événements (+ publication programmée).
 - [ ] **Pi18n** — Bilingue (FR/EN).
 - [ ] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission).
