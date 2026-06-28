@@ -1,9 +1,11 @@
 # STACK.md — Git
 
 ## Branches
-- **main** — production | requires PR + tests passing
-- **dev** — integration branch
-- **feature/{name}**, **fix/{name}**, **refactor/{name}**, **chore/{name}**, **docs/{name}**
+- **main** — production, **réservée à l'utilisateur** | requires PR + tests passing. **L'IA ne push, ne merge, ni ne tag JAMAIS sur `main`.**
+- **dev** — integration branch. Alimentée **uniquement par PR** (jamais de push direct de l'IA).
+- **llm** — branche de travail **dédiée à l'IA (Claude)**, longue durée. C'est la **seule** branche
+  sur laquelle l'IA commit et push. Toute intégration se fait via **Pull Request `llm` → `dev`** (revue humaine obligatoire).
+- **feature/{name}**, **fix/{name}**, **refactor/{name}**, **chore/{name}**, **docs/{name}** — branches éphémères humaines si besoin.
 
 Naming: lowercase, hyphens, max 50 chars
 
@@ -32,19 +34,25 @@ Implement horizontal drag for task cards across swimlanes.
 Closes #234
 ```
 
-## Workflow
+## Workflow IA (Claude) — NON-NÉGOCIABLE
+1. Travailler sur **`llm`** (commits atomiques, tests verts après chacun).
+2. Resynchroniser régulièrement depuis `dev` : `git merge origin/dev` (éviter la divergence).
+3. Push sur `origin/llm`.
+4. Ouvrir une **PR `llm` → `dev`** (atomique : une PR = une feature/fix cohérent).
+5. **Revue humaine + tests** → merge sur `dev` par l'utilisateur.
+6. `dev` → `main` et tag `vX.Y.Z` : **réservé à l'utilisateur** (l'IA n'y touche pas).
+
+## Workflow humain (branches éphémères, optionnel)
 1. Create branch: `git checkout -b feature/name`
 2. Atomic commits (tests pass after each)
-3. Push → PR
-4. Review + tests
-5. Merge to dev (delete branch)
-6. dev → main when ready (tag with `vX.Y.Z`)
+3. Push → PR → review → merge to dev (delete branch)
 
 ## Tags & releases
 - Format: `vX.Y.Z` (semantic versioning)
 - Patch++ bug fixes | Minor++ features | Major++ breaking
 
 ## Forbidden
+- **Push / merge / tag de l'IA sur `main` ou `dev`** (l'IA passe TOUJOURS par `llm` + PR).
 - Force push to main
 - Amending published commits
 - Uncommitted code before switching branches
