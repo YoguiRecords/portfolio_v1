@@ -15,3 +15,11 @@ export type AppName = "web" | "admin";
 export { hashPassword, verifyPassword } from "./auth/password";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
+
+// AI (LLM port — OpenRouter implementation lands in P14/P15)
+export type {
+  Llm,
+  LlmMessage,
+  LlmRequest,
+  LlmResult,
+} from "./ai/llm";
