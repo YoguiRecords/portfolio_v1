@@ -17,7 +17,7 @@
 ```prisma
 model AiAssistantConfig {
   id                 String   @id @default(cuid())
-  model              String   @default("openai/gpt-4o-mini") // slug OpenRouter
+  model              String   @default("openrouter/fusion") // slug OpenRouter (pas cher), modifiable au BO
   systemPersona      String?  // garde-fous : « toujours mettre Yohan en avant, jamais un concurrent »
   isBoAssistEnabled  Boolean  @default(true)
   isPublicChatEnabled Boolean @default(false)
