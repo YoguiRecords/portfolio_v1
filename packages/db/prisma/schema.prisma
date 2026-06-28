@@ -25,6 +25,68 @@ enum ArticleStatus {
   PUBLISHED
 }
 
+/// Type de projet — pilote les blocs de fiche affichés/pré-activés au BO.
+enum ProjectType {
+  GAME // jeu → Game Design Document
+  SOFTWARE // logiciel → Architecture & stack, Sécurité
+  WEBSITE // site web → Design/UX, Perf/SEO/A11y
+  BUSINESS // analyse business → SWOT/PESTEL/PORTER, recommandations
+}
+
+/// Tendance d'un KPI (flèche ▲ ▼ —).
+enum TrendDirection {
+  UP
+  DOWN
+  FLAT
+}
+
+/// Grilles d'analyse appliquées au profil (chapitre « Qui je suis »).
+enum AnalysisType {
+  SWOT
+  PESTEL
+  PORTER
+}
+
+/// Statut d'un objectif de carrière (chapitre « Le cap »).
+enum GoalStatus {
+  ACHIEVED // acquis
+  IN_PROGRESS // en cours
+  TARGET // cible
+  HORIZON // horizon
+}
+
+/// Type d'un bloc de fiche projet (flexible content). Le `data` JSON est
+/// validé par Zod selon ce type (côté Server Action de l'admin).
+enum ProjectBlockType {
+  CONTEXT // problème · objectif · rôle
+  PROCESS // démarche + frise (Gantt) d'exécution
+  ANALYSIS // SWOT / PESTEL / PORTER du projet
+  GAME_DESIGN // piliers · core loop · mécaniques (jeu)
+  ARCHITECTURE // couches · flux · décisions (logiciel)
+  SECURITY // mesures de sécurité
+  DESIGN_UX // tokens · typo · parcours (site)
+  METRICS // scores perf / SEO / A11y (site)
+  RECOMMENDATIONS // recommandations priorisées + livrables (business)
+  RESULTS // résultats / impact (stat cards)
+  GALLERY // galerie de médias (cf. ProjectImage)
+  TEXT // bloc texte libre (markdown)
+}
+
+/// Portée d'une entrée FAQ (rich snippet FAQPage + réponses aux moteurs IA).
+enum FaqScope {
+  GLOBAL
+  HOME
+  PROJECT
+  ARTICLE
+}
+
+/// Statut de modération d'un témoignage.
+enum TestimonialStatus {
+  PENDING // soumis, en attente de validation
+  APPROVED // validé → affiché publiquement
+  REJECTED // refusé → jamais affiché
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // Authentification back office (compte admin unique, sessions opaques)
 // ──────────────────────────────────────────────────────────────────────────
@@ -96,6 +158,16 @@ model Profile {
   cvPdfUrl String? // PDF du CV (téléchargement)
   cvHtml   String? // CV complet en HTML (mise en page premium), éditable au BO
 
+  // Hero / accroche (chapitre d'ouverture)
+  typewriterLines   String[] // phrases qui se tapent (« Je conçois… », « Je pilote… »)
+  sigText           String? // indicateur vert mono (« vision · management · exécution »)
+  isAvailable       Boolean  @default(true) // statut de disponibilité
+  availabilityLabel String? // ex. « Disponible · ouvert aux missions »
+  currentRole       String? // nœud « Aujourd'hui » du parcours (« Indépendant · fondateur »)
+
+  // Découvrabilité (SEO + moteurs IA / AEO)
+  aiSummary String? // résumé court « quotable » par les IA (« Qui est Yohan ? »)
+
   avatarId String?     @unique
   avatar   MediaAsset? @relation("ProfileAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
 
@@ -144,11 +216,31 @@ model Project {
   publishedAt DateTime?
   order       Int           @default(0)
 
+  // Fiche « étude de cas » — entête + blocs modulaires selon le type
+  type        ProjectType @default(SOFTWARE)
+  role        String? // ex. « Lead technique », « Consultant »
+  periodLabel String? // ex. « 2023 — 2024 » (affichage)
+  startDate   DateTime? // tri chronologique + JSON-LD
+  endDate     DateTime?
+  statusLabel String? // ex. « En production »
+  tagline     String? // accroche (standfirst) de la fiche
+  sigText     String? // indicateur vert (« conçu · piloté · livré »)
+
+  // SEO & découvrabilité (Open Graph + JSON-LD CreativeWork + AEO)
+  seoTitle       String?
+  seoDescription String?
+  aiSummary      String? // résumé quotable par les moteurs IA
+  ogImageId      String?
+  ogImage        MediaAsset? @relation("ProjectOg", fields: [ogImageId], references: [id], onDelete: SetNull)
+
   coverId String?
   cover   MediaAsset? @relation("ProjectCover", fields: [coverId], references: [id], onDelete: SetNull)
 
   technologies Technology[]   @relation("ProjectTechnologies")
   images       ProjectImage[]
+  links        ProjectLink[]
+  blocks       ProjectBlock[]
+  faqs         FaqEntry[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -171,6 +263,21 @@ model ProjectImage {
   @@index([projectId])
 }
 
+/// Lien externe d'un projet (Repo, Démo, Store, Documentation, Vidéo…),
+/// en plus de repoUrl/liveUrl. Ajoutable & réordonnable au BO.
+model ProjectLink {
+  id    String  @id @default(cuid())
+  label String
+  url   String
+  icon  String?
+  order Int     @default(0)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // News / Articles
 // ──────────────────────────────────────────────────────────────────────────
@@ -187,14 +294,288 @@ model Article {
   readingMinutes Int?
   publishedAt    DateTime?
 
+  // SEO & découvrabilité (Open Graph + JSON-LD Article + AEO)
+  seoTitle       String?
+  seoDescription String?
+  aiSummary      String? // résumé quotable par les moteurs IA
+  ogImageId      String?
+  ogImage        MediaAsset? @relation("ArticleOg", fields: [ogImageId], references: [id], onDelete: SetNull)
+
   coverId String?
   cover   MediaAsset? @relation("ArticleCover", fields: [coverId], references: [id], onDelete: SetNull)
+
+  faqs FaqEntry[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([status, publishedAt])
   @@index([featured])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Réglages, SEO & découvrabilité (SEO classique + Schema.org + GEO/AEO)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Réglages globaux du site (singleton — une seule ligne, contrainte applicative).
+model SiteSettings {
+  id        String  @id @default(cuid())
+  brandName String? // « Yohan. » (nav)
+  siteName  String? // pour <title> / SEO
+
+  // SEO par défaut + Open Graph / Twitter Cards
+  defaultSeoTitle       String?
+  defaultSeoDescription String?
+  twitterHandle         String?
+  ogImageId             String?     @unique
+  ogImage               MediaAsset? @relation("SiteOg", fields: [ogImageId], references: [id], onDelete: SetNull)
+
+  // Footer
+  footerHeadline  String? // « La suite s'écrit ensemble. »
+  footerSignature String? // « Vision · management · exécution »
+
+  // Contact
+  contactEmail         String? // destinataire du formulaire (défaut : Profile.email)
+  isContactFormEnabled Boolean @default(true)
+  availabilityBanner   String?
+
+  // Découvrabilité moderne (GEO/AEO, robots, vérifications, analytics)
+  allowAiCrawlers    Boolean @default(true) // GPTBot, ClaudeBot, PerplexityBot…
+  llmsTxt            String? // contenu servi sur /llms.txt (présentation pour les IA)
+  robotsExtra        String? // directives robots.txt additionnelles
+  searchConsoleToken String? // vérification Google Search Console
+  umamiWebsiteId     String? // analytics (cookieless)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Section éditoriale de la home : rend titres / intros / CTA / ordre / visibilité
+/// pilotables au BO (le squelette reste au code, la copy vient d'ici).
+model HomeSection {
+  id        String  @id @default(cuid())
+  key       String  @unique // « hero », « profil », « ecosysteme », « parcours », « cap », « projets », « footer »
+  navLabel  String? // libellé dans la navigation
+  eyebrow   String? // marqueur (« Chapitre 01 — Qui je suis »)
+  title     String? // titre (« Le profil, en clair. »)
+  intro     String? // paragraphe d'introduction
+  ctaLabel  String?
+  ctaHref   String?
+  ctaLabel2 String?
+  ctaHref2  String?
+  order     Int     @default(0)
+  isVisible Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Entrée FAQ — alimente le rich snippet FAQPage (SEO) ET les réponses citées
+/// par les moteurs IA (AEO). Globale, home, ou rattachée à un projet/article.
+model FaqEntry {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String // markdown
+  scope     FaqScope @default(GLOBAL)
+  order     Int      @default(0)
+  isVisible Boolean  @default(true)
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  articleId String?
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([scope, order])
+  @@index([projectId])
+  @@index([articleId])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Contact (formulaire public → boîte de réception au BO)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Message reçu via le formulaire de contact. Validation Zod + rate-limit +
+/// honeypot côté Route Handler (anti-spam). Jamais exposé au rôle DB `app_web`.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  isSpam    Boolean  @default(false)
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([isRead])
+}
+
+/// Témoignage soumis publiquement, **modéré au BO avant tout affichage**.
+/// `submittedContent` = texte original reçu (immuable, audit) ; `content` =
+/// version affichée, éditable par l'admin. L'admin peut accepter / refuser /
+/// éditer (cf. `status`). Sécurité (migration) : `app_web` peut INSÉRER un
+/// témoignage mais ne peut LIRE que les colonnes d'affichage des entrées — ni
+/// e-mail, ni IP, ni texte original — et ne peut PAS définir `status`
+/// (→ toujours PENDING, pas d'auto-validation).
+model Testimonial {
+  id               String            @id @default(cuid())
+  authorName       String
+  authorRole       String? // « CTO @ Société », « ancien collègue »…
+  authorEmail      String? // non public — vérification / reprise de contact
+  content          String // version affichée (éditable au BO)
+  submittedContent String // texte original soumis (audit)
+  rating           Int? // note optionnelle (1–5)
+  status           TestimonialStatus @default(PENDING)
+  isFeatured       Boolean           @default(false)
+  order            Int               @default(0)
+  ip               String?
+  userAgent        String?
+
+  avatarId String?
+  avatar   MediaAsset? @relation("TestimonialAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  approvedAt DateTime?
+
+  @@index([status, order])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Contenu éditorial de la page d'accueil (1 portfolio → listes globales)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Indicateur chiffré du profil (Expérience, Périmètre, Management…).
+model Kpi {
+  id        String          @id @default(cuid())
+  label     String // « Expérience »
+  value     String // « 4 ans », « Tech + Business »
+  note      String? // sous-texte (« en hausse »)
+  trend     TrendDirection?
+  order     Int             @default(0)
+  isVisible Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([order])
+}
+
+/// Compétence affichée dans l'« écosystème » (orbit) et réutilisable ailleurs.
+model Skill {
+  id        String   @id @default(cuid())
+  name      String // « Full-stack », « Management », « Sécurité »
+  category  String? // regroupement libre (« Compétence », « Outil »)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Voie du parcours (chapitre « La trajectoire ») — Dev, Pédagogie, Management, Business.
+model CareerTrack {
+  id       String @id @default(cuid())
+  name     String
+  slug     String @unique
+  colorHex String // couleur de la voie (ex. « #f0a800 »)
+  order    Int    @default(0)
+
+  milestones CareerMilestone[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Jalon de carrière, positionné par année sur l'axe temporel.
+model CareerMilestone {
+  id          String  @id @default(cuid())
+  dateLabel   String // « 2019 », « 2024+ »
+  sortYear    Int? // pour le placement sur l'axe + tri
+  role        String // « Développeur », « Directeur adjoint d'école »
+  description String?
+  order       Int     @default(0)
+
+  trackId String
+  track   CareerTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([trackId])
+  @@index([sortYear])
+}
+
+/// Objectif de carrière (chapitre « Le cap ») : rôle visé + statut.
+model CareerGoal {
+  id        String     @id @default(cuid())
+  role      String // « Manager », « CTO », « CEO »
+  status    GoalStatus @default(TARGET)
+  order     Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([order])
+}
+
+/// Grille d'analyse appliquée au profil (une SWOT, une PESTEL, une PORTER).
+model Analysis {
+  id        String         @id @default(cuid())
+  type      AnalysisType
+  title     String?
+  order     Int            @default(0)
+  items     AnalysisItem[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([type]) // une seule grille de chaque type pour le profil
+}
+
+/// Élément d'une grille : SWOT (groupLabel = quadrant, text = puce) ;
+/// PESTEL/PORTER (groupLabel = facteur, verdict = lecture « Moteur », « Élevée »).
+model AnalysisItem {
+  id         String  @id @default(cuid())
+  groupLabel String // « Forces », « Technologique », « Rivalité »
+  text       String? // puce (SWOT)
+  verdict    String? // lecture (PESTEL / PORTER)
+  order      Int     @default(0)
+
+  analysisId String
+  analysis   Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@index([analysisId])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Blocs de fiche projet (flexible content — payload JSON validé Zod au BO)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Bloc ordonné d'une étude de cas. Le contenu (`data`) est un JSON dont la
+/// forme dépend de `type` (phases Gantt, piliers GDD, couches d'archi, scores,
+/// recommandations, mesures de sécu…). Validation Zod côté Server Action admin.
+model ProjectBlock {
+  id        String           @id @default(cuid())
+  type      ProjectBlockType
+  title     String?
+  order     Int              @default(0)
+  isVisible Boolean          @default(true)
+  data      Json             @default("{}")
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, order])
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -218,4 +599,8 @@ model MediaAsset {
   projectCovers Project[]      @relation("ProjectCover")
   projectImages ProjectImage[] @relation("ProjectImages")
   articleCovers Article[]      @relation("ArticleCover")
+  projectOgs    Project[]      @relation("ProjectOg")
+  articleOgs    Article[]      @relation("ArticleOg")
+  siteOg        SiteSettings?  @relation("SiteOg")
+  testimonialAvatars Testimonial[] @relation("TestimonialAvatar")
 }
