@@ -20,6 +20,14 @@ export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 export { isDue, splitDue } from "./publishing/due";
 export type { Schedulable } from "./publishing/due";
 
+// Project blocks (Zod schemas + safe parser for the modular case-study blocks)
+export {
+  blockSchemas,
+  parseBlock,
+  type ParsedBlock,
+  type ProjectBlockKind,
+} from "./project-blocks/schemas";
+
 // AI (LLM port — OpenRouter implementation lands in P14/P15)
 export type {
   Llm,
