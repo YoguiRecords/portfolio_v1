@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Split</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: var(--paper); color: var(--ink); }
+
+      .split { display: block; }
+      @media (min-width: 980px){ .split{ display:grid; grid-template-columns: 42% 58%; } }
+
+      /* panneau gauche fixe (identité) */
+      .aside { background: var(--dark-900); color: var(--on-dark); padding: 44px clamp(24px,4vw,56px);
+        display:flex; flex-direction:column; }
+      @media (min-width: 980px){ .aside{ position: sticky; top:0; height:100vh; } }
+      .aside .brand { font-weight:900; font-size:19px; letter-spacing:.04em; } .aside .brand span{ color: var(--accent); }
+      .aside .center { margin: auto 0; }
+      .aside .eyebrow{ display:inline-flex; gap:10px; align-items:center; margin-bottom:22px; }
+      .aside .eyebrow::before{ content:""; width:32px;height:2px;background:var(--accent); }
+      .aside h1 { font-size: clamp(44px, 7vw, 84px); font-weight:900; letter-spacing:-.04em; line-height:.9; }
+      .aside h1 span{ color: var(--accent); }
+      .aside .role { margin-top:18px; color: var(--on-dark-2); font-weight:300; font-size: clamp(15px,2.4vw,18px); line-height:1.6; max-width: 38ch; }
+      .aside .meta { margin-top: 30px; display:grid; grid-template-columns: repeat(3,1fr); gap:14px; }
+      .aside .meta .m .n{ font-size: 28px; font-weight:900; color: var(--accent); line-height:1; }
+      .aside .meta .m .l{ font-size: 11px; color: var(--on-dark-muted); margin-top:5px; letter-spacing:.06em; }
+      .aside .nav-links { margin-top: 34px; display:flex; flex-direction:column; gap:2px; }
+      .aside .nav-links a{ color: var(--on-dark-2); text-decoration:none; font-size:15px; padding:9px 0; border-bottom:1px solid var(--border-dark); display:flex; gap:12px; align-items:baseline; transition:.2s; }
+      .aside .nav-links a .n{ font-size:11px; font-weight:900; color: var(--accent); }
+      .aside .nav-links a:hover{ color: var(--accent); padding-left:8px; }
+      .aside .foot { margin-top: 30px; display:flex; gap:18px; font-size:13px; }
+      .aside .foot a{ color: var(--on-dark-muted); text-decoration:none; transition:.2s; } .aside .foot a:hover{ color: var(--accent); }
+
+      /* colonne droite défilante (contenu) */
+      .content { padding: 60px clamp(24px,5vw,70px) 80px; }
+      .block { padding: 40px 0; border-bottom: 1px solid var(--border-light); }
+      .block:first-child{ padding-top: 14px; }
+      .block .kicker { display:flex; align-items:baseline; gap:12px; margin-bottom: 22px; }
+      .block .kicker .num{ font-size:13px; font-weight:900; color: var(--accent); letter-spacing:.1em; }
+      .block .kicker h2 { font-size: clamp(24px,4vw,34px); font-weight:800; letter-spacing:-.02em; }
+
+      .proj-row { display:grid; grid-template-columns:1fr; gap: 18px; }
+      .proj-card { display:block; text-decoration:none; color:inherit; background: var(--card); border:1px solid var(--border-light);
+        border-left: 2.5px solid transparent; border-radius:8px; padding: 22px 24px; transition:.25s; }
+      .proj-card:hover { border-left-color: var(--accent); transform: translateX(4px); box-shadow: var(--shadow-soft); }
+      .proj-card .cat { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color: var(--muted-2); }
+      .proj-card h3 { font-size:22px; font-weight:800; letter-spacing:-.02em; margin: 8px 0 8px; }
+      .proj-card p { font-size:14px; color: var(--muted); line-height:1.55; margin-bottom:12px; }
+      .proj-card .tags{ display:flex; gap:6px; flex-wrap:wrap; }
+
+      .lead-p { font-size: clamp(17px,2.6vw,21px); line-height:1.65; color: var(--ink-2); font-weight:300; max-width: 56ch; }
+      .lead-p b{ font-weight:600; color: var(--ink); }
+      .skill-list { margin-top: 26px; display:grid; grid-template-columns:1fr; gap:0; }
+      .skill-list .sk { display:flex; justify-content:space-between; align-items:baseline; padding:14px 0; border-top:1px solid var(--border-light); }
+      .skill-list .sk .k{ font-size:16px; font-weight:600; } .skill-list .sk .v{ font-size:13px; color: var(--muted); }
+
+      .contact .cta { margin-top:8px; }
+    </style>
+  </head>
+  <body>
+    <div class="split">
+      <aside class="aside">
+        <span class="brand">Yohan<span>.</span></span>
+        <div class="center">
+          <span class="eyebrow">Disponible · Builder solo</span>
+          <h1>Yohan<br /><span>Debusscher</span></h1>
+          <p class="role">Concepteur-développeur &amp; entrepreneur. De l'idée au produit déployé — seul, de bout en bout.</p>
+          <div class="meta">
+            <div class="m"><div class="n">4</div><div class="l">ANS XP</div></div>
+            <div class="m"><div class="n">2</div><div class="l">PRODUITS</div></div>
+            <div class="m"><div class="n">E2E</div><div class="l">SOLO</div></div>
+          </div>
+          <nav class="nav-links">
+            <a href="#work"><span class="n">01</span> Réalisations</a>
+            <a href="#about"><span class="n">02</span> Profil</a>
+            <a href="#contact"><span class="n">03</span> Contact</a>
+          </nav>
+        </div>
+        <div class="foot">
+          <a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="block" id="work">
+          <div class="kicker reveal"><span class="num">01</span><h2>Réalisations</h2></div>
+          <div class="proj-row">
+            <a href="#" class="proj-card reveal"><span class="cat">Projet phare · Produit</span><h3>Domestic Revolt</h3><p>Conçu, développé et déployé seul. Du premier croquis à la mise en production.</p><div class="tags"><span class="tag">Next.js</span><span class="tag">Docker</span></div></a>
+            <a href="#" class="proj-card reveal"><span class="cat">Produit · Logiciel</span><h3>OXO</h3><p>Plateforme complète pilotée seul, du back-end au front-end.</p><div class="tags"><span class="tag">React</span><span class="tag">Node</span></div></a>
+            <a href="#" class="proj-card reveal"><span class="cat">Stratégie · Business</span><h3>Étude PME</h3><p>Analyse de marché, matrice SWOT et recommandations actionnables.</p><div class="tags"><span class="tag">SWOT</span><span class="tag">Conseil</span></div></a>
+          </div>
+        </section>
+
+        <section class="block" id="about">
+          <div class="kicker reveal"><span class="num">02</span><h2>Profil</h2></div>
+          <p class="lead-p reveal">Là où la plupart se spécialisent, j'<b>assemble</b>. Je tiens à la fois la casquette technique et la casquette business — et je conçois des produits qui tiennent debout des deux côtés : <b>architecture</b>, <b>code</b>, <b>sécurité</b>, <b>mise en production</b>.</p>
+          <div class="skill-list reveal">
+            <div class="sk"><span class="k">Développement full-stack</span><span class="v">Front · Back · Infra</span></div>
+            <div class="sk"><span class="k">Architecture &amp; sécurité</span><span class="v">By design</span></div>
+            <div class="sk"><span class="k">Stratégie &amp; business</span><span class="v">Marché · SWOT</span></div>
+          </div>
+        </section>
+
+        <section class="block contact" id="contact">
+          <div class="kicker reveal"><span class="num">03</span><h2>Un projet ?</h2></div>
+          <p class="lead-p reveal">Parlons-en. Je réponds vite, et je vais droit au produit.</p>
+          <div class="cta reveal"><a href="#" class="btn btn-primary">M'écrire →</a><a href="#" class="btn btn-ghost on-light">Télécharger le CV</a></div>
+        </section>
+      </main>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

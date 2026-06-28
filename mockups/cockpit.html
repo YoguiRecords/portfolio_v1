@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Cockpit stratégique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #08090b; color: #e6e8ea; font-family: "JetBrains Mono", monospace; }
+      .sans { font-family: "Inter", sans-serif; }
+      .ok { color: #46c98b; } .gold { color: var(--accent); }
+
+      /* bandeau mots-clés (pas de tickers boursiers) */
+      .tape { position: sticky; top:0; z-index: 40; background:#0e1013; border-bottom:1px solid #1b1f24; padding: 9px 0; }
+      .tape .marquee__track { animation-duration: 34s; }
+      .tape .it { display:inline-flex; gap:10px; align-items:center; padding: 0 24px; font-size:12.5px; border-right:1px solid #1b1f24; letter-spacing:.04em; color:#aeb3b8; }
+      .tape .it b{ color: var(--accent); }
+
+      .term { max-width: 1240px; margin: 0 auto; padding: 22px clamp(14px,3vw,30px) 70px; }
+
+      /* en-tête : positionnement (pas un "cours") */
+      .head { border:1px solid #1b1f24; background:#0d0f12; border-radius:8px; padding: clamp(20px,4vw,34px); display:grid; grid-template-columns:1fr; gap:26px; }
+      @media (min-width: 900px){ .head{ grid-template-columns: 1.15fr 1fr; align-items:center; } }
+      .head .sys { font-size:12px; letter-spacing:.16em; color:#6b7178; text-transform:uppercase; }
+      .head .sys b{ color: var(--accent); }
+      .head h1 { font-family:"Inter",sans-serif; font-size: clamp(38px,8vw,78px); font-weight:900; letter-spacing:-.04em; line-height:.92; color:#fff; margin:12px 0 8px; }
+      .head .role { font-family:"Inter",sans-serif; font-size: clamp(15px,2.4vw,18px); color:#aeb3b8; font-weight:300; line-height:1.6; max-width:48ch; }
+      .head .pos { margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; }
+      .head .pos span{ font-family:"Inter",sans-serif; font-size:12px; font-weight:600; color: var(--accent); border:1px solid #2c2410; background: var(--accent-faint); padding:6px 13px; border-radius:30px; }
+      .head .cta { margin-top: 24px; display:flex; gap:12px; flex-wrap:wrap; }
+
+      /* graphe positionnement : Vision (CEO) × Exécution (CTO) */
+      .axis { background:#0a0c0f; border:1px solid #1b1f24; border-radius:8px; padding:18px; }
+      .axis .ttl { display:flex; justify-content:space-between; font-size:11px; color:#6b7178; letter-spacing:.1em; margin-bottom:10px; text-transform:uppercase; }
+      .axis .ttl b{ color: var(--accent); }
+      .axis svg { width:100%; height:auto; display:block; }
+      .axis .lbl { font: 600 10px "Inter", sans-serif; fill:#7d828a; letter-spacing:.06em; }
+      .axis .you { font: 800 11px "Inter", sans-serif; fill: var(--accent); }
+
+      /* grille de modules */
+      .modules { display:grid; grid-template-columns:1fr; gap:14px; margin-top:14px; }
+      @media (min-width: 760px){ .modules{ grid-template-columns: repeat(2,1fr); } }
+      @media (min-width: 1040px){ .modules{ grid-template-columns: repeat(4,1fr); } }
+      .mod { border:1px solid #1b1f24; background:#0d0f12; border-radius:8px; padding:18px; }
+      .mod .mh { display:flex; align-items:center; justify-content:space-between; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#6b7178; margin-bottom:14px; }
+      .mod .mh b{ color: var(--accent); }
+
+      /* SWOT 2x2 */
+      .mod.swot { grid-column: 1 / -1; }
+      @media (min-width: 1040px){ .mod.swot{ grid-column: span 2; } }
+      .swot-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:8px; }
+      .q { border:1px solid #1b1f24; border-radius:6px; padding:12px; }
+      .q .k { font:700 11px "Inter",sans-serif; letter-spacing:.08em; text-transform:uppercase; margin-bottom:7px; }
+      .q ul { list-style:none; display:flex; flex-direction:column; gap:5px; }
+      .q li { font:400 12px/1.4 "Inter",sans-serif; color:#c4c8ce; padding-left:12px; position:relative; }
+      .q li::before{ content:"·"; position:absolute; left:2px; color: var(--accent); }
+      .q.s { border-left:2px solid #46c98b; } .q.s .k{ color:#46c98b; }
+      .q.w { border-left:2px solid #d98a3a; } .q.w .k{ color:#d98a3a; }
+      .q.o { border-left:2px solid var(--accent); } .q.o .k{ color: var(--accent); }
+      .q.t { border-left:2px solid #c0566a; } .q.t .k{ color:#c0566a; }
+
+      /* PESTEL barres */
+      .pestel { display:flex; flex-direction:column; gap:9px; }
+      .pe { display:grid; grid-template-columns: 92px 1fr; gap:10px; align-items:center; }
+      .pe .pk { font:600 11px "Inter",sans-serif; color:#aeb3b8; }
+      .pe .pbar { height:7px; background:#1b1f24; border-radius:4px; overflow:hidden; }
+      .pe .pbar i { display:block; height:100%; background: linear-gradient(90deg, var(--accent-strong), var(--accent)); }
+
+      /* PORTER 5 forces */
+      .porter { display:grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(3,auto); gap:7px; align-items:center; }
+      .force { border:1px solid #1b1f24; border-radius:6px; padding:9px 8px; text-align:center; }
+      .force .fk{ font:700 9.5px "Inter",sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#7d828a; }
+      .force .fv{ font:800 14px "Inter",sans-serif; color:#fff; margin-top:3px; }
+      .force.center { background: var(--accent-faint); border-color:#2c2410; }
+      .force.center .fk{ color: var(--accent); } .force.center .fv{ color: var(--accent); }
+      .force.f1{ grid-column:2; grid-row:1; } .force.f2{ grid-column:1; grid-row:2; }
+      .force.fc{ grid-column:2; grid-row:2; } .force.f3{ grid-column:3; grid-row:2; } .force.f4{ grid-column:2; grid-row:3; }
+
+      /* Roadmap / gestion de projet (mini gantt) */
+      .mod.road { grid-column: 1 / -1; }
+      @media (min-width: 1040px){ .mod.road{ grid-column: span 2; } }
+      .gantt { display:flex; flex-direction:column; gap:8px; }
+      .gline { display:grid; grid-template-columns: 96px 1fr; gap:10px; align-items:center; }
+      .gline .gk{ font:600 11px "Inter",sans-serif; color:#aeb3b8; }
+      .gtrack{ position:relative; height:14px; background:#0a0c0f; border:1px solid #1b1f24; border-radius:4px; }
+      .gbar{ position:absolute; top:2px; bottom:2px; border-radius:3px; background: linear-gradient(90deg, var(--accent-strong), var(--accent)); }
+      .gbar.ghost{ background:#23272d; }
+      .gaxis{ display:grid; grid-template-columns: 96px 1fr; gap:10px; margin-top:4px; }
+      .gaxis .gk{ } .gaxis .gs{ display:flex; justify-content:space-between; font:500 9.5px "JetBrains Mono",monospace; color:#5a5f66; }
+
+      /* portefeuille de réalisations (ex order book) */
+      .book { margin-top: 14px; border:1px solid #1b1f24; border-radius:8px; overflow:hidden; }
+      .book .bh { display:grid; grid-template-columns: 70px 1fr 1fr auto; gap:12px; padding:12px 18px; background:#0e1013; font-size:10.5px; letter-spacing:.12em; color:#6b7178; text-transform:uppercase; }
+      .book .row { display:grid; grid-template-columns: 70px 1fr 1fr auto; gap:12px; padding:16px 18px; border-top:1px solid #1b1f24; text-decoration:none; color:inherit; align-items:center; transition:.2s; }
+      .book .row:hover { background:#10141a; }
+      .book .row .tk { color: var(--accent); font-weight:700; }
+      .book .row .nm b{ font-family:"Inter",sans-serif; color:#fff; font-size:16px; font-weight:700; display:block; }
+      .book .row .nm small{ font-family:"Inter",sans-serif; color:#8a9098; font-size:12px; }
+      .book .row .pos2 { font-family:"Inter",sans-serif; color:#aeb3b8; font-size:13px; }
+      .book .row .sig { font-weight:700; white-space:nowrap; color:#46c98b; }
+      @media (max-width: 620px){ .book .bh, .book .row{ grid-template-columns: 56px 1fr auto; } .book .pos2{ display:none; } }
+    </style>
+  </head>
+  <body>
+    <div class="tape marquee">
+      <div class="marquee__track">
+        <span class="it">VISION <b>×</b> EXÉCUTION</span>
+        <span class="it">Stratégie</span><span class="it">Gestion de projet</span><span class="it">Architecture</span>
+        <span class="it">Analyse <b>SWOT · PESTEL · PORTER</b></span><span class="it">Pilotage</span><span class="it">Leadership</span>
+        <span class="it">Sécurité <b>by design</b></span><span class="it">Cap : <b>CTO → CEO</b></span>
+        <span class="it">VISION <b>×</b> EXÉCUTION</span>
+        <span class="it">Stratégie</span><span class="it">Gestion de projet</span><span class="it">Architecture</span>
+        <span class="it">Analyse <b>SWOT · PESTEL · PORTER</b></span><span class="it">Pilotage</span><span class="it">Leadership</span>
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="head reveal">
+        <div>
+          <div class="sys">CONSOLE <b>·</b> COCKPIT STRATÉGIQUE <b>·</b> YOHAN DEBUSSCHER</div>
+          <h1 class="sans">Yohan Debusscher</h1>
+          <p class="role sans">Concepteur-développeur &amp; entrepreneur. Je pilote un produit de la <b>stratégie</b> jusqu'au <b>déploiement</b> — décision, architecture, exécution. Le profil qui parle aux marchés <i>et</i> aux machines.</p>
+          <div class="pos"><span>Vision produit (CEO)</span><span>Leadership technique (CTO)</span><span>Gestion de projet</span></div>
+          <div class="cta sans">
+            <a href="#" class="btn btn-primary">Voir le pilotage →</a>
+            <a href="#" class="btn btn-ghost on-dark">Le CV</a>
+          </div>
+        </div>
+
+        <div class="axis">
+          <div class="ttl"><span>POSITIONNEMENT</span><b>VISION × EXÉCUTION</b></div>
+          <svg viewBox="0 0 300 220" aria-label="Matrice vision exécution">
+            <!-- axes -->
+            <line x1="40" y1="190" x2="290" y2="190" stroke="#23272d" stroke-width="1"/>
+            <line x1="40" y1="20" x2="40" y2="190" stroke="#23272d" stroke-width="1"/>
+            <!-- quadrillage -->
+            <line x1="165" y1="20" x2="165" y2="190" stroke="#15181c" stroke-width="1"/>
+            <line x1="40" y1="105" x2="290" y2="105" stroke="#15181c" stroke-width="1"/>
+            <!-- labels axes -->
+            <text class="lbl" x="150" y="208" text-anchor="middle">EXÉCUTION · CTO →</text>
+            <text class="lbl" x="14" y="105" text-anchor="middle" transform="rotate(-90 14 105)">VISION · CEO →</text>
+            <!-- trajectoire -->
+            <polyline points="70,170 130,130 200,80 250,45" fill="none" stroke="#46c98b" stroke-width="2" stroke-dasharray="4 4"/>
+            <!-- point "vous" -->
+            <circle cx="250" cy="45" r="7" fill="#f0a800"/>
+            <circle cx="250" cy="45" r="13" fill="none" stroke="#f0a800" stroke-width="1" opacity=".5"/>
+            <text class="you" x="240" y="32" text-anchor="end">YOHAN</text>
+            <text class="lbl" x="70" y="185" text-anchor="middle">aujourd'hui</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="modules">
+        <!-- SWOT -->
+        <div class="mod swot reveal">
+          <div class="mh"><span>ANALYSE — <b>SWOT</b></span><span>appliqué à mon profil</span></div>
+          <div class="swot-grid">
+            <div class="q s"><div class="k">Forces</div><ul><li>Autonomie end-to-end</li><li>Tech + business réunis</li></ul></div>
+            <div class="q w"><div class="k">Faiblesses</div><ul><li>Un seul homme = capacité finie</li><li>À déléguer pour scaler</li></ul></div>
+            <div class="q o"><div class="k">Opportunités</div><ul><li>Demande de profils hybrides</li><li>Rôles CTO / fondateur</li></ul></div>
+            <div class="q t"><div class="k">Menaces</div><ul><li>Spécialistes plus pointus</li><li>Marché concurrentiel</li></ul></div>
+          </div>
+        </div>
+
+        <!-- PESTEL -->
+        <div class="mod reveal">
+          <div class="mh"><span>MACRO — <b>PESTEL</b></span></div>
+          <div class="pestel">
+            <div class="pe"><span class="pk">Politique</span><span class="pbar"><i style="width:55%"></i></span></div>
+            <div class="pe"><span class="pk">Économique</span><span class="pbar"><i style="width:72%"></i></span></div>
+            <div class="pe"><span class="pk">Socioculturel</span><span class="pbar"><i style="width:64%"></i></span></div>
+            <div class="pe"><span class="pk">Technologique</span><span class="pbar"><i style="width:92%"></i></span></div>
+            <div class="pe"><span class="pk">Écologique</span><span class="pbar"><i style="width:48%"></i></span></div>
+            <div class="pe"><span class="pk">Légal</span><span class="pbar"><i style="width:60%"></i></span></div>
+          </div>
+        </div>
+
+        <!-- PORTER -->
+        <div class="mod reveal">
+          <div class="mh"><span>SECTEUR — <b>PORTER</b></span></div>
+          <div class="porter">
+            <div class="force f1"><div class="fk">Nouveaux entrants</div><div class="fv">Moyen</div></div>
+            <div class="force f2"><div class="fk">Fournisseurs</div><div class="fv">Faible</div></div>
+            <div class="force fc center"><div class="fk">Rivalité</div><div class="fv">Élevée</div></div>
+            <div class="force f3"><div class="fk">Clients</div><div class="fv">Fort</div></div>
+            <div class="force f4"><div class="fk">Substituts</div><div class="fv">Moyen</div></div>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="mod reveal">
+          <div class="mh"><span>INDICATEURS</span><span class="ok">● live</span></div>
+          <div class="pestel">
+            <div class="pe"><span class="pk">Expérience</span><span class="pbar"><i style="width:80%"></i></span></div>
+            <div class="pe"><span class="pk">Produits livrés</span><span class="pbar"><i style="width:66%"></i></span></div>
+            <div class="pe"><span class="pk">Couverture E2E</span><span class="pbar"><i style="width:95%"></i></span></div>
+            <div class="pe"><span class="pk">Disponibilité</span><span class="pbar"><i style="width:100%"></i></span></div>
+          </div>
+        </div>
+
+        <!-- Roadmap / gestion de projet -->
+        <div class="mod road reveal">
+          <div class="mh"><span>PILOTAGE — <b>ROADMAP PROJET</b></span><span>méthode end-to-end</span></div>
+          <div class="gantt">
+            <div class="gline"><span class="gk">Cadrage</span><span class="gtrack"><span class="gbar" style="left:0%;width:22%"></span></span></div>
+            <div class="gline"><span class="gk">Conception</span><span class="gtrack"><span class="gbar" style="left:18%;width:28%"></span></span></div>
+            <div class="gline"><span class="gk">Construction</span><span class="gtrack"><span class="gbar" style="left:40%;width:42%"></span></span></div>
+            <div class="gline"><span class="gk">Livraison</span><span class="gtrack"><span class="gbar" style="left:78%;width:22%"></span></span></div>
+            <div class="gaxis"><span class="gk"></span><span class="gs"><span>S0</span><span>S4</span><span>S8</span><span>Prod</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portefeuille de réalisations -->
+      <div class="book reveal">
+        <div class="bh"><span>Réf.</span><span>Projet</span><span>Nature</span><span>Statut</span></div>
+        <a href="#" class="row"><span class="tk">DMR</span><span class="nm"><b>Domestic Revolt</b><small>Conçu, piloté &amp; déployé seul</small></span><span class="pos2">Produit · phare · Next/Docker</span><span class="sig">✓ DÉPLOYÉ</span></a>
+        <a href="#" class="row"><span class="tk">OXO</span><span class="nm"><b>OXO</b><small>Plateforme complète</small></span><span class="pos2">Logiciel · React/Node</span><span class="sig">✓ EN PROD</span></a>
+        <a href="#" class="row"><span class="tk">PME</span><span class="nm"><b>Étude PME</b><small>Marché · SWOT · reco</small></span><span class="pos2">Stratégie · conseil</span><span class="sig">✓ LIVRÉ</span></a>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

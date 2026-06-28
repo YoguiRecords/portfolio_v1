@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Poster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body {
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .nav[data-scrollfx] {
+        color: var(--ink);
+      }
+      .nav.scrolled {
+        background: rgba(247, 246, 243, 0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      /* ---- HERO poster ---- */
+      .poster {
+        position: relative;
+        min-height: 100vh;
+        padding: 110px 0 50px;
+        overflow: hidden;
+      }
+      .poster .wrap {
+        position: relative;
+      }
+      .pmeta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        border-top: 3px solid var(--ink);
+        border-bottom: 3px solid var(--ink);
+        padding: 10px 0;
+        margin-bottom: 30px;
+      }
+      .pmeta .or {
+        color: var(--accent-strong);
+      }
+      .ptitle {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.05em;
+        line-height: 0.78;
+        font-size: clamp(64px, 21vw, 240px);
+        color: var(--ink);
+      }
+      .ptitle .stroke {
+        color: transparent;
+        -webkit-text-stroke: 2.5px var(--ink);
+      }
+      .goldblock {
+        background: var(--accent);
+        color: #1a1400;
+        display: inline-block;
+        padding: 8px 18px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        font-size: clamp(15px, 4vw, 24px);
+        margin: 18px 0;
+        transform: rotate(-1.5deg);
+      }
+      .pbody {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        margin-top: 10px;
+        border-top: 1px solid var(--border-light);
+        padding-top: 24px;
+      }
+      .pbody p {
+        max-width: 48ch;
+        font-size: clamp(15px, 4vw, 20px);
+        font-weight: 300;
+        color: var(--ink-2);
+        line-height: 1.55;
+      }
+      .vstamp {
+        display: none;
+      }
+      @media (min-width: 1000px) {
+        .pbody {
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: space-between;
+        }
+        .vstamp {
+          display: block;
+          position: absolute;
+          top: 140px;
+          right: 0;
+          transform: rotate(90deg);
+          transform-origin: right top;
+          font-size: 12px;
+          letter-spacing: 0.4em;
+          text-transform: uppercase;
+          color: var(--muted-2);
+        }
+        .ptitle {
+          position: relative;
+          z-index: 2;
+        }
+        .goldblock {
+          position: relative;
+          z-index: 3;
+          transform: rotate(-2deg) translateX(8%);
+          margin-top: -10px;
+        }
+      }
+
+      /* ---- Collage projets ---- */
+      .work {
+        background: var(--ink);
+        color: #fff;
+        padding: 70px 0 90px;
+        position: relative;
+      }
+      .work .head {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+      .work .head .section-num {
+        color: var(--accent);
+      }
+      .work .head h2 {
+        font-size: clamp(30px, 8vw, 52px);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        color: #fff;
+      }
+      .collage {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .pcard {
+        position: relative;
+        border: 3px solid #fff;
+        border-radius: 2px;
+        background: var(--dark-800);
+        padding: 24px 22px 26px;
+        text-decoration: none;
+        color: #fff;
+        overflow: hidden;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      .pcard .bgnum {
+        position: absolute;
+        top: -26px;
+        right: -8px;
+        font-size: 150px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.05);
+        line-height: 1;
+        pointer-events: none;
+      }
+      .pcard .cat {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .pcard h3 {
+        font-size: clamp(28px, 7vw, 44px);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        margin: 8px 0 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .pcard p {
+        color: var(--on-dark-2);
+        font-size: 14px;
+        line-height: 1.55;
+        margin-bottom: 16px;
+        max-width: 44ch;
+        position: relative;
+        z-index: 1;
+      }
+      .pcard .tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .pcard .tag {
+        color: var(--accent);
+        background: rgba(240, 168, 0, 0.12);
+      }
+      .pcard.gold {
+        background: var(--accent);
+        color: #1a1400;
+        border-color: #1a1400;
+      }
+      .pcard.gold .cat,
+      .pcard.gold .tag {
+        color: #1a1400;
+      }
+      .pcard.gold .tag {
+        background: rgba(0, 0, 0, 0.12);
+      }
+      .pcard.gold p {
+        color: #2a2200;
+      }
+      .pcard.gold .bgnum {
+        color: rgba(0, 0, 0, 0.08);
+      }
+
+      @media (min-width: 760px) {
+        .collage {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .pcard:nth-child(1) {
+          grid-column: span 2;
+        }
+        .pcard:hover {
+          transform: rotate(-1deg) scale(1.01);
+        }
+        .pcard:nth-child(3):hover,
+        .pcard:nth-child(5):hover {
+          transform: rotate(1deg) scale(1.01);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links">
+        <a href="#work">Projets</a><a href="#">CV</a><a href="#">Contact</a
+        ><a href="#" class="muted">News</a>
+      </div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu">
+      <a href="#work"><span class="n">01</span>Projets</a>
+      <a href="#"><span class="n">02</span>CV</a>
+      <a href="#"><span class="n">03</span>Contact</a>
+      <a href="#"><span class="n">04</span>News</a>
+    </div>
+
+    <header class="poster">
+      <span class="vstamp">Builder ✶ Tech &amp; Business ✶ Édition 2026</span>
+      <div class="wrap">
+        <div class="pmeta">
+          <span>Portfolio</span><span class="or">Builder</span><span>N°01 — 2026</span>
+        </div>
+        <h1 class="ptitle">Yohan<br /><span class="stroke">Debusscher</span></h1>
+        <div class="goldblock">Je conçois &amp; je livre des produits finis.</div>
+        <div class="pbody">
+          <p>
+            Concepteur-développeur &amp; entrepreneur. De la stratégie à la
+            production — seul, et de bout en bout.
+          </p>
+          <div class="cta">
+            <a href="#work" class="btn btn-primary">Réalisations →</a>
+            <a href="#" class="btn btn-ghost on-light">Le CV</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="head">
+          <span class="section-num">01</span>
+          <h2>Réalisations</h2>
+        </div>
+        <div class="collage">
+          <a href="#" class="pcard">
+            <span class="bgnum">01</span>
+            <span class="cat">Projet phare · Produit / Logiciel</span>
+            <h3>Domestic Revolt</h3>
+            <p>Conçu, développé et déployé seul. Étude de cas complète, du problème à la prod.</p>
+            <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Docker</span></div>
+          </a>
+          <a href="#" class="pcard gold">
+            <span class="bgnum">02</span>
+            <span class="cat">Produit / Logiciel</span>
+            <h3>OXO</h3>
+            <p>Plateforme complète, pensée produit et pilotée seul.</p>
+            <div class="tags"><span class="tag">React</span><span class="tag">Node</span></div>
+          </a>
+          <a href="#" class="pcard">
+            <span class="bgnum">03</span>
+            <span class="cat">Produit / Logiciel</span>
+            <h3>Korteks</h3>
+            <p>Produit technique exigeant, du concept au déploiement.</p>
+            <div class="tags"><span class="tag">TypeScript</span><span class="tag">API</span></div>
+          </a>
+          <a href="#" class="pcard">
+            <span class="bgnum">04</span>
+            <span class="cat">Produit / Logiciel</span>
+            <h3>Yokai No Mori</h3>
+            <p>Système de tournoi complet — logique de bracket maison.</p>
+            <div class="tags"><span class="tag">Algorithme</span><span class="tag">UI</span></div>
+          </a>
+          <a href="#" class="pcard gold">
+            <span class="bgnum">05</span>
+            <span class="cat">Stratégie &amp; Business</span>
+            <h3>Étude PME</h3>
+            <p>Analyse de marché, SWOT et recommandations actionnables.</p>
+            <div class="tags"><span class="tag">SWOT</span><span class="tag">Stratégie</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contact">
+      <div class="wrap">
+        <div class="row">
+          <h2>Un projet,<br />une mission ?<br /><span>Parlons-en.</span></h2>
+          <div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div>
+        </div>
+        <div class="legal">
+          <span>© 2026 Yohan Debusscher</span><span>Conçu &amp; développé de bout en bout</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./reveal.js"></script>
+  </body>
+</html>

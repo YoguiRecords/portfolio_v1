@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #0d1117; color: #c9d1d9; font-family: "JetBrains Mono", monospace; font-size: 14px; }
+      /* couleurs "syntax" */
+      .kw { color: #ff7b72; } .fn { color: #d2a8ff; } .str { color: #a5d6ff; }
+      .num { color: #79c0ff; } .com { color: #6e7781; } .var { color: #ffa657; }
+      .prop { color: #79c0ff; } .gold { color: var(--accent); } .tag { color: #7ee787; }
+
+      .ide { min-height: 100vh; display: grid; grid-template-rows: 38px 1fr 26px; }
+
+      /* barre d'onglets / titre */
+      .topbar { display:flex; align-items:center; gap:0; background:#010409; border-bottom:1px solid #21262d; }
+      .topbar .traffic { display:flex; gap:8px; padding: 0 16px; }
+      .topbar .traffic i{ width:12px;height:12px;border-radius:50%; }
+      .topbar .traffic i:nth-child(1){background:#ff5f57;}.topbar .traffic i:nth-child(2){background:#febc2e;}.topbar .traffic i:nth-child(3){background:#28c840;}
+      .tab { display:flex; align-items:center; gap:9px; padding: 0 18px; height:38px; font-size:13px; color:#8b949e; border-right:1px solid #21262d; }
+      .tab.active { background:#0d1117; color:#fff; border-top:2px solid var(--accent); }
+      .tab .dot{ width:8px;height:8px;border-radius:50%;background: var(--accent); }
+
+      .body { display:grid; grid-template-columns: 1fr; }
+      @media (min-width: 860px){ .body{ grid-template-columns: 250px 1fr; } }
+
+      /* explorateur */
+      .explorer { background:#010409; border-right:1px solid #21262d; padding: 14px 0; display:none; }
+      @media (min-width: 860px){ .explorer{ display:block; } }
+      .explorer .hd { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#6e7781; padding: 0 16px 12px; }
+      .explorer .it { padding: 6px 16px 6px 28px; font-size:13px; color:#8b949e; cursor:pointer; display:flex; align-items:center; gap:8px; }
+      .explorer .it.dir{ padding-left:16px; color:#c9d1d9; }
+      .explorer .it.active { background:#161b22; color:#fff; border-left:2px solid var(--accent); padding-left:26px; }
+      .explorer .it:hover { background:#0d1117; }
+      .explorer .it .i{ color: var(--accent); }
+
+      /* zone code */
+      .code { overflow:auto; padding: 18px 0 60px; }
+      .ln { display:grid; grid-template-columns: 50px 1fr; }
+      .ln .g { color:#484f58; text-align:right; padding-right:18px; user-select:none; font-size:13px; }
+      .ln .c { white-space:pre-wrap; word-break:break-word; padding-right:20px; line-height:1.85; }
+      .ln:hover .c { background:#161b22; }
+      .indent{ padding-left:2.4em; } .indent2{ padding-left:4.8em; }
+
+      /* "cartes" projets sous forme d'objets repliés cliquables */
+      .obj { text-decoration:none; }
+      .obj:hover .str { text-decoration: underline; }
+
+      /* statut bas */
+      .status { display:flex; align-items:center; gap:18px; background: var(--accent); color:#1a1400; font-size:11.5px; padding: 0 16px; font-weight:600; }
+      .status .s { display:flex; align-items:center; gap:6px; }
+      .status .right { margin-left:auto; display:flex; gap:18px; }
+      @media (max-width:560px){ .status .hideS{ display:none; } }
+
+      .cta { display:flex; gap:12px; flex-wrap:wrap; padding: 14px 0 0 50px; }
+      .cta a { text-decoration:none; font-family:"JetBrains Mono",monospace; font-size:12px; padding:9px 16px; border-radius:5px; transition:.2s; }
+      .cta .p{ background: var(--accent); color:#1a1400; } .cta .p:hover{ background:#fff; }
+      .cta .g{ border:1px solid #30363d; color:#c9d1d9; } .cta .g:hover{ border-color: var(--accent); color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div class="ide">
+      <div class="topbar">
+        <div class="traffic"><i></i><i></i><i></i></div>
+        <div class="tab active"><span class="dot"></span>yohan.ts</div>
+        <div class="tab">projects.json</div>
+        <div class="tab" style="opacity:.6">README.md</div>
+      </div>
+
+      <div class="body">
+        <aside class="explorer">
+          <div class="hd">Explorer — PORTFOLIO</div>
+          <div class="it dir"><span class="i">▾</span> src</div>
+          <div class="it active"><span class="i">⌁</span> yohan.ts</div>
+          <div class="it"><span class="i">{}</span> projects.json</div>
+          <div class="it"><span class="i">⌁</span> skills.ts</div>
+          <div class="it dir"><span class="i">▾</span> public</div>
+          <div class="it" style="padding-left:36px"><span class="i">▤</span> cv.pdf</div>
+          <div class="it"><span class="i">⚙</span> contact.config</div>
+        </aside>
+
+        <main class="code">
+          <div class="ln"><span class="g">1</span><span class="c"><span class="com">/**</span></span></div>
+          <div class="ln"><span class="g">2</span><span class="c"><span class="com"> * Yohan Debusscher — concepteur-développeur &amp; entrepreneur</span></span></div>
+          <div class="ln"><span class="g">3</span><span class="c"><span class="com"> * De l'idée au produit déployé. Solo, de bout en bout.</span></span></div>
+          <div class="ln"><span class="g">4</span><span class="c"><span class="com"> */</span></span></div>
+          <div class="ln"><span class="g">5</span><span class="c"><span class="kw">export const</span> <span class="var">yohan</span> <span class="kw">=</span> {</span></div>
+          <div class="ln"><span class="g">6</span><span class="c indent"><span class="prop">role</span>: <span class="str">"Full-stack + Business"</span>,</span></div>
+          <div class="ln"><span class="g">7</span><span class="c indent"><span class="prop">mode</span>: <span class="str">"solo · end-to-end"</span>,</span></div>
+          <div class="ln"><span class="g">8</span><span class="c indent"><span class="prop">experience</span>: <span class="num">4</span>, <span class="com">// ans</span></span></div>
+          <div class="ln"><span class="g">9</span><span class="c indent"><span class="prop">status</span>: <span class="gold">"DISPONIBLE"</span>,</span></div>
+          <div class="ln"><span class="g">10</span><span class="c indent"><span class="prop">stack</span>: [<span class="str">"Next.js"</span>, <span class="str">"Docker"</span>, <span class="str">"React"</span>, <span class="str">"Node"</span>],</span></div>
+          <div class="ln"><span class="g">11</span><span class="c"></span></div>
+          <div class="ln"><span class="g">12</span><span class="c indent"><span class="com">// Réalisations livrées — cliquables</span></span></div>
+          <div class="ln"><span class="g">13</span><span class="c indent"><span class="prop">projects</span>: [</span></div>
+          <div class="ln"><span class="g">14</span><span class="c indent2"><a class="obj" href="#">{ <span class="prop">name</span>: <span class="str">"Domestic Revolt"</span>, <span class="prop">type</span>: <span class="str">"produit phare"</span> },</a></span></div>
+          <div class="ln"><span class="g">15</span><span class="c indent2"><a class="obj" href="#">{ <span class="prop">name</span>: <span class="str">"OXO"</span>, <span class="prop">type</span>: <span class="str">"plateforme"</span> },</a></span></div>
+          <div class="ln"><span class="g">16</span><span class="c indent2"><a class="obj" href="#">{ <span class="prop">name</span>: <span class="str">"Étude PME"</span>, <span class="prop">type</span>: <span class="str">"stratégie · SWOT"</span> },</a></span></div>
+          <div class="ln"><span class="g">17</span><span class="c indent">],</span></div>
+          <div class="ln"><span class="g">18</span><span class="c"></span></div>
+          <div class="ln"><span class="g">19</span><span class="c indent"><span class="fn">ship</span>(<span class="var">idea</span>) {</span></div>
+          <div class="ln"><span class="g">20</span><span class="c indent2"><span class="kw">return</span> <span class="var">idea</span>.<span class="fn">design</span>().<span class="fn">build</span>().<span class="fn">secure</span>().<span class="fn">deploy</span>(); <span class="com">// 🚀</span></span></div>
+          <div class="ln"><span class="g">21</span><span class="c indent">},</span></div>
+          <div class="ln"><span class="g">22</span><span class="c">};</span></div>
+
+          <div class="cta">
+            <a href="#" class="p">▶ Run portfolio</a>
+            <a href="#" class="g">Open cv.pdf</a>
+            <a href="#" class="g">git contact</a>
+          </div>
+        </main>
+      </div>
+
+      <div class="status">
+        <span class="s">⎇ main</span>
+        <span class="s hideS">✓ 0 problems</span>
+        <span class="s">TypeScript</span>
+        <span class="right">
+          <span class="s hideS">Ln 9, Col 21</span>
+          <span class="s">UTF-8</span>
+          <span class="s">⚡ Disponible</span>
+        </span>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

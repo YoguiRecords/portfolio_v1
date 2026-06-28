@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      html,body { height:100%; overflow:hidden; }
+      body { font-family:"Inter",sans-serif;
+        background: radial-gradient(circle at 25% 20%, #2a2410, #0e0f12 60%), #0e0f12; color:#e9eaee; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+
+      /* barre de menu haut */
+      .menubar { position:fixed; top:0; left:0; right:0; height:32px; z-index:100; display:flex; align-items:center; gap:20px;
+        padding: 0 16px; background: rgba(15,16,19,.7); backdrop-filter: blur(14px); border-bottom:1px solid #23252c; font-size:13px; }
+      .menubar .apple{ font-weight:900; color: var(--accent); }
+      .menubar b{ font-weight:700; } .menubar .mi{ color:#c7cad1; cursor:default; }
+      .menubar .clock{ margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:12px; color:#c7cad1; }
+
+      /* icônes bureau */
+      .desktop { position:absolute; inset:32px 0 78px; }
+      .icons { position:absolute; top:18px; right:18px; display:flex; flex-direction:column; gap:20px; }
+      .ico { width:84px; text-align:center; cursor:pointer; text-decoration:none; }
+      .ico .glyph { width:58px; height:58px; margin:0 auto; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px;
+        background: linear-gradient(160deg,#26282f,#16171b); border:1px solid #30333b; box-shadow:0 8px 20px rgba(0,0,0,.4); transition:.2s; }
+      .ico:hover .glyph{ border-color: var(--accent); transform: translateY(-3px); }
+      .ico .lbl { font-size:12px; color:#e9eaee; margin-top:7px; text-shadow:0 1px 3px rgba(0,0,0,.7); }
+
+      /* fenêtres */
+      .win { position:absolute; background:#16171b; border:1px solid #2c2f37; border-radius:12px; overflow:hidden;
+        box-shadow: 0 30px 80px rgba(0,0,0,.6); min-width: 280px; }
+      .win .bar { height:38px; display:flex; align-items:center; gap:10px; padding:0 14px; background:#1d1f25; border-bottom:1px solid #2c2f37; cursor:grab; user-select:none; }
+      .win .bar.grabbing{ cursor:grabbing; }
+      .traffic{ display:flex; gap:8px; } .traffic i{ width:12px;height:12px;border-radius:50%; }
+      .traffic i:nth-child(1){background:#ff5f57;}.traffic i:nth-child(2){background:#febc2e;}.traffic i:nth-child(3){background:#28c840;}
+      .win .bar .t{ font-size:12.5px; color:#9aa0ab; margin-left:6px; }
+      .win .ct { padding: 22px; }
+
+      /* fenêtre "À propos" */
+      .w-about { top: 70px; left: 5%; width: min(420px, 90vw); z-index: 10; }
+      @media (min-width:900px){ .w-about{ left: 8%; } }
+      .w-about .avatar { width:74px;height:74px;border-radius:18px; background: radial-gradient(circle at 35% 30%,#fff3d6,var(--accent) 55%,var(--accent-strong)); margin-bottom:16px; }
+      .w-about h1 { font-size: 30px; font-weight:900; letter-spacing:-.02em; }
+      .w-about .role { color: var(--accent); font-size:13px; font-weight:600; letter-spacing:.04em; margin-top:4px; }
+      .w-about p { color:#aeb2bb; font-size:14px; line-height:1.6; margin-top:14px; }
+      .w-about .stats { display:flex; gap:10px; margin-top:18px; }
+      .w-about .stats .s{ flex:1; background:#1d1f25; border:1px solid #2c2f37; border-radius:8px; padding:12px; text-align:center; }
+      .w-about .stats .n{ font-size:22px; font-weight:900; color:var(--accent); } .w-about .stats .l{ font-size:10.5px; color:#8a909b; margin-top:3px; }
+      .w-about .btns{ display:flex; gap:10px; margin-top:18px; }
+      .w-about .btns a{ flex:1; text-align:center; text-decoration:none; font-size:13px; font-weight:600; padding:11px; border-radius:8px; transition:.2s; }
+      .w-about .btns .p{ background:var(--accent); color:#1a1400; } .w-about .btns .p:hover{ background:#fff; }
+      .w-about .btns .g{ border:1px solid #2c2f37; color:#c7cad1; } .w-about .btns .g:hover{ border-color:var(--accent); color:var(--accent); }
+
+      /* fenêtre "Projets" (finder) */
+      .w-proj { top: 200px; left: 38%; width: min(440px, 92vw); z-index: 9; }
+      @media (max-width: 880px){ .w-proj{ top: auto; bottom: 12px; left: 5%; } }
+      .w-proj .ct{ padding: 0; }
+      .finder-h { display:grid; grid-template-columns: 1fr auto auto; gap:10px; padding:10px 16px; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:#7d828d; border-bottom:1px solid #2c2f37; }
+      .frow { display:grid; grid-template-columns: 1fr auto auto; gap:10px; align-items:center; padding:14px 16px; border-bottom:1px solid #23252c; text-decoration:none; color:inherit; transition:.15s; }
+      .frow:hover{ background:#1d1f25; }
+      .frow .nm{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; }
+      .frow .nm .fi{ color:var(--accent); }
+      .frow .nm small{ display:block; color:#8a909b; font-size:11.5px; font-weight:400; }
+      .frow .kd{ font-size:11px; color:#8a909b; } .frow .sz{ font-size:11px; color:var(--accent); font-family:"JetBrains Mono",monospace; }
+
+      /* dock */
+      .dock { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); z-index:90; display:flex; gap:14px;
+        padding:10px 16px; background: rgba(28,30,36,.65); backdrop-filter: blur(18px); border:1px solid #34373f; border-radius:18px; box-shadow:0 18px 50px rgba(0,0,0,.5); }
+      .dock .d{ width:46px;height:46px;border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; text-decoration:none;
+        background: linear-gradient(160deg,#2a2d35,#191b20); border:1px solid #3a3d46; transition:.2s; }
+      .dock .d:hover{ transform: translateY(-8px) scale(1.06); border-color:var(--accent); }
+
+      .hint { position:fixed; bottom:74px; left:50%; transform:translateX(-50%); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#6b7078; z-index:80; }
+    </style>
+  </head>
+  <body>
+    <div class="menubar">
+      <span class="apple">●</span><b>Yohan OS</b>
+      <span class="mi">Fichier</span><span class="mi">Édition</span><span class="mi">Projets</span><span class="mi">Aide</span>
+      <span class="clock">★ Disponible · 14:32</span>
+    </div>
+
+    <div class="desktop">
+      <div class="icons">
+        <a class="ico" href="#"><span class="glyph">📁</span><span class="lbl">Projets</span></a>
+        <a class="ico" href="#"><span class="glyph">📄</span><span class="lbl">CV.pdf</span></a>
+        <a class="ico" href="#"><span class="glyph">✉️</span><span class="lbl">Contact</span></a>
+      </div>
+
+      <!-- Fenêtre À propos -->
+      <section class="win w-about" data-drag>
+        <div class="bar" data-handle><div class="traffic"><i></i><i></i><i></i></div><span class="t">À propos — yohan.app</span></div>
+        <div class="ct">
+          <div class="avatar"></div>
+          <h1>Yohan Debusscher</h1>
+          <div class="role">Concepteur-développeur &amp; entrepreneur</div>
+          <p>Je transforme une idée en produit fini — stratégie, design, code, déploiement. Seul, de bout en bout. Glisse les fenêtres : tout est manipulable.</p>
+          <div class="stats">
+            <div class="s"><div class="n">4</div><div class="l">ANS XP</div></div>
+            <div class="s"><div class="n">2</div><div class="l">PRODUITS</div></div>
+            <div class="s"><div class="n">∞</div><div class="l">SOLO E2E</div></div>
+          </div>
+          <div class="btns"><a href="#" class="p">Ouvrir les projets →</a><a href="#" class="g">CV</a></div>
+        </div>
+      </section>
+
+      <!-- Fenêtre Projets (Finder) -->
+      <section class="win w-proj" data-drag>
+        <div class="bar" data-handle><div class="traffic"><i></i><i></i><i></i></div><span class="t">Projets — Finder</span></div>
+        <div class="ct">
+          <div class="finder-h"><span>Nom</span><span>Type</span><span>Stack</span></div>
+          <a href="#" class="frow"><span class="nm"><span class="fi">📦</span>Domestic Revolt<small>Conçu &amp; déployé seul</small></span><span class="kd">Phare</span><span class="sz">Next/Docker</span></a>
+          <a href="#" class="frow"><span class="nm"><span class="fi">📦</span>OXO<small>Plateforme complète</small></span><span class="kd">Logiciel</span><span class="sz">React/Node</span></a>
+          <a href="#" class="frow"><span class="nm"><span class="fi">📄</span>Étude PME<small>Marché · SWOT</small></span><span class="kd">Stratégie</span><span class="sz">Conseil</span></a>
+        </div>
+      </section>
+    </div>
+
+    <span class="hint">★ Glisse les fenêtres par leur barre de titre</span>
+    <div class="dock">
+      <a class="d" href="#" title="À propos">👤</a>
+      <a class="d" href="#" title="Projets">📁</a>
+      <a class="d" href="#" title="CV">📄</a>
+      <a class="d" href="#" title="GitHub">🐙</a>
+      <a class="d" href="#" title="Contact">✉️</a>
+    </div>
+
+    <script>
+      (function () {
+        var z = 20;
+        document.querySelectorAll("[data-drag]").forEach(function (win) {
+          var handle = win.querySelector("[data-handle]");
+          var sx, sy, ox, oy, drag = false;
+          function rect(){ return win.getBoundingClientRect(); }
+          function start(cx, cy) {
+            var r = rect();
+            // passe en positionnement absolu pixel pour permettre le déplacement
+            win.style.left = r.left + "px"; win.style.top = r.top + "px";
+            win.style.right = "auto"; win.style.bottom = "auto"; win.style.margin = "0";
+            sx = cx; sy = cy; ox = r.left; oy = r.top; drag = true;
+            win.style.zIndex = ++z; handle.classList.add("grabbing");
+          }
+          function move(cx, cy) {
+            if (!drag) return;
+            var nx = ox + (cx - sx), ny = oy + (cy - sy);
+            ny = Math.max(36, ny);
+            win.style.left = nx + "px"; win.style.top = ny + "px";
+          }
+          function end(){ drag = false; handle.classList.remove("grabbing"); }
+          handle.addEventListener("mousedown", function (e){ e.preventDefault(); start(e.clientX, e.clientY); });
+          window.addEventListener("mousemove", function (e){ move(e.clientX, e.clientY); });
+          window.addEventListener("mouseup", end);
+          handle.addEventListener("touchstart", function (e){ var t=e.touches[0]; start(t.clientX, t.clientY); }, { passive:true });
+          window.addEventListener("touchmove", function (e){ var t=e.touches[0]; move(t.clientX, t.clientY); }, { passive:true });
+          window.addEventListener("touchend", end);
+          win.addEventListener("mousedown", function(){ win.style.zIndex = ++z; });
+        });
+      })();
+    </script>
+  </body>
+</html>

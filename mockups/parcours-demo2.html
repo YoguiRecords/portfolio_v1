@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (4 formes visuelles)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#0c0d0f; color:#e9e9e6; font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .page { max-width:980px; margin:0 auto; padding:70px clamp(18px,5vw,40px) 110px; }
+
+      .intro { margin-bottom:54px; }
+      .intro .lab { font:600 11px "JetBrains Mono",monospace; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); }
+      .intro h1 { font-size:clamp(28px,6vw,46px); font-weight:800; letter-spacing:-.03em; line-height:1.04; margin:14px 0 12px; }
+      .intro p { color:#9a9d9a; font-weight:300; font-size:15px; line-height:1.6; max-width:62ch; }
+
+      .demo { padding:54px 0; border-top:1px solid rgba(255,255,255,.09); }
+      .demo > .tag { display:flex; align-items:baseline; gap:14px; margin-bottom:34px; flex-wrap:wrap; }
+      .demo > .tag .id { font:600 12px "JetBrains Mono",monospace; letter-spacing:.14em; color:var(--accent); }
+      .demo > .tag .nm { font-size:19px; font-weight:700; letter-spacing:-.01em; }
+      .demo > .tag .why { margin-left:auto; font-size:12px; color:#6f7370; font-style:italic; }
+
+      .now-tag { color:#46c98b; }
+
+      /* ============ A — TIMELINE VERTICALE ============ */
+      .tl { position:relative; padding-left:38px; }
+      .tl::before { content:""; position:absolute; left:12px; top:10px; bottom:14px; width:2px; background:linear-gradient(var(--accent), rgba(240,168,0,.15)); }
+      .tl .ev { position:relative; padding:14px 0 30px; }
+      .tl .ev:last-child { padding-bottom:0; }
+      .tl .ev::before { content:""; position:absolute; left:-31px; top:20px; width:13px; height:13px; border-radius:50%; background:#0c0d0f; border:2px solid var(--accent); }
+      .tl .ev.now::before { background:#46c98b; border-color:#46c98b; box-shadow:0 0 0 4px rgba(70,201,139,.16); }
+      .tl .yr { font:600 12px "JetBrains Mono",monospace; letter-spacing:.1em; color:var(--accent); }
+      .tl .ev.now .yr { color:#46c98b; }
+      .tl .role { font:800 clamp(20px,4vw,28px)/1 "Inter",sans-serif; letter-spacing:-.02em; margin:8px 0 10px; }
+      .tl .desc { color:#b9bcb8; font-size:15px; line-height:1.6; max-width:56ch; font-weight:300; }
+
+      /* ============ B — PELLICULE (FILMSTRIP) ============ */
+      .film { display:flex; gap:0; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; background:#080808; border:1px solid rgba(255,255,255,.1); border-radius:10px; scrollbar-width:none; }
+      .film::-webkit-scrollbar { display:none; }
+      .cell { flex:0 0 78%; max-width:330px; scroll-snap-align:center; position:relative; padding:30px 24px; border-right:2px solid #000; }
+      .cell:last-child { border-right:0; }
+      .cell::before, .cell::after { content:""; position:absolute; left:0; right:0; height:18px; background-image:radial-gradient(circle, #000 3px, transparent 3.6px); background-size:24px 18px; background-position:center; opacity:.9; }
+      .cell::before { top:0; } .cell::after { bottom:0; }
+      .cell .frame { padding:22px 0; }
+      .cell .num { font:600 10px "JetBrains Mono",monospace; letter-spacing:.2em; color:#6f7370; }
+      .cell .yr { font:700 22px "JetBrains Mono",monospace; color:var(--accent); margin-top:6px; }
+      .cell .role { font:800 clamp(19px,4vw,24px)/1.05 "Inter",sans-serif; letter-spacing:-.02em; margin:12px 0 10px; }
+      .cell .desc { color:#a9aca8; font-size:13.5px; line-height:1.55; font-weight:300; }
+      .cell.now { background:radial-gradient(circle at 50% 30%, rgba(70,201,139,.1), transparent 70%); }
+      .cell.now .yr { color:#46c98b; }
+      .cell.now .role::after { content:" ◉"; color:#46c98b; font-size:.7em; }
+      .film-hint { margin-top:14px; font:500 11px "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; color:#6f7370; }
+
+      /* ============ C — ACTES TYPOGRAPHIQUES ============ */
+      .acts .act { display:grid; grid-template-columns:1fr; gap:14px; padding:34px 0; border-top:1px solid rgba(255,255,255,.09); }
+      @media (min-width:680px){ .acts .act{ grid-template-columns:160px 1fr; gap:30px; align-items:start; } }
+      .acts .act:first-child { border-top:0; }
+      .acts .act .no { font:900 clamp(46px,10vw,86px)/.8 "Inter",sans-serif; letter-spacing:-.04em; color:transparent; -webkit-text-stroke:1.5px var(--accent); }
+      .acts .act.now .no { color:#46c98b; -webkit-text-stroke:0; }
+      .acts .act .when { font:600 11px "JetBrains Mono",monospace; letter-spacing:.14em; color:var(--accent); }
+      .acts .act.now .when { color:#46c98b; }
+      .acts .act h4 { font:800 clamp(22px,4vw,32px)/1 "Inter",sans-serif; letter-spacing:-.02em; margin:10px 0 12px; }
+      .acts .act p { color:#b9bcb8; font-size:15.5px; line-height:1.6; max-width:54ch; font-weight:300; }
+      .acts .act .roles { font:500 12.5px "JetBrains Mono",monospace; color:#8c908c; margin-top:12px; }
+
+      /* ============ D — INDEX NUMÉROTÉ ============ */
+      .idx { }
+      .idx a { display:grid; grid-template-columns:84px 1fr; gap:20px; align-items:baseline; padding:22px 0; border-top:1px solid rgba(255,255,255,.09); text-decoration:none; color:inherit; transition:.2s; }
+      .idx a:last-child { border-bottom:1px solid rgba(255,255,255,.09); }
+      .idx a:hover { padding-left:10px; }
+      .idx .yr { font:600 14px "JetBrains Mono",monospace; color:var(--accent); }
+      .idx a.now .yr { color:#46c98b; }
+      .idx .main { display:flex; justify-content:space-between; gap:20px; align-items:baseline; flex-wrap:wrap; }
+      .idx .role { font:700 clamp(19px,3.4vw,26px)/1.1 "Inter",sans-serif; letter-spacing:-.02em; }
+      .idx a:hover .role { color:var(--accent); }
+      .idx a.now:hover .role { color:#46c98b; }
+      .idx .det { color:#83878c; font-size:13px; max-width:34ch; text-align:right; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="intro">
+        <span class="lab">Démo · 4 formes</span>
+        <h1>Parcours — autres directions visuelles</h1>
+        <p>Le même parcours (rôles passés → aujourd'hui), raconté de 4 façons, hors Gantt et métro. Mêmes jalons partout : on juge la <b>forme</b>, pas le contenu (placeholder, éditable au BO).</p>
+      </div>
+
+      <!-- A — TIMELINE -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">A</span><span class="nm">Timeline verticale</span><span class="why">narratif · le passé se raconte · idéal mobile + BO</span></div>
+        <div class="tl">
+          <div class="ev"><div class="yr">2019</div><div class="role">Développeur</div><p class="desc">Premières lignes, premières livraisons. L'obsession de comprendre comment les choses se construisent.</p></div>
+          <div class="ev"><div class="yr">2020</div><div class="role">Salarié en entreprise</div><p class="desc">En équipe et en production : la rigueur du réel, les contraintes, le collectif.</p></div>
+          <div class="ev"><div class="yr">2021</div><div class="role">Ingénieur</div><p class="desc">Montée en architecture et en responsabilité technique sur des systèmes plus larges.</p></div>
+          <div class="ev"><div class="yr">2022</div><div class="role">Gestion de projet</div><p class="desc">Cadrer, prioriser, livrer dans les temps. Le pilotage devient un métier.</p></div>
+          <div class="ev"><div class="yr">2023</div><div class="role">Management</div><p class="desc">Encadrer une équipe : faire grandir les gens, pas seulement faire avancer le code.</p></div>
+          <div class="ev now"><div class="yr">2024 — aujourd'hui</div><div class="role">Indépendant · fondateur</div><p class="desc">Vision, produit et exécution réunis dans la même main. Là où j'en suis.</p></div>
+        </div>
+      </section>
+
+      <!-- B — PELLICULE -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">B</span><span class="nm">Pellicule (filmstrip)</span><span class="why">clin d'œil ciné · défile horizontalement →</span></div>
+        <div class="film">
+          <div class="cell"><div class="frame"><div class="num">CADRE 01</div><div class="yr">2019</div><div class="role">Développeur</div><p class="desc">Premières lignes, premières livraisons.</p></div></div>
+          <div class="cell"><div class="frame"><div class="num">CADRE 02</div><div class="yr">2020</div><div class="role">Salarié</div><p class="desc">En équipe, en production : la rigueur du réel.</p></div></div>
+          <div class="cell"><div class="frame"><div class="num">CADRE 03</div><div class="yr">2021</div><div class="role">Ingénieur</div><p class="desc">Montée en architecture et responsabilité.</p></div></div>
+          <div class="cell"><div class="frame"><div class="num">CADRE 04</div><div class="yr">2022</div><div class="role">Gestion de projet</div><p class="desc">Cadrer, prioriser, livrer dans les temps.</p></div></div>
+          <div class="cell"><div class="frame"><div class="num">CADRE 05</div><div class="yr">2023</div><div class="role">Management</div><p class="desc">Encadrer une équipe, faire grandir.</p></div></div>
+          <div class="cell now"><div class="frame"><div class="num">CADRE 06</div><div class="yr">2024</div><div class="role">Indépendant</div><p class="desc">Vision, produit, exécution. Aujourd'hui.</p></div></div>
+        </div>
+        <div class="film-hint">← défile la pellicule →</div>
+      </section>
+
+      <!-- C — ACTES -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">C</span><span class="nm">Actes typographiques</span><span class="why">éditorial · « auteur » · zéro data-viz</span></div>
+        <div class="acts">
+          <div class="act"><div><div class="no">I</div></div><div><div class="when">2019 — 2020</div><h4>Apprendre</h4><p>Comprendre comment les choses se construisent, puis le faire en production, en équipe.</p><div class="roles">Développeur · Salarié</div></div></div>
+          <div class="act"><div><div class="no">II</div></div><div><div class="when">2021 — 2022</div><h4>Concevoir &amp; piloter</h4><p>Monter en architecture, prendre la responsabilité technique, et commencer à cadrer les projets.</p><div class="roles">Ingénieur · Gestion de projet</div></div></div>
+          <div class="act"><div><div class="no">III</div></div><div><div class="when">2023</div><h4>Encadrer</h4><p>Faire grandir une équipe : le passage du « je fais » au « nous livrons ».</p><div class="roles">Management</div></div></div>
+          <div class="act now"><div><div class="no">IV</div></div><div><div class="when">2024 — aujourd'hui</div><h4>Entreprendre</h4><p>Vision, produit et exécution réunis dans la même main. Là où j'en suis, cap vers la direction.</p><div class="roles">Indépendant · fondateur</div></div></div>
+        </div>
+      </section>
+
+      <!-- D — INDEX -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">D</span><span class="nm">Index numéroté</span><span class="why">ultra-sobre · sommaire · scalable</span></div>
+        <div class="idx">
+          <a href="#"><span class="yr mono">2019</span><span class="main"><span class="role">Développeur</span><span class="det">Premières livraisons</span></span></a>
+          <a href="#"><span class="yr mono">2020</span><span class="main"><span class="role">Salarié en entreprise</span><span class="det">La rigueur du réel</span></span></a>
+          <a href="#"><span class="yr mono">2021</span><span class="main"><span class="role">Ingénieur</span><span class="det">Architecture &amp; responsabilité</span></span></a>
+          <a href="#"><span class="yr mono">2022</span><span class="main"><span class="role">Gestion de projet</span><span class="det">Cadrer · prioriser · livrer</span></span></a>
+          <a href="#"><span class="yr mono">2023</span><span class="main"><span class="role">Management</span><span class="det">Encadrer une équipe</span></span></a>
+          <a href="#" class="now"><span class="yr mono">2024</span><span class="main"><span class="role">Indépendant · fondateur</span><span class="det">Aujourd'hui · vous êtes ici</span></span></a>
+        </div>
+      </section>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

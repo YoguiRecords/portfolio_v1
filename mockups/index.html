@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maquettes — Portfolio Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body {
+        background: var(--dark-900);
+        color: var(--on-dark);
+      }
+      .hub {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 70px 0;
+      }
+      .hub .eyebrow {
+        margin-bottom: 16px;
+        display: block;
+      }
+      .hub h1 {
+        font-size: clamp(32px, 9vw, 56px);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin-bottom: 14px;
+      }
+      .hub h1 span {
+        color: var(--accent);
+      }
+      .hub .intro {
+        color: var(--on-dark-2);
+        max-width: 66ch;
+        margin-bottom: 28px;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 46px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--border-dark);
+      }
+      .toc a {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--on-dark-2);
+        text-decoration: none;
+        border: 1px solid var(--border-dark);
+        border-radius: 20px;
+        padding: 9px 15px;
+        transition: all 0.2s ease;
+      }
+      .toc a:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .grouplabel {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 14px 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        scroll-margin-top: 16px;
+      }
+      .grouplabel .count {
+        color: var(--on-dark-muted);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+      }
+      .grouplabel::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border-dark);
+      }
+      .blurb {
+        color: var(--on-dark-muted);
+        font-size: 13.5px;
+        line-height: 1.55;
+        max-width: 70ch;
+        margin: -6px 0 20px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 44px;
+      }
+      @media (min-width: 680px) {
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 980px) {
+        .cards {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: var(--dark-800);
+        border: 1px solid var(--border-dark);
+        border-left: 2.5px solid var(--accent);
+        border-radius: 8px;
+        padding: 24px 22px;
+        transition: all 0.3s ease;
+      }
+      .card.dim {
+        border-left-color: var(--border-dark);
+        opacity: 0.62;
+      }
+      .card.special {
+        border-left-color: var(--status-ok);
+        background: linear-gradient(135deg, rgba(26, 107, 60, 0.12), var(--dark-800));
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-deep);
+        opacity: 1;
+      }
+      .card .v {
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--accent);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .card.special .v {
+        color: #4fc486;
+      }
+      .card h2 {
+        font-size: 22px;
+        font-weight: 800;
+        margin: 9px 0 11px;
+        letter-spacing: -0.02em;
+      }
+      .card.dim h2 {
+        font-size: 19px;
+      }
+      .card p {
+        color: var(--on-dark-muted);
+        font-size: 13.5px;
+        line-height: 1.55;
+        margin-bottom: 14px;
+      }
+      .card .go {
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .card.special .go {
+        color: #4fc486;
+      }
+      .note {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--on-dark-muted);
+        border-top: 1px solid var(--border-dark);
+        padding-top: 20px;
+        line-height: 1.6;
+      }
+      .note b {
+        color: var(--on-dark-2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hub wrap">
+      <span class="eyebrow">Portfolio Yohan · maquettes · mobile-first</span>
+      <h1>De la matière à <span>trier</span>.</h1>
+      <p class="intro">
+        On est passé de l'exploration tous azimuts à l'<b>assemblage</b>. En haut :
+        le site en cours et les blocs qu'on est en train d'arbitrer. Plus bas : la
+        bibliothèque d'idées (gardée pour piocher) et l'archive. Tout est mobile (F12
+        → Ctrl+Shift+M).
+      </p>
+
+      <nav class="toc">
+        <a href="#site">🎯 Le site</a>
+        <a href="#parcours">🧭 Parcours</a>
+        <a href="#objectifs">✓ Objectifs</a>
+        <a href="#retenues">❤️ Sections retenues</a>
+        <a href="#premium">📐 Directions premium</a>
+        <a href="#explorations">🎨 Explorations</a>
+        <a href="#archive">🗄️ Archive</a>
+      </nav>
+
+      <!-- ============ 1. LE SITE ============ -->
+      <div class="grouplabel" id="site">🎯 Le site en cours <span class="count">· 4</span></div>
+      <p class="blurb">L'assemblage de tes choix. <b>v3 = la référence</b> ; les autres sont des variantes / versions précédentes.</p>
+      <div class="cards">
+        <a class="card special" href="./site-v3.html">
+          <span class="v">Site ★ v3 — référence</span>
+          <h2>Assemblage final</h2>
+          <p>Hero duotone + typewriter · Profil (SWOT/PESTEL/PORTER) · Écosystème (orbit) · Parcours · Objectifs · Projets (cliquables → fiche). Récit <b>leader</b>.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./project.html">
+          <span class="v">Fiche · 🎮 Jeu</span>
+          <h2>Étude de cas — Jeu</h2>
+          <p>Contexte · démarche + Gantt · <b>Game Design Document</b> (piliers, core loop, mécaniques) · résultats. (Switcher de type en haut.)</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./project-logiciel.html">
+          <span class="v">Fiche · 🧩 Logiciel</span>
+          <h2>Étude de cas — Logiciel</h2>
+          <p>Contexte · démarche · <b>Architecture &amp; stack</b> (flux, décisions) · <b>Sécurité by design</b> · résultats.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./project-site.html">
+          <span class="v">Fiche · 🌐 Site web</span>
+          <h2>Étude de cas — Site web</h2>
+          <p>Démarche (refonte) · <b>Design &amp; UX</b> (tokens, parcours) · <b>Perf / SEO / A11y</b> (scores) · résultats.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./project-business.html">
+          <span class="v">Fiche · 📊 Analyse business</span>
+          <h2>Étude de cas — Business</h2>
+          <p>Frise de mission · <b>SWOT / PESTEL / PORTER</b> · <b>Recommandations priorisées &amp; livrables</b> · impact. (Pas de bloc dev.)</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./site-v2.html">
+          <span class="v">Site v2 — variante</span>
+          <h2>Parcours en Gantt</h2>
+          <p>Même base que v3, mais le parcours est un Gantt. Conservée pour comparaison.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./site.html">
+          <span class="v">Site v1 — ancien</span>
+          <h2>Terminal « froid »</h2>
+          <p>Première version : profil en terminal type console (jugé trop dense / Bloomberg). Référence.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+      </div>
+
+      <!-- ============ 2. PARCOURS ============ -->
+      <div class="grouplabel" id="parcours">🧭 Parcours — forme à choisir <span class="count">· 6</span></div>
+      <p class="blurb">Le chapitre « d'où je viens ». On a tranché : <b>pas de SVG</b> (trop cheap). <b>demo7</b> est la dernière piste (axe temporel + étalement animé).</p>
+      <div class="cards">
+        <a class="card special" href="./parcours-demo7.html">
+          <span class="v">★★★★ axe temps</span>
+          <h2>3 voies étalées dans le temps</h2>
+          <p>Comme demo6, mais les jalons sont <b>positionnés par année</b> : chaque voie démarre à sa date (Dev 2019 → Mgmt 2022 → Biz 2023). Balayage animé de haut en bas.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./parcours-demo6.html">
+          <span class="v">★★★ animée</span>
+          <h2>3 voies verticales animées</h2>
+          <p>3 voies <b>distinctes</b> (Dev/Mgmt/Business), lignes qui se dessinent au scroll, convergence vers « Aujourd'hui ». Zéro SVG.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./parcours-demo5.html">
+          <span class="v">★★ fils</span>
+          <h2>Timeline unique, fils colorés</h2>
+          <p>Une ligne chronologique, jalons colorés par voie. Lisible mais entrelacé (pas « séparé »).</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card dim" href="./parcours-demo4.html">
+          <span class="v">Cartes</span>
+          <h2>3 colonnes de cartes</h2>
+          <p>Écartée — convergence pas claire.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card dim" href="./parcours-demo2.html">
+          <span class="v">Linéaires</span>
+          <h2>Timeline · pellicule · actes · index</h2>
+          <p>Écartées — trop linéaires (« d'où je viens » invisible).</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card dim" href="./parcours-demo3.html">
+          <span class="v">SVG</span>
+          <h2>Confluence · racines · tresse</h2>
+          <p>Écartées — SVG faits main = trop cheap.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+      </div>
+
+      <!-- ============ 3. OBJECTIFS ============ -->
+      <div class="grouplabel" id="objectifs">✓ Objectifs de carrière <span class="count">· 1</span></div>
+      <p class="blurb">Le bloc « où je vais » (Dev → … → CEO). Forme retenue : la <b>liste checkée</b>.</p>
+      <div class="cards">
+        <a class="card special" href="./parcours-demo.html">
+          <span class="v">Objectifs</span>
+          <h2>3 formes (dont liste checkée)</h2>
+          <p>Timeline éditoriale · objectifs à statut (✓ retenue) · 3 horizons.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+      </div>
+
+      <!-- ============ 4. SECTIONS RETENUES ============ -->
+      <div class="grouplabel" id="retenues">❤️ Sections / headers retenus <span class="count">· 6</span></div>
+      <p class="blurb">Les briques que tu as aimées et qui nourrissent l'assemblage (v3).</p>
+      <div class="cards">
+        <a class="card special" href="./cockpit.html">
+          <span class="v">Cockpit</span>
+          <h2>Terminal stratégique (CEO/CTO)</h2>
+          <p>Vision×Exécution, SWOT/PESTEL/PORTER, roadmap, portefeuille. Sans signaux « bourse ».</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./transit.html">
+          <span class="v">Transit</span>
+          <h2>Plan de métro (parcours)</h2>
+          <p>Lignes Dev/Business/Management, stations = jalons. (Concept parcours, version SVG.)</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./orbit.html">
+          <span class="v">Orbit</span>
+          <h2>Système en orbite (écosystème)</h2>
+          <p>Toi au centre, compétences + projets en orbite. Intégré en v3.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./portrait.html">
+          <span class="v">Portrait</span>
+          <h2>Hero duotone</h2>
+          <p>Photo plein écran duotone or/noir + grain. Intégré en v3.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./typewriter.html">
+          <span class="v">Typewriter</span>
+          <h2>Texte qui s'écrit</h2>
+          <p>Phrase tapée en direct, curseur or. Intégré en v3 (sans saut).</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./cinema.html">
+          <span class="v">Cinema</span>
+          <h2>Récit / storytelling</h2>
+          <p>Architecture chapitrée façon film + Gantt. Base structurelle de v3.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+      </div>
+
+      <!-- ============ 5. DIRECTIONS PREMIUM ============ -->
+      <div class="grouplabel" id="premium">📐 Directions premium (réserve) <span class="count">· 10</span></div>
+      <p class="blurb">Agencements complets, sérieux &amp; scalables — pas retenus comme base mais gardés pour piocher des composants. Variantes claires incluses.</p>
+      <div class="cards">
+        <a class="card special" href="./split.html">
+          <span class="v">Split</span>
+          <h2>Split-screen éditorial</h2>
+          <p>Panneau identité fixe + contenu défilant.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./grid.html">
+          <span class="v">Grid</span>
+          <h2>Système suisse</h2>
+          <p>Grille typographique stricte, filets or, index.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./dossier.html">
+          <span class="v">Dossier</span>
+          <h2>Monographie reliée</h2>
+          <p>Couverture + sommaire + études de cas (serif).</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./feature.html">
+          <span class="v">Feature</span>
+          <h2>Long-read magazine</h2>
+          <p>Article (lettrine, pull-quotes) → section news/articles.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./monolith.html">
+          <span class="v">Monolith</span>
+          <h2>Luxe minimal</h2>
+          <p>Très sobre, hairlines or, beaucoup d'air.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./studio.html">
+          <span class="v">Studio</span>
+          <h2>Posture agence</h2>
+          <p>Manifeste + capacités + work + process.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./brief.html">
+          <span class="v">Brief</span>
+          <h2>Note stratégique (artisanale)</h2>
+          <p>CSS 100 % maison, serif, SWOT en prose. Anti-IA.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./monolith-light.html">
+          <span class="v">Monolith · clair</span>
+          <h2>Luxe minimal (papier)</h2>
+          <p>Variante clair + or de Monolith.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./split-light.html">
+          <span class="v">Split · clair</span>
+          <h2>Split-screen (papier)</h2>
+          <p>Variante clair + or de Split.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+        <a class="card special" href="./studio-light.html">
+          <span class="v">Studio · clair</span>
+          <h2>Agence (papier)</h2>
+          <p>Variante clair + or de Studio.</p>
+          <span class="go">Ouvrir →</span>
+        </a>
+      </div>
+
+      <!-- ============ 6. EXPLORATIONS ============ -->
+      <div class="grouplabel" id="explorations">🎨 Explorations — bibliothèque d'idées <span class="count">· 21</span></div>
+      <p class="blurb">Tous les concepts audacieux explorés. Aucun retenu comme base, mais réserve d'inspiration (un détail d'ici, une idée de là).</p>
+      <div class="cards">
+        <a class="card dim" href="./terminal.html"><span class="v">Terminal</span><h2>Ligne de commande</h2><p>Boot, <code>whoami</code>, jauges ASCII.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./aurora.html"><span class="v">Aurora</span><h2>Verre + mesh animé</h2><p>Glassmorphism, blobs or qui dérivent.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./gazette.html"><span class="v">Gazette</span><h2>Une de journal</h2><p>Masthead Playfair, colonnes, lettrine.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./magazine.html"><span class="v">Magazine</span><h2>Couverture glossy</h2><p>Masthead Bodoni, accroches, code-barres.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./editor.html"><span class="v">Editor</span><h2>IDE / VS Code</h2><p>Arborescence, onglets, code colorisé.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./blueprint.html"><span class="v">Blueprint</span><h2>Plan d'ingénieur</h2><p>Papier millimétré, cotes, cartouche CAD.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./periodic.html"><span class="v">Periodic</span><h2>Table des éléments</h2><p>Toi = « Yo », compétences en cases chimiques.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./ticker.html"><span class="v">Ticker</span><h2>Terminal boursier</h2><p>Réf. du Cockpit — signaux finance.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./rail.html"><span class="v">Rail</span><h2>Scroll horizontal</h2><p>Parcours scroll-snap, plein écran.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./bento.html"><span class="v">Bento</span><h2>Grille de tuiles</h2><p>Tout en tuiles asymétriques.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./atelier.html"><span class="v">Atelier</span><h2>Sidebar + bandes</h2><p>Nav latérale, projets immersifs.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./poster.html"><span class="v">Poster</span><h2>Brutalist / collage</h2><p>Typo-affiche, blocs qui se chevauchent.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./showcase.html"><span class="v">Showcase</span><h2>Index typographique</h2><p>Projets en très grande typo, aperçu flottant.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./diagonal.html"><span class="v">Diagonal</span><h2>Coupe en diagonale</h2><p>Écran tranché noir/papier.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./tilt.html"><span class="v">Tilt 3D</span><h2>Scène en perspective</h2><p>Bloc titre incliné, tags qui flottent.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./manifesto.html"><span class="v">Manifesto</span><h2>Manifeste géant</h2><p>Typo plein écran, mots-clés or.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./flux.html"><span class="v">Flux</span><h2>Dégradé or animé</h2><p>Nom géant traversé d'un dégradé or.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./strategy.html"><span class="v">Strategy</span><h2>Analyse stratégique</h2><p>SWOT/PORTER/PESTEL appliqués à toi.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./spotlight.html"><span class="v">Spotlight</span><h2>Projecteur or</h2><p>Base validée à l'origine.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./brutalist.html"><span class="v">Brutalist</span><h2>Typo monumentale</h2><p>Contour + marquee.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./kinetic.html"><span class="v">Kinetic</span><h2>Cinétique</h2><p>Texte en mouvement permanent.</p><span class="go">Ouvrir →</span></a>
+      </div>
+
+      <!-- ============ 7. ARCHIVE ============ -->
+      <div class="grouplabel" id="archive">🗄️ Archive — écartées (gardées pour le fun) <span class="count">· 7</span></div>
+      <p class="blurb">Gadgets / off-brand, dans <code>_archive/</code>. Hors short-list mais marrants à revoir.</p>
+      <div class="cards">
+        <a class="card dim" href="./_archive/arcade.html"><span class="v">Arcade</span><h2>Borne 8-bit</h2><p>Trop enfantin pour la DA.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/comic.html"><span class="v">Comic</span><h2>Planche de BD</h2><p>Casse le luxe discret.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/receipt.html"><span class="v">Receipt</span><h2>Ticket de caisse</h2><p>Blague à un coup.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/cards.html"><span class="v">Cards</span><h2>Cartes TCG</h2><p>Gadget, ne scale pas.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/desktop.html"><span class="v">Desktop</span><h2>Bureau OS</h2><p>Accessibilité/SEO compliqués.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/vinyl.html"><span class="v">Vinyl</span><h2>Disque YoguiRecords</h2><p>Format figé.</p><span class="go">Ouvrir →</span></a>
+        <a class="card dim" href="./_archive/boarding.html"><span class="v">Boarding</span><h2>Carte d'embarquement</h2><p>Difficile à étendre.</p><span class="go">Ouvrir →</span></a>
+      </div>
+
+      <p class="note">
+        Maquettes statiques — contenu, accroches et visuels sont des
+        <b>placeholders</b> (tout sera éditable au back office). On juge la
+        <b>direction</b> et les <b>composants</b>. Le contenu réel viendra du BO.
+      </p>
+    </div>
+  </body>
+</html>

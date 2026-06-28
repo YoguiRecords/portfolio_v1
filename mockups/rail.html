@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Rail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      html, body { height: 100%; overflow: hidden; }
+      body { background: var(--dark-900); color: var(--on-dark); }
+
+      /* piste horizontale en scroll-snap */
+      .rail { height: 100vh; display: flex; overflow-x: auto; overflow-y: hidden;
+        scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+      .rail::-webkit-scrollbar { display: none; } .rail { scrollbar-width: none; }
+      .panel { flex: 0 0 100%; height: 100%; scroll-snap-align: start; position: relative;
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 90px clamp(22px, 7vw, 110px) 110px; }
+      @media (min-width: 900px){ .panel{ flex-basis: 78vw; } .panel.intro{ flex-basis: 100vw; } }
+
+      /* index fixe haut */
+      .topbar { position: fixed; top:0; left:0; right:0; z-index: 30; display:flex; justify-content:space-between; align-items:center; padding: 18px clamp(22px,5vw,40px); }
+      .topbar .brand { font-weight:900; font-size:18px; letter-spacing:.04em; } .topbar .brand span{ color: var(--accent); }
+      .topbar .count { font-size:12px; letter-spacing:.18em; color: var(--on-dark-muted); }
+      .topbar .count b{ color:#fff; font-size:15px; }
+
+      /* progression bas */
+      .progress { position: fixed; bottom:0; left:0; right:0; z-index:30; display:flex; align-items:center; gap:16px; padding: 18px clamp(22px,5vw,40px); }
+      .progress .line { flex:1; height:2px; background: var(--border-dark); position:relative; }
+      .progress .line i { position:absolute; left:0; top:0; height:100%; background: var(--accent); width:25%; transition: width .35s ease; }
+      .progress .hint { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color: var(--on-dark-muted); white-space:nowrap; }
+      .progress .arrows { display:flex; gap:8px; }
+      .progress .arrows button { width:40px; height:40px; border-radius:50%; border:1px solid var(--border-dark); background:var(--dark-800); color:#fff; cursor:pointer; font-size:16px; transition:.2s; }
+      .progress .arrows button:hover { border-color: var(--accent); color: var(--accent); }
+
+      /* panel 0 — intro */
+      .bignum { position:absolute; top: 8%; right: 4%; font-size: clamp(120px, 30vw, 360px); font-weight:900; color: #ffffff05; line-height:.8; letter-spacing:-.05em; pointer-events:none; }
+      .intro .eyebrow { display:inline-flex; gap:12px; align-items:center; margin-bottom:24px; }
+      .intro .eyebrow::before{ content:""; width:40px; height:2px; background: var(--accent); }
+      .intro h1 { font-size: clamp(52px, 12vw, 150px); font-weight:900; letter-spacing:-.05em; line-height:.85; }
+      .intro h1 span{ color: var(--accent); }
+      .intro .lead { margin-top:26px; max-width: 50ch; color: var(--on-dark-2); font-weight:300; font-size: clamp(15px,3.6vw,21px); line-height:1.6; }
+      .intro .scrollcue { margin-top: 34px; display:inline-flex; align-items:center; gap:12px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color: var(--accent); }
+      .intro .scrollcue .dash { width:46px; height:1px; background: var(--accent); animation: slide 1.6s ease-in-out infinite; transform-origin:left; }
+      @keyframes slide { 50%{ transform: scaleX(1.6);} }
+
+      /* panels projet */
+      .panel.proj { border-left: 1px solid var(--border-dark); }
+      .panel.proj .pn { font-size:13px; font-weight:900; letter-spacing:.2em; color: var(--accent); }
+      .panel.proj .cat { margin-top:20px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color: var(--on-dark-muted); }
+      .panel.proj h2 { font-size: clamp(42px, 8vw, 92px); font-weight:900; letter-spacing:-.04em; line-height:.9; margin:14px 0 22px; }
+      .panel.proj h2 em{ font-style:normal; color: var(--accent); }
+      .panel.proj p { max-width: 46ch; color: var(--on-dark-2); font-weight:300; font-size: clamp(15px,3.4vw,19px); line-height:1.6; }
+      .panel.proj .t { display:flex; gap:10px; flex-wrap:wrap; margin-top: 26px; }
+      .panel.proj .t span{ font-size:12px; color: var(--accent); border:1px solid #2c2410; background: var(--accent-faint); padding:6px 13px; border-radius:30px; }
+      .panel.proj .visual { position:absolute; inset:auto 0 0 auto; width: 40%; height:55%; bottom: 14%; right: -2%;
+        background: radial-gradient(circle at 60% 40%, rgba(240,168,0,.16), transparent 60%); filter: blur(8px); pointer-events:none; }
+
+      /* panel final — contact */
+      .panel.end { background: var(--accent); color:#1a1400; }
+      .panel.end h2 { font-size: clamp(44px, 9vw, 110px); font-weight:900; letter-spacing:-.04em; line-height:.88; }
+      .panel.end .socials { display:flex; flex-wrap:wrap; gap:18px; margin-top:30px; }
+      .panel.end .socials a { color:#1a1400; text-decoration:none; font-weight:700; font-size:16px; border-bottom:2px solid #1a140033; padding-bottom:3px; transition:.2s; }
+      .panel.end .socials a:hover{ border-color:#1a1400; }
+      .panel.end .sig { margin-top:34px; font-size:13px; opacity:.7; }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <span class="brand">Yohan<span>.</span></span>
+      <span class="count"><b id="cur">01</b> / 05</span>
+    </div>
+
+    <div class="rail" id="rail">
+      <section class="panel intro">
+        <span class="bignum">Y</span>
+        <span class="eyebrow">Portfolio horizontal · fais défiler →</span>
+        <h1>Yohan<br /><span>Debusscher</span></h1>
+        <p class="lead">Concepteur-développeur &amp; entrepreneur. Un parcours qui se lit à l'horizontale — fais défiler pour traverser les réalisations.</p>
+        <span class="scrollcue"><span class="dash"></span> Défiler / glisser</span>
+      </section>
+
+      <section class="panel proj">
+        <span class="visual"></span>
+        <span class="pn">01 — RÉALISATION</span>
+        <span class="cat">Projet phare · Produit</span>
+        <h2>Domestic<br /><em>Revolt</em></h2>
+        <p>Conçu, développé et déployé seul. Du premier croquis à la mise en production — une chaîne complète tenue par une seule personne.</p>
+        <div class="t"><span>Next.js</span><span>Docker</span><span>Solo end-to-end</span></div>
+      </section>
+
+      <section class="panel proj">
+        <span class="visual"></span>
+        <span class="pn">02 — RÉALISATION</span>
+        <span class="cat">Produit · Logiciel</span>
+        <h2>OXO</h2>
+        <p>Plateforme complète pilotée seul, du back-end au front-end. Pensée comme un produit durable, conçue pour évoluer.</p>
+        <div class="t"><span>React</span><span>Node</span><span>Architecture</span></div>
+      </section>
+
+      <section class="panel proj">
+        <span class="visual"></span>
+        <span class="pn">03 — RÉALISATION</span>
+        <span class="cat">Stratégie · Business</span>
+        <h2>Étude<br /><em>PME</em></h2>
+        <p>Analyse de marché, matrice SWOT et recommandations actionnables. La preuve que le sens business accompagne la technique.</p>
+        <div class="t"><span>SWOT</span><span>Marché</span><span>Conseil</span></div>
+      </section>
+
+      <section class="panel end">
+        <h2>On construit<br />quelque chose ?</h2>
+        <div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div>
+        <span class="sig">© 2026 Yohan Debusscher — conçu &amp; développé de bout en bout.</span>
+      </section>
+    </div>
+
+    <div class="progress">
+      <span class="hint">Parcours</span>
+      <div class="line"><i id="bar"></i></div>
+      <div class="arrows"><button id="prev" aria-label="Précédent">←</button><button id="next" aria-label="Suivant">→</button></div>
+    </div>
+
+    <script>
+      (function () {
+        var rail = document.getElementById("rail");
+        var panels = rail.querySelectorAll(".panel");
+        var total = panels.length;
+        var bar = document.getElementById("bar"), cur = document.getElementById("cur");
+        function update() {
+          var i = Math.round(rail.scrollLeft / rail.clientWidth);
+          // index réel basé sur position
+          var idx = 0, min = Infinity;
+          panels.forEach(function (p, k) {
+            var d = Math.abs(p.offsetLeft - rail.scrollLeft);
+            if (d < min) { min = d; idx = k; }
+          });
+          bar.style.width = ((idx + 1) / total) * 100 + "%";
+          cur.textContent = String(idx + 1).padStart(2, "0");
+        }
+        rail.addEventListener("scroll", function () { window.requestAnimationFrame(update); }, { passive: true });
+        // molette verticale -> horizontale (desktop)
+        rail.addEventListener("wheel", function (e) {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { rail.scrollLeft += e.deltaY; e.preventDefault(); }
+        }, { passive: false });
+        function go(dir) {
+          var idx = 0, min = Infinity;
+          panels.forEach(function (p, k) { var d = Math.abs(p.offsetLeft - rail.scrollLeft); if (d < min){ min=d; idx=k; } });
+          var t = Math.max(0, Math.min(total - 1, idx + dir));
+          rail.scrollTo({ left: panels[t].offsetLeft, behavior: "smooth" });
+        }
+        document.getElementById("next").addEventListener("click", function(){ go(1); });
+        document.getElementById("prev").addEventListener("click", function(){ go(-1); });
+        window.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1);
+        });
+        update();
+      })();
+    </script>
+  </body>
+</html>

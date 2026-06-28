@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Blueprint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #0d0f10; color: #d7dadb; font-family: "Inter", sans-serif; }
+      .mono { font-family: "JetBrains Mono", monospace; }
+
+      /* fond papier millimétré */
+      .sheet { position: relative; min-height: 100vh; padding: 0 0 40px;
+        background-image:
+          linear-gradient(rgba(240,168,0,.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(240,168,0,.05) 1px, transparent 1px),
+          linear-gradient(rgba(240,168,0,.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(240,168,0,.02) 1px, transparent 1px);
+        background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px; }
+
+      /* cartouche d'en-tête type plan */
+      .titleblock { display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px; align-items:center;
+        padding: 14px clamp(16px,4vw,40px); border-bottom: 1px solid rgba(240,168,0,.35); }
+      .titleblock .id { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color: var(--accent); }
+      .titleblock .id b{ color:#fff; }
+      .titleblock .rev { font-size:11px; color:#7d8284; letter-spacing:.1em; }
+      .titleblock .rev span{ color: var(--accent); }
+
+      .frame { margin: clamp(16px,4vw,40px); border:1px solid rgba(240,168,0,.3); position:relative; padding: clamp(24px,5vw,60px) clamp(18px,4vw,50px) 40px; }
+      /* coins du cadre */
+      .frame::before, .frame::after { content:""; position:absolute; width:14px; height:14px; border:2px solid var(--accent); }
+      .frame::before { top:-1px; left:-1px; border-right:0; border-bottom:0; }
+      .frame::after { bottom:-1px; right:-1px; border-left:0; border-top:0; }
+
+      .doc-num { position:absolute; top:-10px; left: 24px; background:#0d0f10; padding: 0 10px; font-size:11px; letter-spacing:.18em; color: var(--accent); }
+
+      /* objet principal coté */
+      .object { display:grid; grid-template-columns:1fr; gap: 34px; align-items:center; }
+      @media (min-width: 880px){ .object{ grid-template-columns: 1.3fr 1fr; gap:60px; } }
+
+      .spec h1 { font-size: clamp(48px, 12vw, 120px); font-weight:900; letter-spacing:-.05em; line-height:.82; color:#fff; position:relative; }
+      .spec h1 span{ color: var(--accent); }
+      /* ligne de cote sous le nom */
+      .dimline { margin-top: 18px; display:flex; align-items:center; gap:8px; color: var(--accent); font-size:11px; }
+      .dimline .l { flex:1; height:1px; background: var(--accent); position:relative; }
+      .dimline .l::before, .dimline .l::after{ content:""; position:absolute; top:-4px; width:1px; height:9px; background: var(--accent); }
+      .dimline .l::before{ left:0; } .dimline .l::after{ right:0; }
+      .spec .desc { margin-top: 26px; max-width: 50ch; color:#aeb3b5; font-weight:300; font-size: clamp(15px,3.4vw,18px); line-height:1.65; }
+      .spec .cta { margin-top: 28px; display:flex; gap:12px; flex-wrap:wrap; }
+      .spec .cta a { text-decoration:none; font-size:13px; font-weight:600; padding:12px 20px; border-radius:3px; transition:.2s; }
+      .spec .cta .p { background: var(--accent); color:#1a1400; }
+      .spec .cta .p:hover{ background:#fff; }
+      .spec .cta .g { border:1px solid rgba(240,168,0,.4); color: var(--accent); }
+      .spec .cta .g:hover{ border-color: var(--accent); background: rgba(240,168,0,.08); }
+
+      /* annotations / callouts (style fiche technique) */
+      .callouts { font-family:"JetBrains Mono",monospace; }
+      .callout { border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin-bottom: 18px; position:relative; }
+      .callout::before { content:""; position:absolute; left:-5px; top:10px; width:8px; height:8px; border-radius:50%; background: var(--accent); }
+      .callout .ref { font-size:10.5px; color: var(--accent); letter-spacing:.12em; }
+      .callout .val { font-size: 15px; color:#fff; font-weight:500; margin-top:3px; }
+      .callout .note { font-size:11.5px; color:#7d8284; margin-top:2px; font-family:"Inter",sans-serif; }
+
+      /* tableau de spécifications */
+      .specs { margin: 40px clamp(16px,4vw,40px) 0; }
+      .specs .h { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color: var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+      .specs .h::after{ content:""; flex:1; height:1px; background: rgba(240,168,0,.25); }
+      .table { display:grid; grid-template-columns:1fr; }
+      @media (min-width: 680px){ .table{ grid-template-columns: repeat(3,1fr); } }
+      .cell { border:1px solid rgba(240,168,0,.18); margin:-0.5px; padding: 16px 18px; font-family:"JetBrains Mono",monospace; }
+      .cell .k { font-size:10.5px; letter-spacing:.1em; color:#7d8284; text-transform:uppercase; }
+      .cell .v { font-size:18px; color:#fff; font-weight:700; margin-top:6px; }
+      .cell .v b{ color: var(--accent); }
+
+      /* modules / sous-systèmes (= projets) en blocs schématiques */
+      .modules { margin: 44px clamp(16px,4vw,40px) 0; }
+      .mgrid { display:grid; grid-template-columns:1fr; gap: 16px; margin-top:16px; }
+      @media (min-width: 760px){ .mgrid{ grid-template-columns: repeat(3,1fr); } }
+      .module { text-decoration:none; color:inherit; border:1px solid rgba(240,168,0,.22); padding: 20px 20px 22px; position:relative; transition:.25s; background: rgba(240,168,0,.02); }
+      .module:hover{ border-color: var(--accent); background: rgba(240,168,0,.06); }
+      .module .pin { position:absolute; top:14px; right:16px; font-family:"JetBrains Mono",monospace; font-size:11px; color: var(--accent); }
+      .module .typ { font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#7d8284; }
+      .module h3 { font-size:21px; font-weight:800; letter-spacing:-.02em; margin:10px 0 8px; color:#fff; }
+      .module p { font-size:13px; color:#aeb3b5; line-height:1.55; }
+      .module .io { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; font-family:"JetBrains Mono",monospace; }
+      .module .io span{ font-size:10.5px; color: var(--accent); border:1px solid rgba(240,168,0,.3); padding:2px 7px; }
+
+      /* cartouche signature bas-droite type CAD */
+      .stamp { margin: 44px clamp(16px,4vw,40px) 0 auto; max-width: 420px; border:1px solid rgba(240,168,0,.35); font-family:"JetBrains Mono",monospace; }
+      .stamp .r { display:flex; border-bottom:1px solid rgba(240,168,0,.18); }
+      .stamp .r:last-child{ border-bottom:0; }
+      .stamp .r .c { padding:9px 12px; font-size:11px; }
+      .stamp .r .c.k { width:42%; color:#7d8284; border-right:1px solid rgba(240,168,0,.18); letter-spacing:.06em; }
+      .stamp .r .c.v { color:#fff; }
+      .stamp .r .c.v a{ color: var(--accent); text-decoration:none; }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <div class="titleblock">
+        <span class="id">DOC <b>YD-2026-001</b> · FICHE TECHNIQUE</span>
+        <span class="rev">ÉCH. 1:1 · FORMAT A0 · RÉV <span>v1.0</span></span>
+      </div>
+
+      <div class="frame">
+        <span class="doc-num mono">FIG. 1 — SUJET PRINCIPAL</span>
+        <div class="object">
+          <div class="spec reveal">
+            <h1>YOHAN<br /><span>DEBUSSCHER</span></h1>
+            <div class="dimline mono"><span>0</span><span class="l"></span><span>CONCEPTEUR-DÉVELOPPEUR &amp; ENTREPRENEUR</span></div>
+            <p class="desc">Unité autonome de conception et de production logicielle. Prend une idée en entrée, retourne un produit déployé en sortie — sans dépendance externe.</p>
+            <div class="cta"><a href="#" class="p">Voir les modules →</a><a href="#" class="g">Télécharger le CV</a></div>
+          </div>
+          <div class="callouts reveal">
+            <div class="callout"><div class="ref">A — FONCTION</div><div class="val">Build solo end-to-end</div><div class="note">Stratégie · design · code · déploiement</div></div>
+            <div class="callout"><div class="ref">B — RENDEMENT</div><div class="val">Idée → Produit livré</div><div class="note">Chaîne complète sans intermédiaire</div></div>
+            <div class="callout"><div class="ref">C — ÉTAT</div><div class="val">Disponible · opérationnel</div><div class="note">Ouvert aux missions &amp; collaborations</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="specs reveal">
+        <div class="h mono">Spécifications</div>
+        <div class="table">
+          <div class="cell"><div class="k">Expérience</div><div class="v"><b>04</b> ans</div></div>
+          <div class="cell"><div class="k">Mode opératoire</div><div class="v">Solo / <b>E2E</b></div></div>
+          <div class="cell"><div class="k">Domaines</div><div class="v">Tech + <b>Business</b></div></div>
+          <div class="cell"><div class="k">Produits livrés</div><div class="v"><b>02</b> majeurs</div></div>
+          <div class="cell"><div class="k">Stack noyau</div><div class="v">Next · <b>Docker</b></div></div>
+          <div class="cell"><div class="k">Sécurité</div><div class="v"><b>By design</b></div></div>
+        </div>
+      </div>
+
+      <div class="modules reveal">
+        <div class="specs"><div class="h mono">Sous-systèmes / Réalisations</div></div>
+        <div class="mgrid">
+          <a href="#" class="module"><span class="pin mono">M-01</span><span class="typ">Produit · phare</span><h3>Domestic Revolt</h3><p>Conçu, développé et déployé seul. Du croquis à la production.</p><div class="io"><span>IN: idée</span><span>OUT: prod</span></div></a>
+          <a href="#" class="module"><span class="pin mono">M-02</span><span class="typ">Logiciel</span><h3>OXO</h3><p>Plateforme complète pilotée seul, du back au front.</p><div class="io"><span>React</span><span>Node</span></div></a>
+          <a href="#" class="module"><span class="pin mono">M-03</span><span class="typ">Stratégie</span><h3>Étude PME</h3><p>Analyse de marché, SWOT et recommandations actionnables.</p><div class="io"><span>SWOT</span><span>Reco</span></div></a>
+        </div>
+      </div>
+
+      <div class="stamp reveal">
+        <div class="r"><div class="c k">PROJET</div><div class="c v">Portfolio Yohan Debusscher</div></div>
+        <div class="r"><div class="c k">DESSINÉ PAR</div><div class="c v">Y. Debusscher (solo)</div></div>
+        <div class="r"><div class="c k">DATE</div><div class="c v">2026-06-28</div></div>
+        <div class="r"><div class="c k">CONTACT</div><div class="c v"><a href="#">GitHub</a> · <a href="#">LinkedIn</a> · <a href="#">Email</a></div></div>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

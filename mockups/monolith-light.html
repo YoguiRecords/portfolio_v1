@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Monolith (clair)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: var(--paper); color: var(--ink); }
+      .nav { color: var(--ink); background: rgba(247,246,243,.85); backdrop-filter: blur(10px); }
+      .nav .brand span{ color: var(--accent-strong); }
+
+      /* HERO ultra-sobre, beaucoup d'air */
+      .hero { min-height: 100vh; display:flex; flex-direction:column; justify-content:center; padding: 130px 0 80px; }
+      .hero .top-line { display:flex; align-items:center; gap:16px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color: var(--muted); margin-bottom: 50px; }
+      .hero .top-line .dot{ width:7px;height:7px;border-radius:50%; background: var(--status-ok); box-shadow:0 0 10px rgba(26,107,60,.5); }
+      .hero .top-line .ln{ flex:1; height:1px; background: var(--border-light); }
+      .hero h1 { font-size: clamp(44px, 9vw, 118px); font-weight: 200; letter-spacing:-.04em; line-height: 1.0; }
+      .hero h1 b { font-weight: 700; } .hero h1 .gold{ color: var(--accent-strong); font-weight:500; }
+      .hero .sub { margin-top: 40px; display:grid; grid-template-columns:1fr; gap: 26px; }
+      @media (min-width: 820px){ .hero .sub{ grid-template-columns: 1.4fr 1fr; align-items:end; gap:50px; } }
+      .hero .sub p { font-size: clamp(16px,2.6vw,19px); font-weight:300; line-height:1.7; color: var(--ink-2); max-width: 52ch; }
+      .hero .sub .right { display:flex; flex-direction:column; gap:14px; }
+      .hero .sub .right .kv{ display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid var(--border-light); font-size:13.5px; }
+      .hero .sub .right .kv .k{ color: var(--muted); } .hero .sub .right .kv .v{ color: var(--ink); font-weight:500; }
+      .hero .sub .right .kv .v b{ color: var(--accent-strong); }
+
+      /* WORK — minimaliste, lignes fines */
+      .work { padding: 100px 0; }
+      .sec-label { display:flex; align-items:baseline; justify-content:space-between; margin-bottom: 10px; }
+      .sec-label span { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color: var(--muted); }
+      .sec-label .t { font-size: clamp(13px,2vw,14px); color: var(--accent-strong); font-weight:600; }
+
+      .w-item { display:grid; grid-template-columns: 1fr; gap: 6px; padding: 38px 0; border-top:1px solid var(--border-light); text-decoration:none; color:inherit; position:relative; transition:.3s; }
+      @media (min-width: 760px){ .w-item{ grid-template-columns: 64px 1fr auto; gap: 30px; align-items:center; } }
+      .w-item:last-child{ border-bottom:1px solid var(--border-light); }
+      .w-item .idx { font-size:13px; color: var(--accent-strong); font-weight:700; letter-spacing:.1em; }
+      .w-item .main h3 { font-size: clamp(28px,5vw,52px); font-weight:300; letter-spacing:-.03em; transition:.3s; }
+      .w-item .main .cat { font-size:13px; color: var(--muted); margin-top:6px; letter-spacing:.04em; }
+      .w-item .meta { display:flex; gap:8px; flex-wrap:wrap; }
+      .w-item .meta span { font-size:12px; color: var(--ink-2); border:1px solid var(--border-light); padding:5px 11px; border-radius:30px; background: var(--card); }
+      .w-item .arrow { font-size: 22px; color: var(--accent-strong); opacity:0; transform: translateX(-8px); transition:.3s; }
+      .w-item:hover { padding-left: 14px; background: rgba(240,168,0,.04); }
+      .w-item:hover .main h3 { color: var(--accent-strong); }
+      .w-item:hover .arrow { opacity:1; transform:none; }
+
+      /* statement */
+      .closing { padding: 100px 0; }
+      .closing p { font-size: clamp(24px,5vw,48px); font-weight:200; line-height:1.25; letter-spacing:-.02em; color: var(--ink-2); max-width: 22ch; }
+      .closing p b{ font-weight:600; color: var(--ink); } .closing p .gold{ color: var(--accent-strong); font-weight:400; }
+      .closing .cta { margin-top: 44px; }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links"><a href="#work">Travail</a><a href="#">CV</a><a href="#">Contact</a><a href="#" class="muted">News</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#work"><span class="n">01</span>Travail</a><a href="#"><span class="n">02</span>CV</a><a href="#"><span class="n">03</span>Contact</a></div>
+
+    <header class="hero">
+      <div class="wrap">
+        <div class="top-line"><span class="dot"></span> Disponible <span class="ln"></span> Yohan Debusscher · 2026</div>
+        <h1>Je conçois,<br />je code,<br />je <span class="gold">livre.</span></h1>
+        <div class="sub">
+          <p>Concepteur-développeur &amp; entrepreneur. Je transforme une idée en produit fini — stratégie, design, code, déploiement. Seul, de bout en bout.</p>
+          <div class="right">
+            <div class="kv"><span class="k">Expérience</span><span class="v"><b>4 ans</b></span></div>
+            <div class="kv"><span class="k">Mode</span><span class="v">Solo · end-to-end</span></div>
+            <div class="kv"><span class="k">Domaines</span><span class="v">Tech + Business</span></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="sec-label reveal"><span>Sélection de travaux</span><span class="t">2024 — 2026</span></div>
+        <a href="#" class="w-item reveal"><span class="idx">01</span><div class="main"><h3>Domestic Revolt</h3><div class="cat">Projet phare · conçu &amp; déployé seul</div></div><div class="meta"><span>Next.js</span><span>Docker</span></div><span class="arrow">→</span></a>
+        <a href="#" class="w-item reveal"><span class="idx">02</span><div class="main"><h3>OXO</h3><div class="cat">Plateforme complète · back &amp; front</div></div><div class="meta"><span>React</span><span>Node</span></div><span class="arrow">→</span></a>
+        <a href="#" class="w-item reveal"><span class="idx">03</span><div class="main"><h3>Étude PME</h3><div class="cat">Stratégie · marché · SWOT</div></div><div class="meta"><span>Conseil</span></div><span class="arrow">→</span></a>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <p class="reveal">Une idée. <b>Une seule personne.</b> <span class="gold">Toute la chaîne.</span></p>
+        <div class="cta reveal"><a href="#" class="btn btn-primary">Travaillons ensemble →</a><a href="#" class="btn btn-ghost on-light">Le CV</a></div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contact"><div class="wrap"><div class="row"><h2>Disponible<br />pour <span>la suite.</span></h2><div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div></div><div class="legal"><span>© 2026 Yohan Debusscher</span><span>Conçu &amp; développé de bout en bout</span></div></div></footer>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

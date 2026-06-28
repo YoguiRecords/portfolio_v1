@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: var(--dark-900); color: var(--on-dark); }
+      .nav { color:#fff; } .nav .brand span{ color: var(--accent); }
+
+      /* HERO — manifeste studio */
+      .hero { padding: 150px 0 80px; border-bottom:1px solid var(--border-dark); }
+      .hero .avail { display:inline-flex; align-items:center; gap:10px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color: var(--on-dark-2); border:1px solid var(--border-dark); border-radius:30px; padding:8px 16px; margin-bottom:34px; }
+      .hero .avail .dot{ width:8px;height:8px;border-radius:50%; background:#28c840; box-shadow:0 0 10px #28c840; }
+      .hero h1 { font-size: clamp(38px, 8vw, 100px); font-weight:800; letter-spacing:-.04em; line-height:1.0; max-width: 16ch; }
+      .hero h1 .gold{ color: var(--accent); }
+      .hero h1 .outline{ -webkit-text-stroke:1.5px var(--accent); color: transparent; }
+      .hero .sub { margin-top: 34px; max-width: 56ch; font-size: clamp(16px,2.6vw,20px); font-weight:300; line-height:1.6; color: var(--on-dark-2); }
+      .hero .cta { margin-top: 36px; }
+
+      /* bandeau capacités défilant */
+      .strip { border-bottom:1px solid var(--border-dark); padding: 22px 0; }
+      .strip .marquee__track{ animation-duration: 32s; }
+      .strip .it { font-size: clamp(20px,4vw,34px); font-weight:700; letter-spacing:-.02em; padding: 0 28px; color: var(--on-dark); display:inline-flex; align-items:center; gap:28px; }
+      .strip .it .sep{ color: var(--accent); }
+
+      /* SERVICES / capacités */
+      .services { padding: 90px 0; border-bottom:1px solid var(--border-dark); }
+      .services .grid3 { display:grid; grid-template-columns:1fr; gap: 20px; margin-top: 40px; }
+      @media (min-width:760px){ .services .grid3{ grid-template-columns: repeat(3,1fr); } }
+      .svc { border:1px solid var(--border-dark); border-radius:10px; padding: 30px 26px; transition:.3s; background: var(--dark-800); }
+      .svc:hover{ border-color: var(--accent); transform: translateY(-5px); }
+      .svc .n { font-size:13px; font-weight:900; color: var(--accent); letter-spacing:.1em; }
+      .svc h3 { font-size: 22px; font-weight:800; margin: 14px 0 10px; letter-spacing:-.02em; }
+      .svc p { font-size:14px; color: var(--on-dark-muted); line-height:1.6; }
+      .svc ul { list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:8px; }
+      .svc ul li{ font-size:13px; color: var(--on-dark-2); display:flex; gap:10px; align-items:baseline; }
+      .svc ul li::before{ content:"—"; color: var(--accent); }
+
+      /* SELECTED WORK */
+      .work { padding: 90px 0; border-bottom:1px solid var(--border-dark); }
+      .work .grid { display:grid; grid-template-columns:1fr; gap:18px; margin-top:40px; }
+      @media (min-width:600px){ .work .grid{ grid-template-columns: repeat(2,1fr); } }
+      .work .proj{ background: var(--dark-800); border-color: var(--border-dark); }
+      .work .proj h3{ color:#fff; } .work .proj p{ color: var(--on-dark-muted); } .work .proj .cat{ color: var(--accent); }
+
+      /* PROCESS */
+      .process { padding: 90px 0; }
+      .process .steps { display:grid; grid-template-columns:1fr; gap: 0; margin-top: 40px; }
+      .step { display:grid; grid-template-columns: 70px 1fr; gap: 20px; padding: 26px 0; border-top:1px solid var(--border-dark); align-items:start; }
+      .step:last-child{ border-bottom:1px solid var(--border-dark); }
+      .step .no { font-size: clamp(28px,6vw,46px); font-weight:900; color: var(--accent); letter-spacing:-.03em; line-height:1; }
+      .step h3 { font-size:20px; font-weight:700; } .step p{ font-size:14px; color: var(--on-dark-muted); margin-top:8px; max-width:60ch; line-height:1.6; }
+
+      .section-head { margin-bottom: 0; }
+      .section-head .eyebrow{ display:block; margin-bottom:14px; }
+      .section-head h2{ font-size: clamp(30px,7vw,52px); font-weight:900; letter-spacing:-.03em; line-height:1; }
+      .section-head h2 span{ color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links"><a href="#services">Capacités</a><a href="#work">Travaux</a><a href="#">CV</a><a href="#" class="muted">Contact</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#services"><span class="n">01</span>Capacités</a><a href="#work"><span class="n">02</span>Travaux</a><a href="#"><span class="n">03</span>CV</a></div>
+
+    <header class="hero">
+      <div class="wrap">
+        <span class="avail"><span class="dot"></span> Disponible pour de nouveaux projets</span>
+        <h1>Un studio <span class="gold">d'une</span> <span class="outline">personne.</span><br />Toute la chaîne.</h1>
+        <p class="sub">Concepteur-développeur &amp; entrepreneur. Je conçois, code, sécurise et déploie des produits numériques — de la stratégie business jusqu'à la production. Sans intermédiaire.</p>
+        <div class="cta"><a href="#work" class="btn btn-primary">Voir les travaux →</a><a href="#" class="btn btn-ghost on-dark">Le CV</a></div>
+      </div>
+    </header>
+
+    <div class="strip marquee">
+      <div class="marquee__track">
+        <span class="it">Stratégie <span class="sep">·</span> Architecture <span class="sep">·</span> Développement <span class="sep">·</span> Sécurité <span class="sep">·</span> Déploiement <span class="sep">·</span></span>
+        <span class="it">Stratégie <span class="sep">·</span> Architecture <span class="sep">·</span> Développement <span class="sep">·</span> Sécurité <span class="sep">·</span> Déploiement <span class="sep">·</span></span>
+      </div>
+    </div>
+
+    <section class="services" id="services">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Capacités</span><h2>Ce que je <span>couvre.</span></h2></div>
+        <div class="grid3">
+          <div class="svc reveal"><span class="n">01</span><h3>Produit &amp; stratégie</h3><p>Cadrer une idée, comprendre le marché, prioriser.</p><ul><li>Vision &amp; positionnement</li><li>Analyse de marché · SWOT</li><li>Roadmap pragmatique</li></ul></div>
+          <div class="svc reveal"><span class="n">02</span><h3>Conception &amp; code</h3><p>De l'architecture au front, un produit qui tient.</p><ul><li>Full-stack (front · back · infra)</li><li>Architecture durable</li><li>Sécurité by design</li></ul></div>
+          <div class="svc reveal"><span class="n">03</span><h3>Livraison</h3><p>Mettre en production, proprement, et faire vivre.</p><ul><li>Conteneurisation · déploiement</li><li>CI &amp; bonnes pratiques</li><li>Suivi &amp; évolution</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Sélection</span><h2>Travaux <span>récents.</span></h2></div>
+        <div class="grid">
+          <a href="#" class="proj reveal"><div class="thumb"><span class="ph">Domestic Revolt</span></div><div class="body"><span class="cat">Projet phare · Produit</span><h3>Domestic Revolt</h3><p>Conçu, développé et déployé seul. Du croquis à la production.</p><div class="tags"><span class="tag">Next.js</span><span class="tag">Docker</span></div></div></a>
+          <a href="#" class="proj reveal"><div class="thumb"><span class="ph">OXO</span></div><div class="body"><span class="cat">Produit · Logiciel</span><h3>OXO</h3><p>Plateforme complète pilotée seul, du back au front.</p><div class="tags"><span class="tag">React</span><span class="tag">Node</span></div></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="process">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Méthode</span><h2>Comment ça se <span>passe.</span></h2></div>
+        <div class="steps">
+          <div class="step reveal"><span class="no">01</span><div><h3>Cadrage</h3><p>On clarifie l'idée, les objectifs et les contraintes. Je pose la stratégie et le périmètre.</p></div></div>
+          <div class="step reveal"><span class="no">02</span><div><h3>Conception</h3><p>Architecture, design et décisions techniques — la sécurité intégrée dès le départ.</p></div></div>
+          <div class="step reveal"><span class="no">03</span><div><h3>Construction</h3><p>Développement full-stack, du back-end au front-end, par itérations maîtrisées.</p></div></div>
+          <div class="step reveal"><span class="no">04</span><div><h3>Livraison</h3><p>Mise en production conteneurisée, propre et documentée. Puis on fait évoluer.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contact"><div class="wrap"><div class="row"><h2>Un projet,<br />une mission ?<br /><span>Parlons-en.</span></h2><div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div></div><div class="legal"><span>© 2026 Yohan Debusscher</span><span>Un studio d'une personne</span></div></div></footer>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

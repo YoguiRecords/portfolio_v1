@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Ticker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #08090b; color: #e6e8ea; font-family: "JetBrains Mono", monospace; }
+      .up { color: #28c840; } .down { color:#ff5f57; }
+      .sans { font-family: "Inter", sans-serif; }
+
+      /* bandeau ticker haut */
+      .tape { position: sticky; top:0; z-index: 40; background:#0e1013; border-bottom:1px solid #1b1f24; padding: 9px 0; }
+      .tape .marquee__track { animation-duration: 30s; }
+      .tape .it { display:inline-flex; gap:10px; align-items:center; padding: 0 26px; font-size:13px; border-right:1px solid #1b1f24; }
+      .tape .it b{ color:#fff; } .tape .it .accent{ color: var(--accent); }
+
+      .term { max-width: 1240px; margin: 0 auto; padding: 22px clamp(14px,3vw,30px) 70px; }
+
+      /* en-tête cours principal */
+      .quote { border:1px solid #1b1f24; background:#0d0f12; border-radius:8px; padding: clamp(20px,4vw,34px); display:grid; grid-template-columns:1fr; gap:24px; }
+      @media (min-width: 860px){ .quote{ grid-template-columns: 1.1fr 1fr; align-items:center; } }
+      .quote .sym { font-size:12px; letter-spacing:.2em; color:#6b7178; }
+      .quote .sym b{ color: var(--accent); }
+      .quote h1 { font-family:"Inter",sans-serif; font-size: clamp(40px,9vw,86px); font-weight:900; letter-spacing:-.04em; line-height:.9; color:#fff; margin:10px 0 6px; }
+      .quote .price { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-top:8px; }
+      .quote .price .val { font-size: clamp(30px,7vw,52px); font-weight:700; color:#fff; }
+      .quote .price .chg { font-size:16px; font-weight:700; }
+      .quote .price .chg::before{ content:"▲ "; }
+      .quote .desc { font-family:"Inter",sans-serif; color:#aeb3b8; font-weight:300; font-size:15px; line-height:1.6; max-width:46ch; margin-top:14px; }
+
+      /* mini chart en barres/chandeliers SVG */
+      .chart { background:#0a0c0f; border:1px solid #1b1f24; border-radius:8px; padding:18px; height:100%; min-height:220px; display:flex; flex-direction:column; }
+      .chart .ch-top { display:flex; justify-content:space-between; font-size:11px; color:#6b7178; letter-spacing:.1em; margin-bottom:10px; }
+      .chart .ch-top b{ color: var(--accent); }
+      .chart svg { width:100%; flex:1; }
+
+      /* grille de panneaux */
+      .panels { display:grid; grid-template-columns: repeat(2,1fr); gap:14px; margin-top:14px; }
+      @media (min-width: 760px){ .panels{ grid-template-columns: repeat(4,1fr); } }
+      .panel { border:1px solid #1b1f24; background:#0d0f12; border-radius:8px; padding:16px 16px 18px; }
+      .panel .k { font-size:10.5px; letter-spacing:.12em; color:#6b7178; text-transform:uppercase; }
+      .panel .v { font-family:"Inter",sans-serif; font-size:26px; font-weight:800; color:#fff; margin-top:8px; }
+      .panel .v b{ color: var(--accent); }
+      .panel .sub { font-size:11px; margin-top:4px; }
+
+      /* "order book" = projets/positions */
+      .book { margin-top: 22px; border:1px solid #1b1f24; border-radius:8px; overflow:hidden; }
+      .book .bh { display:grid; grid-template-columns: 80px 1fr 1fr auto; gap:12px; padding:12px 18px; background:#0e1013; font-size:10.5px; letter-spacing:.12em; color:#6b7178; text-transform:uppercase; }
+      .book .row { display:grid; grid-template-columns: 80px 1fr 1fr auto; gap:12px; padding:16px 18px; border-top:1px solid #1b1f24; text-decoration:none; color:inherit; align-items:center; transition:.2s; }
+      .book .row:hover { background:#10141a; }
+      .book .row .tk { color: var(--accent); font-weight:700; }
+      .book .row .nm { font-family:"Inter",sans-serif; }
+      .book .row .nm b{ color:#fff; font-size:16px; font-weight:700; display:block; }
+      .book .row .nm small{ color:#8a9098; font-size:12px; }
+      .book .row .pos { font-family:"Inter",sans-serif; color:#aeb3b8; font-size:13px; }
+      .book .row .sig { font-weight:700; white-space:nowrap; }
+      .book .row .sig::before{ content:"▲ "; }
+
+      @media (max-width: 620px){ .book .bh, .book .row{ grid-template-columns: 60px 1fr auto; } .book .pos{ display:none; } }
+
+      .cta-bar { margin-top:26px; display:flex; gap:12px; flex-wrap:wrap; }
+    </style>
+  </head>
+  <body>
+    <div class="tape marquee">
+      <div class="marquee__track">
+        <span class="it"><b>YHN</b> <span class="up">▲ 4.2 ans</span></span>
+        <span class="it">DEV <b>FULL-STACK</b> <span class="up">▲</span></span>
+        <span class="it">DOMESTIC.REVOLT <span class="accent">SHIPPED</span></span>
+        <span class="it">OXO <span class="up">▲ LIVE</span></span>
+        <span class="it">BUSINESS <span class="up">▲ +SWOT</span></span>
+        <span class="it">SOLO <b>E2E</b> <span class="up">▲</span></span>
+        <span class="it">SECURITY <span class="up">▲ BY DESIGN</span></span>
+        <span class="it"><b>STATUS</b> <span class="accent">DISPONIBLE</span></span>
+        <span class="it"><b>YHN</b> <span class="up">▲ 4.2 ans</span></span>
+        <span class="it">DEV <b>FULL-STACK</b> <span class="up">▲</span></span>
+        <span class="it">DOMESTIC.REVOLT <span class="accent">SHIPPED</span></span>
+        <span class="it">OXO <span class="up">▲ LIVE</span></span>
+        <span class="it">BUSINESS <span class="up">▲ +SWOT</span></span>
+        <span class="it">SOLO <b>E2E</b> <span class="up">▲</span></span>
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="quote reveal">
+        <div>
+          <div class="sym">NYSE: <b>YHN</b> · YOHAN DEBUSSCHER · CONCEPTEUR-DÉVELOPPEUR &amp; ENTREPRENEUR</div>
+          <h1>Yohan Debusscher</h1>
+          <div class="price">
+            <span class="val">Builder.Inc</span>
+            <span class="chg up">100% solo · end-to-end</span>
+          </div>
+          <p class="desc">Profil à forte croissance : transforme une idée en produit déployé sans dépendance externe. Couvre toute la chaîne, de la stratégie business jusqu'à la mise en production.</p>
+          <div class="cta-bar">
+            <a href="#" class="btn btn-primary">Voir le portefeuille →</a>
+            <a href="#" class="btn btn-ghost on-dark">Prospectus (CV)</a>
+          </div>
+        </div>
+        <div class="chart">
+          <div class="ch-top"><span>PARCOURS · 4 ANS</span><span><b>▲ CROISSANCE</b></span></div>
+          <svg viewBox="0 0 320 160" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,150 40,140 80,120 120,110 160,80 200,70 240,40 280,30 320,12" fill="none" stroke="#28c840" stroke-width="2"/>
+            <polygon points="0,150 40,140 80,120 120,110 160,80 200,70 240,40 280,30 320,12 320,160 0,160" fill="rgba(40,200,64,.08)"/>
+            <g stroke="#f0a800" stroke-width="6">
+              <line x1="40" y1="118" x2="40" y2="146"/><line x1="100" y1="100" x2="100" y2="128"/>
+              <line x1="160" y1="64" x2="160" y2="96"/><line x1="220" y1="40" x2="220" y2="78"/>
+              <line x1="280" y1="20" x2="280" y2="50"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="panels reveal">
+        <div class="panel"><div class="k">Expérience</div><div class="v"><b>4</b> ans</div><div class="sub up">▲ en hausse</div></div>
+        <div class="panel"><div class="k">Produits livrés</div><div class="v"><b>2</b> majeurs</div><div class="sub up">▲ solo</div></div>
+        <div class="panel"><div class="k">Volatilité</div><div class="v">Faible</div><div class="sub" style="color:#6b7178">fiabilité ↑</div></div>
+        <div class="panel"><div class="k">Recommandation</div><div class="v"><b>STRONG BUY</b></div><div class="sub up">▲ disponible</div></div>
+      </div>
+
+      <div class="book reveal">
+        <div class="bh"><span>Ticker</span><span>Position</span><span>Catégorie</span><span>Signal</span></div>
+        <a href="#" class="row"><span class="tk">DMR</span><span class="nm"><b>Domestic Revolt</b><small>Conçu &amp; déployé seul</small></span><span class="pos">Produit · phare · Next/Docker</span><span class="sig up">SHIPPED</span></a>
+        <a href="#" class="row"><span class="tk">OXO</span><span class="nm"><b>OXO</b><small>Plateforme complète</small></span><span class="pos">Logiciel · React/Node</span><span class="sig up">LIVE</span></a>
+        <a href="#" class="row"><span class="tk">PME</span><span class="nm"><b>Étude PME</b><small>Marché · SWOT</small></span><span class="pos">Stratégie · conseil</span><span class="sig up">DELIVERED</span></a>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

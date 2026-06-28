@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (timeline 3 fils)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .wrap2 { max-width:780px; margin:0 auto; padding:80px clamp(18px,5vw,40px) 110px; }
+
+      .head .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+      .head h2 { font-size:clamp(30px,7vw,60px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:18px; }
+      .head .txt { max-width:60ch; font-size:clamp(15px,3vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.7; }
+      .head .txt strong{ color:#fff; font-weight:600; }
+
+      /* légende des 3 fils */
+      .legend { display:flex; flex-wrap:wrap; gap:14px 24px; margin-top:26px; }
+      .legend span { display:inline-flex; align-items:center; gap:9px; font:600 12.5px "Inter",sans-serif; color:var(--on-dark-2); }
+      .legend i { width:11px; height:11px; border-radius:50%; display:block; }
+
+      /* timeline */
+      .tl { position:relative; margin-top:46px; padding-left:36px; }
+      .tl::before { content:""; position:absolute; left:9px; top:8px; bottom:64px; width:2px; background:linear-gradient(var(--border-dark), var(--border-dark)); }
+      .ev { position:relative; padding-bottom:16px; }
+      .ev .dot { position:absolute; left:-32px; top:22px; width:15px; height:15px; border-radius:50%; background:#060606; border:3px solid var(--accent); z-index:1; }
+      .ev.dev  .dot { border-color:#f0a800; } .ev.dev  .card { border-left-color:#f0a800; }
+      .ev.mgmt .dot { border-color:#e0a04a; } .ev.mgmt .card { border-left-color:#e0a04a; }
+      .ev.biz  .dot { border-color:#9fb2bf; } .ev.biz  .card { border-left-color:#9fb2bf; }
+      .ev .card { background:var(--dark-800); border:1px solid var(--border-dark); border-left:3px solid var(--accent); border-radius:10px; padding:16px 20px; transition:transform .2s; }
+      .ev .card:hover { transform:translateX(4px); }
+      .card .top { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+      .card .yr { font:600 12px/1 "JetBrains Mono",monospace; color:var(--accent); letter-spacing:.06em; }
+      .ev.biz .card .yr { color:#9fb2bf; }
+      .card .tag { font:700 9.5px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; padding:4px 8px; border-radius:4px; }
+      .ev.dev  .card .tag { color:#f0a800; background:rgba(240,168,0,.1); }
+      .ev.mgmt .card .tag { color:#e0a04a; background:rgba(224,160,74,.1); }
+      .ev.biz  .card .tag { color:#9fb2bf; background:rgba(159,178,191,.12); }
+      .card .role { font:800 19px/1.1 "Inter",sans-serif; letter-spacing:-.01em; margin:10px 0 7px; }
+      .card .desc { font-size:13.5px; color:var(--on-dark-muted); line-height:1.55; }
+
+      /* nœud aujourd'hui (convergence) */
+      .ev.now .dot { width:20px; height:20px; left:-34px; top:24px; background:#46c98b; border-color:#46c98b; box-shadow:0 0 0 5px rgba(70,201,139,.16); }
+      .ev.now .card { border:1px solid rgba(70,201,139,.35); border-left:3px solid #46c98b; background:linear-gradient(160deg, rgba(70,201,139,.12), var(--dark-800) 60%); padding:26px 24px; }
+      .ev.now .lbl { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.18em; text-transform:uppercase; color:#46c98b; }
+      .ev.now .role { font:900 clamp(24px,5vw,34px)/1 "Inter",sans-serif; margin:14px 0 12px; }
+      .ev.now .desc { color:var(--on-dark-2); font-size:14.5px; }
+      .ev.now .merge { display:flex; gap:8px; margin:14px 0 4px; }
+      .ev.now .merge i { width:26px; height:5px; border-radius:3px; display:block; }
+      .ev.now .sig { margin-top:12px; font:600 13px "JetBrains Mono",monospace; color:#46c98b; display:inline-flex; gap:8px; align-items:center; }
+      .ev.now .sig::before { content:"▲"; font-size:.85em; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap2">
+      <div class="head">
+        <div class="marker">Chapitre 03 — La trajectoire</div>
+        <h2>Trois fils,<br />un même cap.</h2>
+        <p class="txt">Je ne viens pas d'une seule ligne. <strong>Dev</strong>, <strong>management</strong> et <strong>business</strong> sont apparus à des moments différents — et se rejoignent aujourd'hui. Suis les couleurs.</p>
+        <div class="legend">
+          <span><i style="background:#f0a800"></i> Dev</span>
+          <span><i style="background:#e0a04a"></i> Management</span>
+          <span><i style="background:#9fb2bf"></i> Business</span>
+          <span><i style="background:#46c98b"></i> Aujourd'hui</span>
+        </div>
+      </div>
+
+      <div class="tl">
+        <div class="ev dev"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2019</span><span class="tag">Dev</span></div><div class="role">Développeur</div><div class="desc">Premières livraisons, l'obsession du « comment ça se construit ».</div></div></div>
+        <div class="ev dev"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2021</span><span class="tag">Dev</span></div><div class="role">Ingénieur</div><div class="desc">Montée en architecture &amp; responsabilité technique.</div></div></div>
+        <div class="ev dev"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2022</span><span class="tag">Dev</span></div><div class="role">Full-stack</div><div class="desc">Du front à l'infra, le produit de bout en bout.</div></div></div>
+        <div class="ev mgmt"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2022</span><span class="tag">Management</span></div><div class="role">Gestion de projet</div><div class="desc">Cadrer, prioriser, livrer dans les temps. Le 2ᵉ fil apparaît.</div></div></div>
+        <div class="ev mgmt"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2023</span><span class="tag">Management</span></div><div class="role">Encadrement</div><div class="desc">Faire grandir une équipe, pas seulement avancer le code.</div></div></div>
+        <div class="ev biz"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2023</span><span class="tag">Business</span></div><div class="role">Entrepreneuriat</div><div class="desc">La vision produit et le sens du marché. Le 3ᵉ fil.</div></div></div>
+        <div class="ev biz"><span class="dot"></span><div class="card"><div class="top"><span class="yr">2024</span><span class="tag">Business</span></div><div class="role">Étude PME</div><div class="desc">Marché, SWOT, recommandations actionnables.</div></div></div>
+
+        <div class="ev now"><span class="dot"></span><div class="card">
+          <span class="lbl">Aujourd'hui · vous êtes ici</span>
+          <div class="role">Indépendant · fondateur</div>
+          <div class="merge"><i style="background:#f0a800"></i><i style="background:#e0a04a"></i><i style="background:#9fb2bf"></i></div>
+          <div class="desc">Les trois fils réunis dans la même main : vision business, management d'équipe et exécution technique.</div>
+          <span class="sig">vision · management · exécution</span>
+        </div></div>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>
