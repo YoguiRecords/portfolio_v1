@@ -6,7 +6,7 @@
 - [x] **P3** — Web : fiches projet (blocs modulaires, 12 types Zod) → `/projets/[slug]`. ✅
 - [x] **P4** — Web : News/Articles + Agenda/Événements (+ cron de publication programmée). ✅ (FR ; i18n → Pi18n)
 - [ ] **Pi18n** — Bilingue (FR/EN) + restructurer les routes en `[locale]` (actus/agenda/projets).
-- [ ] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission).
+- [x] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission modérée). ✅
 - [ ] **P6** — Web : Formulaire de contact (Route Handler, Zod, rate-limit, honeypot).
 - [ ] **P7** — Web : SEO/AEO (metadata, sitemap, robots, llms.txt, JSON-LD, FAQPage, OG).
 - [ ] **P8** — Admin : garde des routes + shell BO (nav, layout).

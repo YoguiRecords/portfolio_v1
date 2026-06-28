@@ -1,5 +1,16 @@
 # Patch notes — v0.3.x
 
+## v0.3.3 — Témoignages (affichage + soumission modérée) (2026-06-29)
+
+- Page `/temoignages` : affichage des témoignages **APPROVED** via un `select` sûr
+  (**zéro PII** — jamais email/IP/texte original), + formulaire public de soumission.
+- Soumission → Route Handler `POST /api/testimonials` : **rate-limit** (3/h/IP) + **honeypot**
+  + validation **Zod**, stocké en `PENDING` (jamais auto-validé ; modération BO en P13).
+- Modules réutilisables (`TestimonialCard`, `TestimonialForm` client) + util **rate-limiter**
+  in-memory et schéma partagés (`@portfolio/core`). Tests unit + E2E.
+- Fix infra test : exécution **sérialisée** des suites (`--workspace-concurrency=1`) pour éviter
+  les races sur le schéma `test` partagé entre packages.
+
 ## v0.3.2 — News, Agenda & publication programmée (2026-06-29)
 
 - **Pages News** (`/actus`, `/actus/[slug]`) et **Agenda** (`/agenda`, `/agenda/[slug]`) rendues
