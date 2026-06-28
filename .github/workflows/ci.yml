@@ -118,8 +118,10 @@ jobs:
       - name: Deploy migrations (public schema)
         run: pnpm --filter @portfolio/db db:deploy
 
-      - name: Seed database
-        run: pnpm --filter @portfolio/db db:seed
+      # Le seed de CONTENU (profil, projets, sections) alimente la home publique
+      # testée en E2E — pas le seed admin (qui exige des identifiants).
+      - name: Seed content
+        run: pnpm --filter @portfolio/db exec tsx prisma/seed-content.ts
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
