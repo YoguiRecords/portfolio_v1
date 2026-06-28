@@ -26,6 +26,18 @@ export {
   parseBlock,
   type ParsedBlock,
   type ProjectBlockKind,
+  type ContextData,
+  type ProcessData,
+  type AnalysisData,
+  type GameDesignData,
+  type ArchitectureData,
+  type SecurityData,
+  type DesignUxData,
+  type MetricsData,
+  type RecommendationsData,
+  type ResultsData,
+  type GalleryData,
+  type TextData,
 } from "./project-blocks/schemas";
 
 // AI (LLM port — OpenRouter implementation lands in P14/P15)

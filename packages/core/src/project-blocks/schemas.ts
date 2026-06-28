@@ -84,6 +84,19 @@ export const TextBlock = z.object({
   markdown: longText,
 });
 
+export type ContextData = z.infer<typeof ContextBlock>;
+export type ProcessData = z.infer<typeof ProcessBlock>;
+export type AnalysisData = z.infer<typeof AnalysisBlock>;
+export type GameDesignData = z.infer<typeof GameDesignBlock>;
+export type ArchitectureData = z.infer<typeof ArchitectureBlock>;
+export type SecurityData = z.infer<typeof SecurityBlock>;
+export type DesignUxData = z.infer<typeof DesignUxBlock>;
+export type MetricsData = z.infer<typeof MetricsBlock>;
+export type RecommendationsData = z.infer<typeof RecommendationsBlock>;
+export type ResultsData = z.infer<typeof ResultsBlock>;
+export type GalleryData = z.infer<typeof GalleryBlock>;
+export type TextData = z.infer<typeof TextBlock>;
+
 /** Maps each `ProjectBlockType` to its payload schema. */
 export const blockSchemas = {
   CONTEXT: ContextBlock,
