@@ -8,6 +8,10 @@ import { sharedTest } from "../../vitest.shared";
 export default mergeConfig(
   sharedTest,
   defineConfig({
-    test: { fileParallelism: false },
+    test: {
+      fileParallelism: false,
+      pool: "forks",
+      poolOptions: { forks: { singleFork: true } },
+    },
   }),
 );
