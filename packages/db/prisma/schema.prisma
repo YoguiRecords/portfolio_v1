@@ -22,6 +22,7 @@ enum ProjectStatus {
 
 enum ArticleStatus {
   DRAFT
+  SCHEDULED
   PUBLISHED
 }
 
@@ -85,6 +86,41 @@ enum TestimonialStatus {
   PENDING // soumis, en attente de validation
   APPROVED // validé → affiché publiquement
   REJECTED // refusé → jamais affiché
+}
+
+/// Visibilité d'un évènement de l'agenda.
+enum EventVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+/// Statut de publication d'un évènement (programmable comme les actus).
+enum EventStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+/// Nature d'un média : image convertie, vidéo hébergée, ou embed externe.
+enum MediaKind {
+  IMAGE
+  VIDEO
+  EMBED
+}
+
+/// Statut d'une demande de rendez-vous (inbox BO).
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  DECLINED
+  CANCELLED
+}
+
+/// Origine d'une demande de rendez-vous.
+enum AppointmentSource {
+  CONTACT
+  CHATBOT
+  MANUAL
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -293,6 +329,7 @@ model Article {
   status         ArticleStatus @default(DRAFT)
   readingMinutes Int?
   publishedAt    DateTime?
+  scheduledAt    DateTime? // créneau de publication programmée (status SCHEDULED)
 
   // SEO & découvrabilité (Open Graph + JSON-LD Article + AEO)
   seoTitle       String?
@@ -304,7 +341,12 @@ model Article {
   coverId String?
   cover   MediaAsset? @relation("ArticleCover", fields: [coverId], references: [id], onDelete: SetNull)
 
-  faqs FaqEntry[]
+  // Actu générée depuis un évènement de l'agenda (optionnel)
+  eventId String? @unique
+  event   Event?  @relation("ArticleFromEvent", fields: [eventId], references: [id], onDelete: SetNull)
+
+  media ArticleMedia[]
+  faqs  FaqEntry[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -584,23 +626,123 @@ model ProjectBlock {
 
 /// Chaque image convertie (webp) stockée dans MinIO est tracée ici.
 model MediaAsset {
-  id           String   @id @default(cuid())
-  url          String   @unique
+  id           String    @id @default(cuid())
+  url          String    @unique
   alt          String?
   originalName String
   mimeType     String
   sizeBytes    Int
-  width        Int
-  height       Int
-  createdAt    DateTime @default(now())
+  width        Int? // optionnel : vidéos/embeds n'ont pas toujours de dimensions
+  height       Int?
+  kind         MediaKind @default(IMAGE)
+  durationSec  Int? // durée (vidéo)
+  provider     String? // fournisseur d'embed (« youtube », « vimeo »…)
+  externalUrl  String? // URL source (vidéo hébergée / embed)
+  posterUrl    String? // vignette d'aperçu (vidéo)
+  createdAt    DateTime  @default(now())
 
   // Back-relations
-  profileAvatar Profile?       @relation("ProfileAvatar")
-  projectCovers Project[]      @relation("ProjectCover")
-  projectImages ProjectImage[] @relation("ProjectImages")
-  articleCovers Article[]      @relation("ArticleCover")
-  projectOgs    Project[]      @relation("ProjectOg")
-  articleOgs    Article[]      @relation("ArticleOg")
-  siteOg        SiteSettings?  @relation("SiteOg")
-  testimonialAvatars Testimonial[] @relation("TestimonialAvatar")
+  profileAvatar      Profile?       @relation("ProfileAvatar")
+  projectCovers      Project[]      @relation("ProjectCover")
+  projectImages      ProjectImage[] @relation("ProjectImages")
+  articleCovers      Article[]      @relation("ArticleCover")
+  projectOgs         Project[]      @relation("ProjectOg")
+  articleOgs         Article[]      @relation("ArticleOg")
+  siteOg             SiteSettings?  @relation("SiteOg")
+  testimonialAvatars Testimonial[]  @relation("TestimonialAvatar")
+  eventCovers        Event[]        @relation("EventCover")
+  eventMedia         EventMedia[]   @relation("EventMedia")
+  articleMedia       ArticleMedia[] @relation("ArticleMedia")
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Agenda & médias (évènements, galeries vidéo/embed, demandes de RDV)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Évènement de l'agenda (meetup, conférence, talk…). Peut être public ou privé,
+/// présentiel ou en ligne, avec un lien d'inscription externe. Publication
+/// programmable (status SCHEDULED + scheduledAt), comme les actus.
+model Event {
+  id              String          @id @default(cuid())
+  title           String
+  slug            String          @unique
+  description     String? // markdown
+  startAt         DateTime
+  endAt           DateTime?
+  timezone        String?
+  locationName    String?
+  address         String?
+  city            String?
+  isOnline        Boolean         @default(false)
+  onlineUrl       String?
+  registrationUrl String? // lien d'inscription externe (tiers)
+  visibility      EventVisibility @default(PUBLIC)
+  status          EventStatus     @default(DRAFT)
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+
+  coverId String?
+  cover   MediaAsset? @relation("EventCover", fields: [coverId], references: [id], onDelete: SetNull)
+
+  media        EventMedia[]
+  article      Article?             @relation("ArticleFromEvent")
+  appointments AppointmentRequest[] @relation("AppointmentEvent")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startAt])
+  @@index([status, startAt])
+}
+
+/// Média ordonné d'un évènement (galerie image/vidéo/embed).
+model EventMedia {
+  id    String @id @default(cuid())
+  order Int    @default(0)
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  mediaId String
+  media   MediaAsset @relation("EventMedia", fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}
+
+/// Média ordonné d'une actu (galerie image/vidéo/embed).
+model ArticleMedia {
+  id    String @id @default(cuid())
+  order Int    @default(0)
+
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  mediaId String
+  media   MediaAsset @relation("ArticleMedia", fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+}
+
+/// Demande de rendez-vous (formulaire de contact ou chatbot IA → inbox BO).
+/// Sécurité : `app_web` peut INSÉRER mais jamais LIRE (comme ContactMessage).
+model AppointmentRequest {
+  id          String            @id @default(cuid())
+  name        String
+  email       String
+  topic       String?
+  message     String?
+  requestedAt DateTime? // créneau souhaité
+  durationMin Int?
+  status      AppointmentStatus @default(PENDING)
+  source      AppointmentSource @default(CONTACT)
+  ip          String?
+  userAgent   String?
+
+  eventId String?
+  event   Event?  @relation("AppointmentEvent", fields: [eventId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, requestedAt])
 }
