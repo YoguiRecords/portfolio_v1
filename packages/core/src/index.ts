@@ -16,6 +16,10 @@ export { hashPassword, verifyPassword } from "./auth/password";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 
+// Scheduled publishing (cron trigger logic)
+export { isDue, splitDue } from "./publishing/due";
+export type { Schedulable } from "./publishing/due";
+
 // AI (LLM port — OpenRouter implementation lands in P14/P15)
 export type {
   Llm,
