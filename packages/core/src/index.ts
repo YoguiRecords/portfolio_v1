@@ -16,6 +16,12 @@ export { hashPassword, verifyPassword } from "./auth/password";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 
+// Testimonials (public submission schema)
+export { TestimonialInput } from "./testimonials/schema";
+
+// Security (in-memory rate limiter)
+export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";
+
 // Scheduled publishing (cron trigger logic)
 export { isDue, splitDue } from "./publishing/due";
 export type { Schedulable } from "./publishing/due";
