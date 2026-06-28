@@ -29,6 +29,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Le client Prisma est généré (non versionné) : requis avant typecheck/build
+      - name: Generate Prisma client
+        run: pnpm --filter @portfolio/db db:generate
+
       - name: Lint
         run: pnpm -r lint
 
