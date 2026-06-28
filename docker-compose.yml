@@ -69,22 +69,15 @@ services:
     networks: [internal]
     restart: "no"
 
-  converter:
+  # Convertisseur d'images → webp (Flask + Pillow). Réutilisé du projet OXO
+  # (« convertisseur YODEB »). Interne uniquement, port 5050 jamais publié.
+  image-processor:
     build:
-      context: .
-      dockerfile: services/converter/Dockerfile
+      context: ./services/image-processor
     restart: unless-stopped
-    environment:
-      PORT: "5050"
     networks: [internal] # interne uniquement — appelé par le back office, jamais exposé
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://localhost:5050/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
-        ]
+      test: ["CMD", "curl", "-f", "http://localhost:5050/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -131,7 +124,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      converter:
+      image-processor:
         condition: service_healthy
     networks: [internal, edge]
 
