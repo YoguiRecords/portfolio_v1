@@ -49,8 +49,10 @@ Closes #234
 
 ## Intégration continue (CI)
 - Le workflow CI (`lint · typecheck · test · build`) tourne **uniquement** sur :
-  `push` → **`llm`** (branche de travail IA), `push` → **`dev`**, et les **tags `v*.*.*`**.
-  Jamais sur les branches `feature/*`, dependabot, etc.
+  `push` → **`llm`** (branche de travail IA), `push` → **`dev`**, `push` → **`dependabot/**`**,
+  et les **tags `v*.*.*`**. Jamais sur les branches `feature/*` ou sur l'évènement `pull_request`.
+- **Dependabot** cible **`dev`** (jamais `main`) ; ses branches `dependabot/**` sont CI-validées,
+  donc le check requis est satisfait sur le SHA → PR `dependabot/** → dev` mergeable une fois verte.
 - Le check tourne sur le **SHA du commit `llm`** ; ce SHA devient le head de la PR `llm → dev`,
   donc la PR est déjà verte au moment de l'ouverture.
 - **`dev` est protégée** (GitHub branch protection) : le check `Lint · Typecheck · Test · Build`
