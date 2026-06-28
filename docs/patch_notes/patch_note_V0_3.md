@@ -1,5 +1,17 @@
 # Patch notes — v0.3.x
 
+## v0.3.2 — News, Agenda & publication programmée (2026-06-29)
+
+- **Pages News** (`/actus`, `/actus/[slug]`) et **Agenda** (`/agenda`, `/agenda/[slug]`) rendues
+  depuis la DB (publiés/publics uniquement) ; actus programmées masquées tant que non échues.
+- **Module Markdown sûr** (rendu en éléments React, **aucune injection HTML** ; liens limités à
+  http(s)/mailto/relatif). **Module Gallery** (image/vidéo/embed, sources http only, lazy, ratios fixes).
+- Détail évènement : bouton **« S'inscrire »** → lien externe `rel="noopener noreferrer"`.
+- **Cron de publication** (`apps/admin`, `POST /api/cron/publish`) protégé par `CRON_SECRET` :
+  bascule `SCHEDULED → PUBLISHED` (articles + évènements échus) avec le rôle `app_admin` (écriture).
+- Modules réutilisables (CSS Modules) ; loaders testés sur la DB isolée. E2E news + agenda.
+- Note : i18n `[locale]` reportée à **Pi18n** (P4 livré en FR sur `/actus`/`/agenda`).
+
 ## v0.3.1 — Fiches projet (étude de cas par blocs) (2026-06-29)
 
 - **Page projet** `/projets/[slug]` rendue depuis la DB (rôle `app_web`, publiés uniquement),

@@ -60,9 +60,14 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   (12 types, `data` JSON validé Zod `@portfolio/core`, fail-safe). Hero d'étude de cas + nav suivant.
   1 composant + CSS Module par bloc (standard `CODE-STANDARDS`).
 
+## Site public — News & Agenda (P4)
+- Pages `/actus` + `/agenda` (liste + détail) depuis la DB ; markdown **sûr** (zéro injection HTML),
+  galerie image/vidéo/embed. Cron de publication programmée dans `admin` (`/api/cron/publish`,
+  protégé `CRON_SECRET`, rôle `app_admin`). i18n `[locale]` reportée à Pi18n.
+
 ## Dernière livraison
-- **v0.3.1** (P3) : fiches projet (blocs modulaires Zod) + image-processor (convertisseur OXO réutilisé,
-  remonté sur Docker). Tests verts (core/db/admin/web), E2E home→projet + 404, CI **verte**. Poussée sur `llm`.
+- **v0.3.2** (P4) : News + Agenda + cron de publication. **53 tests** verts (core 16, db 3, admin 14,
+  web 20) — stabilisés (single-fork pour les suites DB) ; E2E news + agenda. Poussée sur `llm`.
 
 ## Prochaines étapes
 Voir `TASKS.md` — suite des plans : **P3** (fiches projet), P4 (news/agenda), Pi18n, P5 (témoignages),
