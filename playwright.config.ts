@@ -14,5 +14,8 @@ export default defineConfig({
     url: "http://localhost:3100",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // Thread the DB URL through to the dev server so the public pages can read
+    // content (set by the shell locally, by the CI job env in CI).
+    env: { DATABASE_URL: process.env.DATABASE_URL ?? "" },
   },
 });
