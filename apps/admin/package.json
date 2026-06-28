@@ -8,7 +8,7 @@
     "start": "next start -p 3101",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "dotenv -e ../../.env.test -- vitest run"
   },
   "dependencies": {
     "@portfolio/core": "workspace:*",
