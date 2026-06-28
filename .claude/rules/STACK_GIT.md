@@ -47,6 +47,17 @@ Closes #234
 2. Atomic commits (tests pass after each)
 3. Push → PR → review → merge to dev (delete branch)
 
+## Intégration continue (CI)
+- Le workflow CI (`lint · typecheck · test · build`) tourne **uniquement** sur :
+  `push` → **`llm`** (branche de travail IA), `push` → **`dev`**, et les **tags `v*.*.*`**.
+  Jamais sur les branches `feature/*`, dependabot, etc.
+- Le check tourne sur le **SHA du commit `llm`** ; ce SHA devient le head de la PR `llm → dev`,
+  donc la PR est déjà verte au moment de l'ouverture.
+- **`dev` est protégée** (GitHub branch protection) : le check `Lint · Typecheck · Test · Build`
+  doit être **vert** (mode `strict` : branche à jour avec `dev`) pour merger. → resync `dev`
+  dans `llm` avant la PR. Override admin possible (urgence), pas de review forcée (mono-dev).
+- Assets en **Git LFS** (`.gitattributes`) → le checkout CI utilise `lfs: true`.
+
 ## Tags & releases
 - Format: `vX.Y.Z` (semantic versioning)
 - Patch++ bug fixes | Minor++ features | Major++ breaking

@@ -2,9 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [main, dev]
-  pull_request:
-    branches: [main, dev]
+    branches: [llm, dev]
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
 
 # Annule les runs précédents sur la même ref (économie de CI)
 concurrency:
@@ -17,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true # assets (favicon, images, fonts) sont en Git LFS
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -24,11 +25,15 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # Le client Prisma est généré (non versionné) : requis avant typecheck/build
+      - name: Generate Prisma client
+        run: pnpm --filter @portfolio/db db:generate
 
       - name: Lint
         run: pnpm -r lint
