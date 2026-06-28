@@ -7,7 +7,10 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./testing": "./src/testing/index.ts"
+    "./testing": "./src/testing/index.ts",
+    "./testing/db": "./src/testing/db.ts",
+    "./testing/reset": "./src/testing/reset.ts",
+    "./testing/factories": "./src/testing/factories.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
