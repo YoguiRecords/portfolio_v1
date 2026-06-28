@@ -3,6 +3,7 @@ updates:
   # Dépendances npm (monorepo)
   - package-ecosystem: npm
     directory: "/"
+    target-branch: dev # jamais main (réservée) ; intégration via dev, CI sur dependabot/**
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
@@ -13,11 +14,13 @@ updates:
   # GitHub Actions
   - package-ecosystem: github-actions
     directory: "/"
+    target-branch: dev
     schedule:
       interval: weekly
 
   # Images Docker
   - package-ecosystem: docker
     directory: "/"
+    target-branch: dev
     schedule:
       interval: weekly
