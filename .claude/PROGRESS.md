@@ -1,10 +1,11 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
-**Version courante : v0.1.0** (infrastructure — voir `docs/patch_notes/patch_note_V0_1.md`).
+**Version courante : v0.2.0** (auth back office — voir `docs/patch_notes/patch_note_V0_2.md`).
 
 ## État courant
-Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). Tout reste **vert**
-(typecheck + build). Pas encore d'infra Docker complète ni de features applicatives.
+Infra Docker complète + **authentification back office livrée** (sessions opaques, MFA TOTP
+obligatoire, anti brute-force). Tout reste **vert** : typecheck + build + lint + **22 tests Vitest**,
+parcours auth vérifiés end-to-end. Pas encore de features de contenu (pages site / CRUD BO).
 
 ## Stack en place
 - Monorepo **pnpm** workspaces : `apps/web` (public), `apps/admin` (back office),
@@ -20,9 +21,19 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 - **Project** + **ProjectImage** + **Technology** (m2m).
 - **Article** (news, tags `String[]`, statut DRAFT/PUBLISHED).
 - **MediaAsset** (chaque webp converti, tracé ; référencé par avatar/cover/galerie).
+- **Auth** : **AdminUser** (argon2id, TOTP, compteurs lockout), **Session** (token opaque hashé,
+  `mfaPending`), **LoginAttempt** (audit). Tables `REVOKE`d pour `app_web` (isolation des secrets).
 - Enums natifs : `ProjectStatus`, `ArticleStatus`.
-- **CV** : pas de modèles structurés (Experience/Education/Skill retirés) — le HTML premium est conservé
-  tel quel et stocké en DB (approche éditable au BO).
+- **CV** : pas de modèles structurés — le HTML premium est stocké tel quel en DB (éditable au BO).
+
+## Authentification BO (livrée)
+- Login argon2id → **MFA TOTP obligatoire** ; enrôlement par QR (secret persisté après preuve d'un code).
+- Sessions opaques (cookie `httpOnly`/`SameSite`/`Secure`, 8 h) ; `proxy` = garde grossière,
+  validation réelle côté serveur (`lib/auth/guards.ts`).
+- Anti brute-force : lockout compte (5 échecs / 15 min) + rate-limit IP + audit `LoginAttempt`,
+  erreurs génériques (anti-énumération), mitigation timing.
+- Code : `packages/core/src/auth/*` (password/token/totp), `apps/admin/lib/auth/*`,
+  pages `/login`, `/login/verify`, `/security/totp`. Seed admin : `db:seed`.
 
 ## Infra Docker (phasée)
 - **Phase A livrée** : `docker-compose.yml` avec **db** (postgres:16, hôte 5436), **minio**
@@ -52,7 +63,9 @@ Monorepo bootstrappé + **schéma Prisma métier livré et migré** (`init`). To
 > Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
 
 ## Dernière livraison
-- Infra Phase D (bucket `media` public + rôles DB moindre-privilège) vérifiée verte (branche `feature/infra-hardening` → `dev`).
+- **Auth BO complète** (v0.2.0) : modèles d'auth + migrations, login + sessions, MFA TOTP,
+  anti brute-force, 22 tests Vitest. Vérifiée verte, committée et poussée sur `dev`.
 
 ## Prochaines étapes
-Voir `TASKS.md` — **auth BO** (sessions + MFA), puis **features** (pages site + CRUD BO + pipeline upload).
+Voir `TASKS.md` — **features de contenu** : pages site public (`web`), CRUD BO, pipeline upload.
+Hardening restant : clé MinIO scopée, prod (db hors edge), E2E Playwright, application de la DA.

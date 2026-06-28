@@ -24,8 +24,14 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
 
 ## Back office
 Le back office est accessible en ligne et durci : authentification forte (mots de passe hachés
-argon2), **MFA**, rate-limit et lockout sur le login, cookies de session `httpOnly`/`Secure`/`SameSite`,
-protection CSRF, messages d'erreur génériques (anti-énumération).
+argon2id), **MFA TOTP obligatoire**, rate-limit par IP et lockout de compte sur le login, cookies de
+session `httpOnly`/`Secure`/`SameSite`, protection CSRF, messages d'erreur génériques (anti-énumération).
+- **Sessions opaques** : token aléatoire 256 bits en cookie ; seul son hash SHA-256 est stocké
+  (pas de JWT). Validité vérifiée côté serveur (le proxy ne fait qu'une garde sur la présence du cookie).
+- **Isolation des secrets** : les tables d'authentification (`AdminUser`, `Session`, `LoginAttempt`)
+  sont inaccessibles au rôle `app_web` (REVOKE explicite) → une compromission du site public
+  n'expose ni les hashes ni les secrets TOTP.
+- Toutes les tentatives de connexion sont auditées (`LoginAttempt`).
 
 ## Pipeline d'upload
 Validation type MIME / taille / dimensions, **ré-encodage systématique** en webp (neutralise la

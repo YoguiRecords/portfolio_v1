@@ -16,13 +16,15 @@
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 
 ## Fonctionnalités
+- [x] Back office (`admin`) : **auth durcie** — sessions opaques, MFA TOTP, rate-limit + lockout, audit.
 - [ ] Site public (`web`) : page d'accueil (hero/footer depuis `Profile`), **page CV** (rend le HTML stocké, isolé + bouton PDF), pages projets, news/articles.
-- [ ] Back office (`admin`) : auth durcie (MFA, rate-limit), CRUD **Profile/SocialLink/Project/Technology/Article/MediaAsset**, éditeur du **CV HTML**.
+- [ ] Back office (`admin`) : CRUD **Profile/SocialLink/Project/Technology/Article/MediaAsset**, éditeur du **CV HTML**.
 - [ ] Pipeline upload sécurisé (validation Zod + converter + MinIO → `MediaAsset`).
 
 ## Transverse
-- [ ] Tests (Vitest + Playwright) sur les parcours critiques.
-- [x] Docs initiales : `docs/technical/{ARCHITECTURE,SECURITY}.md`, `docs/erd/`, `docs/patch_notes/`.
-- [ ] Docs à créer avec les features : `docs/technical/API_REFERENCE.md`, `E2E_TESTING.md`.
+- [x] Tests Vitest sur les garde-fous d'auth (argon2, token, TOTP, schémas Zod, lockout) — 22 tests.
+- [ ] Tests **Playwright** (E2E) sur les parcours critiques (login+MFA, site public, upload).
+- [x] Docs initiales : `docs/technical/{ARCHITECTURE,SECURITY,API_REFERENCE}.md`, `docs/erd/`, `docs/patch_notes/`.
+- [ ] Docs à créer avec les features : `docs/technical/E2E_TESTING.md`.
 - [ ] Appliquer la **DA** (`.claude/rules/DESIGN_SYSTEM.md`) via le thème Tailwind quand on construit le site.
 - [ ] (Optionnel) Décider du passage TS 6 / ESLint 10 (majeures dispo, gardées en 5/9 testées par Next 16).
