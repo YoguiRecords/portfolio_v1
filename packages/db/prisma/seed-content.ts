@@ -294,6 +294,20 @@ async function main(): Promise<void> {
       eventId: event.id,
     },
   });
+  await prisma.article.create({
+    data: {
+      title: "Construire un produit de bout en bout, en solo",
+      slug: "build-solo",
+      excerpt: "Retour d'expérience : de la vision produit à la mise en production sécurisée.",
+      content:
+        "## Le constat\n\nPorter un produit **seul**, de la stratégie à la prod, demande de jongler entre vision, exécution et sécurité.\n\n## La méthode\n\n- Cadrer le problème avant le code\n- Automatiser les tests tôt\n- Sécuriser par défaut\n\nPlus de détails sur le [portfolio](/).",
+      tags: ["produit", "management", "sécurité"],
+      featured: true,
+      status: "PUBLISHED",
+      readingMinutes: 4,
+      publishedAt: new Date("2026-06-20T09:00:00Z"),
+    },
+  });
 
   // 11. Témoignages — 1 validé (affiché) + 1 en attente de modération
   await prisma.testimonial.createMany({
