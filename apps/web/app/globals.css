@@ -408,11 +408,31 @@ body {
   filter: grayscale(1) contrast(1.06) brightness(0.95);
   display: block;
 }
+.photoframe .tone {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  mix-blend-mode: color;
+  opacity: 0.26;
+}
 .photoframe .shade {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(6, 6, 6, 0.1), rgba(6, 6, 6, 0.6) 85%),
     radial-gradient(60% 50% at 70% 10%, rgba(240, 168, 0, 0.22), transparent 60%);
+}
+.photoframe .monogram {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: clamp(72px, 16vw, 150px);
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+  opacity: 0.85;
 }
 @media (min-width: 1000px) {
   .photoframe {

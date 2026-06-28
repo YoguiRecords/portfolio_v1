@@ -14,6 +14,13 @@ export function Hero({
 }) {
   const lines =
     profile.typewriterLines.length > 0 ? profile.typewriterLines : [profile.headline];
+  const initials = profile.fullName
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   return (
     <header className="hero" id="top">
@@ -33,7 +40,16 @@ export function Hero({
             </a>
           </div>
         </div>
-        <figure className="photoframe" aria-hidden="true">
+        <figure className="photoframe">
+          {profile.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element -- external MinIO URL, sized by CSS
+            <img src={profile.avatar.url} alt={profile.fullName} />
+          ) : (
+            <span className="monogram" aria-hidden="true">
+              {initials}
+            </span>
+          )}
+          <span className="tone" />
           <span className="shade" />
         </figure>
       </div>

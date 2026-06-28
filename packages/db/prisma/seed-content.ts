@@ -75,6 +75,32 @@ async function main(): Promise<void> {
     await prisma.profile.create({ data: profileData });
   }
 
+  // 3b. Avatar — image stockée dans MinIO (bucket `media`, lecture publique).
+  // L'URL de base est pilotée par l'environnement (jamais en dur dans le code).
+  const mediaBase = process.env.MEDIA_PUBLIC_BASE_URL ?? "http://localhost:9100/media";
+  const avatarUrl = `${mediaBase}/profile.webp`;
+  const avatar = await prisma.mediaAsset.upsert({
+    where: { url: avatarUrl },
+    update: {},
+    create: {
+      url: avatarUrl,
+      alt: "Yohan Debusscher",
+      originalName: "profile.webp",
+      mimeType: "image/webp",
+      sizeBytes: 17916,
+      width: 455,
+      height: 667,
+      kind: "IMAGE",
+    },
+  });
+  const profileForAvatar = await prisma.profile.findFirst();
+  if (profileForAvatar) {
+    await prisma.profile.update({
+      where: { id: profileForAvatar.id },
+      data: { avatarId: avatar.id },
+    });
+  }
+
   // 4. Sections de la home (titres / intros / CTA / ordre)
   await prisma.homeSection.createMany({
     data: [

@@ -52,10 +52,10 @@ yarn-error.log*
 # ── Docker / volumes locaux ──
 # Données persistées montées en local (jamais committer la DB / le stockage)
 docker/volumes/
-data/
-minio-data/
-postgres-data/
-caddy-data/
+/data/
+/minio-data/
+/postgres-data/
+/caddy-data/
 
 # ── IDE / OS ──
 .vscode/*
@@ -64,3 +64,6 @@ caddy-data/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Visual QA (screenshots / scripts locaux, non versionnés)
+.shots/
