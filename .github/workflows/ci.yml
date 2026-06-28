@@ -65,8 +65,10 @@ jobs:
       - name: Typecheck
         run: pnpm -r typecheck
 
+      # `pnpm test` serializes packages (--workspace-concurrency=1) so the
+      # DB-backed suites don't race on the shared `test` schema.
       - name: Test
-        run: pnpm -r test
+        run: pnpm test
 
       - name: Build
         run: pnpm -r build

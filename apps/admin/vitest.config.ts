@@ -11,7 +11,6 @@ export default mergeConfig(
     test: {
       fileParallelism: false,
       pool: "forks",
-      poolOptions: { forks: { singleFork: true } },
     },
   }),
 );

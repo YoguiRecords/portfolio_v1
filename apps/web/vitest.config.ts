@@ -12,11 +12,10 @@ export default mergeConfig(
     test: {
       environment: "jsdom",
       setupFiles: ["../../vitest.setup.ts"],
-      // DB-backed tests share one Postgres schema → run every file in a single
-      // fork, sequentially, to eliminate cross-file races on the shared schema.
+      // DB-backed tests share one Postgres schema → forks pool + no file
+      // parallelism runs them sequentially, isolating cross-file state.
       fileParallelism: false,
       pool: "forks",
-      poolOptions: { forks: { singleFork: true } },
     },
   }),
 );
