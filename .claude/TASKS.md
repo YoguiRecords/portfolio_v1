@@ -2,29 +2,31 @@
 
 > Backlog actionnable. Retirer chaque tâche dès qu'elle est livrée (pas d'historique ici).
 
-## Base de données
-- [x] Rôles Postgres séparés (`app_web` lecture seule, `app_admin` RW, `umami`) + câblage `DATABASE_URL`.
-- [ ] (Option DX) Décider d'ajouter `dotenv` pour auto-charger `.env` dans les commandes Prisma.
+## Plans restants (ordre d'exécution)
+- [ ] **P3** — Web : fiches projet (blocs modulaires, 4 types) → `/projets/[slug]`.
+- [ ] **P4** — Web : News/Articles + Agenda/Événements (+ publication programmée).
+- [ ] **Pi18n** — Bilingue (FR/EN).
+- [ ] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission).
+- [ ] **P6** — Web : Formulaire de contact (Route Handler, Zod, rate-limit, honeypot).
+- [ ] **P7** — Web : SEO/AEO (metadata, sitemap, robots, llms.txt, JSON-LD, FAQPage, OG).
+- [ ] **P8** — Admin : garde des routes + shell BO (nav, layout).
+- [ ] **P9** — Admin : CRUD contenu home (Profile, SiteSettings, HomeSection, KPI, Skill, Career*, Analysis, Goal).
+- [ ] **P10** — Admin : Projets + éditeur de blocs.
+- [ ] **P11** — Admin : Articles (+ programmation) + **upload média** (via `image-processor` → MinIO).
+- [ ] **P12** — Admin : Agenda/Événements (+ génération d'actu depuis évènement).
+- [ ] **P13** — Admin : Modération témoignages + inbox contact/RDV.
+- [ ] **P14** — IA : assistant de rédaction d'actus au BO (OpenRouter).
+- [ ] **P15** — IA : chatbot public + RDV + garde-fous (OpenRouter).
+- [ ] **P16** — Réseaux : auto-post + stats (**plan only**, non exécuté).
 
-## Infrastructure Docker
-- [x] Phase A : `docker-compose.yml` (db + minio + umami), réseaux `edge`/`internal`, base/rôle `umami`.
-- [x] Phase B : service **`converter`** (`services/converter`, Node/Fastify/sharp) + Dockerfile + ajout au compose.
-- [x] Phase C : Dockerfiles multi-stage non-root **web**/**admin** (Next standalone) + ajout au compose.
-- [x] Phase C : **proxy Caddy** (routage 3 sous-domaines + `/media`, en-têtes sécu ; HTTPS auto en prod).
-- [x] MinIO : bucket `media` (lecture publique) via `minio-init`.
+## Infra / cleanup
+- [ ] Retirer le service Node `services/converter/` (remplacé par `image-processor` réutilisé d'OXO).
+- [ ] **minio-init** : diagnostiquer pourquoi le one-shot ne se lance pas (bucket `media` déjà public → non bloquant).
 - [ ] MinIO : clé d'écriture serveur à privilège minimal (vs root) pour le back office.
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
-
-## Fonctionnalités
-- [x] Back office (`admin`) : **auth durcie** — sessions opaques, MFA TOTP, rate-limit + lockout, audit.
-- [ ] Site public (`web`) : page d'accueil (hero/footer depuis `Profile`), **page CV** (rend le HTML stocké, isolé + bouton PDF), pages projets, news/articles.
-- [ ] Back office (`admin`) : CRUD **Profile/SocialLink/Project/Technology/Article/MediaAsset**, éditeur du **CV HTML**.
-- [ ] Pipeline upload sécurisé (validation Zod + converter + MinIO → `MediaAsset`).
+- [ ] Avatar : re-générer via `image-processor` (au lieu de sharp manuel) une fois P11 livré.
 
 ## Transverse
-- [x] Tests Vitest sur les garde-fous d'auth (argon2, token, TOTP, schémas Zod, lockout) — 22 tests.
-- [ ] Tests **Playwright** (E2E) sur les parcours critiques (login+MFA, site public, upload).
-- [x] Docs initiales : `docs/technical/{ARCHITECTURE,SECURITY,API_REFERENCE}.md`, `docs/erd/`, `docs/patch_notes/`.
+- [ ] Porter `AdminImageUploader` (Vue/OXO) → React (composant BO, P11). Voir `docs/plans/2026-06-29-Pconv-image-processor.md`.
 - [ ] Docs à créer avec les features : `docs/technical/E2E_TESTING.md`.
-- [ ] Appliquer la **DA** (`.claude/rules/DESIGN_SYSTEM.md`) via le thème Tailwind quand on construit le site.
-- [ ] (Optionnel) Décider du passage TS 6 / ESLint 10 (majeures dispo, gardées en 5/9 testées par Next 16).
+- [ ] (Optionnel) Décider du passage TS 6 / ESLint 10 (gardés en 5/9 testés par Next 16).
