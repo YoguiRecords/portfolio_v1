@@ -14,6 +14,8 @@ import { prisma } from "../src/index";
 
 async function main(): Promise<void> {
   // 1. Reset du contenu éditorial (les FK enfants tombent en cascade)
+  await prisma.event.deleteMany();
+  await prisma.article.deleteMany();
   await prisma.project.deleteMany();
   await prisma.analysis.deleteMany();
   await prisma.careerTrack.deleteMany();
@@ -237,6 +239,33 @@ async function main(): Promise<void> {
       faqs: { create: [
         { question: "Le projet est-il en production ?", answer: "Oui, déployé et opérationnel.", scope: "PROJECT", order: 0 },
       ] },
+    },
+  });
+
+  // 10b. Agenda — un évènement public publié + une actu programmée liée
+  const event = await prisma.event.create({
+    data: {
+      title: "Meetup Dev & Produit",
+      slug: "meetup-dev-produit",
+      description: "Rencontre autour du build solo de bout en bout.",
+      startAt: new Date("2026-09-15T18:30:00Z"),
+      locationName: "La Plage Digitale",
+      city: "Lille",
+      registrationUrl: "https://example.com/inscription",
+      visibility: "PUBLIC",
+      status: "PUBLISHED",
+      publishedAt: new Date(),
+    },
+  });
+  await prisma.article.create({
+    data: {
+      title: "Je serai au Meetup Dev & Produit",
+      slug: "actu-meetup",
+      excerpt: "Rendez-vous le 15 septembre à Lille.",
+      content: "Venez échanger sur le build produit de bout en bout.",
+      status: "SCHEDULED",
+      scheduledAt: new Date("2026-09-01T08:00:00Z"),
+      eventId: event.id,
     },
   });
 
