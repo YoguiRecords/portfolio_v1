@@ -26,6 +26,62 @@ enum ArticleStatus {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
+// Authentification back office (compte admin unique, sessions opaques)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Compte administrateur unique du back office.
+/// Auth durcie : mot de passe haché argon2id + TOTP (MFA obligatoire).
+/// Ces tables ne sont JAMAIS accessibles au rôle DB public `app_web`
+/// (REVOKE explicite dans la migration) — seul `app_admin` y accède.
+model AdminUser {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  passwordHash   String // argon2id
+  totpSecret     String? // secret TOTP (base32), null tant que non enrôlé
+  isTotpEnabled  Boolean   @default(false)
+  failedAttempts Int       @default(0) // compteur anti brute-force
+  lockedUntil    DateTime? // verrou temporaire après trop d'échecs
+  lastLoginAt    DateTime?
+
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Session opaque côté serveur : un token aléatoire est posé en cookie httpOnly,
+/// seul son hash est stocké ici (le token brut n'est jamais persisté). Pas de JWT.
+model Session {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique // SHA-256 du token de session
+  expiresAt  DateTime
+  mfaPending Boolean  @default(false) // true = mot de passe OK, 2e facteur (TOTP) pas encore validé
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  adminUserId String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId])
+  @@index([expiresAt])
+}
+
+/// Journal des tentatives de connexion (monitoring anti brute-force).
+/// `email` est la valeur saisie (peut ne correspondre à aucun compte).
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String?
+  userAgent String?
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([createdAt])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 // Identité du site (À propos / CV)
 // ──────────────────────────────────────────────────────────────────────────
 
