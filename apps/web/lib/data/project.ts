@@ -1,4 +1,5 @@
-import type { PrismaClient } from "@portfolio/db";
+import { cache } from "react";
+import { prisma as sharedPrisma, type PrismaClient } from "@portfolio/db";
 
 /**
  * Loads a published project case-study by slug, with everything its page needs:
@@ -36,6 +37,9 @@ export async function getProjectBySlug(prisma: PrismaClient, slug: string) {
 
 /** The project detail payload, derived from the loader. */
 export type ProjectDetail = NonNullable<Awaited<ReturnType<typeof getProjectBySlug>>>;
+
+/** Request-cached project loader bound to the shared client (used by the page). */
+export const getProject = cache((slug: string) => getProjectBySlug(sharedPrisma, slug));
 
 /**
  * Lists published project slugs (for `generateStaticParams` / sitemap).
