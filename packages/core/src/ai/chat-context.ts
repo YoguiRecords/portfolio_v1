@@ -29,9 +29,9 @@ export function buildContext(input: ChatContextInput): string {
   if (input.articles?.length) {
     lines.push(`Actualités : ${input.articles.map((a) => a.title).join(" · ")}`);
   }
-  if (input.events?.length) {
+  const [next, ...rest] = input.events ?? [];
+  if (next) {
     const fmt = (d: Date) => d.toISOString().slice(0, 16).replace("T", " ");
-    const [next, ...rest] = input.events;
     lines.push(`Prochain évènement : ${next.title} le ${fmt(next.startAt)} (UTC).`);
     if (rest.length) {
       lines.push(`Autres dates à venir : ${rest.map((e) => `${e.title} (${fmt(e.startAt)})`).join(" · ")}`);
