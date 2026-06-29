@@ -46,21 +46,36 @@ export async function deleteKpiAction(form: FormData): Promise<void> {
   revalidatePath("/content");
 }
 
-/** Upserts the singleton Profile from the profile editor. */
-export async function upsertProfileAction(form: FormData): Promise<void> {
+/** Feedback returned to the profile editor after a save attempt. */
+export type ProfileFormState = { ok?: boolean; error?: string };
+
+/**
+ * Upserts the singleton Profile from the profile editor.
+ * `useActionState`-compatible: returns a feedback state instead of `void`
+ * so the client form can surface success/error to the user.
+ */
+export async function upsertProfileAction(
+  _prev: ProfileFormState,
+  form: FormData,
+): Promise<ProfileFormState> {
   await requireEnrolledSession();
-  await upsertProfile(prisma, {
-    fullName: str(form, "fullName"),
-    headline: str(form, "headline"),
-    bio: str(form, "bio"),
-    email: str(form, "email"),
-    location: str(form, "location"),
-    sigText: str(form, "sigText"),
-    currentRole: str(form, "currentRole"),
-    typewriterLines: (str(form, "typewriterLines") ?? "")
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean),
-  });
+  try {
+    await upsertProfile(prisma, {
+      fullName: str(form, "fullName"),
+      headline: str(form, "headline"),
+      bio: str(form, "bio"),
+      email: str(form, "email"),
+      location: str(form, "location"),
+      sigText: str(form, "sigText"),
+      currentRole: str(form, "currentRole"),
+      typewriterLines: (str(form, "typewriterLines") ?? "")
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean),
+    });
+  } catch {
+    return { error: "Échec de l'enregistrement. Vérifiez les champs." };
+  }
   revalidatePath("/profile");
+  return { ok: true };
 }

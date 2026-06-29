@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { mergeConfig, defineConfig } from "vitest/config";
 import { sharedTest } from "../../vitest.shared";
 
@@ -9,6 +10,10 @@ import { sharedTest } from "../../vitest.shared";
 export default mergeConfig(
   sharedTest,
   defineConfig({
+    // Mirror the app's `@/*` path alias so tests resolve source imports.
+    resolve: {
+      alias: { "@": fileURLToPath(new URL("./", import.meta.url)) },
+    },
     test: {
       environment: "jsdom",
       setupFiles: ["../../vitest.setup.ts"],
