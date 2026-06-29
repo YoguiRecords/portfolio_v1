@@ -67,7 +67,21 @@
     de simples `String?` (pas de FK) → migration auto-contenue, **aucune table existante modifiée**
     (rayon de souffle minimal). La fiche 360° (P11) les résoudra par requête. _Réversible._
   - `API_REFERENCE.md` détaillé des actions CRM : **reporté à P15** (consolidation docs).
-- **P16 (RBAC + auth)** : dépendance `zxcvbn` (score ≥ 3) — déjà marquée « approved » dans le plan.
+- **P16 (RBAC + auth) — SOCLE LIVRÉ, suite scopée (DT8).** ⚠️ **À LIRE.**
+  **Livré + testé :** schéma (AdminUser += role/permissions/isActive/displayName/createdById ;
+  `AdminInvite` ; migration REVOKE app_web, appliquée test DB) ; moteur core `auth/permissions`
+  (BO_MODULES, ROLE_PRESETS, `can`/`effectivePermissions`) ; politique mot de passe `auth/password-policy` ;
+  gardes serveur `requirePermission`/`requireOwner`/`assertCanWrite` + page `/403` ; masquage PII `lib/privacy/mask`.
+  **Choix :** `passwordHash` gardé **requis** (comptes invités = `isActive=false` + placeholder)
+  pour ne pas casser le login ; **zxcvbn non installé** (politique forte maison ; upgrade zxcvbn = enhancement approuvé).
+  **DT8 — RESTE À FAIRE (mécanique, plan prêt) :** (1) appliquer `requirePermission("<module>")` à
+  **chaque page** `(dashboard)/*` + `assertCanWrite`/`requirePermission` à **chaque Server Action** ;
+  (2) **filtrer la nav** par `effectivePermissions` ; (3) **UI gestion comptes** (`/utilisateurs`,
+  inviter/rôle/permissions/activer/supprimer, dernier OWNER inviolable) ; (4) **onboarding par
+  invitation** (`/invitation/[token]`, email Graph + fallback lien) ; (5) login rejette `isActive=false` ;
+  (6) appliquer `maskPii` dans les loaders sensibles pour VIEWER ; (7) upgrade **zxcvbn**.
+  → Tant que (1)(2)(5) ne sont pas faits, **ne créer que le compte OWNER** (les rôles restreints ne
+  sont pas encore réellement cloisonnés au runtime). Le moteur est prêt, le câblage est l'étape suivante.
 
 ---
 _Dernière mise à jour : pendant P0 (clôturée verte)._
