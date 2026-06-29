@@ -1,5 +1,18 @@
 # Patch notes — v0.4.x
 
+## v0.4.5 — Back office : projets, articles+média, agenda, modération (2026-06-29)
+
+- **Projets** : CRUD entête + **actions de blocs** validées Zod par type (symétriques du renderer P3 :
+  un payload refusé côté public l'est aussi au BO). Écran liste + publier/dépublier.
+- **Articles** : CRUD + **publication programmée** (status SCHEDULED exige `scheduledAt`).
+- **Pipeline upload sécurisé** : `validateUpload` (mime/taille/dimensions) → **image-processor**
+  (webp + strip EXIF) → **MinIO** (nom aléatoire) → `MediaAsset`. Ports injectables (mockés en test) +
+  adaptateur réel (fetch converter + client MinIO). Vidéo/embed (sans webp).
+- **Agenda** : CRUD évènements + **génération d'actu** (DRAFT liée) depuis un évènement.
+- **Modération** : témoignages (accepter/refuser/**éditer le texte affiché** sans toucher l'original
+  d'audit), inbox **contact** (lu/spam), **RDV** (confirmer/refuser) — `app_admin` only.
+- Tout testé (schémas Zod + persistance/pipeline sur DB de test, ports mockés).
+
 ## v0.4.4 — Back office : édition de contenu (pattern + KPI/Profil) (2026-06-29)
 
 - **Pattern CRUD réutilisable** : schémas Zod d'édition (`@portfolio/core/admin`), fonctions de

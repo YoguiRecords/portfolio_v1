@@ -14,10 +14,10 @@
 - [~] **P9** — Admin : CRUD contenu home — **pattern réutilisable** (schémas Zod + Server Actions `app_admin`
       + persistance testée) + éditeurs **KPI** et **Profil**. Reste : écrans SiteSettings/HomeSection/Skill/
       Career*/Analysis/Goal (même pattern) + E2E BO-login (TOTP).
-- [ ] **P10** — Admin : Projets + éditeur de blocs.
-- [ ] **P11** — Admin : Articles (+ programmation) + **upload média** (via `image-processor` → MinIO).
-- [ ] **P12** — Admin : Agenda/Événements (+ génération d'actu depuis évènement).
-- [ ] **P13** — Admin : Modération témoignages + inbox contact/RDV.
+- [x] **P10** — Admin : CRUD projet + actions de blocs (Zod par type, symétrique du renderer). ✅
+- [x] **P11** — Admin : CRUD article (programmation) + pipeline upload sécurisé (image-processor→MinIO) + vidéo/embed. ✅
+- [x] **P12** — Admin : CRUD agenda + génération dactu depuis évènement. ✅
+- [x] **P13** — Admin : modération témoignages + inbox contact + RDV. ✅
 - [ ] **P14** — IA : assistant de rédaction d'actus au BO (OpenRouter).
 - [ ] **P15** — IA : chatbot public + RDV + garde-fous (OpenRouter).
 - [ ] **P16** — Réseaux : auto-post + stats (**plan only**, non exécuté).
