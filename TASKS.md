@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P13 — Assistant IA + Calendrier** (reskin) — `phase-13-ia-calendrier.md`
 - [ ] **P14 — Réglages + SEO/FAQ + recherche ⌘K** — `phase-14-reglages-recherche.md`
 - [ ] **P15 — Finitions transverses** (états vides/erreur, a11y, responsive, E2E, docs) — `phase-15-finitions.md`
 - [ ] **P16 — Multi-users BO + RBAC** (rôles + permissions, VIEWER read-only + masquage PII, invitations) — `phase-16-bo-users-rbac.md`
@@ -29,9 +28,10 @@
 - [x] **P10 — CRM schéma & socle** — modèles Prisma (Company/Contact/Deal/Activity/CrmTask) + migration **REVOKE app_web** (validée test DB) + schémas Zod `core/crm` + actions CRUD `crm-actions` (guard+Zod).
 - [x] **P11 — CRM UI** — Contacts (liste + fiche 360° deals/activités/tâches), Sociétés, Pipeline (board par stage + déplacement). _Reste : DnD (DT4), agrégation 360° cross-domaine + hooks « créer contact » (DT5)._
 - [x] **P12 — Mission Control** — agrégation `lib/data/mission-control.ts` (KPIs relation client, pipeline, tâches, à-traiter, aperçu inbox) + page dédiée.
+- [x] **P13 — IA + Calendrier (reskin)** — pages `/ai` + `/calendrier` passées à la DA v2 (tokens), fonctions inchangées.
 
 ## En cours
-- **P13 — Assistant IA + Calendrier (reskin)**.
+- **P14 — Réglages + SEO/FAQ + recherche ⌘K**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

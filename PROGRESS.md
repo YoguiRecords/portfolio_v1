@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P12 — Mission Control** (agrégation pilotage relation client + à-traiter).
+- **Dernier jalon livré :** **P13 — IA + Calendrier (reskin DA v2)**.
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 13 — Assistant IA + Calendrier (reskin)** (`docs/plans/2026-06-29-phase-13-ia-calendrier.md`) : mise à la DA v2 des pages `/ai` + `/calendrier` (fonctions inchangées).
+- Exécuter **Phase 14 — Réglages + SEO/FAQ + recherche ⌘K** (`docs/plans/2026-06-29-phase-14-reglages-recherche.md`) : reskin réglages site + FAQ + config chatbot ; **command palette ⌘K** globale (recherche projets/articles/contacts/actions).
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -41,6 +41,7 @@
 - **P10** — CRM socle : modèles Prisma + migration `20260630120000_crm` (REVOKE `app_web`, validée test DB), `packages/core/src/crm/schemas.ts` (Zod), `apps/admin/lib/crm/crm.ts` + `lib/actions/crm-actions.ts` (CRUD + guard). Liens cross-domaine en IDs souples. `SECURITY.md` mis à jour.
 - **P11** — CRM UI : `components/crm/{contacts-table,pipeline-board}.tsx`, pages `contacts/{page,[id]/page}` (fiche 360° deals/activités/tâches), `societes/page`, `pipeline/page` (board + déplacement par select). Nav : Contacts/Sociétés/Pipeline.
 - **P12** — Mission Control : `lib/data/mission-control.ts` (+ test) + page `mission-control/page.tsx`. KPIs relation client, pipeline (groupBy), tâches, à-traiter, aperçu inbox. Entrée nav en-tête.
+- **P13** — Reskin DA v2 des pages `/ai` (Assistant IA) et `/calendrier` (tokens ; logique inchangée).
 - Gate vert : 147 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
