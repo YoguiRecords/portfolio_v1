@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@portfolio/db";
 import { listProjects } from "@/lib/content/project";
 import {
@@ -32,6 +33,12 @@ export default async function ProjectsPage() {
                 </div>
               </div>
               <div className="flex gap-2">
+                <Link
+                  href={`/projets/${p.id}`}
+                  className="rounded-md border border-amber-500/40 px-3 py-1.5 text-sm text-amber-300 hover:bg-amber-500/10"
+                >
+                  Éditer les blocs
+                </Link>
                 <form action={setProjectStatusAction}>
                   <input type="hidden" name="id" value={p.id} />
                   <input type="hidden" name="status" value={p.status === "PUBLISHED" ? "DRAFT" : "PUBLISHED"} />
