@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P11 — CRM UI** (Contacts 360°, Sociétés, Pipeline board).
+- **Dernier jalon livré :** **P12 — Mission Control** (agrégation pilotage relation client + à-traiter).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 12 — Mission Control** (`docs/plans/2026-06-29-phase-12-mission-control.md`) : agrégation « à traiter » (KPIs relation client, pipeline, tâches du jour, inbox preview), branchée sur P9+P11+modération+publishing.
+- Exécuter **Phase 13 — Assistant IA + Calendrier (reskin)** (`docs/plans/2026-06-29-phase-13-ia-calendrier.md`) : mise à la DA v2 des pages `/ai` + `/calendrier` (fonctions inchangées).
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -40,7 +40,8 @@
 - **P9** — Inbox unifiée : `lib/inbox/aggregate.ts` (+ test résilience), `components/inbox/inbox-list.tsx`, pages `/inbox` + `/inbox/[source]/[id]` (réponse via `mail-reply-form`/Graph). Nav : « Boîte de réception » remplace Mails+Messages (routes conservées).
 - **P10** — CRM socle : modèles Prisma + migration `20260630120000_crm` (REVOKE `app_web`, validée test DB), `packages/core/src/crm/schemas.ts` (Zod), `apps/admin/lib/crm/crm.ts` + `lib/actions/crm-actions.ts` (CRUD + guard). Liens cross-domaine en IDs souples. `SECURITY.md` mis à jour.
 - **P11** — CRM UI : `components/crm/{contacts-table,pipeline-board}.tsx`, pages `contacts/{page,[id]/page}` (fiche 360° deals/activités/tâches), `societes/page`, `pipeline/page` (board + déplacement par select). Nav : Contacts/Sociétés/Pipeline.
-- Gate vert : 146 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P12** — Mission Control : `lib/data/mission-control.ts` (+ test) + page `mission-control/page.tsx`. KPIs relation client, pipeline (groupBy), tâches, à-traiter, aperçu inbox. Entrée nav en-tête.
+- Gate vert : 147 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
