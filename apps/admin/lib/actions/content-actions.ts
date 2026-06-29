@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
 import { requireEnrolledSession } from "@/lib/auth/guards";
 import { createKpi, updateKpi, deleteKpi } from "@/lib/content/kpi";
+import { updateSection } from "@/lib/content/home-section";
 import { upsertProfile } from "@/lib/content/profile";
 
 /** Reads an optional string FormData field (empty → undefined). */
@@ -78,4 +79,25 @@ export async function upsertProfileAction(
   }
   revalidatePath("/profile");
   return { ok: true };
+}
+
+/** Updates a home section's text, visibility and order from the editor form. */
+export async function updateHomeSectionAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const id = str(form, "id");
+  const key = str(form, "key");
+  if (!id || !key) return;
+  await updateSection(prisma, id, {
+    key,
+    navLabel: str(form, "navLabel"),
+    eyebrow: str(form, "eyebrow"),
+    title: str(form, "title"),
+    intro: str(form, "intro"),
+    ctaLabel: str(form, "ctaLabel"),
+    ctaHref: str(form, "ctaHref"),
+    order: Number(form.get("order") ?? 0),
+    isVisible: form.get("isVisible") === "on",
+  });
+  revalidatePath("/content");
+  revalidatePath("/");
 }
