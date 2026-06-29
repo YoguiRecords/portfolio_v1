@@ -723,6 +723,29 @@ model ArticleMedia {
   @@index([articleId])
 }
 
+// ──────────────────────────────────────────────────────────────────────────
+// Internationalisation (overlay EN par champ — FR = source de vérité)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Traduction d'un champ d'un enregistrement, par locale. Le FR reste dans les
+/// colonnes d'origine ; l'EN est superposé ici (fallback FR si absent). Régénéré
+/// par IA à la validation du FR ; `sourceHash` = hash du FR ayant produit la trad.
+model Translation {
+  id         String   @id @default(cuid())
+  model      String // "Profile", "Project", "Article", "Event", "ProjectBlock"…
+  recordId   String
+  field      String // "bio", "title", "content"…
+  locale     String // "en"
+  value      String
+  isAuto     Boolean  @default(true) // généré par IA (vs édité à la main)
+  sourceHash String // hash du texte FR source ayant produit cette traduction
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  @@unique([model, recordId, field, locale])
+  @@index([model, recordId, locale])
+}
+
 /// Demande de rendez-vous (formulaire de contact ou chatbot IA → inbox BO).
 /// Sécurité : `app_web` peut INSÉRER mais jamais LIRE (comme ContactMessage).
 model AppointmentRequest {
