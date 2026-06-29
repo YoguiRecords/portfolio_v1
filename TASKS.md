@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P5 — Me concernant + Contenu home + CV** — `phase-05-profil-home-cv.md`
 - [ ] **P6 — Médias** — `phase-06-medias.md`
 - [ ] **P7 — Témoignages** (modération) — `phase-07-temoignages.md`
 - [ ] **P8 — Agenda / Events + Demandes de RDV** (accepter/refuser → agenda) — `phase-08-agenda-rdv.md`
@@ -29,9 +28,10 @@
 - [x] **P2 — Dashboard v2** — KPIs + trafic Umami (fallback) + « à traiter » + top contenus, sur primitives P0.
 - [x] **P3 — Projets** — liste DataTable (recherche/filtre/pagination/suppression confirmée) + éditeur entête avec aperçu live (composant `live-preview` réutilisable) + blocs préservés.
 - [x] **P4 — Articles** — liste DataTable + éditeur markdown (aperçu live réutilisé) + programmation (SCHEDULED/scheduledAt) + tags/SEO + renderer markdown sûr admin.
+- [x] **P5 — Profil / Home / CV** — form « Me concernant » v2 + aperçu live « À propos », sections home reskin, éditeur CV HTML isolé (iframe sandbox).
 
 ## En cours
-- **P5 — Me concernant + Contenu home + CV**.
+- **P6 — Médias**.
 
 ## Bloqué / à arbitrer
 - _(rien)_
