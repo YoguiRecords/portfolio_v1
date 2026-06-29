@@ -95,9 +95,10 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   chatbot SVG, avatar singleton, i18n home + liens nav, chargement `.env` racine) + **témoignages
   enrichis** (entreprise + lien hiérarchique).
 - **v0.4.6** : IA (assistance BO + chatbot public). Plans **P0–P15 livrés** ; **P16 = plan-only**.
-- ⚠️ **Sécurité À FAIRE** : régénérer `CRON_SECRET` (valeur faible exposée en clair).
-- ⚠️ **BO incomplet** : éditeurs HomeSection/Skill/Career/Analysis/SiteSettings + éditeurs de blocs
-  non-PROCESS à ajouter ; `localize()` à brancher sur loaders projet/news/agenda/témoignages.
+- **Audit BO clos** : éditeurs **Sections, KPI, Compétences, Parcours, Analyses, FAQ, Réglages**,
+  **Profil** (avatar + socials + dispo + résumé IA), et **éditeurs de blocs** (Gantt/CONTEXT/TEXT/
+  RESULTS + JSON validé pour les autres). **i18n** branché sur toutes les sous-pages (`/en` complet).
+- ℹ️ `CRON_SECRET` faible en dev — laissé tel quel sur demande (à régénérer avant prod).
 
 ## Plans livrés : **P0–P15 + Pi18n** (+ image-processor OXO, avatar MinIO). P16 = plan documenté.
 > Reste (non bloquant) : écrans BO restants (même pattern), câblage `localize()` des loaders

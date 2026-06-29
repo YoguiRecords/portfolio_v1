@@ -60,7 +60,11 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
 
 ## Server Actions back office (`apps/admin`, rôle `app_admin`, garde MFA)
 Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `revalidatePath`.
-- **Contenu home** : `createKpiAction` / `updateKpiAction` / `deleteKpiAction`, `upsertProfileAction`.
+- **Contenu home** : `createKpiAction`/`updateKpiAction`/`deleteKpiAction`, `updateHomeSectionAction`,
+  `createSkillAction`/`deleteSkillAction`, `createFaqAction`/`deleteFaqAction`, `saveSettingsAction`,
+  Career (`createTrackAction`/`createMilestoneAction`/`createGoalAction` + suppressions), Analysis
+  (`createAnalysisAction`/`createAnalysisItemAction` + suppressions).
+- **Profil** : `upsertProfileAction`, `uploadProfileAvatarAction` (pipeline média), `createSocialAction`/`deleteSocialAction`.
 - **Projets** : `createProjectAction` / `setProjectStatusAction` / `deleteProjectAction` ;
   actions de blocs (ajout/maj validée Zod par type/réordo/visibilité/suppression).
 - **Articles** : `createArticleAction` / `deleteArticleAction` (programmation `SCHEDULED`).
