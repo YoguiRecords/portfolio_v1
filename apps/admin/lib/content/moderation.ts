@@ -1,5 +1,11 @@
 import { z } from "zod";
 import type { PrismaClient } from "@portfolio/db";
+import type { CreateEventInput } from "@portfolio/core/integrations";
+
+/** Minimal calendar writer (subset of CalendarProvider) — injectable for tests. */
+export interface CalendarWriter {
+  createEvent(input: CreateEventInput): Promise<void>;
+}
 
 /**
  * Moderation & inbox operations (write side, `app_admin` only). Testimonials,
@@ -60,6 +66,35 @@ export function listAppointments(prisma: PrismaClient) {
 
 export function confirmAppointment(prisma: PrismaClient, id: string) {
   return prisma.appointmentRequest.update({ where: { id }, data: { status: "CONFIRMED" } });
+}
+
+/**
+ * Confirms an appointment **and** best-effort creates a calendar event for the
+ * requested slot (default 30 min). The calendar write is non-blocking: if no
+ * writable provider is connected (e.g. Microsoft Graph absent), the confirmation
+ * still succeeds — the event is simply skipped (logged), never throwing.
+ */
+export async function confirmAppointmentWithEvent(
+  prisma: PrismaClient,
+  calendar: CalendarWriter,
+  id: string,
+): Promise<void> {
+  const appt = await prisma.appointmentRequest.findUnique({ where: { id } });
+  if (!appt) return;
+  await prisma.appointmentRequest.update({ where: { id }, data: { status: "CONFIRMED" } });
+  if (!appt.requestedAt) return;
+  const start = appt.requestedAt;
+  const end = new Date(start.getTime() + 30 * 60_000);
+  try {
+    await calendar.createEvent({
+      title: `RDV — ${appt.name}`,
+      start: start.toISOString(),
+      end: end.toISOString(),
+      location: appt.topic ?? undefined,
+    });
+  } catch (error) {
+    console.error("[confirmAppointment] calendar event skipped (no writable calendar?):", error);
+  }
 }
 
 export function declineAppointment(prisma: PrismaClient, id: string) {
