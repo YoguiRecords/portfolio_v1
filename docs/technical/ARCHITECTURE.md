@@ -36,6 +36,7 @@ Réseau interne (non exposé) :
   admin ─▶ image-processor (HTTP interne : image -> webp)
   admin ─▶ MinIO (écriture, credentials serveur)
   web/admin ─▶ OpenRouter (HTTPS sortant : assistant IA / chatbot ; clé en .env)
+  admin     ─▶ Microsoft Graph (HTTPS sortant : mail + calendrier Outlook, OAuth app-only ; optionnel)
 ```
 
 Les navigateurs ne communiquent qu'avec les applications Next.js (via le proxy) et lisent les
@@ -52,6 +53,9 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
   contexte **public** et appelle OpenRouter ; outil de prise de RDV → `AppointmentRequest`.
 - **Assistant BO** : `admin` appelle OpenRouter pour l'assistance rédactionnelle par champ et la
   traduction FR→EN à l'enregistrement.
+- **Mail & calendrier BO** : ports `Mailbox`/`CalendarProvider` (`@portfolio/core/integrations`).
+  Calendrier = DB du site (agenda + RDV) **+** Outlook si configuré ; mail = boîte Exchange réelle
+  via Microsoft Graph (OAuth app-only) ou démo. Détail : `docs/technical/INTEGRATIONS.md`.
 
 ## Services Docker
 

@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./testimonials": "./src/testimonials/schema.ts",
+    "./integrations": "./src/integrations/ports.ts",
     "./testing/mock-llm": "./src/testing/mock-llm.ts"
   },
   "scripts": {

@@ -70,3 +70,6 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
   (édite le texte affiché, jamais l'original d'audit) ; inbox `markMessageReadAction` /
   `markMessageSpamAction` ; RDV `confirmAppointmentAction` / `declineAppointmentAction`.
 - **IA** : `assistFieldAction(action, text)` (assistance par champ ; budget tokens ; OpenRouter).
+- **Mail** : `markMailReadAction(id, isRead)`, `sendMailAction(prev, formData)` (Zod) — via le port
+  `Mailbox` (Exchange/Graph si configuré, sinon démo). Le calendrier (`/calendrier`) lit le port
+  `CalendarProvider` (agenda + RDV DB, fusion Outlook si configuré).

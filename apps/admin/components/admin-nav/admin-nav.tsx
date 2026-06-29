@@ -21,6 +21,8 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/temoignages", label: "Témoignages" },
   { href: "/messages", label: "Messages" },
   { href: "/rdv", label: "Rendez-vous" },
+  { href: "/mails", label: "Mails" },
+  { href: "/calendrier", label: "Calendrier" },
   { href: "/ai", label: "Assistant IA" },
 ];
 

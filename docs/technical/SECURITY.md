@@ -54,6 +54,13 @@ construction** : il produit des éléments React (jamais `dangerouslySetInnerHTM
 embarqué (`<script>`) est rendu en texte inerte ; les liens sont limités à `http(s)`/`mailto`/relatif
 (pas de vecteur `javascript:`). Les embeds (iframe vidéo) n'acceptent que des sources `http(s)`.
 
+## Mail & calendrier BO (Microsoft Graph, optionnel)
+Intégration **OAuth2 app-only** (client credentials) sur une **boîte dédiée** (`contact@…`) : token
+révocable scopé aux permissions Application (`Mail.ReadWrite`, `Mail.Send`, `Calendars.ReadWrite`),
+aucun mot de passe stocké. Secrets (`AZURE_CLIENT_SECRET`) en `.env` uniquement. Le corps des mails
+est **aplati en texte** avant affichage (pas de HTML distant rendu → pas de XSS). Boîte dédiée +
+Application Access Policy → rayon de souffle limité. Détail : `docs/technical/INTEGRATIONS.md`.
+
 ## Assistant & chatbot IA
 - La clé **OpenRouter** vit uniquement dans `.env` (jamais en base, jamais logguée). Un **budget de
   tokens** mensuel borne la dépense.

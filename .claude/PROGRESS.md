@@ -88,9 +88,12 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   outil `book_appointment`, `/api/chat` désactivé par défaut, widget). Tout testé LLM **mocké**.
 
 ## Dernière livraison
+- **v0.4.8** : **mail & calendrier dans le BO** (ports `Mailbox`/`Calendar` provider-agnostiques ;
+  calendrier réel DB = agenda + RDV ; mail démo + **adaptateur Microsoft Graph OAuth app-only** prêt
+  à activer ; doc Azure). **144 tests Vitest + 16 E2E.** Voir `docs/technical/INTEGRATIONS.md`.
 - **v0.4.7** : finitions BO/site (vrai Gantt + éditeur Gantt BO, quick-login dev, orbite, icône
   chatbot SVG, avatar singleton, i18n home + liens nav, chargement `.env` racine) + **témoignages
-  enrichis** (entreprise + lien hiérarchique). **134 tests Vitest + 16 E2E verts.** Poussé sur `llm`.
+  enrichis** (entreprise + lien hiérarchique).
 - **v0.4.6** : IA (assistance BO + chatbot public). Plans **P0–P15 livrés** ; **P16 = plan-only**.
 - ⚠️ **Sécurité À FAIRE** : régénérer `CRON_SECRET` (valeur faible exposée en clair).
 - ⚠️ **BO incomplet** : éditeurs HomeSection/Skill/Career/Analysis/SiteSettings + éditeurs de blocs
