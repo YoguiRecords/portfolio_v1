@@ -69,12 +69,16 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
 - `/temoignages` : affichage des `APPROVED` (`select` sûr, zéro PII) + formulaire de soumission
   (`POST /api/testimonials` : rate-limit 3/h/IP + honeypot + Zod → `PENDING`, jamais auto-validé).
 
-## Dernière livraison
-- **v0.3.3** (P5) : témoignages (affichage modéré + soumission). **62 tests** verts (core 21, db 3,
-  admin 14, web 24) ; E2E témoignages. Suites de tests **sérialisées** (`--workspace-concurrency=1`)
-  → plus de race sur le schéma `test`. Poussée sur `llm`.
+## Bilingue FR/EN (Pi18n)
+- `next-intl` : `/` FR, `/en` EN (routes sous `app/[locale]/`). Table `Translation` (overlay EN,
+  fallback FR), `localize()` ; traduction IA (`translateFields`, mock en test) + re-traduction au
+  save (FR change → EN réécrasé). BO : `LocalizedField`. Timeline animée du parcours **restaurée**.
 
-## Plans livrés : P0, P1, P2, P3, P4, P5 (+ image-processor OXO, avatar MinIO). Reste : Pi18n, P6–P16.
+## Dernière livraison
+- **v0.4.0** (Pi18n) : site bilingue + timeline restaurée. **75 tests** (core 26, db 3, admin 18,
+  web 28) + **10 E2E** verts. Tests sérialisés (`maxWorkers=1`). Poussée sur `llm`.
+
+## Plans livrés : P0–P5, Pi18n (+ image-processor OXO, avatar MinIO). Reste : P6–P16.
 
 ## Prochaines étapes
 Voir `TASKS.md` — suite des plans : **P3** (fiches projet), P4 (news/agenda), Pi18n, P5 (témoignages),
