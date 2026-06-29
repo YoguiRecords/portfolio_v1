@@ -756,10 +756,9 @@ body {
   }
 }
 .planet {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
+  justify-content: center;
 }
 .planet .dot {
   width: 13px;
@@ -776,6 +775,10 @@ body {
   box-shadow: none;
 }
 .planet .lbl {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 12px;
   font-weight: 600;
   color: #fff;

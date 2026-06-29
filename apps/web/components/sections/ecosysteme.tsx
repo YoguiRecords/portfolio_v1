@@ -43,7 +43,7 @@ export function Ecosysteme({
 
             <div className="layer outer">
               {projects.map((p, i) => (
-                <div key={p.id} className="node" style={orbitPosition(i, projects.length, 48)}>
+                <div key={p.id} className="node" style={orbitPosition(i, projects.length, 50)}>
                   <a className="chip" href="#work">
                     <div className="planet">
                       <span className="dot" />
@@ -59,7 +59,7 @@ export function Ecosysteme({
 
             <div className="layer inner">
               {skills.map((s, i) => (
-                <div key={s.id} className="node" style={orbitPosition(i, skills.length, 45)}>
+                <div key={s.id} className="node" style={orbitPosition(i, skills.length, 50)}>
                   <div className="chip">
                     <div className="planet skill">
                       <span className="dot" />
