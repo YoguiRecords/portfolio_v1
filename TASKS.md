@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P9 — Boîte de réception unique** (Mails + Messages) — `phase-09-inbox.md`
 - [ ] **P10 — CRM : schéma & socle** (migration + rôles DB) — `phase-10-crm-schema.md`
 - [ ] **P11 — CRM : UI** (Contacts, Sociétés, Pipeline, activités/relances) — `phase-11-crm-ui.md`
 - [ ] **P12 — Mission Control** (agrégation) — `phase-12-mission-control.md`
@@ -29,9 +28,10 @@
 - [x] **P6 — Médias** — dropzone (pipeline webp/MinIO inchangé) + grille v2 + panneau détails (dimensions/poids/format/durée), support VIDEO/EMBED.
 - [x] **P7 — Témoignages** — file modération v2 (onglets statut, édition texte affiché vs original/audit, mise en avant, refus confirmé), hook CRM en stub.
 - [x] **P8 — Agenda + RDV** — agenda reskin (liste/création/suppression/génération actu) + file RDV v2 (accepter→évènement calendrier best-effort / refuser confirmé). _Reste : éditeur event `[id]` (DT2)._
+- [x] **P9 — Boîte de réception unique** — `lib/inbox/aggregate.ts` (Mails Graph + ContactMessage → InboxItem, tri/filtre, résilient) + page `/inbox` + détail `/inbox/[source]/[id]` + réponse (Graph). Mails/Messages absorbés (nav). RDV exclus.
 
 ## En cours
-- **P9 — Boîte de réception unique**.
+- **P10 — CRM : schéma & socle (SENSIBLE)**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P8 — Agenda + RDV** (RDV accepter→évènement calendrier best-effort / refuser confirmé).
+- **Dernier jalon livré :** **P9 — Boîte de réception unique** (Mails Graph + Messages de contact, réponse email).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 9 — Boîte de réception unique** (`docs/plans/2026-06-29-phase-09-inbox.md`) : `lib/inbox/aggregate.ts` (Mails Graph + ContactMessage → InboxItem), page inbox + détail, filtres, répondre. RDV exclus.
+- Exécuter **Phase 10 — CRM : schéma & socle (SENSIBLE)** (`docs/plans/2026-06-29-phase-10-crm-schema.md`) : modèles Prisma (Contact/Company/Deal/Activity/Task) + **migration REVOKE app_web** + actions Zod. ⚠️ Phase à risque (DB + rôles) — choix loggués dans `resume.md`.
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -37,7 +37,8 @@
 - **P6** — Médias v2 : `components/media/{dropzone,media-grid}.tsx`, page `media/page.tsx`. Dropzone (validation client + pipeline serveur inchangé), grille + panneau détails (dimensions/poids/format/durée/alt), support VIDEO/EMBED.
 - **P7** — Témoignages v2 : `components/testimonials/testimonials-list.tsx`, page `temoignages/page.tsx`. Onglets statut, édition `content` (audit `submittedContent` préservé), mise en avant, refus confirmé, hook CRM stub (P11).
 - **P8** — Agenda + RDV : `components/rdv/rdv-list.tsx`, pages `rdv/page.tsx` + `agenda/page.tsx` reskin ; `confirmAppointmentWithEvent` (moderation.ts) crée un évènement calendrier (best-effort via `getCalendar()`), confirm/decline. RDV hors inbox.
-- Gate vert : 133 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P9** — Inbox unifiée : `lib/inbox/aggregate.ts` (+ test résilience), `components/inbox/inbox-list.tsx`, pages `/inbox` + `/inbox/[source]/[id]` (réponse via `mail-reply-form`/Graph). Nav : « Boîte de réception » remplace Mails+Messages (routes conservées).
+- Gate vert : 139 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
