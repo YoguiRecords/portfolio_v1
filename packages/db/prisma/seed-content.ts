@@ -16,6 +16,8 @@ import { prisma } from "../src/index";
 async function main(): Promise<void> {
   // 1. Reset du contenu éditorial (les FK enfants tombent en cascade)
   await prisma.translation.deleteMany();
+  await prisma.appointmentRequest.deleteMany();
+  await prisma.contactMessage.deleteMany();
   await prisma.event.deleteMany();
   await prisma.article.deleteMany();
   await prisma.project.deleteMany();
