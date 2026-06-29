@@ -70,9 +70,14 @@
 ### Task 5b : Mode lecture seule + masquage PII (rôle VIEWER)
 **Files:** Create `lib/auth/read-only.ts` + `lib/privacy/mask.ts` (+ tests) ; Modify pages/loaders sensibles
 - **Verrou d'écriture** : un helper `assertCanWrite(session)` appelé par **toutes** les Server Actions de mutation → un VIEWER (read-only) est **rejeté** même s'il a le module (défense en profondeur, en plus du masquage UI des boutons).
-- **Masquage des données perso** pour VIEWER : `maskPii(value, session)` appliqué aux champs sensibles avant affichage. **Liste des champs à masquer = à arrêter ensemble** (« on les relèvera ») — proposition de départ : emails/téléphones des `ContactMessage`/`AppointmentRequest`, adresses des expéditeurs de mails, `authorEmail`, tout secret (clé IA, tokens). Masquage type `j••••@•••.com`.
+- **Masquage des données perso** pour VIEWER : `maskPii(value, session)` appliqué avant affichage. **Liste par défaut v1** (ajustable plus tard) :
+  - **Emails** : `ContactMessage.email`, `AppointmentRequest.email`, expéditeur des mails (`fromAddress`), `Profile.email`, `SiteSettings.contactEmail` → `j••••@•••.com`.
+  - **Réseau / device** : `ip`, `userAgent` (messages & RDV) → masqués entièrement.
+  - **Téléphones** (si présents dans le texte) → masqués par regex.
+  - **Corps des messages/mails** : masqués (`••• contenu masqué en mode démo •••`) car susceptibles de contenir de la PII.
+  - **Secrets** (clé IA, tokens) : déjà jamais affichés — confirmé.
 - **TDD** : une mutation par un VIEWER est refusée ; `maskPii` masque un email pour VIEWER et le laisse intact pour OWNER. Commit `feat(admin): read-only mode + PII masking for the VIEWER role`.
-- ⚠️ **Point ouvert (à valider avec toi)** : la **liste exacte des champs perso à masquer**.
+- ℹ️ La **liste définitive** sera affinée plus tard (« on les relèvera ») — la liste ci-dessus est le défaut de départ.
 
 ### Task 6 : Gestion des comptes (OWNER only)
 **Files:** Create `app/(dashboard)/utilisateurs/page.tsx` + `components/users/*` + `lib/users/manage.ts` (+ test) + `lib/actions/user-actions.ts`
@@ -112,7 +117,9 @@
 - Journal d'audit **consultable** dans le BO (la table `AdminAudit` peut être posée en Task 2).
 - L'invitation par email **suppose la boîte Microsoft Graph branchée** ; sinon **fallback lien copiable**.
 
-## Points à valider avec toi avant exécution
-1. **Liste exacte des données perso à masquer** pour le VIEWER (cf. Task 5b — « on les relèvera »).
-2. **`zxcvbn`** (nouvelle dépendance) pour la robustesse du mot de passe, ou liste embarquée seule ?
-3. Démarrer P16 **maintenant** ou **après le merge de la PR #8** sur `dev` ?
+## Points à valider avant exécution
+1. ~~Liste des données perso à masquer~~ → **défaut figé** en Task 5b (affinable plus tard). ✅
+2. **`zxcvbn`** (petite dépendance, score de robustesse) **ou** liste embarquée seule ? → **en attente**.
+3. ~~Quand démarrer~~ → **on ne lance rien pour l'instant** (plan seulement). ✅
+
+> **Statut : plan validé sur le fond, NON démarré.** Reste à trancher le point 2 (zxcvbn) avant exécution.
