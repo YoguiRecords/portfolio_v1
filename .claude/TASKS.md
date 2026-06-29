@@ -11,7 +11,9 @@
 - [x] **P6** — Web : Contact + demande de RDV (endpoints insert-only, Zod, rate-limit, honeypot) + page. ✅
 - [x] **P7** — Web : SEO/AEO (JSON-LD Person/CreativeWork/FAQ, metadata+hreflang, sitemap, robots, llms.txt). ✅
 - [x] **P8** — Admin : shell BO (`(dashboard)` gardé, AdminNav/AdminLayout, dashboard stats). ✅
-- [ ] **P9** — Admin : CRUD contenu home (Profile, SiteSettings, HomeSection, KPI, Skill, Career*, Analysis, Goal).
+- [~] **P9** — Admin : CRUD contenu home — **pattern réutilisable** (schémas Zod + Server Actions `app_admin`
+      + persistance testée) + éditeurs **KPI** et **Profil**. Reste : écrans SiteSettings/HomeSection/Skill/
+      Career*/Analysis/Goal (même pattern) + E2E BO-login (TOTP).
 - [ ] **P10** — Admin : Projets + éditeur de blocs.
 - [ ] **P11** — Admin : Articles (+ programmation) + **upload média** (via `image-processor` → MinIO).
 - [ ] **P12** — Admin : Agenda/Événements (+ génération d'actu depuis évènement).

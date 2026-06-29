@@ -1,5 +1,14 @@
 # Patch notes — v0.4.x
 
+## v0.4.4 — Back office : édition de contenu (pattern + KPI/Profil) (2026-06-29)
+
+- **Pattern CRUD réutilisable** : schémas Zod d'édition (`@portfolio/core/admin`), fonctions de
+  persistance testables (injection du client) + **Server Actions** fines (`app_admin` + garde MFA +
+  `revalidatePath`). Éditeurs **KPI** (liste + ajout/suppression) et **Profil** (singleton upsert,
+  typewriter lines). Tests unit (schémas + persistance create/update/delete/reorder/upsert).
+- Les autres entités home (SiteSettings, HomeSection, Skill, Career*, Analysis, Goal) suivent le
+  même pattern (écrans à ajouter).
+
 ## v0.4.3 — Back office : shell & gardes (2026-06-29)
 
 - Groupe de routes **`(dashboard)`** entièrement **protégé** (session + MFA via les guards existants ;
