@@ -19,6 +19,11 @@ export type ProfileFormValues = {
   bio: string;
   typewriterLines: string[];
   sigText: string;
+  location: string;
+  currentRole: string;
+  availabilityLabel: string;
+  isAvailable: boolean;
+  aiSummary: string;
 };
 
 /**
@@ -62,6 +67,29 @@ export function ProfileForm({ profile }: { profile: ProfileFormValues }) {
       <label className="flex flex-col gap-1 text-sm text-zinc-300">
         Signature
         <input className={inputCls} name="sigText" defaultValue={profile.sigText} />
+      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <label className="flex flex-col gap-1 text-sm text-zinc-300">
+          Localisation
+          <input className={inputCls} name="location" defaultValue={profile.location} />
+        </label>
+        <label className="flex flex-col gap-1 text-sm text-zinc-300">
+          Rôle actuel
+          <input className={inputCls} name="currentRole" defaultValue={profile.currentRole} />
+        </label>
+      </div>
+      <div className="flex items-end gap-3">
+        <label className="flex flex-1 flex-col gap-1 text-sm text-zinc-300">
+          Libellé de disponibilité
+          <input className={inputCls} name="availabilityLabel" defaultValue={profile.availabilityLabel} />
+        </label>
+        <label className="flex items-center gap-2 pb-2 text-sm text-zinc-300">
+          <input type="checkbox" name="isAvailable" defaultChecked={profile.isAvailable} /> Disponible
+        </label>
+      </div>
+      <label className="flex flex-col gap-1 text-sm text-zinc-300">
+        Résumé IA (pour le chatbot / SEO)
+        <textarea className={`${inputCls} min-h-20`} name="aiSummary" defaultValue={profile.aiSummary} />
       </label>
 
       {state.ok ? (

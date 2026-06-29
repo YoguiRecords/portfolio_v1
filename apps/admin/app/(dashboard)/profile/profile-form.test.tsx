@@ -15,6 +15,11 @@ const values: ProfileFormValues = {
   bio: "Bio",
   typewriterLines: ["J'innove."],
   sigText: "vision",
+  location: "Lille",
+  currentRole: "Fondateur",
+  availabilityLabel: "Disponible",
+  isAvailable: true,
+  aiSummary: "Résumé",
 };
 
 beforeEach(() => {

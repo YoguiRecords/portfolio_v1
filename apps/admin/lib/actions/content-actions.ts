@@ -86,6 +86,9 @@ export async function upsertProfileAction(
       location: str(form, "location"),
       sigText: str(form, "sigText"),
       currentRole: str(form, "currentRole"),
+      availabilityLabel: str(form, "availabilityLabel"),
+      isAvailable: form.get("isAvailable") === "on",
+      aiSummary: str(form, "aiSummary"),
       typewriterLines: (str(form, "typewriterLines") ?? "")
         .split("\n")
         .map((l) => l.trim())
