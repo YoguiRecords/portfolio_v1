@@ -9,7 +9,9 @@
   border: 1px solid var(--accent);
   background: var(--accent);
   color: #1a1400;
-  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   box-shadow: var(--shadow-soft);
 }
