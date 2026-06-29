@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P13 — IA + Calendrier (reskin DA v2)**.
+- **Dernier jalon livré :** **P14 — Réglages + FAQ + recherche ⌘K** (command palette globale).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 14 — Réglages + SEO/FAQ + recherche ⌘K** (`docs/plans/2026-06-29-phase-14-reglages-recherche.md`) : reskin réglages site + FAQ + config chatbot ; **command palette ⌘K** globale (recherche projets/articles/contacts/actions).
+- Exécuter **Phase 15 — Finitions transverses** (`docs/plans/2026-06-29-phase-15-finitions.md`) : états vides/erreurs, a11y, responsive, **Playwright E2E**, perf, docs finales (`ARCHITECTURE`/`SECURITY`/`API_REFERENCE`) + patch note.
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -42,7 +42,8 @@
 - **P11** — CRM UI : `components/crm/{contacts-table,pipeline-board}.tsx`, pages `contacts/{page,[id]/page}` (fiche 360° deals/activités/tâches), `societes/page`, `pipeline/page` (board + déplacement par select). Nav : Contacts/Sociétés/Pipeline.
 - **P12** — Mission Control : `lib/data/mission-control.ts` (+ test) + page `mission-control/page.tsx`. KPIs relation client, pipeline (groupBy), tâches, à-traiter, aperçu inbox. Entrée nav en-tête.
 - **P13** — Reskin DA v2 des pages `/ai` (Assistant IA) et `/calendrier` (tokens ; logique inchangée).
-- Gate vert : 147 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P14** — `components/command-palette/command-palette.tsx` (⌘K global, monté dans le layout, ouvert par la topbar), reskin `settings-form.tsx` + `faq/page.tsx`.
+- Gate vert : 148 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.

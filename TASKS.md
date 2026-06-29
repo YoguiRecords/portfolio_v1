@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P14 — Réglages + SEO/FAQ + recherche ⌘K** — `phase-14-reglages-recherche.md`
 - [ ] **P15 — Finitions transverses** (états vides/erreur, a11y, responsive, E2E, docs) — `phase-15-finitions.md`
 - [ ] **P16 — Multi-users BO + RBAC** (rôles + permissions, VIEWER read-only + masquage PII, invitations) — `phase-16-bo-users-rbac.md`
 - [ ] **P17 — Chatbot public IA** (rendre fonctionnel : prochain évènement + contenu site + garde-fous + RDV) — `2026-06-30-phase-17-public-chatbot.md`
@@ -29,9 +28,10 @@
 - [x] **P11 — CRM UI** — Contacts (liste + fiche 360° deals/activités/tâches), Sociétés, Pipeline (board par stage + déplacement). _Reste : DnD (DT4), agrégation 360° cross-domaine + hooks « créer contact » (DT5)._
 - [x] **P12 — Mission Control** — agrégation `lib/data/mission-control.ts` (KPIs relation client, pipeline, tâches, à-traiter, aperçu inbox) + page dédiée.
 - [x] **P13 — IA + Calendrier (reskin)** — pages `/ai` + `/calendrier` passées à la DA v2 (tokens), fonctions inchangées.
+- [x] **P14 — Réglages + FAQ + ⌘K** — reskin réglages (settings-form) + FAQ ; **command palette ⌘K** globale (navigation, ouverte par ⌘K/Ctrl+K ou bouton topbar). _Reste : recherche contenu DB dans la palette (DT)._
 
 ## En cours
-- **P14 — Réglages + SEO/FAQ + recherche ⌘K**.
+- **P15 — Finitions transverses**.
 
 ## Bloqué / à arbitrer
 - _(rien)_
