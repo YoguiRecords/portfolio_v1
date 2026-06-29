@@ -45,7 +45,8 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
 
 - `POST /api/contact` → crée un `ContactMessage` (inbox BO).
 - `POST /api/appointments` → crée un `AppointmentRequest` (`source=CONTACT`, `status=PENDING`).
-- `POST /api/testimonials` → crée un `Testimonial` (`status=PENDING`, modéré au BO).
+- `POST /api/testimonials` → crée un `Testimonial` (`status=PENDING`, modéré au BO). Champs auteur :
+  nom, rôle, **entreprise**, **lien hiérarchique** (`TestimonialRelationship`), email (non publié).
 - `POST /api/chat` → chatbot public (**désactivé par défaut** via `AiAssistantConfig` + clé OpenRouter).
   Rate-limit ; contexte **public uniquement** + prompt à garde-fous ; `404` si désactivé.
 

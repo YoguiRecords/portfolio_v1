@@ -1,5 +1,20 @@
 # Patch notes — v0.4.x
 
+## v0.4.7 — Finitions BO/site + témoignages enrichis (2026-06-29)
+
+- **Témoignages enrichis** : l'auteur renseigne **prénom, nom, rôle, entreprise** et son **lien
+  hiérarchique** avec Yohan (`TestimonialRelationship` : manager / pair / N-1 / client / partenaire /
+  prof / élève / autre). Affichés sur la carte publique et en modération BO.
+- **Éditeur de Gantt au BO** (`/projets/[id]`) : libellés des tâches + **Début %/Durée %** + style,
+  avec **aperçu en direct**, ajout/suppression de phase ; validation Zod (symétrique du rendu public).
+- **Quick-login dev** sur le BO (bypass mot de passe + MFA, **désactivé en production**).
+- **Corrections visuelles** : vrai **diagramme de Gantt** (colonne tâches + axe + grille) ; points
+  d'**orbite** posés sur les anneaux ; **icône de chatbot** lisible (SVG) ; **avatar** rétabli
+  (profil = singleton).
+- **i18n** : `/en` réellement bilingue sur la home (overlay EN seedé) + **liens de nav** vers
+  actus/agenda/avis/contact (pages auparavant introuvables).
+- **Dev** : `web`/`admin` chargent le `.env` racine (clé OpenRouter détectée en local).
+
 ## v0.4.6 — IA : assistance rédactionnelle (BO) & chatbot public (2026-06-29)
 
 - **Adaptateur OpenRouter** (port `Llm`, format OpenAI, clé en `.env` jamais logguée) ;

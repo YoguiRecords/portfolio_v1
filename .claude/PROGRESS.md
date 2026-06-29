@@ -88,8 +88,13 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   outil `book_appointment`, `/api/chat` désactivé par défaut, widget). Tout testé LLM **mocké**.
 
 ## Dernière livraison
-- **v0.4.6** : IA (assistance BO + chatbot public). **132 tests Vitest + 16 E2E verts.**
-  Tous les plans **P0–P15 livrés** ; **P16 = plan-only** (réseaux, non exécuté). Poussé sur `llm`.
+- **v0.4.7** : finitions BO/site (vrai Gantt + éditeur Gantt BO, quick-login dev, orbite, icône
+  chatbot SVG, avatar singleton, i18n home + liens nav, chargement `.env` racine) + **témoignages
+  enrichis** (entreprise + lien hiérarchique). **134 tests Vitest + 16 E2E verts.** Poussé sur `llm`.
+- **v0.4.6** : IA (assistance BO + chatbot public). Plans **P0–P15 livrés** ; **P16 = plan-only**.
+- ⚠️ **Sécurité À FAIRE** : régénérer `CRON_SECRET` (valeur faible exposée en clair).
+- ⚠️ **BO incomplet** : éditeurs HomeSection/Skill/Career/Analysis/SiteSettings + éditeurs de blocs
+  non-PROCESS à ajouter ; `localize()` à brancher sur loaders projet/news/agenda/témoignages.
 
 ## Plans livrés : **P0–P15 + Pi18n** (+ image-processor OXO, avatar MinIO). P16 = plan documenté.
 > Reste (non bloquant) : écrans BO restants (même pattern), câblage `localize()` des loaders
