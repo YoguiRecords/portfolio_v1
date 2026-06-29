@@ -127,24 +127,56 @@ enum AppointmentSource {
 // Authentification back office (compte admin unique, sessions opaques)
 // ──────────────────────────────────────────────────────────────────────────
 
-/// Compte administrateur unique du back office.
+/// Rôle d'un compte BO = préréglage de modules + étiquette (cf. RBAC).
+enum AdminRole {
+  OWNER
+  EDITOR
+  SECRETARY
+  VIEWER
+}
+
+/// Compte administrateur du back office (multi-utilisateurs + RBAC).
 /// Auth durcie : mot de passe haché argon2id + TOTP (MFA obligatoire).
 /// Ces tables ne sont JAMAIS accessibles au rôle DB public `app_web`
 /// (REVOKE explicite dans la migration) — seul `app_admin` y accède.
 model AdminUser {
   id             String    @id @default(cuid())
   email          String    @unique
-  passwordHash   String // argon2id
+  passwordHash   String // argon2id (placeholder tant qu'une invitation n'est pas honorée ; compte alors isActive=false)
   totpSecret     String? // secret TOTP (base32), null tant que non enrôlé
   isTotpEnabled  Boolean   @default(false)
   failedAttempts Int       @default(0) // compteur anti brute-force
   lockedUntil    DateTime? // verrou temporaire après trop d'échecs
   lastLoginAt    DateTime?
 
+  // RBAC multi-utilisateurs
+  role        AdminRole @default(OWNER)
+  permissions String[]  @default([]) // modules accordés (OWNER = tous, bypass)
+  isActive    Boolean   @default(true)
+  displayName String?
+  createdById String? // qui a créé ce compte (auto-référence souple)
+
   sessions Session[]
+  invites  AdminInvite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/// Invitation d'onboarding (single-use, expirable, révocable). Seul le hash du
+/// token est stocké — jamais le token en clair. Pas d'inscription publique.
+model AdminInvite {
+  id          String    @id @default(cuid())
+  email       String
+  adminUserId String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  tokenHash   String    @unique // SHA-256 du token d'invitation
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdById String?
+  createdAt   DateTime  @default(now())
+
+  @@index([adminUserId])
 }
 
 /// Session opaque côté serveur : un token aléatoire est posé en cookie httpOnly,
