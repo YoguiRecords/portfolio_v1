@@ -18,8 +18,9 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/articles", label: "Articles" },
   { href: "/media", label: "Médias" },
   { href: "/agenda", label: "Agenda" },
-  { href: "/testimonials", label: "Témoignages" },
-  { href: "/inbox", label: "Inbox" },
+  { href: "/temoignages", label: "Témoignages" },
+  { href: "/messages", label: "Messages" },
+  { href: "/rdv", label: "Rendez-vous" },
   { href: "/ai", label: "Assistant IA" },
 ];
 
