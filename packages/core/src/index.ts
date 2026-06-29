@@ -25,6 +25,9 @@ export { hashSource } from "./i18n/hash";
 // Testimonials (public submission schema)
 export { TestimonialInput } from "./testimonials/schema";
 
+// Contact & appointment (public submission schemas)
+export { ContactInput, AppointmentInput } from "./contact/schema";
+
 // Security (in-memory rate limiter)
 export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";
 
