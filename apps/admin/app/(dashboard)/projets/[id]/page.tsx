@@ -3,10 +3,44 @@ import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
 import { addBlockAction, deleteBlockAction } from "@/lib/actions/block-actions";
 import { ProcessEditor } from "@/components/block-editors/process-editor";
+import { ContextEditor } from "@/components/block-editors/context-editor";
+import { TextEditor } from "@/components/block-editors/text-editor";
+import { ResultsEditor } from "@/components/block-editors/results-editor";
+import { JsonEditor } from "@/components/block-editors/json-editor";
 
 export const dynamic = "force-dynamic";
 
-const BLOCK_TYPES = ["CONTEXT", "PROCESS", "GAME_DESIGN", "RESULTS", "TEXT", "GALLERY"] as const;
+const BLOCK_TYPES = [
+  "CONTEXT",
+  "PROCESS",
+  "GAME_DESIGN",
+  "ARCHITECTURE",
+  "SECURITY",
+  "DESIGN_UX",
+  "METRICS",
+  "ANALYSIS",
+  "RECOMMENDATIONS",
+  "RESULTS",
+  "TEXT",
+  "GALLERY",
+] as const;
+
+/** Renders the right editor for a block type (dedicated where available, else JSON). */
+function BlockEditor({ block, projectId }: { block: { id: string; type: string; data: unknown }; projectId: string }) {
+  const data = (block.data ?? {}) as Record<string, unknown>;
+  switch (block.type) {
+    case "PROCESS":
+      return <ProcessEditor blockId={block.id} projectId={projectId} initial={(data.phases as never[]) ?? []} />;
+    case "CONTEXT":
+      return <ContextEditor blockId={block.id} projectId={projectId} initial={data} />;
+    case "TEXT":
+      return <TextEditor blockId={block.id} projectId={projectId} initial={data} />;
+    case "RESULTS":
+      return <ResultsEditor blockId={block.id} projectId={projectId} initial={data} />;
+    default:
+      return <JsonEditor blockId={block.id} projectId={projectId} initial={data} />;
+  }
+}
 
 /** Project block editor: add/remove blocks and edit the Gantt (PROCESS) visually. */
 export default async function ProjectBlocksPage({ params }: { params: Promise<{ id: string }> }) {
@@ -39,18 +73,7 @@ export default async function ProjectBlocksPage({ params }: { params: Promise<{ 
                 </button>
               </form>
             </div>
-            {block.type === "PROCESS" ? (
-              <ProcessEditor
-                blockId={block.id}
-                projectId={project.id}
-                initial={((block.data as { phases?: unknown[] })?.phases as never[]) ?? []}
-              />
-            ) : (
-              <p className="text-sm text-zinc-500">
-                Éditeur visuel dédié pour ce type à venir (même pattern que le Gantt). Le bloc est
-                déjà rendu côté public si son contenu est valide.
-              </p>
-            )}
+            <BlockEditor block={block} projectId={project.id} />
           </section>
         ))
       )}
