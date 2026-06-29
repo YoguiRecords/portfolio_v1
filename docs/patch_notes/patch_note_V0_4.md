@@ -1,5 +1,17 @@
 # Patch notes — v0.4.x
 
+## v0.4.6 — IA : assistance rédactionnelle (BO) & chatbot public (2026-06-29)
+
+- **Adaptateur OpenRouter** (port `Llm`, format OpenAI, clé en `.env` jamais logguée) ;
+  **assistance par champ** (Corriger/Grammaire/Ponctuation/Reformuler/Idée) ; **garde-budget** de
+  tokens ; `AiAssistantConfig` (modèle, budget, activation) + action/page BO. Traduction FR→EN
+  auto câblable (hook P-i18n + builder).
+- **Chatbot public** : contexte **uniquement données publiques** (zéro PII), **system prompt à
+  garde-fous** (toujours promouvoir Yohan, jamais un concurrent, séparé du message user → résistant
+  aux injections), **outil `book_appointment`** (→ `AppointmentRequest` source CHATBOT), endpoint
+  `POST /api/chat` (rate-limit, **désactivé par défaut**), widget client. Tout testé **LLM mocké**
+  (zéro coût) — s'active dès la clé OpenRouter fournie.
+
 ## v0.4.5 — Back office : projets, articles+média, agenda, modération (2026-06-29)
 
 - **Projets** : CRUD entête + **actions de blocs** validées Zod par type (symétriques du renderer P3 :

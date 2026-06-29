@@ -18,9 +18,9 @@
 - [x] **P11** — Admin : CRUD article (programmation) + pipeline upload sécurisé (image-processor→MinIO) + vidéo/embed. ✅
 - [x] **P12** — Admin : CRUD agenda + génération dactu depuis évènement. ✅
 - [x] **P13** — Admin : modération témoignages + inbox contact + RDV. ✅
-- [ ] **P14** — IA : assistant de rédaction d'actus au BO (OpenRouter).
-- [ ] **P15** — IA : chatbot public + RDV + garde-fous (OpenRouter).
-- [ ] **P16** — Réseaux : auto-post + stats (**plan only**, non exécuté).
+- [x] **P14** — IA : adaptateur OpenRouter + assistance par champ (5 actions) + budget + AiAssistantConfig + action/page BO. ✅
+- [x] **P15** — IA : chatbot public (contexte public-only, garde-fous, booking tool, /api/chat désactivé par défaut) + widget. ✅
+- [x] **P16** — Réseaux : **plan documenté uniquement** (non exécuté, comme prévu). ✅
 
 ## Infra / cleanup
 - [ ] Retirer le service Node `services/converter/` (remplacé par `image-processor` réutilisé d'OXO).

@@ -74,11 +74,27 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   fallback FR), `localize()` ; traduction IA (`translateFields`, mock en test) + re-traduction au
   save (FR change → EN réécrasé). BO : `LocalizedField`. Timeline animée du parcours **restaurée**.
 
-## Dernière livraison
-- **v0.4.0** (Pi18n) : site bilingue + timeline restaurée. **75 tests** (core 26, db 3, admin 18,
-  web 28) + **10 E2E** verts. Tests sérialisés (`maxWorkers=1`). Poussée sur `llm`.
+## Back office (P8–P13)
+- Shell gardé `(dashboard)` (session + MFA), nav, dashboard (compteurs). Édition : **Profil**,
+  **KPI** (pattern réutilisable Zod + Server Actions `app_admin`), **Projets** (+ actions de blocs
+  validées Zod par type), **Articles** (+ programmation), **Médias** (pipeline upload sécurisé
+  image-processor→MinIO), **Agenda** (+ génération d'actu), **Modération** (témoignages),
+  **Inbox** (contact, RDV). Autres écrans home (SiteSettings/HomeSection/Skill/Career*/Analysis)
+  à ajouter selon le même pattern.
 
-## Plans livrés : P0–P5, Pi18n (+ image-processor OXO, avatar MinIO). Reste : P6–P16.
+## IA (P14–P15)
+- BO : adaptateur **OpenRouter** (clé `.env`), assistance par champ (5 actions), budget tokens,
+  `AiAssistantConfig`. Public : **chatbot** (contexte public-only, garde-fous anti-injection,
+  outil `book_appointment`, `/api/chat` désactivé par défaut, widget). Tout testé LLM **mocké**.
+
+## Dernière livraison
+- **v0.4.6** : IA (assistance BO + chatbot public). **132 tests Vitest + 16 E2E verts.**
+  Tous les plans **P0–P15 livrés** ; **P16 = plan-only** (réseaux, non exécuté). Poussé sur `llm`.
+
+## Plans livrés : **P0–P15 + Pi18n** (+ image-processor OXO, avatar MinIO). P16 = plan documenté.
+> Reste (non bloquant) : écrans BO restants (même pattern), câblage `localize()` des loaders
+> projet/news/agenda, E2E BO-login (TOTP), nettoyage `services/converter`, diag `minio-init`.
+> Détails : `docs/HANDOFF-2026-06-29.md` + `TASKS.md`.
 
 ## Prochaines étapes
 Voir `TASKS.md` — suite des plans : **P3** (fiches projet), P4 (news/agenda), Pi18n, P5 (témoignages),
