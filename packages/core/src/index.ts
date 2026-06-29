@@ -36,8 +36,12 @@ export {
   HomeSectionInput,
   ProfileInput,
   ProjectInput,
+  ArticleInput,
   ReorderItem,
 } from "./admin/content-schemas";
+
+// Media upload validation (mime/size/dimensions)
+export { validateUpload, ALLOWED_IMAGE_MIME, type UploadCandidate } from "./media/validate";
 
 // Security (in-memory rate limiter)
 export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";

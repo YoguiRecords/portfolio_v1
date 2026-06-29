@@ -83,6 +83,32 @@ export const ProjectInput = z.object({
   aiSummary: z.string().max(600).optional(),
 });
 
+/** Article (news) with scheduled publishing. */
+export const ArticleInput = z
+  .object({
+    title: z.string().min(1).max(160),
+    slug: z
+      .string()
+      .min(1)
+      .max(120)
+      .regex(/^[a-z0-9-]+$/, "slug: minuscules, chiffres et tirets uniquement"),
+    excerpt: z.string().min(1).max(400),
+    content: z.string().min(1).max(20000),
+    tags: z.array(z.string().min(1).max(40)).max(12).default([]),
+    status: z.enum(["DRAFT", "SCHEDULED", "PUBLISHED"]).default("DRAFT"),
+    scheduledAt: z.coerce.date().optional(),
+    featured: z.boolean().default(false),
+    readingMinutes: z.number().int().min(1).max(120).optional(),
+    seoTitle: z.string().max(160).optional(),
+    seoDescription: z.string().max(300).optional(),
+    aiSummary: z.string().max(600).optional(),
+    eventId: z.string().optional(),
+  })
+  .refine((v) => v.status !== "SCHEDULED" || v.scheduledAt != null, {
+    message: "Une actu programmée exige une date (scheduledAt).",
+    path: ["scheduledAt"],
+  });
+
 /** A new order assignment for a single row (used by reorder actions). */
 export const ReorderItem = z.object({ id: z.string().min(1), order: z.number().int().min(0) });
 
@@ -92,4 +118,5 @@ export type CareerGoalInput = z.infer<typeof CareerGoalInput>;
 export type HomeSectionInput = z.infer<typeof HomeSectionInput>;
 export type ProfileInput = z.infer<typeof ProfileInput>;
 export type ProjectInput = z.infer<typeof ProjectInput>;
+export type ArticleInput = z.infer<typeof ArticleInput>;
 export type ReorderItem = z.infer<typeof ReorderItem>;

@@ -16,6 +16,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/content", label: "Contenu home" },
   { href: "/projets", label: "Projets" },
   { href: "/articles", label: "Articles" },
+  { href: "/media", label: "Médias" },
   { href: "/agenda", label: "Agenda" },
   { href: "/testimonials", label: "Témoignages" },
   { href: "/inbox", label: "Inbox" },
