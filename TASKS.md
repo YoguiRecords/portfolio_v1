@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P15 — Finitions transverses** (états vides/erreur, a11y, responsive, E2E, docs) — `phase-15-finitions.md`
 - [ ] **P16 — Multi-users BO + RBAC** (rôles + permissions, VIEWER read-only + masquage PII, invitations) — `phase-16-bo-users-rbac.md`
 - [ ] **P17 — Chatbot public IA** (rendre fonctionnel : prochain évènement + contenu site + garde-fous + RDV) — `2026-06-30-phase-17-public-chatbot.md`
 
@@ -29,9 +28,10 @@
 - [x] **P12 — Mission Control** — agrégation `lib/data/mission-control.ts` (KPIs relation client, pipeline, tâches, à-traiter, aperçu inbox) + page dédiée.
 - [x] **P13 — IA + Calendrier (reskin)** — pages `/ai` + `/calendrier` passées à la DA v2 (tokens), fonctions inchangées.
 - [x] **P14 — Réglages + FAQ + ⌘K** — reskin réglages (settings-form) + FAQ ; **command palette ⌘K** globale (navigation, ouverte par ⌘K/Ctrl+K ou bouton topbar). _Reste : recherche contenu DB dans la palette (DT)._
+- [x] **P15 — Finitions** — docs finales (`ARCHITECTURE`/`API_REFERENCE`) + patch note **v0.5.0** + E2E guard des routes BO ; états vides/confirmations en place. _Reste : audit a11y complet + screenshots responsive authentifiés + E2E parcours connecté (DT7)._
 
 ## En cours
-- **P15 — Finitions transverses**.
+- **P16 — Multi-users BO + RBAC (SENSIBLE)**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

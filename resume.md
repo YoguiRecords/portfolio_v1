@@ -55,6 +55,8 @@
 - **DT3 (P6)** : panneau détails média sans « utilisé dans » (relations) — ajout possible plus tard.
 - **DT4 (P11)** : pipeline = déplacement par **select** (pas drag-and-drop natif) — fonctionnel + testable, zéro dépendance ; DnD = amélioration UX.
 - **DT5 (P11)** : fiche contact 360° = deals + activités + tâches (cœur CRM). L'**agrégation cross-domaine** (mails/messages par email, projets/témoignages liés) et les **hooks « créer contact »** depuis inbox/témoignages sont reportés (liens souples déjà en base).
+- **DT6 (P14)** : palette ⌘K = navigation BO ; recherche de contenu DB (projets/articles/contacts par nom) à ajouter.
+- **DT7 (P15)** : finitions livrées = docs finales + patch note + E2E **guard** des routes BO. **Reportés** : audit a11y complet, **screenshots responsive authentifiés** (cf. D06 — nécessite harnais TOTP), E2E parcours complet connecté (login MFA → CRUD → CRM). Les états vides/erreurs/confirmations sont déjà en place (EmptyState, Drawer de confirmation).
 
 ## Phases sensibles
 - **P10 (CRM schéma + rôles DB) — LIVRÉE.** Choix :

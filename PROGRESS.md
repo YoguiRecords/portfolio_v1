@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P14 — Réglages + FAQ + recherche ⌘K** (command palette globale).
+- **Dernier jalon livré :** **P15 — Finitions** (docs finales + patch note v0.5.0 + E2E guard routes BO).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,8 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 15 — Finitions transverses** (`docs/plans/2026-06-29-phase-15-finitions.md`) : états vides/erreurs, a11y, responsive, **Playwright E2E**, perf, docs finales (`ARCHITECTURE`/`SECURITY`/`API_REFERENCE`) + patch note.
+- Exécuter **Phase 16 — Multi-users BO + RBAC (SENSIBLE)** (`docs/plans/2026-06-29-phase-16-bo-users-rbac.md`) : rôles + permissions par module, VIEWER lecture seule + masquage PII, invitations email, politique mot de passe (zxcvbn). ⚠️ Phase à risque (auth) — choix loggués dans `resume.md`.
+- Puis **Phase 17 — Chatbot public IA** (`docs/plans/2026-06-30-phase-17-public-chatbot.md`).
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -43,6 +44,7 @@
 - **P12** — Mission Control : `lib/data/mission-control.ts` (+ test) + page `mission-control/page.tsx`. KPIs relation client, pipeline (groupBy), tâches, à-traiter, aperçu inbox. Entrée nav en-tête.
 - **P13** — Reskin DA v2 des pages `/ai` (Assistant IA) et `/calendrier` (tokens ; logique inchangée).
 - **P14** — `components/command-palette/command-palette.tsx` (⌘K global, monté dans le layout, ouvert par la topbar), reskin `settings-form.tsx` + `faq/page.tsx`.
+- **P15** — Docs finales (`ARCHITECTURE`/`API_REFERENCE` + section BO v2/CRM), patch note `docs/patch_notes/patch_note_V0_5.md`, E2E `e2e/bo-v2.spec.ts` (guard des routes BO).
 - Gate vert : 148 tests admin + 48 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
