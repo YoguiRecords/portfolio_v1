@@ -1,0 +1,20 @@
+/** Barrel des primitives UI du BO v2. Importer depuis `@/components/ui`. */
+export { cn } from "./cn";
+export { Status, type StatusVariant } from "./status";
+export { Button, type ButtonVariant, type ButtonSize } from "./button";
+export { KpiCard } from "./kpi-card";
+export { DataTable, type Column, type DataTableProps } from "./data-table";
+export { Switch } from "./switch";
+export { Segmented, type SegmentedOption } from "./segmented";
+export { Pagination } from "./pagination";
+export { Panel } from "./card";
+export { Field } from "./field";
+export { Input } from "./input";
+export { Select } from "./select";
+export { Textarea } from "./textarea";
+export { Tag } from "./tag";
+export { Avatar } from "./avatar";
+export { Toolbar } from "./toolbar";
+export { SaveBar } from "./save-bar";
+export { EmptyState } from "./empty-state";
+export { Drawer } from "./drawer";
