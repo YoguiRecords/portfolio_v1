@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProject } from "../../../lib/data/project";
-import { ProjectHero } from "../../../components/sections/project-hero";
-import { BlockRenderer } from "../../../components/blocks/block-renderer";
-import { ProjectNext } from "../../../components/project-next/project-next";
+import { getProject } from "../../../../lib/data/project";
+import { ProjectHero } from "../../../../components/sections/project-hero";
+import { BlockRenderer } from "../../../../components/blocks/block-renderer";
+import { ProjectNext } from "../../../../components/project-next/project-next";
 
 // Rendered per request from the DB (no build-time DB dependency).
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const data = await getProject(slug);
@@ -27,7 +27,7 @@ export async function generateMetadata({
 export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
   const data = await getProject(slug);

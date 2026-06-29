@@ -1,0 +1,19 @@
+{
+  "nav": { "cv": "Le CV", "discover": "Découvrir le profil" },
+  "common": { "readMore": "Lire la suite", "allProjects": "Tous les projets", "next": "Projet suivant" },
+  "news": { "title": "Actualités", "empty": "Aucune actualité pour le moment." },
+  "agenda": { "title": "Agenda", "empty": "Aucun évènement prévu pour le moment.", "register": "S'inscrire" },
+  "testimonials": {
+    "title": "Témoignages",
+    "leave": "Laisser un témoignage",
+    "name": "Votre nom",
+    "role": "Votre rôle (optionnel)",
+    "email": "Email (optionnel, non publié)",
+    "content": "Votre témoignage",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "thanks": "Merci ! Votre témoignage a été soumis et sera affiché après validation.",
+    "error": "Une erreur est survenue. Réessayez dans un instant."
+  },
+  "language": { "label": "Langue", "fr": "Français", "en": "English" }
+}

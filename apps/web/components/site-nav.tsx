@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 /** A navigation entry pointing at an in-page section anchor. */
 export interface NavLink {
@@ -13,8 +13,17 @@ export interface NavLink {
  *
  * @param brand - brand label (the final char is gilded, e.g. "Yohan.").
  * @param links - section links derived from the visible HomeSections.
+ * @param children - optional trailing controls (e.g. the language switch).
  */
-export function SiteNav({ brand, links }: { brand: string; links: NavLink[] }) {
+export function SiteNav({
+  brand,
+  links,
+  children,
+}: {
+  brand: string;
+  links: NavLink[];
+  children?: ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const head = brand.slice(0, -1);
   const tail = brand.slice(-1);
@@ -32,6 +41,7 @@ export function SiteNav({ brand, links }: { brand: string; links: NavLink[] }) {
               {l.label}
             </a>
           ))}
+          {children}
         </div>
         <button
           className={`burger${open ? " open" : ""}`}

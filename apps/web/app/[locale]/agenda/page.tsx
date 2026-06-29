@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getEvents } from "../../lib/data/agenda";
-import { EventCard } from "../../components/feed/event-card";
-import styles from "../../components/feed/feed.module.css";
+import { getEvents } from "../../../lib/data/agenda";
+import { EventCard } from "../../../components/feed/event-card";
+import styles from "../../../components/feed/feed.module.css";
 
 export const dynamic = "force-dynamic";
 

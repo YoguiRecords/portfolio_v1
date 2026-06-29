@@ -5,7 +5,9 @@ packages:
 
 # Scripts de build natifs explicitement approuvés (pnpm 11 — sécurité : rien ne build sans aval).
 allowBuilds:
+  '@parcel/watcher': true
   "@prisma/engines": true
+  '@swc/core': true
   esbuild: true
   prisma: true
   sharp: true

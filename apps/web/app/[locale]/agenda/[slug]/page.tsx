@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getEvent } from "../../../lib/data/agenda";
-import { EventDetails } from "../../../components/feed/event-details";
-import { Markdown } from "../../../components/markdown/markdown";
-import { Gallery, type MediaItem } from "../../../components/gallery/gallery";
-import styles from "../../../components/feed/feed.module.css";
+import { getEvent } from "../../../../lib/data/agenda";
+import { EventDetails } from "../../../../components/feed/event-details";
+import { Markdown } from "../../../../components/markdown/markdown";
+import { Gallery, type MediaItem } from "../../../../components/gallery/gallery";
+import styles from "../../../../components/feed/feed.module.css";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const event = await getEvent(slug);
@@ -22,7 +22,7 @@ export async function generateMetadata({
 export default async function EventPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
   const event = await getEvent(slug);

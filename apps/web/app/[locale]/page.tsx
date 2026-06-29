@@ -1,10 +1,10 @@
-import { getHome } from "../lib/data/home";
-import { Hero } from "../components/sections/hero";
-import { Profil } from "../components/sections/profil";
-import { Ecosysteme } from "../components/sections/ecosysteme";
-import { Parcours } from "../components/sections/parcours";
-import { Cap } from "../components/sections/cap";
-import { Projets } from "../components/sections/projets";
+import { getHome } from "../../lib/data/home";
+import { Hero } from "../../components/sections/hero";
+import { Profil } from "../../components/sections/profil";
+import { Ecosysteme } from "../../components/sections/ecosysteme";
+import { Parcours } from "../../components/sections/parcours";
+import { Cap } from "../../components/sections/cap";
+import { Projets } from "../../components/sections/projets";
 
 // Rendered per request from the database (no build-time DB dependency); the
 // server still emits full HTML, so SEO is preserved.
@@ -15,8 +15,9 @@ export const dynamic = "force-dynamic";
  * (hidden sections are already filtered out by the loader); a section without
  * its backing data is skipped. All content is DB-driven.
  */
-export default async function Home() {
-  const data = await getHome();
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const data = await getHome(locale);
   const { profile, sections } = data;
 
   return (

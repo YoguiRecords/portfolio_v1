@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Typewriter } from "../typewriter";
 import type { HomeData } from "../../lib/data/home";
 
@@ -35,9 +36,9 @@ export function Hero({
             <a href="#about" className="btn btn-primary">
               Découvrir le profil →
             </a>
-            <a href="/cv" className="btn btn-ghost on-dark">
+            <Link href="/cv" className="btn btn-ghost on-dark">
               Le CV
-            </a>
+            </Link>
           </div>
         </div>
         <figure className="photoframe">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { getApprovedTestimonials } from "../../lib/data/testimonials";
-import { TestimonialCard } from "../../components/testimonial-card/testimonial-card";
-import { TestimonialForm } from "../../components/testimonial-form/testimonial-form";
-import feedStyles from "../../components/feed/feed.module.css";
+import { getApprovedTestimonials } from "../../../lib/data/testimonials";
+import { TestimonialCard } from "../../../components/testimonial-card/testimonial-card";
+import { TestimonialForm } from "../../../components/testimonial-form/testimonial-form";
+import feedStyles from "../../../components/feed/feed.module.css";
 
 export const dynamic = "force-dynamic";
 

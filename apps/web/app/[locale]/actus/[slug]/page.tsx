@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getArticle } from "../../../lib/data/news";
-import { ArticleHeader } from "../../../components/feed/article-header";
-import { Markdown } from "../../../components/markdown/markdown";
-import { Gallery, type MediaItem } from "../../../components/gallery/gallery";
+import { getArticle } from "../../../../lib/data/news";
+import { ArticleHeader } from "../../../../components/feed/article-header";
+import { Markdown } from "../../../../components/markdown/markdown";
+import { Gallery, type MediaItem } from "../../../../components/gallery/gallery";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
@@ -25,7 +25,7 @@ export async function generateMetadata({
 export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
   const article = await getArticle(slug);
