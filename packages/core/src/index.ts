@@ -35,6 +35,7 @@ export {
   CareerGoalInput,
   HomeSectionInput,
   ProfileInput,
+  ProjectInput,
   ReorderItem,
 } from "./admin/content-schemas";
 

@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/projects" }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/projets" }));
 
 import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";

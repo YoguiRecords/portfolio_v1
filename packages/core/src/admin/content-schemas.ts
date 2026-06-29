@@ -59,6 +59,30 @@ export const ProfileInput = z.object({
   aiSummary: z.string().max(600).optional(),
 });
 
+/** Project case-study header (blocks are edited separately). */
+export const ProjectInput = z.object({
+  title: z.string().min(1).max(160),
+  slug: z
+    .string()
+    .min(1)
+    .max(120)
+    .regex(/^[a-z0-9-]+$/, "slug: minuscules, chiffres et tirets uniquement"),
+  summary: z.string().min(1).max(400),
+  content: z.string().min(1).max(8000),
+  type: z.enum(["GAME", "SOFTWARE", "WEBSITE", "BUSINESS"]).default("SOFTWARE"),
+  role: z.string().max(120).optional(),
+  periodLabel: z.string().max(60).optional(),
+  statusLabel: z.string().max(60).optional(),
+  tagline: z.string().max(200).optional(),
+  sigText: z.string().max(120).optional(),
+  status: z.enum(["DRAFT", "PUBLISHED"]).default("DRAFT"),
+  featured: z.boolean().default(false),
+  order: z.number().int().min(0).default(0),
+  seoTitle: z.string().max(160).optional(),
+  seoDescription: z.string().max(300).optional(),
+  aiSummary: z.string().max(600).optional(),
+});
+
 /** A new order assignment for a single row (used by reorder actions). */
 export const ReorderItem = z.object({ id: z.string().min(1), order: z.number().int().min(0) });
 
@@ -67,4 +91,5 @@ export type SkillInput = z.infer<typeof SkillInput>;
 export type CareerGoalInput = z.infer<typeof CareerGoalInput>;
 export type HomeSectionInput = z.infer<typeof HomeSectionInput>;
 export type ProfileInput = z.infer<typeof ProfileInput>;
+export type ProjectInput = z.infer<typeof ProjectInput>;
 export type ReorderItem = z.infer<typeof ReorderItem>;
