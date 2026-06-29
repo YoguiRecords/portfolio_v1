@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { logoutAction } from "@/lib/auth/actions";
 import { getNavBadges } from "@/lib/data/nav-badges";
+import { CommandPalette } from "@/components/command-palette/command-palette";
 import { Icon } from "./icons";
 import { MobileBar } from "./mobile-bar";
 import { Rail } from "./rail";
@@ -35,6 +36,7 @@ export async function AdminLayout({ adminEmail, children }: { adminEmail: string
         <main className="flex-1 overflow-x-hidden p-6 pb-24 md:pb-6">{children}</main>
       </div>
       <MobileBar badges={badges} logoutSlot={logoutSlot} />
+      <CommandPalette />
     </div>
   );
 }

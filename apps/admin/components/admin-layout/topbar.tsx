@@ -13,6 +13,7 @@ export function Topbar({ adminEmail }: { adminEmail: string }) {
       <button
         type="button"
         aria-label="Rechercher"
+        onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
         className="flex w-full max-w-sm items-center gap-2 rounded-control border border-border bg-surface-2 px-3 py-1.5 text-sm text-muted hover:border-border-strong"
       >
         <Icon name="search" className="h-4 w-4" />
