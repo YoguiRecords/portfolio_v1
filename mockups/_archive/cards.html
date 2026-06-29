@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      body { background: #0a0b10; color:#e9eaef;
+        background-image: radial-gradient(circle at 50% 0%, #1b1830, #0a0b10 60%); }
+      .nav { color:#fff; } .nav .brand span{ color: var(--accent); }
+      .mono { font-family:"JetBrains Mono",monospace; }
+
+      .arena { min-height:100vh; padding: 100px 0 70px; }
+      .head { text-align:center; margin-bottom: 40px; }
+      .head .eyebrow{ display:inline-block; margin-bottom:14px; }
+      .head h1 { font-size: clamp(34px,8vw,72px); font-weight:900; letter-spacing:-.04em; line-height:.92; }
+      .head h1 span{ color:var(--accent); }
+      .head p{ margin:14px auto 0; max-width:50ch; color:#a3a6b4; font-weight:300; font-size:clamp(15px,3.6vw,18px); }
+
+      .deck { display:grid; grid-template-columns:1fr; gap: 26px; justify-items:center; }
+      @media (min-width:640px){ .deck{ grid-template-columns: repeat(2,1fr); } }
+      @media (min-width:1000px){ .deck{ grid-template-columns: repeat(4,1fr); } }
+
+      .card { width:100%; max-width: 290px; aspect-ratio: 63/88; border-radius:18px; padding:4px; position:relative;
+        transform-style: preserve-3d; transition: transform .25s ease; cursor:pointer; text-decoration:none; }
+      .card .inner { height:100%; border-radius:15px; background:#14141d; border:1px solid #2a2a3a; overflow:hidden; display:flex; flex-direction:column; position:relative; }
+      /* cadres par rareté */
+      .card.legendary { background: linear-gradient(135deg, var(--accent), #fff3d6 40%, var(--accent-strong) 70%, var(--accent)); box-shadow:0 0 40px rgba(240,168,0,.35); }
+      .card.epic { background: linear-gradient(135deg,#9a6bff,#c9a8ff,#7a4ddb); }
+      .card.rare { background: linear-gradient(135deg,#52c4ff,#a8e6ff,#2a8fd0); }
+      /* shine holographique */
+      .card .inner::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:0; transition:.3s;
+        background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.28) 48%, transparent 60%); }
+      .card:hover { transform: translateY(-10px) rotateX(6deg) rotateY(-6deg); }
+      .card:hover .inner::before { opacity:1; }
+
+      .c-top { display:flex; justify-content:space-between; align-items:center; padding:12px 14px 8px; }
+      .c-top .nm { font:900 17px "Inter",sans-serif; letter-spacing:-.01em; }
+      .c-top .cost { font:900 14px "JetBrains Mono",monospace; width:30px;height:30px; border-radius:50%; background: var(--accent); color:#1a1400; display:flex; align-items:center; justify-content:center; }
+
+      .c-art { margin: 0 12px; height: 40%; border-radius:10px; position:relative; overflow:hidden;
+        background: radial-gradient(circle at 50% 35%, #2a2640, #111019); border:1px solid #2a2a3a; display:flex; align-items:center; justify-content:center; }
+      .c-art .face { width:64px;height:64px;border-radius:50%; background: radial-gradient(circle at 35% 30%,#fff3d6,var(--accent) 55%,var(--accent-strong)); }
+      .c-art .emoji{ font-size:46px; }
+      .c-art .rar { position:absolute; top:8px; left:8px; font:800 9px "Inter",sans-serif; letter-spacing:.14em; text-transform:uppercase; background:rgba(0,0,0,.5); padding:3px 7px; border-radius:20px; }
+      .legendary .c-art .rar{ color: var(--accent); } .epic .c-art .rar{ color:#c9a8ff; } .rare .c-art .rar{ color:#a8e6ff; }
+
+      .c-type { text-align:center; font:700 10px "Inter",sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#8d90a2; margin:10px 0 6px; }
+      .c-desc { padding: 0 16px; font:500 12px/1.5 "Inter",sans-serif; color:#b6b9c8; text-align:center; flex:1; }
+
+      .c-stats { display:flex; gap:6px; padding: 10px 14px 14px; }
+      .c-stats .st{ flex:1; text-align:center; background:#1c1c28; border-radius:7px; padding:7px 2px; }
+      .c-stats .st .n{ font:900 16px "Inter",sans-serif; color: var(--accent); } .c-stats .st .l{ font:600 8px "Inter",sans-serif; letter-spacing:.08em; color:#7d8092; text-transform:uppercase; margin-top:2px; }
+
+      /* carte héros distincte */
+      .card.hero .c-art{ height:46%; } .card.hero .nm{ font-size:19px; }
+
+      .cta { justify-content:center; margin-top: 44px; }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links"><a href="#">Deck</a><a href="#">CV</a><a href="#">Contact</a><a href="#" class="muted">News</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#"><span class="n">01</span>Deck</a><a href="#"><span class="n">02</span>CV</a><a href="#"><span class="n">03</span>Contact</a></div>
+
+    <section class="arena">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow">Collection · Yohan TCG</span>
+          <h1>Choisis ta <span>carte.</span></h1>
+          <p>Concepteur-développeur &amp; entrepreneur. Un deck complet : le héros, ses produits et ses sorts. Survole pour le reflet holo.</p>
+        </div>
+
+        <div class="deck">
+          <a href="#" class="card legendary hero reveal">
+            <div class="inner">
+              <div class="c-top"><span class="nm">Yohan D.</span><span class="cost">★</span></div>
+              <div class="c-art"><span class="rar">Légendaire</span><span class="face"></span></div>
+              <div class="c-type">Héros · Builder solo</div>
+              <div class="c-desc">Transforme une <b>idée</b> en <b>produit déployé</b>. Agit seul sur toute la chaîne.</div>
+              <div class="c-stats"><div class="st"><div class="n">4</div><div class="l">XP</div></div><div class="st"><div class="n">E2E</div><div class="l">Portée</div></div><div class="st"><div class="n">∞</div><div class="l">Combo</div></div></div>
+            </div>
+          </a>
+
+          <a href="#" class="card epic reveal">
+            <div class="inner">
+              <div class="c-top"><span class="nm">Domestic Revolt</span><span class="cost">9</span></div>
+              <div class="c-art"><span class="rar">Épique</span><span class="emoji">🚀</span></div>
+              <div class="c-type">Produit · Projet phare</div>
+              <div class="c-desc">Conçu, codé &amp; déployé seul. Du croquis à la production.</div>
+              <div class="c-stats"><div class="st"><div class="n">Nx</div><div class="l">Next</div></div><div class="st"><div class="n">Dk</div><div class="l">Docker</div></div><div class="st"><div class="n">A+</div><div class="l">Solo</div></div></div>
+            </div>
+          </a>
+
+          <a href="#" class="card epic reveal">
+            <div class="inner">
+              <div class="c-top"><span class="nm">OXO</span><span class="cost">8</span></div>
+              <div class="c-art"><span class="rar">Épique</span><span class="emoji">⚙️</span></div>
+              <div class="c-type">Logiciel · Plateforme</div>
+              <div class="c-desc">Plateforme complète pilotée seul, du back au front.</div>
+              <div class="c-stats"><div class="st"><div class="n">Re</div><div class="l">React</div></div><div class="st"><div class="n">No</div><div class="l">Node</div></div><div class="st"><div class="n">A</div><div class="l">Archi</div></div></div>
+            </div>
+          </a>
+
+          <a href="#" class="card rare reveal">
+            <div class="inner">
+              <div class="c-top"><span class="nm">Étude PME</span><span class="cost">6</span></div>
+              <div class="c-art"><span class="rar">Rare</span><span class="emoji">📊</span></div>
+              <div class="c-type">Sort · Stratégie</div>
+              <div class="c-desc">Analyse de marché, SWOT &amp; recommandations actionnables.</div>
+              <div class="c-stats"><div class="st"><div class="n">SW</div><div class="l">SWOT</div></div><div class="st"><div class="n">$</div><div class="l">Marché</div></div><div class="st"><div class="n">B+</div><div class="l">Conseil</div></div></div>
+            </div>
+          </a>
+        </div>
+
+        <div class="cta reveal"><a href="#" class="btn btn-primary">Voir le deck complet →</a><a href="#" class="btn btn-ghost on-dark">Règles du jeu (CV)</a></div>
+      </div>
+    </section>
+    <script src="../reveal.js"></script>
+  </body>
+</html>

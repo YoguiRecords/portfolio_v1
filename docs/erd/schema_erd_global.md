@@ -1,6 +1,11 @@
 # ERD — Modèle de données
 
-Source de vérité : `packages/db/prisma/schema.prisma`.
+Source de vérité : `packages/db/prisma/schema.prisma` (le diagramme ci-dessous illustre le cœur).
+
+> Modèles ajoutés depuis (cf. schéma) — à intégrer au diagramme lors d'une prochaine régénération :
+> **Agenda/média** : `Event`, `EventMedia`, `ArticleMedia`, `AppointmentRequest` (+ `MediaKind`
+> VIDEO/EMBED sur `MediaAsset`, `Article.scheduledAt`/`status SCHEDULED`).
+> **i18n** : `Translation` (overlay EN par champ). **IA** : `AiAssistantConfig`.
 
 ```mermaid
 erDiagram

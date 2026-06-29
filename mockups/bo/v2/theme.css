@@ -1,0 +1,36 @@
+/* Direction V2 — ASSEMBLAGE : rail + noir/gris graphite + accent or */
+:root {
+  --bg: #0d0e10;
+  --surface: #16181b;
+  --surface-2: #1c1f23;
+  --elevated: #22262b;
+  --border: #24272c;
+  --border-2: #31353b;
+  --text: #f1f2f4;
+  --text-2: #b3b9c0;
+  --text-muted: #79808a;
+  --hover: #1b1e22;
+  --accent2: #38bda8;
+}
+.rail-logo { background: linear-gradient(135deg, var(--accent), #d89400); }
+.kpi.k2 .value { color: var(--accent2); }
+.kpi.k2 .label .ico { color: var(--accent2); }
+
+/* greeting bandeau */
+.greeting { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, var(--surface), var(--bg)); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 22px; }
+.greeting .em { font-size: 26px; }
+.greeting .gt { flex: 1; } .greeting .gt b { font-size: 16px; } .greeting .gt span { color: var(--text-2); font-size: 13.5px; }
+.greeting .ga { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* éditeur + aperçu fermable */
+.editor { display: grid; grid-template-columns: 1fr; gap: 0; transition: grid-template-columns .25s ease; }
+@media (min-width: 1080px) { .editor.with-preview { grid-template-columns: 1fr 384px; } }
+.editor .formcol { padding-right: 0; min-width: 0; }
+@media (min-width: 1080px) { .editor.with-preview .formcol { padding-right: 26px; } }
+.previewcol { display: none; }
+@media (min-width: 1080px) { .editor.with-preview .previewcol { display: block; position: sticky; top: 74px; align-self: start; border-left: 1px solid var(--border); padding-left: 22px; } }
+.preview-tab { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+.preview-tab .close { margin-left: auto; cursor: pointer; width: 22px; height: 22px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.preview-tab .close:hover { background: var(--surface-2); color: var(--text); }
+.preview-toggle { display: none; }
+@media (min-width: 1080px) { .preview-toggle { display: inline-flex; } }

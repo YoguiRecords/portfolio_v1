@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (formes convergentes)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#0c0d0f; color:#e9e9e6; font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .page { max-width:980px; margin:0 auto; padding:70px clamp(18px,5vw,40px) 110px; }
+
+      .intro { margin-bottom:40px; }
+      .intro .lab { font:600 11px "JetBrains Mono",monospace; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); }
+      .intro h1 { font-size:clamp(28px,6vw,46px); font-weight:800; letter-spacing:-.03em; line-height:1.04; margin:14px 0 12px; }
+      .intro p { color:#9a9d9a; font-weight:300; font-size:15px; line-height:1.6; max-width:64ch; }
+
+      .legend { display:flex; flex-wrap:wrap; gap:14px 26px; margin-top:24px; }
+      .legend span { display:inline-flex; align-items:center; gap:9px; font:600 12.5px "Inter",sans-serif; color:#b9bcb8; }
+      .legend i { width:20px; height:4px; border-radius:3px; display:block; }
+      .legend .nowdot { width:11px; height:11px; border-radius:50%; background:#46c98b; }
+
+      .demo { padding:50px 0; border-top:1px solid rgba(255,255,255,.09); }
+      .demo > .tag { display:flex; align-items:baseline; gap:14px; margin-bottom:28px; flex-wrap:wrap; }
+      .demo > .tag .id { font:600 12px "JetBrains Mono",monospace; letter-spacing:.14em; color:var(--accent); }
+      .demo > .tag .nm { font-size:19px; font-weight:700; letter-spacing:-.01em; }
+      .demo > .tag .why { margin-left:auto; font-size:12px; color:#6f7370; font-style:italic; }
+
+      .viz { border:1px solid rgba(255,255,255,.1); border-radius:14px; background:var(--dark-900); padding:clamp(20px,3vw,32px); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      .viz svg { width:100%; height:auto; display:block; overflow:visible; min-width:620px; }
+      .flow { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+      .s-dev { stroke:#f0a800; } .s-mgmt { stroke:#d98a3a; } .s-biz { stroke:#7d93a3; }
+      .lab { font:600 12px "Inter",sans-serif; fill:#e6e8ea; }
+      .dom { font:700 11px "JetBrains Mono",monospace; letter-spacing:.1em; }
+      .dom.dev { fill:#f0a800; } .dom.mgmt { fill:#d98a3a; } .dom.biz { fill:#7d93a3; }
+      .yr { font:500 11px "JetBrains Mono",monospace; fill:#8c908c; }
+      .dot { fill:#0c0d0f; stroke-width:3; }
+      .dot.dev { stroke:#f0a800; } .dot.mgmt { stroke:#d98a3a; } .dot.biz { stroke:#7d93a3; }
+      .nowlab { font:800 13px "Inter",sans-serif; fill:#46c98b; }
+      .ground { stroke:rgba(255,255,255,.12); stroke-dasharray:5 6; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="intro">
+        <span class="lab">Démo · 3 formes convergentes</span>
+        <h1>Parcours — « plusieurs origines → aujourd'hui »</h1>
+        <p>Comme le métro, ces formes montrent <b>3 horizons qui convergent</b> (Dev · Management · Business) — pas une ligne plate. Trois métaphores différentes du même mouvement.</p>
+        <div class="legend">
+          <span><i style="background:#f0a800"></i> Dev</span>
+          <span><i style="background:#d98a3a"></i> Management</span>
+          <span><i style="background:#7d93a3"></i> Business</span>
+          <span><i class="nowdot"></i> Aujourd'hui</span>
+        </div>
+      </div>
+
+      <!-- A — CONFLUENCE -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">A</span><span class="nm">🌊 Confluence (rivières)</span><span class="why">organique · premium · 3 affluents → un fleuve</span></div>
+        <div class="viz">
+          <svg viewBox="0 0 900 330" role="img" aria-label="Trois affluents convergent en un fleuve vers aujourd'hui">
+            <!-- affluents -->
+            <path class="flow s-biz"  stroke-width="7"  d="M60,290 C 240,290 400,225 590,175" opacity=".9" />
+            <path class="flow s-mgmt" stroke-width="7"  d="M60,175 C 270,175 420,175 590,175" opacity=".9" />
+            <path class="flow s-dev"  stroke-width="7"  d="M60,60 C 240,60 400,125 590,175" opacity=".9" />
+            <!-- fleuve principal (élargi) -->
+            <path class="flow s-dev"  stroke-width="15" d="M588,175 L840,175" />
+            <!-- domaines à l'origine -->
+            <text class="dom dev"  x="60" y="44"  text-anchor="start">DÉV</text>
+            <text class="dom mgmt" x="60" y="160" text-anchor="start">MANAGEMENT</text>
+            <text class="dom biz"  x="60" y="316" text-anchor="start">BUSINESS</text>
+            <!-- stations -->
+            <circle class="dot dev"  cx="210" cy="60"  r="6" /><text class="lab" x="210" y="44" text-anchor="middle">Développeur</text>
+            <circle class="dot dev"  cx="370" cy="108" r="6" /><text class="lab" x="370" y="92" text-anchor="middle">Ingénieur</text>
+            <circle class="dot mgmt" cx="300" cy="175" r="6" /><text class="lab" x="300" y="200" text-anchor="middle">Gestion de projet</text>
+            <circle class="dot mgmt" cx="440" cy="175" r="6" /><text class="lab" x="440" y="200" text-anchor="middle">Encadrement</text>
+            <circle class="dot biz"  cx="210" cy="290" r="6" /><text class="lab" x="210" y="314" text-anchor="middle">Entrepreneuriat</text>
+            <circle class="dot biz"  cx="380" cy="238" r="6" /><text class="lab" x="380" y="262" text-anchor="middle">Étude PME</text>
+            <!-- terminus -->
+            <circle cx="840" cy="175" r="18" fill="none" stroke="#46c98b" stroke-width="1.5" opacity=".5" />
+            <circle cx="840" cy="175" r="11" fill="#46c98b" />
+            <text class="nowlab" x="840" y="140" text-anchor="middle">Aujourd'hui</text>
+            <text class="yr" x="840" y="210" text-anchor="middle">2024+</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- B — RACINES -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">B</span><span class="nm">🌳 Racines → tronc</span><span class="why">littéral · « d'où je viens » · racines qui nourrissent</span></div>
+        <div class="viz">
+          <svg viewBox="0 0 600 440" role="img" aria-label="Trois systèmes de racines nourrissent un tronc qui monte vers aujourd'hui">
+            <!-- sol -->
+            <line class="ground" x1="40" y1="288" x2="560" y2="288" />
+            <text class="yr" x="556" y="280" text-anchor="end">sol</text>
+            <!-- tronc -->
+            <path class="flow s-dev" stroke-width="16" d="M300,288 L300,86" />
+            <!-- racines -->
+            <path class="flow s-dev"  stroke-width="6" d="M300,288 C 250,330 170,350 95,408" opacity=".9" />
+            <path class="flow s-dev"  stroke-width="4" d="M300,300 C 270,330 230,345 200,392" opacity=".7" />
+            <path class="flow s-mgmt" stroke-width="6" d="M300,288 C 300,335 300,365 300,418" opacity=".9" />
+            <path class="flow s-biz"  stroke-width="6" d="M300,288 C 350,330 430,350 505,408" opacity=".9" />
+            <path class="flow s-biz"  stroke-width="4" d="M300,300 C 330,330 370,345 400,392" opacity=".7" />
+            <!-- domaines aux racines -->
+            <circle class="dot dev"  cx="95"  cy="408" r="6" /><text class="dom dev"  x="95"  y="430" text-anchor="middle">DÉV</text>
+            <circle class="dot mgmt" cx="300" cy="418" r="6" /><text class="dom mgmt" x="300" y="438" text-anchor="middle">MANAGEMENT</text>
+            <circle class="dot biz"  cx="505" cy="408" r="6" /><text class="dom biz"  x="505" y="430" text-anchor="middle">BUSINESS</text>
+            <!-- jalons sur le tronc -->
+            <circle class="dot dev" cx="300" cy="230" r="5" /><text class="lab" x="320" y="234" text-anchor="start">Ingénieur</text>
+            <circle class="dot dev" cx="300" cy="160" r="5" /><text class="lab" x="320" y="164" text-anchor="start">Gestion · management</text>
+            <!-- aujourd'hui (cime) -->
+            <circle cx="300" cy="86" r="18" fill="none" stroke="#46c98b" stroke-width="1.5" opacity=".5" />
+            <circle cx="300" cy="86" r="12" fill="#46c98b" />
+            <text class="nowlab" x="300" y="58" text-anchor="middle">Aujourd'hui</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- C — TRESSE -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">C</span><span class="nm">🧵 Tresse</span><span class="why">3 fils qui se tissent en une corde · distinctif</span></div>
+        <div class="viz">
+          <svg viewBox="0 0 900 300" role="img" aria-label="Trois fils s'entrelacent et se rejoignent en une corde vers aujourd'hui">
+            <!-- fils entrelacés -->
+            <path class="flow s-dev"  stroke-width="6" d="M70,80  C 230,80 230,220 400,150 S 560,80 700,150" opacity=".95" />
+            <path class="flow s-mgmt" stroke-width="6" d="M70,150 C 230,150 230,80 400,150 S 560,220 700,150" opacity=".95" />
+            <path class="flow s-biz"  stroke-width="6" d="M70,220 C 230,220 230,150 400,150 S 560,150 700,150" opacity=".95" />
+            <!-- corde finale -->
+            <path class="flow s-dev"  stroke-width="13" d="M700,150 L840,150" />
+            <!-- domaines aux origines -->
+            <text class="dom dev"  x="58" y="84"  text-anchor="end">DÉV</text>
+            <text class="dom mgmt" x="58" y="154" text-anchor="end">MGMT</text>
+            <text class="dom biz"  x="58" y="224" text-anchor="end">BIZ</text>
+            <!-- jalons -->
+            <circle class="dot dev"  cx="70" cy="80"  r="6" />
+            <circle class="dot mgmt" cx="70" cy="150" r="6" />
+            <circle class="dot biz"  cx="70" cy="220" r="6" />
+            <circle class="dot dev"  cx="400" cy="150" r="6" /><text class="lab" x="400" y="134" text-anchor="middle">les fils se tissent</text>
+            <!-- terminus -->
+            <circle cx="840" cy="150" r="18" fill="none" stroke="#46c98b" stroke-width="1.5" opacity=".5" />
+            <circle cx="840" cy="150" r="11" fill="#46c98b" />
+            <text class="nowlab" x="840" y="118" text-anchor="middle">Aujourd'hui</text>
+            <text class="yr" x="840" y="184" text-anchor="middle">2024+</text>
+          </svg>
+        </div>
+      </section>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

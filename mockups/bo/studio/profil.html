@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio · Me concernant — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .render { padding: 0; color: #1a1a1a; }
+      .render .hero { background: linear-gradient(135deg, #161616, #0b0b0b); padding: 34px 30px; color: #fff; position: relative; overflow: hidden; }
+      .render .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 80% 10%, rgba(240,168,0,.28), transparent 50%); }
+      .render .hero .av { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; position: relative; z-index: 1; margin-bottom: 14px; }
+      .render .hero .eyebrow { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 700; position: relative; z-index: 1; }
+      .render .hero h1 { font-size: 32px; font-weight: 900; letter-spacing: -.03em; margin: 6px 0 8px; position: relative; z-index: 1; }
+      .render .hero .role { font-size: 15px; color: #d8d8d8; position: relative; z-index: 1; max-width: 42ch; }
+      .render .hero .pills { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 16px; position: relative; z-index: 1; }
+      .render .hero .pills span { font-size: 11.5px; font-weight: 600; color: var(--accent); border: 1px solid rgba(240,168,0,.35); border-radius: 20px; padding: 5px 11px; }
+      .render .about { padding: 26px 30px 32px; }
+      .render .about .lbl { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-strong); font-weight: 700; margin-bottom: 10px; }
+      .render .about p { font-size: 14.5px; line-height: 1.75; color: #2e2b25; }
+    </style>
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="brand"><span class="mark">Y</span><span class="name">Yohan<span>.</span>BO</span></div>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <a class="nav-item" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item is-active" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <a class="nav-item" href="#"><span class="ico">⊞</span> CV</a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Système</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Administrateur</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="muted" style="font-size:13px">Me concernant — section « À propos » du site</span>
+          <div class="topbar-actions">
+            <span class="status-text" style="font-size:12.5px;color:var(--text-muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px"></span>Enregistré</span>
+            <a class="btn btn-primary btn-sm" href="#">Publier</a>
+          </div>
+        </header>
+
+        <div class="page">
+          <div class="split">
+            <!-- FORM -->
+            <div class="form-col">
+              <div class="page-header" style="margin-bottom:18px">
+                <div><h1 class="page-title" style="font-size:20px">Me concernant</h1><p class="page-sub">Alimente le hero et la section « À propos ». Aperçu live à droite.</p></div>
+              </div>
+              <div class="avatar-edit" style="margin-bottom:20px">
+                <img src="../../profile.jpg" alt="" />
+                <div><b style="display:block;margin-bottom:6px">Photo</b><div style="display:flex;gap:8px"><a class="btn btn-subtle btn-sm" href="#">Changer</a></div></div>
+              </div>
+              <div class="form-grid">
+                <div class="form-grid cols-2" style="gap:18px">
+                  <div class="field"><label>Prénom</label><input class="input" value="Yohan" /></div>
+                  <div class="field"><label>Nom</label><input class="input" value="Debusscher" /></div>
+                </div>
+                <div class="field"><label>Titre / accroche</label><input class="input" value="Concepteur-développeur &amp; manager — de la stratégie au déploiement" /></div>
+                <div class="field"><label>Casquettes</label><div class="tags"><span class="chip is-active">Vision (CEO)</span><span class="chip is-active">Tech (CTO)</span><span class="chip is-active">Gestion de projet</span><span class="chip add">+</span></div></div>
+                <div class="field"><label>Bio courte (hero)</label><textarea class="textarea" style="min-height:70px">Je pilote un produit de la stratégie jusqu'au déploiement : décision, architecture, exécution.</textarea></div>
+                <div class="field"><label>À propos (texte long)</label><textarea class="textarea">Après des années à concevoir et développer, j'ai pris la responsabilité d'équipes puis la direction de projets — sans jamais lâcher la technique. J'ai managé, recruté, arbitré, tout en restant capable de livrer moi-même.</textarea></div>
+              </div>
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="preview-col">
+              <div class="preview-wrap">
+                <div class="preview-label">Aperçu en direct · section « À propos »</div>
+                <div class="browser">
+                  <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">yohan-debusscher.com/#a-propos</span></div>
+                  <div class="render">
+                    <div class="hero">
+                      <img class="av" src="../../profile.jpg" alt="" />
+                      <div class="eyebrow">À propos</div>
+                      <h1>Yohan Debusscher</h1>
+                      <div class="role">Concepteur-développeur &amp; manager — de la stratégie au déploiement.</div>
+                      <div class="pills"><span>Vision (CEO)</span><span>Tech (CTO)</span><span>Gestion de projet</span></div>
+                    </div>
+                    <div class="about">
+                      <div class="lbl">Mon parcours</div>
+                      <p>Après des années à concevoir et développer, j'ai pris la responsabilité d'équipes puis la direction de projets — sans jamais lâcher la technique. J'ai managé, recruté, arbitré, tout en restant capable de livrer moi-même.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

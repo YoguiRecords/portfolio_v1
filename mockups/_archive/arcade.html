@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      body { background: #05060a; color: #fdf6e3; font-family: "Press Start 2P", monospace; line-height: 1.8; }
+      .px { font-family: "Press Start 2P", monospace; }
+      .sans { font-family: "Inter", sans-serif; }
+
+      /* écran CRT bombé + scanlines */
+      .cab { min-height: 100vh; padding: 40px 16px 70px; position: relative; }
+      .screen { max-width: 920px; margin: 0 auto; border: 3px solid #2a2d3a; border-radius: 18px;
+        background: radial-gradient(ellipse at center, #0a1020 0%, #05060a 90%);
+        padding: clamp(26px, 6vw, 60px) clamp(18px,5vw,54px); position: relative; overflow: hidden;
+        box-shadow: 0 0 0 6px #11131c, 0 30px 80px rgba(0,0,0,.7), inset 0 0 80px rgba(0,0,0,.6); }
+      .screen::before { content:""; position:absolute; inset:0; pointer-events:none; z-index:5;
+        background: repeating-linear-gradient(rgba(0,0,0,0) 0 2px, rgba(0,0,0,.28) 2px 4px); }
+      .screen::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:4;
+        background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,.5)); }
+
+      .center { text-align:center; position:relative; z-index:2; }
+      .credit { font-size: 9px; color:#52e0c4; letter-spacing:1px; }
+      .title { font-size: clamp(20px, 7vw, 58px); color: var(--accent); line-height:1.15; margin: 22px 0 6px;
+        text-shadow: 3px 3px 0 #c07800, 6px 6px 0 rgba(0,0,0,.5); }
+      .title .w { color:#fdf6e3; text-shadow: 3px 3px 0 #555, 6px 6px 0 rgba(0,0,0,.5); }
+      .subtitle { font-size: clamp(9px,2.4vw,12px); color:#9aa0c0; line-height:2.2; margin-top: 10px; }
+      .start { margin-top: 30px; font-size: clamp(11px,3vw,16px); color:#fff; animation: blink 1.05s steps(1) infinite; }
+      .start b{ color: var(--accent); }
+      @keyframes blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce){ .start{ animation:none; } }
+      .insert { margin-top: 14px; font-size: 8px; color:#52e0c4; letter-spacing:1px; }
+
+      /* HIGH SCORES = projets */
+      .hs { margin-top: 44px; position:relative; z-index:2; }
+      .hs .hl { text-align:center; font-size: clamp(11px,3vw,15px); color:#ff5fb0; margin-bottom: 22px; text-shadow:2px 2px 0 rgba(0,0,0,.5); }
+      .score { display:grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items:center; padding: 14px 6px; border-bottom: 2px dotted #1e2333; text-decoration:none; transition: .15s; }
+      .score:hover { background: rgba(240,168,0,.08); }
+      .score .rk { font-size: 11px; color: var(--accent); }
+      .score .nm { font-size: clamp(10px,2.6vw,13px); color:#fdf6e3; }
+      .score .nm small { display:block; font-family:"Inter",sans-serif; font-size: 12px; color:#7b81a0; margin-top:8px; letter-spacing:0; line-height:1.5; }
+      .score .pt { font-size: clamp(10px,2.6vw,13px); color:#52e0c4; white-space:nowrap; }
+      .score:hover .nm { color: var(--accent); }
+
+      .player { margin-top: 40px; text-align:center; position:relative; z-index:2; }
+      .player .bio { font-family:"Inter",sans-serif; font-size: clamp(14px,3.6vw,18px); font-weight:300; color:#c9cce0; line-height:1.7; max-width: 50ch; margin: 0 auto; }
+      .player .bio b{ color: var(--accent); font-weight:600; }
+
+      .ctrls { margin-top: 34px; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; position:relative; z-index:2; }
+      .ab { text-decoration:none; font-family:"Press Start 2P",monospace; font-size: clamp(8px,2.4vw,11px); padding: 16px 20px; border:2px solid var(--accent); color: var(--accent); transition:.15s; }
+      .ab:hover { background: var(--accent); color:#1a1400; transform: translateY(-3px); box-shadow: 0 6px 0 #7a4e00; }
+      .ab.green { border-color:#52e0c4; color:#52e0c4; }
+      .ab.green:hover { background:#52e0c4; color:#05060a; box-shadow:0 6px 0 #1f6b5d; }
+
+      .coinrow { margin-top: 30px; text-align:center; font-size: 8px; color:#3a3f55; position:relative; z-index:2; letter-spacing:1px; }
+    </style>
+  </head>
+  <body>
+    <div class="cab">
+      <div class="screen">
+        <div class="center">
+          <div class="credit reveal">★ YOGUI ARCADE ★ &nbsp; CREDIT 01</div>
+          <h1 class="title reveal"><span class="w">YOHAN</span><br />DEBUSSCHER</h1>
+          <div class="subtitle reveal">— CONCEPTEUR-DEVELOPPEUR &amp; ENTREPRENEUR —<br />THE SOLO BUILDER</div>
+          <div class="start reveal">PRESS <b>START</b> TO PLAY</div>
+          <div class="insert reveal">INSERT IDEA TO CONTINUE</div>
+        </div>
+
+        <div class="hs">
+          <div class="hl reveal">— HIGH SCORES —</div>
+          <a href="#" class="score reveal"><span class="rk">1ST</span><span class="nm">DOMESTIC REVOLT<small>Projet phare · conçu, codé &amp; déployé seul · Next.js / Docker</small></span><span class="pt">999990</span></a>
+          <a href="#" class="score reveal"><span class="rk">2ND</span><span class="nm">OXO<small>Plateforme complète pilotée seul · React / Node</small></span><span class="pt">874500</span></a>
+          <a href="#" class="score reveal"><span class="rk">3RD</span><span class="nm">ETUDE PME<small>Marché · SWOT · recommandations actionnables</small></span><span class="pt">761200</span></a>
+        </div>
+
+        <div class="player">
+          <p class="bio reveal">Player 1 transforme une idée brute en <b>produit déployé</b> — stratégie, design, code et mise en prod. <b>Un seul joueur</b>, toute la chaîne.</p>
+          <div class="ctrls">
+            <a href="#" class="ab reveal">▶ START GAME</a>
+            <a href="#" class="ab green reveal">CV / MANUAL</a>
+            <a href="#" class="ab reveal">CONTACT</a>
+          </div>
+          <div class="coinrow reveal">© 2026 YOHAN DEBUSSCHER — ALL RIGHTS RESERVED — 1 PLAYER ONLY</div>
+        </div>
+      </div>
+    </div>
+    <script src="../reveal.js"></script>
+  </body>
+</html>

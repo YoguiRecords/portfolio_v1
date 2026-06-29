@@ -1,0 +1,19 @@
+{
+  "nav": { "cv": "Resume", "discover": "Discover the profile" },
+  "common": { "readMore": "Read more", "allProjects": "All projects", "next": "Next project" },
+  "news": { "title": "News", "empty": "No news yet." },
+  "agenda": { "title": "Agenda", "empty": "No upcoming events yet.", "register": "Register" },
+  "testimonials": {
+    "title": "Testimonials",
+    "leave": "Leave a testimonial",
+    "name": "Your name",
+    "role": "Your role (optional)",
+    "email": "Email (optional, not published)",
+    "content": "Your testimonial",
+    "send": "Send",
+    "sending": "Sending…",
+    "thanks": "Thank you! Your testimonial has been submitted and will appear after review.",
+    "error": "Something went wrong. Please try again shortly."
+  },
+  "language": { "label": "Language", "fr": "Français", "en": "English" }
+}

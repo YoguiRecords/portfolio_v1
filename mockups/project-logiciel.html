@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OXO — Étude de cas (Logiciel)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .sig { font:600 13px "JetBrains Mono",monospace; color:#46c98b; display:inline-flex; gap:8px; align-items:center; }
+      .sig::before{ content:"▲"; font-size:.85em; }
+      .nav[data-scrollfx]{ color:#fff; } .nav.scrolled{ background:rgba(6,6,6,.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border-dark); }
+      .nav .back{ font:600 13px "Inter",sans-serif; color:var(--on-dark-2); text-decoration:none; transition:.2s; } .nav .back:hover{ color:var(--accent); }
+      .nav .links a{ font-size:13px; }
+      .typebar{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+      .typebar a{ font:600 11px "JetBrains Mono",monospace; letter-spacing:.06em; text-decoration:none; color:var(--on-dark-muted); border:1px solid var(--border-dark); border-radius:20px; padding:7px 13px; transition:.2s; }
+      .typebar a:hover{ border-color:var(--accent); color:var(--accent); }
+      .typebar a.on{ color:#1a1400; background:var(--accent); border-color:var(--accent); }
+
+      .phero { padding:140px 0 0; }
+      .phero .eyebrow { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); display:inline-flex; gap:12px; align-items:center; }
+      .phero .eyebrow::before{ content:""; width:30px; height:2px; background:var(--accent); }
+      .phero h1 { font-size:clamp(46px,12vw,120px); font-weight:900; letter-spacing:-.045em; line-height:.88; text-transform:uppercase; margin:24px 0 0; }
+      .phero .stand { max-width:60ch; font-size:clamp(16px,2.8vw,22px); font-weight:300; color:var(--on-dark-2); line-height:1.55; margin-top:24px; }
+      .phero .sig { margin-top:24px; }
+      .meta { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:44px; }
+      @media (min-width:760px){ .meta{ grid-template-columns:repeat(4,1fr); } }
+      .meta .m { background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid var(--accent); border-radius:10px; padding:18px 20px; }
+      .meta .k { font:600 10px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--on-dark-muted); }
+      .meta .v { font:800 17px "Inter",sans-serif; color:#fff; margin-top:10px; letter-spacing:-.01em; }
+      .meta .v.gold{ color:var(--accent); }
+      .cover { margin-top:48px; position:relative; aspect-ratio:21/9; border-radius:16px; overflow:hidden; border:1px solid var(--border-dark); background:linear-gradient(135deg,#241f12,#0c0c0c 70%); box-shadow:0 40px 90px rgba(0,0,0,.5); display:flex; align-items:flex-end; }
+      .cover::before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 75% 15%, rgba(240,168,0,.28), transparent 55%); }
+      .cover::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,.6), transparent 55%); }
+      .cover .clab{ position:relative; z-index:1; padding:24px 28px; font:600 11px "JetBrains Mono",monospace; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.45); }
+
+      .block { padding: clamp(74px,11vw,124px) 0; border-top:1px solid var(--border-dark); }
+      .block .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+      .block .marker .opt { font:600 9.5px/1 "JetBrains Mono",monospace; color:var(--on-dark-muted); border:1px solid var(--border-dark); border-radius:20px; padding:5px 11px; letter-spacing:.1em; }
+      .block h2 { font-size:clamp(30px,7vw,58px); font-weight:900; letter-spacing:-.03em; line-height:.98; margin-bottom:26px; }
+      .block .lead { max-width:64ch; font-size:clamp(16px,2.6vw,21px); font-weight:300; color:var(--on-dark-2); line-height:1.65; }
+      .block .lead strong{ color:#fff; font-weight:600; }
+      .cols { display:grid; grid-template-columns:1fr; gap:34px 40px; margin-top:44px; }
+      @media (min-width:760px){ .cols{ grid-template-columns:repeat(3,1fr); } }
+      .col { padding-left:20px; border-left:2px solid var(--accent); }
+      .col .ck { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+      .col p { font-size:15px; color:var(--on-dark-2); line-height:1.65; }
+
+      .gantt-wrap { margin-top:44px; overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border-dark); border-radius:14px; background:var(--dark-900); }
+      .gantt { min-width:680px; padding:24px; }
+      .gantt .years { display:grid; grid-template-columns:160px repeat(7,1fr); font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.04em; color:var(--on-dark-muted); border-bottom:1px solid var(--border-dark); padding-bottom:12px; margin-bottom:16px; }
+      .gantt .years span{ text-align:center; } .gantt .years span:first-child{ text-align:left; }
+      .grow { display:grid; grid-template-columns:160px repeat(7,1fr); align-items:center; margin:10px 0; }
+      .grow .lab { font-size:13px; font-weight:600; color:var(--on-dark-2); }
+      .grow .track { grid-column:2 / -1; position:relative; height:30px; }
+      .bar { position:absolute; top:3px; height:24px; border-radius:6px; display:flex; align-items:center; padding:0 12px; font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; color:#1a1400; background:var(--accent); }
+      .bar.soft { background:rgba(240,168,0,.22); color:var(--accent); border:1px solid rgba(240,168,0,.4); }
+      .bar.green { background:rgba(70,201,139,.18); color:#46c98b; border:1px solid rgba(70,201,139,.4); }
+      .bar.dark { background:var(--dark-700); color:var(--on-dark-2); border:1px solid var(--border-dark); }
+
+      /* Architecture & stack */
+      .arch { display:grid; grid-template-columns:1fr; gap:16px; margin-top:44px; }
+      @media (min-width:760px){ .arch{ grid-template-columns:repeat(3,1fr); } }
+      .acol { background:var(--dark-800); border:1px solid var(--border-dark); border-top:2.5px solid var(--accent); border-radius:12px; padding:24px 22px; }
+      .acol .ah { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+      .acol .ar { font-size:13px; color:var(--on-dark-muted); margin:8px 0 16px; }
+      .acol ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+      .acol li { font:600 14px "JetBrains Mono",monospace; color:#e6e8ea; display:flex; align-items:center; gap:9px; }
+      .acol li::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+      .archflow { margin-top:34px; }
+      .archflow .lt { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+      .flow { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+      .flow .node { background:var(--dark-800); border:1px solid var(--border-dark); border-radius:30px; padding:12px 20px; font:700 13.5px "Inter",sans-serif; }
+      .flow .node.key { border-color:var(--accent); color:var(--accent); }
+      .flow .arr { color:var(--accent); font-size:18px; }
+
+      /* Sécurité */
+      .sec { display:grid; grid-template-columns:1fr; gap:14px; margin-top:44px; }
+      @media (min-width:680px){ .sec{ grid-template-columns:repeat(2,1fr); } }
+      .sitem { display:flex; gap:13px; align-items:flex-start; background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid #46c98b; border-radius:10px; padding:16px 18px; }
+      .sitem::before { content:"✓"; color:#46c98b; font-weight:800; font-size:15px; line-height:1.4; }
+      .sitem .st { font:700 15px "Inter",sans-serif; } .sitem .sd { font-size:13px; color:var(--on-dark-muted); margin-top:3px; line-height:1.45; }
+
+      .results { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:44px; }
+      @media (min-width:760px){ .results{ grid-template-columns:repeat(4,1fr); } }
+      .res { background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid var(--accent); border-radius:12px; padding:26px 24px; }
+      .res .rn { font:900 clamp(28px,5vw,36px)/1 "Inter",sans-serif; letter-spacing:-.03em; color:var(--accent); }
+      .res .rl { font-size:12.5px; color:var(--on-dark-muted); margin-top:12px; line-height:1.45; }
+      .gallery { display:grid; grid-template-columns:1fr; gap:18px; margin-top:44px; }
+      @media (min-width:760px){ .gallery{ grid-template-columns:repeat(2,1fr); } }
+      .shot { aspect-ratio:16/10; border-radius:14px; border:1px solid var(--border-dark); background:linear-gradient(135deg,var(--dark-800),#060606); position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; transition:border-color .3s; }
+      .shot::after{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 20%, rgba(240,168,0,.16), transparent 55%); }
+      .shot:hover{ border-color:rgba(240,168,0,.4); }
+      .shot span{ position:relative; z-index:1; font:600 11px "JetBrains Mono",monospace; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+
+      .nextp { padding:80px 0; border-top:1px solid var(--border-dark); }
+      .nextp a { display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:inherit; gap:20px; }
+      .nextp .l { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--on-dark-muted); }
+      .nextp h3 { font-size:clamp(30px,7vw,56px); font-weight:900; letter-spacing:-.03em; text-transform:uppercase; margin-top:12px; transition:.2s; }
+      .nextp a:hover h3{ color:var(--accent); }
+      .nextp .arr { font-size:38px; color:var(--accent); transition:.25s; } .nextp a:hover .arr{ transform:translateX(8px); }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="./site-v3.html#work" class="back">← Tous les projets</a>
+      <div class="links"><a href="#process">Démarche</a><a href="#arch">Architecture</a><a href="#sec">Sécurité</a><a href="#results">Résultats</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#process"><span class="n">01</span>Démarche</a><a href="#arch"><span class="n">02</span>Architecture</a><a href="#sec"><span class="n">03</span>Sécurité</a><a href="#results"><span class="n">04</span>Résultats</a></div>
+
+    <header class="phero">
+      <div class="wrap">
+        <span class="eyebrow">Produit · Logiciel / SaaS</span>
+        <h1>OXO</h1>
+        <p class="stand">Une plateforme complète, pensée produit et menée avec une équipe — du front à l'infra, architecture pensée pour durer.</p>
+        <span class="sig">conçu · piloté · livré</span>
+        <div class="typebar">
+          <a href="./project.html">🎮 Jeu</a><a class="on" href="./project-logiciel.html">🧩 Logiciel</a><a href="./project-site.html">🌐 Site web</a><a href="./project-business.html">📊 Analyse business</a>
+        </div>
+        <div class="meta reveal">
+          <div class="m"><div class="k">Rôle</div><div class="v gold">Lead technique</div></div>
+          <div class="m"><div class="k">Période</div><div class="v">2023 — 2024</div></div>
+          <div class="m"><div class="k">Stack</div><div class="v">React · Node</div></div>
+          <div class="m"><div class="k">Statut</div><div class="v gold">En production</div></div>
+        </div>
+        <figure class="cover reveal"><span class="clab">Interface produit — visuel</span></figure>
+      </div>
+    </header>
+
+    <!-- 01 CONTEXTE -->
+    <section class="block" id="context">
+      <div class="wrap">
+        <div class="marker reveal">01 — Le contexte</div>
+        <h2 class="reveal">Le problème,<br />l'objectif.</h2>
+        <p class="lead reveal">Un besoin produit clair : <strong>quoi</strong>, <strong>pour qui</strong>, avec quelles contraintes. Le cadrage pose l'architecture cible avant le code.</p>
+        <div class="cols">
+          <div class="col reveal"><div class="ck">Problème</div><p>Le besoin métier et son contexte d'usage.</p></div>
+          <div class="col reveal"><div class="ck">Objectif</div><p>Le périmètre fonctionnel et les exigences (perf, sécu, scalabilité).</p></div>
+          <div class="col reveal"><div class="ck">Mon rôle</div><p>Architecture, lead technique et pilotage de l'équipe.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 DÉMARCHE -->
+    <section class="block" id="process">
+      <div class="wrap">
+        <div class="marker reveal">02 — La démarche</div>
+        <h2 class="reveal">Comment<br />c'est construit.</h2>
+        <p class="lead reveal">La conduite du build, phase par phase. La <strong>sécurité</strong> et la <strong>QA</strong> avancent <strong>pendant</strong> le développement, pas après.</p>
+        <div class="gantt-wrap reveal">
+          <div class="gantt">
+            <div class="years"><span>Phase</span><span>S0</span><span>S2</span><span>S4</span><span>S6</span><span>S8</span><span>S10</span><span>Prod</span></div>
+            <div class="grow"><span class="lab">Cadrage</span><div class="track"><div class="bar soft" style="left:0%;width:14%">Vision &amp; archi cible</div></div></div>
+            <div class="grow"><span class="lab">Conception</span><div class="track"><div class="bar" style="left:10%;width:24%">Modèle de données · API</div></div></div>
+            <div class="grow"><span class="lab">Développement</span><div class="track"><div class="bar" style="left:24%;width:60%">Build full-stack</div></div></div>
+            <div class="grow"><span class="lab">Sécurité</span><div class="track"><div class="bar green" style="left:48%;width:38%">Durcissement continu</div></div></div>
+            <div class="grow"><span class="lab">Tests / QA</span><div class="track"><div class="bar dark" style="left:58%;width:30%">Tests &amp; CI</div></div></div>
+            <div class="grow"><span class="lab">Livraison</span><div class="track"><div class="bar soft" style="left:86%;width:14%">Déploiement →</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 ARCHITECTURE & STACK -->
+    <section class="block" id="arch">
+      <div class="wrap">
+        <div class="marker reveal">03 — Architecture &amp; stack</div>
+        <h2 class="reveal">Comment<br />c'est bâti.</h2>
+        <p class="lead reveal">Une architecture en couches, des <strong>types partagés</strong> du front au back, et chaque choix justifié par un besoin (pas par la hype).</p>
+        <div class="arch reveal">
+          <div class="acol"><div class="ah">Frontend</div><div class="ar">UI &amp; rendu</div><ul><li>React</li><li>Next.js (SSR)</li><li>TypeScript</li></ul></div>
+          <div class="acol"><div class="ah">Backend</div><div class="ar">Logique &amp; validation</div><ul><li>Node</li><li>API REST</li><li>Zod</li></ul></div>
+          <div class="acol"><div class="ah">Infra &amp; données</div><div class="ar">Déploiement &amp; persistance</div><ul><li>Docker</li><li>PostgreSQL</li><li>CI / CD</li></ul></div>
+        </div>
+        <div class="archflow reveal">
+          <div class="lt">Flux principal</div>
+          <div class="flow">
+            <span class="node key">Navigateur</span><span class="arr">→</span>
+            <span class="node">Next.js (SSR)</span><span class="arr">→</span>
+            <span class="node">API (Zod)</span><span class="arr">→</span>
+            <span class="node">PostgreSQL</span>
+          </div>
+        </div>
+        <div class="cols">
+          <div class="col reveal"><div class="ck">Monorepo</div><p>Types &amp; utils partagés entre apps : moins de duplication, contrats garantis.</p></div>
+          <div class="col reveal"><div class="ck">Séparation</div><p>Accès DB côté serveur uniquement ; le navigateur ne touche jamais la base.</p></div>
+          <div class="col reveal"><div class="ck">Évolutivité</div><p>Modules indépendants, migrations versionnées, déploiement conteneurisé.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 SÉCURITÉ -->
+    <section class="block" id="sec">
+      <div class="wrap">
+        <div class="marker reveal">04 — Sécurité <span class="opt">by design</span></div>
+        <h2 class="reveal">Sécurisé<br />dès la conception.</h2>
+        <p class="lead reveal">La sécurité n'est pas une option ajoutée après coup : elle est <strong>intégrée à chaque couche</strong>.</p>
+        <div class="sec reveal">
+          <div class="sitem"><div><div class="st">Validation Zod</div><div class="sd">Toutes les entrées externes validées à la frontière.</div></div></div>
+          <div class="sitem"><div><div class="st">Auth durcie</div><div class="sd">Hachage argon2, MFA, rate-limit &amp; lockout.</div></div></div>
+          <div class="sitem"><div><div class="st">Moindre privilège</div><div class="sd">Rôles DB séparés (lecture / écriture cantonnée).</div></div></div>
+          <div class="sitem"><div><div class="st">Sessions &amp; CSRF</div><div class="sd">Cookies httpOnly/Secure/SameSite, CSRF sur les mutations.</div></div></div>
+          <div class="sitem"><div><div class="st">Uploads neutralisés</div><div class="sd">Ré-encodage, strip EXIF, noms randomisés, hors webroot.</div></div></div>
+          <div class="sitem"><div><div class="st">Conteneurs durcis</div><div class="sd">Non-root, réseaux isolés, secrets hors image.</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 RÉSULTATS -->
+    <section class="block" id="results">
+      <div class="wrap">
+        <div class="marker reveal">05 — Résultats &amp; enseignements</div>
+        <h2 class="reveal">Ce que ça<br />a donné.</h2>
+        <p class="lead reveal">L'impact, puis le recul sur les choix techniques.</p>
+        <div class="results reveal">
+          <div class="res"><div class="rn">100%</div><div class="rl">en production</div></div>
+          <div class="res"><div class="rn">0</div><div class="rl">incident de sécurité</div></div>
+          <div class="res"><div class="rn">CI</div><div class="rl">tests automatisés</div></div>
+          <div class="res"><div class="rn">★</div><div class="rl">archi maintenable</div></div>
+        </div>
+        <div class="gallery reveal">
+          <div class="shot"><span>Capture 01</span></div>
+          <div class="shot"><span>Capture 02</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nextp">
+      <div class="wrap"><a href="./project-site.html"><div><span class="l">Projet suivant</span><h3>Site web</h3></div><span class="arr">→</span></a></div>
+    </section>
+
+    <footer class="footer" id="contact">
+      <div class="wrap"><div class="row"><h2>Un projet,<br /><span>parlons-en.</span></h2><div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div></div><div class="legal"><span>© 2026 Yohan Debusscher</span><span>Vision · management · exécution</span></div></div>
+    </footer>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

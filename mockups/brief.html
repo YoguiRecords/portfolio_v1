@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Note stratégique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      /* ── Bespoke, sans shared.css : on contrôle tout, zéro primitive "kit" ── */
+      :root{
+        --paper:#0e0d0b; --ink:#ece8e0; --ink-2:#b8b3a8; --faint:#827d72;
+        --line:rgba(236,232,224,.12); --line-2:rgba(236,232,224,.06);
+        --gold:#e7a417; --gold-ink:#3a2a05;
+      }
+      *{box-sizing:border-box;margin:0;padding:0;}
+      html{-webkit-text-size-adjust:100%;}
+      body{ background:var(--paper); color:var(--ink); font-family:"Inter",sans-serif; line-height:1.5;
+        -webkit-font-smoothing:antialiased; font-feature-settings:"tnum" 0; }
+      ::selection{ background:var(--gold); color:var(--gold-ink); }
+      .serif{ font-family:"Fraunces",Georgia,serif; }
+      .mono{ font-family:"JetBrains Mono",ui-monospace,monospace; }
+      .tnum{ font-variant-numeric:tabular-nums; }
+
+      .sheet{ max-width:1040px; margin:0 auto; padding:0 clamp(20px,5vw,52px); }
+
+      /* léger papier millimétré, très discret (texture, pas déco) */
+      body::before{ content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+        background:
+          radial-gradient(circle at 18% 8%, rgba(231,164,23,.05), transparent 40%),
+          radial-gradient(circle at 90% 90%, rgba(231,164,23,.03), transparent 45%); }
+      .sheet{ position:relative; z-index:1; }
+
+      /* ── Cartouche document ── */
+      .rule-top{ height:2px; background:var(--gold); margin-top:0; }
+      .masthead{ display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:space-between; align-items:baseline;
+        padding:16px 0 14px; border-bottom:1px solid var(--line); }
+      .masthead .l{ font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+      .masthead .r{ font:500 11px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); }
+
+      /* ── Thèse ── */
+      .thesis{ display:grid; grid-template-columns:1fr; gap:34px; padding:68px 0 60px; }
+      @media (min-width:880px){ .thesis{ grid-template-columns:1.62fr .9fr; gap:56px; align-items:end; } }
+      .kicker{ font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin-bottom:26px; display:flex; align-items:center; gap:14px; }
+      .kicker::before{ content:""; width:26px; height:1px; background:var(--gold); }
+      .thesis h1{ font-family:"Fraunces",serif; font-weight:500; font-size:clamp(40px,8.4vw,92px); line-height:.98;
+        letter-spacing:-.025em; }
+      .thesis h1 em{ font-style:italic; color:var(--gold); font-weight:500; }
+      .thesis .deck{ margin-top:26px; font-size:clamp(16px,2.4vw,19px); font-weight:400; line-height:1.55; color:var(--ink-2); max-width:42ch; }
+
+      /* colophon identité (pas de stat-cards) */
+      .colophon{ border-top:1px solid var(--line); padding-top:18px; }
+      .colophon dt{ font:500 10px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin-bottom:5px; }
+      .colophon dd{ font-size:15px; color:var(--ink); margin-bottom:16px; }
+      .colophon dd.name{ font-family:"Fraunces",serif; font-size:22px; font-weight:500; letter-spacing:-.01em; }
+      .colophon .avail{ display:inline-flex; align-items:center; gap:9px; color:var(--ink); }
+      .colophon .avail::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); }
+
+      /* ── Trajectoire : fil typographique ── */
+      .traj{ padding:40px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+      .traj .lbl{ font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); margin-bottom:22px; display:flex; justify-content:space-between; }
+      .traj .lbl b{ color:var(--gold); font-weight:600; }
+      .path{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 4px; }
+      .path .step{ font-family:"Fraunces",serif; font-size:clamp(18px,3vw,27px); font-weight:400; letter-spacing:-.01em; padding:2px 0; }
+      .path .done{ color:var(--faint); }
+      .path .now{ color:var(--ink); font-weight:500; position:relative; padding-left:18px; }
+      .path .now::before{ content:""; position:absolute; left:0; top:50%; transform:translateY(-50%); width:9px; height:9px; border-radius:50%; background:var(--gold); }
+      .path .now .u{ box-shadow:inset 0 -2px 0 var(--gold); }
+      .path .next{ color:#9b958a; font-style:italic; }
+      .path .far{ color:#736e64; font-style:italic; }
+      .path i{ font-style:normal; color:#5a554c; font-size:15px; padding:0 8px; }
+      .traj .foot{ margin-top:18px; display:flex; flex-wrap:wrap; gap:18px; font:500 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); }
+      .traj .foot span{ display:inline-flex; align-items:center; gap:7px; }
+      .traj .foot .k{ width:8px; height:8px; border-radius:50%; }
+      .k.acq{ background:var(--faint); } .k.cur{ background:var(--gold); } .k.cib{ background:transparent; border:1px solid #9b958a; }
+
+      /* ── Auto-diagnostic : 3 cadres d'analyse, en prose tranchée ── */
+      .diag{ padding:56px 0; }
+      .diag > .h{ display:flex; align-items:baseline; gap:16px; margin-bottom:34px; }
+      .diag > .h .n{ font:600 12px/1 "JetBrains Mono",monospace; letter-spacing:.16em; color:var(--gold); }
+      .diag > .h h2{ font-family:"Fraunces",serif; font-weight:500; font-size:clamp(22px,4vw,30px); letter-spacing:-.01em; }
+      .diag > .h .meta{ margin-left:auto; font:500 11px/1.4 "JetBrains Mono",monospace; color:var(--faint); text-align:right; text-transform:uppercase; letter-spacing:.1em; }
+      .frames{ display:grid; grid-template-columns:1fr; gap:0; }
+      @media (min-width:760px){ .frames{ grid-template-columns:repeat(3,1fr); } }
+      .frame{ padding:4px 26px 4px 0; border-left:1px solid var(--line); padding-left:26px; }
+      .frame:first-child{ border-left:0; padding-left:0; }
+      @media (max-width:760px){ .frame{ border-left:0; padding-left:0; padding:22px 0; border-top:1px solid var(--line-2); } .frame:first-child{ border-top:0; padding-top:0; } }
+      .frame .tool{ font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.16em; color:var(--gold); }
+      .frame h3{ font-family:"Fraunces",serif; font-weight:500; font-size:19px; margin:10px 0 12px; letter-spacing:-.01em; }
+      .frame p{ font-size:14px; line-height:1.62; color:var(--ink-2); }
+      .frame p + p{ margin-top:10px; }
+      .frame p b{ color:var(--ink); font-weight:600; }
+
+      /* ── Recommandation : conclusion de note ── */
+      .reco{ padding:18px 0 18px 26px; border-left:2px solid var(--gold); margin:8px 0 64px; }
+      .reco .t{ font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+      .reco p{ font-family:"Fraunces",serif; font-weight:400; font-size:clamp(20px,3.4vw,30px); line-height:1.3; letter-spacing:-.01em; color:var(--ink); max-width:30ch; }
+      .reco p b{ font-weight:600; }
+
+      /* ── Pied : annotation + signature ── */
+      .end{ display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:flex-end; padding:26px 0 60px; border-top:1px solid var(--line); }
+      .end .note{ max-width:46ch; font-size:13px; color:var(--faint); line-height:1.6; }
+      .end .note::before{ content:"↳ "; color:var(--gold); }
+      .end .sign{ text-align:right; }
+      .end .sign .s{ font-family:"Fraunces",serif; font-style:italic; font-size:26px; color:var(--ink); }
+      .end .sign .d{ font:500 10.5px/1.6 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin-top:6px; }
+
+      /* liens d'action discrets, soulignés (pas de boutons "kit") */
+      .actions{ display:flex; flex-wrap:wrap; gap:26px; margin-top:30px; }
+      .actions a{ font-size:15px; color:var(--ink); text-decoration:none; padding-bottom:3px; box-shadow:inset 0 -1px 0 var(--gold); transition:.2s; }
+      .actions a:hover{ box-shadow:inset 0 -10px 0 rgba(231,164,23,.18); }
+      .actions a .arr{ color:var(--gold); }
+
+      .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+      .reveal.in{ opacity:1; transform:none; }
+      @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; } }
+    </style>
+  </head>
+  <body>
+    <div class="rule-top"></div>
+    <div class="sheet">
+      <div class="masthead">
+        <span class="l">Note stratégique — N° 001</span>
+        <span class="r">Auto-diagnostic · 28.06.2026 · 1/1</span>
+      </div>
+
+      <!-- THÈSE -->
+      <header class="thesis">
+        <div class="reveal">
+          <div class="kicker">Positionnement</div>
+          <h1 class="serif">Je décide,<br />puis j'<em>exécute</em>.</h1>
+          <p class="deck">De la stratégie jusqu'au déploiement — sans relais, sans perte en ligne. Le profil rare qui tient à la fois la vision et la livraison.</p>
+          <div class="actions">
+            <a href="#"><span class="arr">→</span> Lire l'analyse</a>
+            <a href="#">Le CV</a>
+            <a href="#">Écrire</a>
+          </div>
+        </div>
+        <dl class="colophon reveal">
+          <dt>Sujet</dt>
+          <dd class="name serif">Yohan Debusscher</dd>
+          <dt>Fonction</dt>
+          <dd>Concepteur-développeur &amp; entrepreneur</dd>
+          <dt>Base</dt>
+          <dd>Lille · France</dd>
+          <dt>Statut</dt>
+          <dd><span class="avail">Disponible</span></dd>
+        </dl>
+      </header>
+
+      <!-- TRAJECTOIRE -->
+      <section class="traj reveal">
+        <div class="lbl"><span>Trajectoire</span><b>où je suis · où je vais</b></div>
+        <div class="path">
+          <span class="step done">Développeur</span><i>/</i>
+          <span class="step done">Salarié</span><i>/</i>
+          <span class="step done">Ingénieur</span><i>/</i>
+          <span class="step done">Gestion de projet</span><i>/</i>
+          <span class="step now"><span class="u">Indépendant · fondateur</span></span><i>/</i>
+          <span class="step next">Manager</span><i>/</i>
+          <span class="step next">CTO</span><i>/</i>
+          <span class="step far">CEO</span>
+        </div>
+        <div class="foot">
+          <span><span class="k acq"></span> Acquis</span>
+          <span><span class="k cur"></span> Aujourd'hui</span>
+          <span><span class="k cib"></span> Cap visé</span>
+        </div>
+      </section>
+
+      <!-- AUTO-DIAGNOSTIC -->
+      <section class="diag">
+        <div class="h reveal">
+          <span class="n">02</span>
+          <h2 class="serif">Auto-diagnostic</h2>
+          <span class="meta">Mes propres outils,<br />appliqués à moi</span>
+        </div>
+        <div class="frames">
+          <div class="frame reveal">
+            <span class="tool">SWOT</span>
+            <h3 class="serif">Profil</h3>
+            <p><b>Force —</b> je tiens toute la chaîne : décider, concevoir, livrer.</p>
+            <p><b>Limite —</b> la capacité d'un seul ; mon prochain levier, c'est déléguer.</p>
+          </div>
+          <div class="frame reveal">
+            <span class="tool">PESTEL</span>
+            <h3 class="serif">Contexte</h3>
+            <p><b>Vent porteur —</b> la techno et la demande de profils hybrides.</p>
+            <p><b>Vigilance —</b> sécurité et cadre légal : une exigence, pas une option.</p>
+          </div>
+          <div class="frame reveal">
+            <span class="tool">PORTER</span>
+            <h3 class="serif">Marché</h3>
+            <p><b>Rivalité forte —</b> beaucoup de devs, beaucoup d'agences.</p>
+            <p><b>Différenciateur —</b> la preuve livrée, pas le diplôme. C'est mon terrain.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECOMMANDATION -->
+      <section class="reco reveal">
+        <div class="t">Recommandation</div>
+        <p class="serif">Tenir le poste de <b>fondateur technique</b> — la vision et la livraison dans la même main. Cap : <b>CTO</b>, puis la direction.</p>
+      </section>
+
+      <!-- PIED -->
+      <footer class="end">
+        <p class="note">Note interne — auto-évaluation menée avec mes propres grilles d'analyse, à challenger en entretien. La méthode vaut autant que le constat.</p>
+        <div class="sign">
+          <div class="s serif">Y. Debusscher</div>
+          <div class="d">Rédigé seul · 2026</div>
+        </div>
+      </footer>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

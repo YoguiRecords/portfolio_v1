@@ -1,0 +1,62 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.field input,
+.field textarea {
+  background: var(--dark-800);
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: var(--on-dark);
+  font: inherit;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 560px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.status {
+  font-size: 14px;
+}
+.ok {
+  color: var(--green);
+}
+.err {
+  color: #d3576b;
+}

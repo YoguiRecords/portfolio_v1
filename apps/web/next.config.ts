@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
 import path from "node:path";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   // Image Docker minimale (serveur Node autonome + deps tracées).
@@ -10,4 +13,4 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@portfolio/core", "@portfolio/db"],
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

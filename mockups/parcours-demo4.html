@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (3 voies, cartes)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .wrap2 { max-width:1060px; margin:0 auto; padding:80px clamp(18px,5vw,40px) 110px; }
+
+      .head .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+      .head h2 { font-size:clamp(30px,7vw,60px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:18px; }
+      .head .txt { max-width:60ch; font-size:clamp(15px,3vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.7; }
+      .head .txt strong{ color:#fff; font-weight:600; }
+
+      /* 3 voies */
+      .lanes { display:grid; grid-template-columns:1fr; gap:22px; margin-top:48px; }
+      @media (min-width:760px){ .lanes{ grid-template-columns:repeat(3,1fr); gap:20px; } }
+      .lane .lh { display:flex; flex-direction:column; gap:10px; margin-bottom:18px; }
+      .lane .lh .nm { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; }
+      .lane .lh .bar { height:3px; width:46px; border-radius:3px; }
+      .lane.dev .lh .nm { color:#f0a800; } .lane.dev .lh .bar { background:#f0a800; }
+      .lane.mgmt .lh .nm { color:#e0a04a; } .lane.mgmt .lh .bar { background:#e0a04a; }
+      .lane.biz .lh .nm { color:#9fb2bf; } .lane.biz .lh .bar { background:#9fb2bf; }
+
+      .cards { display:flex; flex-direction:column; gap:12px; }
+      .mcard { background:var(--dark-800); border:1px solid var(--border-dark); border-left:3px solid var(--accent); border-radius:10px; padding:18px 20px; transition:transform .25s, border-color .25s; }
+      .lane.dev .mcard { border-left-color:#f0a800; }
+      .lane.mgmt .mcard { border-left-color:#e0a04a; }
+      .lane.biz .mcard { border-left-color:#9fb2bf; }
+      .mcard:hover { transform:translateY(-3px); }
+      .mcard .yr { font:600 12px/1 "JetBrains Mono",monospace; letter-spacing:.08em; color:var(--accent); }
+      .lane.biz .mcard .yr { color:#9fb2bf; }
+      .mcard .role { font:800 18px/1.15 "Inter",sans-serif; letter-spacing:-.01em; margin:9px 0 7px; }
+      .mcard .desc { font-size:13px; color:var(--on-dark-muted); line-height:1.55; }
+
+      /* convergence (CSS only, pas de SVG) */
+      .converge { display:flex; flex-direction:column; align-items:center; }
+      .funnel { width:2px; height:54px; background:linear-gradient(var(--border-dark), var(--accent)); margin-top:4px; }
+      .funnel-cap { font:700 14px/1 "JetBrains Mono",monospace; color:var(--accent); margin:8px 0 18px; }
+
+      .today { width:100%; max-width:560px; background:linear-gradient(160deg, rgba(70,201,139,.12), var(--dark-800) 60%);
+        border:1px solid rgba(70,201,139,.35); border-radius:14px; padding:30px clamp(22px,4vw,38px); text-align:center; box-shadow:0 30px 70px rgba(0,0,0,.4); }
+      .today .lbl { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:#46c98b; display:inline-flex; align-items:center; gap:9px; }
+      .today .lbl::before { content:""; width:9px; height:9px; border-radius:50%; background:#46c98b; box-shadow:0 0 12px #46c98b; }
+      .today .role { font:900 clamp(26px,5vw,38px)/1 "Inter",sans-serif; letter-spacing:-.03em; margin:16px 0 12px; }
+      .today p { color:var(--on-dark-2); font-weight:300; font-size:15px; line-height:1.6; max-width:44ch; margin:0 auto; }
+      .today .sig { margin-top:18px; font:600 13px "JetBrains Mono",monospace; color:#46c98b; display:inline-flex; gap:8px; align-items:center; }
+      .today .sig::before { content:"▲"; font-size:.85em; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap2">
+      <div class="head">
+        <div class="marker">Chapitre 03 — La trajectoire</div>
+        <h2>Trois voies,<br />un même cap.</h2>
+        <p class="txt">Je ne viens pas d'une seule ligne. <strong>Dev</strong>, <strong>management</strong> et <strong>business</strong> ont avancé en parallèle — et se rejoignent aujourd'hui.</p>
+      </div>
+
+      <div class="lanes">
+        <div class="lane dev">
+          <div class="lh"><span class="nm">Dev</span><span class="bar"></span></div>
+          <div class="cards">
+            <div class="mcard"><div class="yr">2019</div><div class="role">Développeur</div><div class="desc">Premières livraisons, l'obsession du « comment ça se construit ».</div></div>
+            <div class="mcard"><div class="yr">2021</div><div class="role">Ingénieur</div><div class="desc">Montée en architecture &amp; responsabilité technique.</div></div>
+            <div class="mcard"><div class="yr">2022</div><div class="role">Full-stack</div><div class="desc">Du front à l'infra, le produit de bout en bout.</div></div>
+          </div>
+        </div>
+
+        <div class="lane mgmt">
+          <div class="lh"><span class="nm">Management</span><span class="bar"></span></div>
+          <div class="cards">
+            <div class="mcard"><div class="yr">2022</div><div class="role">Gestion de projet</div><div class="desc">Cadrer, prioriser, livrer dans les temps.</div></div>
+            <div class="mcard"><div class="yr">2023</div><div class="role">Encadrement</div><div class="desc">Faire grandir une équipe, pas seulement avancer le code.</div></div>
+          </div>
+        </div>
+
+        <div class="lane biz">
+          <div class="lh"><span class="nm">Business</span><span class="bar"></span></div>
+          <div class="cards">
+            <div class="mcard"><div class="yr">2023</div><div class="role">Entrepreneuriat</div><div class="desc">La vision produit et le sens du marché.</div></div>
+            <div class="mcard"><div class="yr">2024</div><div class="role">Étude PME</div><div class="desc">Marché, SWOT, recommandations actionnables.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="converge">
+        <div class="funnel"></div>
+        <div class="funnel-cap mono">▾</div>
+        <div class="today">
+          <span class="lbl">Aujourd'hui · vous êtes ici</span>
+          <div class="role">Indépendant · fondateur</div>
+          <p>Les trois voies réunies dans la même main : vision business, management d'équipe et exécution technique.</p>
+          <span class="sig">vision · management · exécution</span>
+        </div>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

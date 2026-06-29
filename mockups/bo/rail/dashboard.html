@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rail · Dashboard — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body>
+    <div class="app app--rail">
+      <!-- RAIL -->
+      <nav class="rail">
+        <div class="rail-logo">Y</div>
+        <a class="rail-item is-active" href="./dashboard.html">▦<span class="tip">Dashboard</span></a>
+        <a class="rail-item" href="./projets.html">◆<span class="tip">Projets</span></a>
+        <a class="rail-item" href="./articles.html">✎<span class="tip">Articles</span></a>
+        <a class="rail-item" href="./profil.html">☺<span class="tip">Me concernant</span></a>
+        <a class="rail-item" href="#">▣<span class="tip">Médias</span></a>
+        <div style="height:14px"></div>
+        <a class="rail-item" href="#">✉<span class="dot"></span><span class="tip">Boîte mail · 4</span></a>
+        <a class="rail-item" href="#">⚇<span class="tip">CRM · Contacts</span></a>
+        <a class="rail-item" href="#">◔<span class="tip">Statistiques</span></a>
+        <span class="rail-sp"></span>
+        <a class="rail-item" href="#">⚙<span class="tip">Réglages</span></a>
+        <img class="rail-avatar" src="../../profile.jpg" alt="" />
+      </nav>
+
+      <!-- MAIN -->
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher un projet, un article, un contact…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions">
+            <span class="icon-btn">✉<span class="dot"></span></span>
+            <span class="icon-btn">🔔</span>
+            <a class="btn btn-primary btn-sm" href="#">+ Créer</a>
+          </div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div>
+              <div class="breadcrumb"><a href="#">BO</a><span class="sep">/</span> Dashboard</div>
+              <h1 class="page-title">Bonjour Yohan 👋</h1>
+              <p class="page-sub">Voici l'état de ton portfolio et de ton activité.</p>
+            </div>
+            <div class="page-actions">
+              <a class="btn btn-ghost btn-sm" href="#">Voir le site ↗</a>
+              <a class="btn btn-primary btn-sm" href="./projets.html">+ Nouveau projet</a>
+            </div>
+          </div>
+
+          <!-- KPIs -->
+          <div class="kpis">
+            <div class="kpi"><div class="label"><span class="ico">◔</span> Visiteurs · 30 j</div><div class="value num">2 480</div><div class="delta up">▲ +14 % vs période préc.</div></div>
+            <div class="kpi"><div class="label"><span class="ico">◆</span> Projets</div><div class="value num">6</div><div class="delta flat">1 brouillon · 1 en revue</div></div>
+            <div class="kpi"><div class="label"><span class="ico">✉</span> Mails non lus</div><div class="value num">4</div><div class="delta up">2 nouveaux contacts</div></div>
+            <div class="kpi"><div class="label"><span class="ico">❝</span> À valider</div><div class="value num">1</div><div class="delta down">Témoignage en attente</div></div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Trafic -->
+            <div class="panel">
+              <div class="panel-head"><h3>Trafic — 14 derniers jours</h3><a class="panel-link" href="#">Statistiques détaillées →</a></div>
+              <div class="panel-body">
+                <div class="spark">
+                  <div class="bar" style="height:42%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:38%"></div><div class="bar" style="height:64%"></div><div class="bar" style="height:50%"></div><div class="bar hot" style="height:88%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:80%"></div><div class="bar hot" style="height:100%"></div><div class="bar" style="height:66%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:58%"></div>
+                </div>
+                <div class="divider"></div>
+                <div style="display:flex;gap:26px">
+                  <div><div class="muted" style="font-size:12px">Page la plus vue</div><b>Domestic Revolt — 1 240</b></div>
+                  <div><div class="muted" style="font-size:12px">Source #1</div><b>LinkedIn — 41 %</b></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boîte de réception (mail centralisé) -->
+            <div class="panel">
+              <div class="panel-head"><span class="ico">✉</span><h3>Boîte de réception</h3><a class="panel-link" href="#">Ouvrir →</a></div>
+              <div class="panel-body" style="padding:0">
+                <div class="mail-item unread"><div class="ava">SL</div><div class="mbody"><div class="mfrom">Sophie Lemaire</div><div class="msub">Proposition de collaboration — Nordsoft</div></div><div class="mtime">14:02</div></div>
+                <div class="mail-item unread"><div class="ava b">MD</div><div class="mbody"><div class="mfrom">Marc Dubois</div><div class="msub">Re: Refonte de la plateforme OXO</div></div><div class="mtime">11:20</div></div>
+                <div class="mail-item"><div class="ava c">JB</div><div class="mbody"><div class="mfrom">Julie Bernard</div><div class="msub">Merci pour l'étude — Saveurs du Nord</div></div><div class="mtime">Hier</div></div>
+                <div class="mail-item"><div class="ava" style="background:var(--surface-2);color:var(--text-2)">RP</div><div class="mbody"><div class="mfrom">Recrutement Partner</div><div class="msub">Opportunité CTO — scale-up SaaS</div></div><div class="mtime">2 j</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="grid-2">
+            <!-- CRM pipeline -->
+            <div class="panel">
+              <div class="panel-head"><span class="ico">⚇</span><h3>CRM — Pipeline</h3><a class="panel-link" href="#">Voir les contacts →</a></div>
+              <div class="panel-body">
+                <div class="pipeline">
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--info)"></span> Prospect <span class="n">2</span></div><div class="pipe-card"><b>R. Partner</b><small>CTO scale-up</small></div><div class="pipe-card"><b>Agence Lille</b><small>Refonte</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--accent)"></span> Contact <span class="n">1</span></div><div class="pipe-card"><b>Sophie Lemaire</b><small>Nordsoft</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--warn)"></span> Propale <span class="n">1</span></div><div class="pipe-card"><b>Marc Dubois</b><small>OXO v2</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--ok)"></span> Client <span class="n">1</span></div><div class="pipe-card"><b>Saveurs du Nord</b><small>Livré ✓</small></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Activité + à traiter -->
+            <div class="panel">
+              <div class="panel-head"><h3>À traiter</h3></div>
+              <div class="panel-body" style="padding-top:6px;padding-bottom:6px">
+                <div class="feed-item"><div class="fdot" style="color:var(--warn)">❝</div><div><div class="ftext"><b>1 témoignage</b> en attente de modération — Sophie Lemaire</div><div class="ftime">Reçu il y a 2 j · <a href="#" style="color:var(--accent)">Valider</a></div></div></div>
+                <div class="feed-item"><div class="fdot">✎</div><div><div class="ftext"><b>2 brouillons</b> d'articles à finaliser</div><div class="ftime">« Du dev au management », « Sécuriser un upload »</div></div></div>
+                <div class="feed-item"><div class="fdot" style="color:var(--info)">◆</div><div><div class="ftext"><b>Refonte e-commerce</b> attend ta relecture avant publication</div><div class="ftime">Soumis hier</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

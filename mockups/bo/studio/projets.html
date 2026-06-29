@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio · Édition projet — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .render { padding: 0; }
+      .render .hero { aspect-ratio: 16/8; background: linear-gradient(135deg, #1c1c1c, #0d0d0d); position: relative; overflow: hidden; }
+      .render .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 72% 22%, rgba(240,168,0,.3), transparent 55%); }
+      .render .inner { padding: 30px 30px 38px; }
+      .render .cat { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--accent-strong); }
+      .render h1 { font-size: 32px; font-weight: 900; letter-spacing: -.03em; color: #18130a; margin: 7px 0 7px; line-height: 1.05; }
+      .render .sub { font-size: 16px; color: #5a564d; margin-bottom: 18px; }
+      .render p { font-size: 14.5px; line-height: 1.7; color: #2e2b25; margin-bottom: 16px; }
+      .render .ptag { display: inline-block; font-size: 11.5px; font-weight: 500; padding: 4px 10px; border-radius: 5px; background: rgba(240,168,0,.1); color: var(--accent-strong); margin: 0 6px 6px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="brand"><span class="mark">Y</span><span class="name">Yohan<span>.</span>BO</span></div>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <a class="nav-item is-active" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <a class="nav-item" href="#"><span class="ico">⊞</span> CV</a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Système</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Administrateur</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <a class="btn btn-subtle btn-sm" href="./projets.html">← Tous les projets</a>
+          <span class="muted" style="font-size:13px">Domestic Revolt · <span class="status is-published" style="vertical-align:middle">Publié</span></span>
+          <div class="topbar-actions">
+            <span class="status-text" style="font-size:12.5px;color:var(--text-muted)"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px"></span>Enregistré</span>
+            <a class="btn btn-ghost btn-sm" href="#">Aperçu ↗</a>
+            <a class="btn btn-primary btn-sm" href="#">Publier les modifications</a>
+          </div>
+        </header>
+
+        <div class="page">
+          <div class="split">
+            <!-- FORM -->
+            <div class="form-col">
+              <div class="page-header" style="margin-bottom:18px">
+                <div><h1 class="page-title" style="font-size:20px">Édition du projet</h1><p class="page-sub">Les changements se reflètent à droite en direct.</p></div>
+              </div>
+              <div class="form-grid">
+                <div class="form-grid cols-2" style="gap:18px">
+                  <div class="field"><label>Catégorie</label><select class="select"><option>Projet phare</option><option>Plateforme</option><option>Site web</option><option>Business</option></select></div>
+                  <div class="field"><label>Statut</label><select class="select"><option>Publié</option><option>En revue</option><option>Brouillon</option></select></div>
+                </div>
+                <div class="field"><label>Titre</label><input class="input" value="Domestic Revolt" /></div>
+                <div class="field"><label>Sous-titre</label><input class="input" value="Du concept au déploiement, en solo." /></div>
+                <div class="field"><label>Résumé</label><textarea class="textarea">Plateforme conçue de A à Z : game design, architecture, sécurité by design, CI/CD et mise en production. Un projet qui condense vision produit et exécution technique.</textarea></div>
+                <div class="field"><label>Technologies</label><div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="chip add">+ ajouter</span></div></div>
+                <div class="field"><label>Image de couverture</label><div class="dropzone">Glisser une image ici · ou <a href="#" style="color:var(--accent)">parcourir</a><div class="pipe">→ webp + strip EXIF + stockage MinIO</div></div></div>
+                <div class="toggle-row"><div class="tl"><b>Mettre en avant sur l'accueil</b><small>Apparaît dans la sélection « projets phares »</small></div><span class="switch on"></span></div>
+              </div>
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="preview-col">
+              <div class="preview-wrap">
+                <div class="preview-label">Aperçu en direct · page publique</div>
+                <div class="browser">
+                  <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">yohan-debusscher.com/projets/domestic-revolt</span></div>
+                  <div class="render">
+                    <div class="hero"></div>
+                    <div class="inner">
+                      <div class="cat">Projet phare</div>
+                      <h1>Domestic Revolt</h1>
+                      <div class="sub">Du concept au déploiement, en solo.</div>
+                      <p>Plateforme conçue de A à Z : game design, architecture, sécurité by design, CI/CD et mise en production. Un projet qui condense vision produit et exécution technique.</p>
+                      <div><span class="ptag">Next.js</span><span class="ptag">TypeScript</span><span class="ptag">PostgreSQL</span><span class="ptag">Docker</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

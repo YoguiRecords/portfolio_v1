@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Aurora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #07070b; color: var(--on-dark); }
+
+      /* mesh aurora animé en fond — blobs flous qui dérivent */
+      .aurora-bg { position: fixed; inset: -20%; z-index: 0; filter: blur(70px); opacity: .85; pointer-events: none; }
+      .blob { position: absolute; border-radius: 50%; mix-blend-mode: screen; will-change: transform; }
+      .b1 { width: 55vw; height: 55vw; background: radial-gradient(circle, #f0a800, transparent 65%); top: -8%; left: -6%; animation: drift1 22s ease-in-out infinite; }
+      .b2 { width: 50vw; height: 50vw; background: radial-gradient(circle, #c07800, transparent 62%); bottom: -12%; right: -8%; animation: drift2 26s ease-in-out infinite; }
+      .b3 { width: 42vw; height: 42vw; background: radial-gradient(circle, #7a4e00, transparent 60%); top: 35%; left: 40%; animation: drift3 30s ease-in-out infinite; }
+      .b4 { width: 36vw; height: 36vw; background: radial-gradient(circle, #fff3d6, transparent 70%); top: 12%; right: 18%; opacity:.5; animation: drift1 18s ease-in-out infinite reverse; }
+      @keyframes drift1 { 50% { transform: translate(12vw, 10vh) scale(1.15); } }
+      @keyframes drift2 { 50% { transform: translate(-14vw, -8vh) scale(1.1); } }
+      @keyframes drift3 { 50% { transform: translate(-10vw, 12vh) scale(.85); } }
+      @media (prefers-reduced-motion: reduce){ .blob{ animation: none; } }
+      .grain { position: fixed; inset:0; z-index:1; pointer-events:none; opacity:.05;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+      .nav { color:#fff; } .nav .brand span{ color: var(--accent); }
+      .shell { position: relative; z-index: 2; }
+
+      /* hero verre dépoli */
+      .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 0 70px; }
+      .glass { backdrop-filter: blur(26px) saturate(140%); -webkit-backdrop-filter: blur(26px) saturate(140%);
+        background: rgba(20,18,14,.42); border: 1px solid rgba(255,255,255,.12);
+        border-radius: 28px; padding: clamp(28px, 6vw, 64px);
+        box-shadow: 0 40px 120px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14); }
+      .hero .eyebrow { display:inline-flex; gap:10px; align-items:center; margin-bottom: 22px; }
+      .hero .eyebrow::before{ content:""; width:8px;height:8px;border-radius:50%; background:#28c840; box-shadow:0 0 12px #28c840; }
+      .hero h1 { font-size: clamp(50px, 13vw, 132px); font-weight: 900; letter-spacing: -.05em; line-height: .86; }
+      .hero h1 em { font-style: normal; background: linear-gradient(120deg,#fff3d6,var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+      .hero .lead { margin-top: 24px; max-width: 54ch; color: var(--on-dark-2); font-weight: 300; font-size: clamp(15px,3.6vw,20px); line-height:1.65; }
+      .hero .cta { margin-top: 32px; }
+
+      /* chips verre */
+      .chips { display:flex; flex-wrap:wrap; gap:10px; margin-top: 26px; }
+      .chip { font-size:12.5px; font-weight:500; padding:8px 15px; border-radius:30px;
+        background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); color:#e9e6df; backdrop-filter: blur(6px); }
+      .chip b{ color: var(--accent); }
+
+      /* section projets en cartes verre */
+      .work { padding: 30px 0 110px; }
+      .work .head { margin-bottom: 30px; }
+      .work .head .num { font-weight:900; color: var(--accent); letter-spacing:.1em; font-size:13px; }
+      .work .head h2 { font-size: clamp(30px,7vw,52px); font-weight:900; letter-spacing:-.03em; margin-top:8px; }
+      .gcards { display:grid; grid-template-columns:1fr; gap: 18px; }
+      @media (min-width: 760px){ .gcards{ grid-template-columns: repeat(3,1fr); } }
+      .gcard { text-decoration:none; color:inherit; border-radius: 20px; padding: 26px 24px 28px;
+        background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); backdrop-filter: blur(18px);
+        transition:.35s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden; }
+      .gcard::before{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 80% 0%, rgba(240,168,0,.22), transparent 55%); opacity:0; transition:.35s; }
+      .gcard:hover{ transform: translateY(-8px); border-color: rgba(240,168,0,.4); box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+      .gcard:hover::before{ opacity:1; }
+      .gcard .cat { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color: var(--accent); font-weight:600; }
+      .gcard h3 { font-size: 23px; font-weight:800; margin:12px 0 10px; letter-spacing:-.02em; }
+      .gcard p { font-size: 14px; color: var(--on-dark-2); line-height:1.6; margin-bottom:16px; }
+      .gcard .t { display:flex; gap:8px; flex-wrap:wrap; }
+      .gcard .t span{ font-size:11px; color:#e9e6df; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); padding:3px 9px; border-radius:20px; }
+
+      .footer { background: transparent; }
+      .footer .legal{ border-top-color: rgba(255,255,255,.1); }
+    </style>
+  </head>
+  <body>
+    <div class="aurora-bg"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span></div>
+    <div class="grain"></div>
+
+    <div class="shell">
+      <nav class="nav" data-scrollfx>
+        <a href="#" class="brand">Yohan<span>.</span></a>
+        <div class="links"><a href="#work">Projets</a><a href="#">CV</a><a href="#">Contact</a><a href="#" class="muted">News</a></div>
+        <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </nav>
+      <div class="mobile-menu"><a href="#work"><span class="n">01</span>Projets</a><a href="#"><span class="n">02</span>CV</a><a href="#"><span class="n">03</span>Contact</a></div>
+
+      <header class="hero">
+        <div class="wrap">
+          <div class="glass reveal">
+            <span class="eyebrow">Disponible · Builder solo</span>
+            <h1>Je conçois.<br />Je code.<br /><em>Je livre.</em></h1>
+            <p class="lead">Concepteur-développeur &amp; entrepreneur. Je transforme une idée en produit fini — stratégie, design, code, déploiement. Seul, de bout en bout.</p>
+            <div class="chips">
+              <span class="chip"><b>4 ans</b> d'expérience</span>
+              <span class="chip"><b>Solo</b> end-to-end</span>
+              <span class="chip"><b>Full-stack</b> + business</span>
+            </div>
+            <div class="cta"><a href="#work" class="btn btn-primary">Voir les réalisations →</a><a href="#" class="btn btn-ghost on-dark">Le CV</a></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="work" id="work">
+        <div class="wrap">
+          <div class="head reveal"><span class="num">01 — RÉALISATIONS</span><h2>Produits &amp; études.</h2></div>
+          <div class="gcards">
+            <a href="#" class="gcard reveal"><span class="cat">Projet phare · Produit</span><h3>Domestic Revolt</h3><p>Conçu, développé et déployé seul. Du design à la production.</p><div class="t"><span>Next.js</span><span>Docker</span></div></a>
+            <a href="#" class="gcard reveal"><span class="cat">Produit / Logiciel</span><h3>OXO</h3><p>Plateforme complète, pilotée seul du back au front.</p><div class="t"><span>React</span><span>Node</span></div></a>
+            <a href="#" class="gcard reveal"><span class="cat">Stratégie &amp; Business</span><h3>Étude PME</h3><p>Analyse de marché, SWOT et recommandations actionnables.</p><div class="t"><span>SWOT</span><span>Conseil</span></div></a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer" id="contact"><div class="wrap"><div class="row"><h2>Un projet,<br /><span>parlons-en.</span></h2><div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div></div><div class="legal"><span>© 2026 Yohan Debusscher</span><span>Conçu &amp; développé de bout en bout</span></div></div></footer>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

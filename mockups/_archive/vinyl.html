@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Vinyl</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      body { background: #0c0b0a; color: var(--on-dark); }
+      .nav { color:#fff; } .nav .brand span{ color: var(--accent); }
+      .mono { font-family: "JetBrains Mono", monospace; }
+
+      .release { min-height: 100vh; padding: 110px 0 80px; display:flex; align-items:center; }
+      .layout { display:grid; grid-template-columns:1fr; gap: 44px; align-items:center; }
+      @media (min-width: 920px){ .layout{ grid-template-columns: 0.95fr 1.05fr; gap: 64px; } }
+
+      /* pochette + vinyle qui sort */
+      .sleeve { position: relative; aspect-ratio: 1; max-width: 460px; margin: 0 auto; }
+      .disc { position:absolute; top:0; right:-2%; width:96%; height:96%; border-radius:50%;
+        background:
+          repeating-radial-gradient(circle at center, #1a1a1a 0 2px, #0e0e0e 2px 4px),
+          radial-gradient(circle at center, #161616, #0a0a0a);
+        box-shadow: 0 30px 70px rgba(0,0,0,.6); animation: spin 7s linear infinite; }
+      .disc::after { content:""; position:absolute; inset:0; border-radius:50%;
+        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,.05), transparent 30%); }
+      .disc .lbl { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:38%; height:38%; border-radius:50%;
+        background: radial-gradient(circle at 40% 35%, #fff3d6, var(--accent) 50%, var(--accent-strong)); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#1a1400; }
+      .disc .lbl b{ font-weight:900; font-size: clamp(12px,2.6vw,17px); letter-spacing:-.02em; line-height:.95; }
+      .disc .lbl small{ font-size: 8px; letter-spacing:.18em; margin-top:4px; }
+      .disc .hole { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#0c0b0a; z-index:2; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce){ .disc{ animation:none; } }
+      .cover { position:absolute; top:0; left:0; width:96%; height:96%; border-radius:6px;
+        background: linear-gradient(150deg, #211d14, #100f0d 70%); border:1px solid #2a2620; overflow:hidden;
+        box-shadow: 0 30px 70px rgba(0,0,0,.55); display:flex; flex-direction:column; justify-content:space-between; padding: 22px; }
+      .cover .top { display:flex; justify-content:space-between; align-items:flex-start; font-size:10px; letter-spacing:.18em; color: var(--accent); }
+      .cover .big { font-size: clamp(34px, 9vw, 64px); font-weight:900; letter-spacing:-.05em; line-height:.86; color:#fff; }
+      .cover .big span{ color: var(--accent); }
+      .cover .bot { font-size:11px; color:#8a857c; letter-spacing:.1em; }
+
+      /* infos release + tracklist */
+      .meta .catno { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.2em; color: var(--accent); }
+      .meta h1 { font-size: clamp(40px, 9vw, 84px); font-weight:900; letter-spacing:-.04em; line-height:.92; margin: 12px 0 6px; }
+      .meta h1 span{ color: var(--accent); }
+      .meta .by { color: var(--on-dark-2); font-weight:300; font-size: clamp(15px,3.6vw,19px); max-width:46ch; line-height:1.6; margin-top:14px; }
+
+      .tracklist { margin-top: 30px; }
+      .side { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em; color:#8a857c; margin: 18px 0 8px; display:flex; align-items:center; gap:12px; }
+      .side::after{ content:""; flex:1; height:1px; background: var(--border-dark); }
+      .track { display:flex; align-items:center; gap:16px; text-decoration:none; color:inherit; padding: 13px 8px; border-bottom:1px solid var(--border-dark); transition:.2s; }
+      .track:hover { background: rgba(240,168,0,.05); padding-left:16px; }
+      .track .no { font-family:"JetBrains Mono",monospace; color: var(--accent); font-size:13px; width:26px; }
+      .track .ttl { font-weight:700; font-size: clamp(16px,4vw,20px); }
+      .track .ttl small{ display:block; font-weight:400; font-size:12px; color:#8a857c; margin-top:2px; }
+      .track .dur { margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:12px; color:#8a857c; }
+      .track .play { width:30px; height:30px; border-radius:50%; border:1px solid var(--border-dark); display:flex; align-items:center; justify-content:center; color: var(--accent); font-size:11px; transition:.2s; }
+      .track:hover .play{ background: var(--accent); color:#1a1400; border-color: var(--accent); }
+
+      .meta .cta { margin-top: 30px; }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yogui<span>Records</span></a>
+      <div class="links"><a href="#">Tracklist</a><a href="#">CV</a><a href="#">Contact</a><a href="#" class="muted">News</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#"><span class="n">A1</span>Tracklist</a><a href="#"><span class="n">A2</span>CV</a><a href="#"><span class="n">A3</span>Contact</a></div>
+
+    <section class="release">
+      <div class="wrap">
+        <div class="layout">
+          <div class="sleeve reveal">
+            <div class="disc"><div class="lbl"><b>YOHAN</b><small>YOGUIRECORDS</small></div><div class="hole"></div></div>
+            <div class="cover">
+              <div class="top mono"><span>YR-001</span><span>33⅓ RPM</span></div>
+              <div class="big">FROM<br />IDEA TO<br /><span>SHIP.</span></div>
+              <div class="bot mono">LP · YOHAN DEBUSSCHER · 2026</div>
+            </div>
+          </div>
+
+          <div class="meta">
+            <span class="catno reveal">YOGUIRECORDS · YR-001 · LP</span>
+            <h1 class="reveal">Yohan<br /><span>Debusscher</span></h1>
+            <p class="by reveal">Concepteur-développeur &amp; entrepreneur. Un album solo : chaque morceau est un produit pensé, codé et livré du début à la fin.</p>
+
+            <div class="tracklist">
+              <div class="side mono reveal">Face A — Produits</div>
+              <a href="#" class="track reveal"><span class="no">A1</span><span class="ttl">Domestic Revolt<small>Projet phare · conçu &amp; déployé seul</small></span><span class="dur mono">Next · Docker</span><span class="play">▶</span></a>
+              <a href="#" class="track reveal"><span class="no">A2</span><span class="ttl">OXO<small>Plateforme complète, du back au front</small></span><span class="dur mono">React · Node</span><span class="play">▶</span></a>
+
+              <div class="side mono reveal">Face B — Stratégie</div>
+              <a href="#" class="track reveal"><span class="no">B1</span><span class="ttl">Étude PME<small>Marché · SWOT · recommandations</small></span><span class="dur mono">Conseil</span><span class="play">▶</span></a>
+            </div>
+
+            <div class="cta reveal"><a href="#" class="btn btn-primary">Écouter l'album →</a><a href="#" class="btn btn-ghost on-dark">Liner notes (CV)</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="../reveal.js"></script>
+  </body>
+</html>

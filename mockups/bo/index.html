@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Back office — 6 directions · Yohan Debusscher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/bo.css" />
+    <style>
+      body { background: var(--bg); }
+      .hub { max-width: 1120px; margin: 0 auto; padding: 56px clamp(18px,4vw,40px) 70px; }
+      .back { color: var(--text-muted); font-size: 13px; }
+      .back:hover { color: var(--accent); }
+      h1 { font-size: clamp(30px,6vw,50px); font-weight: 900; letter-spacing: -.03em; line-height: 1.02; margin: 20px 0 14px; }
+      h1 span { color: var(--accent); }
+      .intro { color: var(--text-2); max-width: 74ch; font-size: 15.5px; line-height: 1.65; margin-bottom: 12px; }
+      .legend { color: var(--text-muted); font-size: 13px; margin-bottom: 34px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+      .legend b { color: var(--text-2); }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+      @media (min-width: 720px) { .grid { grid-template-columns: repeat(2,1fr); } }
+      @media (min-width: 1060px) { .grid { grid-template-columns: repeat(3,1fr); } }
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: .2s; display: flex; flex-direction: column; }
+      .card:hover { transform: translateY(-4px); border-color: var(--border-2); box-shadow: var(--shadow-lg); }
+      .card .preview { aspect-ratio: 16/10; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); display: block; }
+      /* mini wireframe per theme */
+      .wf { position: absolute; inset: 0; display: flex; }
+      .wf .nav { width: 26%; border-right: 1px solid rgba(255,255,255,.08); }
+      .wf .nav.rail { width: 14%; }
+      .wf .body { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+      .wf .ln { height: 8px; border-radius: 3px; background: rgba(255,255,255,.1); }
+      .wf .ln.a { width: 50%; background: var(--accent); opacity: .8; }
+      .wf .cards { display: flex; gap: 6px; margin-top: 4px; }
+      .wf .cards i { flex: 1; height: 26px; border-radius: 4px; background: rgba(255,255,255,.08); }
+      .wf .tbl { flex: 1; border-radius: 4px; background: rgba(255,255,255,.05); }
+      .badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; z-index: 2; }
+      .b-theme { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 20px; backdrop-filter: blur(6px); }
+      .b-dark { background: rgba(0,0,0,.5); color: #cfd3da; border: 1px solid rgba(255,255,255,.12); }
+      .b-light { background: rgba(255,255,255,.85); color: #2b2926; }
+      .b-pick { background: var(--accent); color: #1a1400; }
+      .card .meta { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+      .card .vt { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+      .card h2 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin: 7px 0 8px; }
+      .card p { color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 14px; flex: 1; }
+      .links { display: flex; flex-wrap: wrap; gap: 6px; }
+      .links a { font-size: 12px; font-weight: 500; color: var(--text-2); border: 1px solid var(--border-2); border-radius: 7px; padding: 6px 10px; transition: .15s; }
+      .links a:hover { border-color: var(--accent); color: var(--accent); }
+      .links a.main { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+      .note { margin-top: 36px; font-size: 13px; color: var(--text-muted); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 22px; }
+      .note b { color: var(--text-2); }
+    </style>
+  </head>
+  <body>
+    <div class="hub">
+      <a class="back" href="../index.html">← Maquettes du site public</a>
+      <h1>Back office — <span>6 directions</span> utilisables.</h1>
+      <p class="intro">
+        Cette fois on vise un <b>vrai outil</b> : voir, ajouter, modifier, supprimer. Chaque direction est
+        un parti-pris UX cohérent, décliné sur <b>4 pages cliquables</b> (la nav fonctionne, balade-toi
+        dedans). Vision intégrée : <b>Dashboard</b>, <b>CRM / contacts</b> et <b>boîte mail centralisée</b>.
+      </p>
+      <p class="legend">
+        Badges : <b class="b-theme b-dark" style="display:inline">Sombre</b> / <b class="b-theme b-light" style="display:inline">Clair</b> ·
+        <b class="b-theme b-pick" style="display:inline">★ tes coups de cœur</b> (rail &amp; preview) sont repris. Données = ton vrai contenu.
+      </p>
+
+      <!-- ★ ASSEMBLAGE V2 (recommandé d'après tes retours) -->
+      <div style="border:1px solid var(--accent);background:linear-gradient(120deg,var(--accent-soft),var(--surface));border-radius:16px;padding:22px;margin-bottom:30px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+          <span class="vt" style="color:var(--accent)">★ Assemblage v2 — recommandé</span>
+          <span class="b-theme b-dark" style="border:1px solid var(--border-2)">Noir / gris</span>
+          <span class="b-theme b-pick">Rail + Mission Control + Preview live</span>
+        </div>
+        <h2 style="font-size:23px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px">La synthèse de tes coups de cœur</h2>
+        <p style="color:var(--text-2);font-size:14px;line-height:1.6;max-width:80ch;margin-bottom:8px">
+          Menu <b>rail</b> à icônes · couleur <b>noir/gris</b> (pas de bleu) · <b>Dashboard</b> accueillant <i>et</i> dense
+          (portfolio &amp; audience) distinct de <b>Mission Control</b> (relation client &amp; à-faire, pour éviter le doublon) ·
+          éditeur avec <b>aperçu live réduit &amp; fermable</b>.
+        </p>
+        <p style="color:var(--text-muted);font-size:12.5px;margin-bottom:16px">💡 Sur « Projet » et « Me concernant » : tape dans les champs → l'aperçu bouge en direct, et le bouton 👁 / la croix ✕ ouvrent/ferment le panneau.</p>
+        <div class="links">
+          <a class="main" href="./v2/dashboard.html">Dashboard</a>
+          <a href="./v2/mission-control.html">Mission control</a>
+          <a href="./v2/projets.html">Projets</a>
+          <a href="./v2/projet-edit.html">✦ Éditer projet (live)</a>
+          <a href="./v2/profil.html">✦ Me concernant (live)</a>
+          <a href="./v2/articles.html">Articles</a>
+        </div>
+      </div>
+
+      <p class="legend" style="border:0;padding:0;margin:-14px 0 22px">Ci-dessous : les 6 explorations précédentes, conservées pour comparaison.</p>
+
+      <div class="grid">
+
+        <!-- RAIL -->
+        <div class="card">
+          <a class="preview" href="./rail/dashboard.html" style="background:#0c0d0f">
+            <span class="badges"><span class="b-theme b-dark">Sombre</span><span class="b-theme b-pick">★ ton choix</span></span>
+            <span class="wf"><span class="nav rail" style="background:#141518"></span><span class="body"><span class="ln a"></span><span class="cards"><i></i><i></i><i></i></span><span class="tbl"></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">01 · Rail</span>
+            <h2>Rail d'icônes + édition au clic</h2>
+            <p>Navigation compacte en icônes, master-detail : tu cliques un projet, tu l'édites à droite. Reprend ce que tu as aimé.</p>
+            <div class="links"><a class="main" href="./rail/dashboard.html">Dashboard</a><a href="./rail/projets.html">Projets</a><a href="./rail/articles.html">Articles</a><a href="./rail/profil.html">Me concernant</a></div>
+          </div>
+        </div>
+
+        <!-- STUDIO -->
+        <div class="card">
+          <a class="preview" href="./studio/dashboard.html" style="background:#0f1116">
+            <span class="badges"><span class="b-theme b-dark">Sombre</span><span class="b-theme b-pick">★ preview</span></span>
+            <span class="wf"><span class="nav" style="background:#161922"></span><span class="body"><span class="ln a"></span><span style="display:flex;gap:6px;flex:1"><span style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="ln"></span><span class="ln" style="width:70%"></span><span class="ln" style="width:80%"></span></span><span style="flex:1;border-radius:4px;background:rgba(240,168,0,.12);border:1px solid rgba(240,168,0,.3)"></span></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">02 · Studio</span>
+            <h2>Édition + aperçu live du site</h2>
+            <p>Tu remplis le formulaire à gauche, le rendu public s'affiche à droite en direct (projet &amp; « À propos »). L'autre concept que tu as aimé.</p>
+            <div class="links"><a class="main" href="./studio/dashboard.html">Dashboard</a><a href="./studio/projets.html">Projets ✦</a><a href="./studio/articles.html">Articles</a><a href="./studio/profil.html">Me concernant ✦</a></div>
+          </div>
+        </div>
+
+        <!-- LINEAR -->
+        <div class="card">
+          <a class="preview" href="./linear/dashboard.html" style="background:#0a0b0d">
+            <span class="badges"><span class="b-theme b-dark">Sombre</span></span>
+            <span class="wf"><span class="nav" style="background:#0f1113"></span><span class="body"><span class="ln a"></span><span class="cards"><i></i><i></i><i></i><i></i></span><span class="tbl"></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">03 · Linear</span>
+            <h2>Sidebar dense « engineering »</h2>
+            <p>Le standard pro (vibe Linear/Vercel) : graphite froid, tables compactes, ⌘K, actions groupées. Sobre, rapide, scalable.</p>
+            <div class="links"><a class="main" href="./linear/dashboard.html">Dashboard</a><a href="./linear/projets.html">Projets</a><a href="./linear/articles.html">Articles</a><a href="./linear/profil.html">Me concernant</a></div>
+          </div>
+        </div>
+
+        <!-- CLAIR -->
+        <div class="card">
+          <a class="preview" href="./clair/dashboard.html" style="background:#f7f8fa">
+            <span class="badges"><span class="b-theme b-light">Clair</span></span>
+            <span class="wf"><span class="nav" style="background:#fbfcfd;border-right-color:rgba(0,0,0,.06)"></span><span class="body"><span class="ln a"></span><span class="cards"><i style="background:rgba(0,0,0,.06)"></i><i style="background:rgba(0,0,0,.06)"></i><i style="background:rgba(0,0,0,.06)"></i></span><span class="tbl" style="background:rgba(0,0,0,.04)"></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">04 · Clair</span>
+            <h2>SaaS clair &amp; aéré</h2>
+            <p>Version lumineuse (vibe Stripe/Notion) : blanc, beaucoup d'air, accent or. Reposant pour de longues sessions d'édition.</p>
+            <div class="links"><a class="main" href="./clair/dashboard.html">Dashboard</a><a href="./clair/projets.html">Projets</a><a href="./clair/articles.html">Articles</a><a href="./clair/profil.html">Me concernant</a></div>
+          </div>
+        </div>
+
+        <!-- WORKSPACE -->
+        <div class="card">
+          <a class="preview" href="./workspace/dashboard.html" style="background:#ffffff">
+            <span class="badges"><span class="b-theme b-light">Crème</span></span>
+            <span class="wf"><span class="nav" style="background:#fbfaf8;border-right-color:rgba(0,0,0,.06)"></span><span class="body"><span class="ln" style="width:35%;background:rgba(0,0,0,.12)"></span><span class="ln a" style="width:55%"></span><span class="ln" style="width:80%;background:rgba(0,0,0,.06)"></span><span class="tbl" style="background:rgba(0,0,0,.04)"></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">05 · Workspace</span>
+            <h2>Notion-like : arbo &amp; documents</h2>
+            <p>Bases de données (Table/Kanban/Galerie), fil d'ariane, blocs éditables inline. Familier si tu aimes Notion.</p>
+            <div class="links"><a class="main" href="./workspace/dashboard.html">Accueil</a><a href="./workspace/projets.html">Projets</a><a href="./workspace/articles.html">Articles</a><a href="./workspace/profil.html">Me concernant</a></div>
+          </div>
+        </div>
+
+        <!-- CRM -->
+        <div class="card">
+          <a class="preview" href="./crm/dashboard.html" style="background:#0b0e13">
+            <span class="badges"><span class="b-theme b-dark">Sombre</span><span class="b-theme b-pick">CRM + Mail</span></span>
+            <span class="wf"><span class="nav" style="background:#11151c"></span><span class="body"><span class="ln a"></span><span style="display:flex;gap:6px;flex:1"><span style="flex:1.6;border-radius:4px;background:rgba(56,189,168,.12);border:1px solid rgba(56,189,168,.25)"></span><span style="flex:1;display:flex;flex-direction:column;gap:5px"><span class="ln" style="width:90%"></span><span class="ln" style="width:75%"></span><span class="ln" style="width:85%"></span></span></span></span></span>
+          </a>
+          <div class="meta">
+            <span class="vt">06 · CRM-first</span>
+            <h2>Cockpit relation client</h2>
+            <p>« Mission control » : pipeline commercial, contacts et <b>boîte mail intégrée</b> au premier plan. Ta vision « tout centralisé ».</p>
+            <div class="links"><a class="main" href="./crm/dashboard.html">Mission control</a><a href="./crm/projets.html">Projets</a><a href="./crm/articles.html">Articles</a><a href="./crm/profil.html">Me concernant</a></div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="note">
+        Maquettes statiques (HTML/CSS) — les boutons « ajouter / éditer / supprimer », filtres et recherche
+        illustrent les <b>parcours</b> ; les données sont ton vrai contenu en placeholder. ✦ = page avec aperçu live.
+        Le <b>CRM</b> et la <b>boîte mail</b> sont esquissés sur les dashboards (widgets pipeline + inbox) ;
+        on les approfondira sur la direction retenue. Dis-moi laquelle tu veux pousser (ou un mix).
+      </p>
+    </div>
+  </body>
+</html>

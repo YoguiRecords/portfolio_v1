@@ -1,0 +1,17 @@
+.switch {
+  background: none;
+  border: 1px solid var(--border-dark);
+  color: inherit;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.switch:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

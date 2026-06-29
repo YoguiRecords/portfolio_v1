@@ -1,71 +1,110 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
-**Version courante : v0.2.0** (auth back office — voir `docs/patch_notes/patch_note_V0_2.md`).
+**Version courante : v0.3.0** (outillage test + DB agenda/média/programmation + home publique —
+voir `docs/patch_notes/patch_note_V0_3.md`).
 
 ## État courant
-Infra Docker complète + **authentification back office livrée** (sessions opaques, MFA TOTP
-obligatoire, anti brute-force). Tout reste **vert** : typecheck + build + lint + **22 tests Vitest**,
-parcours auth vérifiés end-to-end. Pas encore de features de contenu (pages site / CRUD BO).
+Infra Docker complète + **auth back office** + **outillage de test partagé** + **schéma de contenu
+complet** + **page d'accueil publique rendue depuis la DB**. Tout reste **vert** :
+typecheck + lint + **35 tests Vitest** + **2 tests Playwright (E2E)**.
 
 ## Stack en place
-- Monorepo **pnpm** workspaces : `apps/web` (public), `apps/admin` (back office),
-  `packages/db` (Prisma), `packages/core` (types/utils partagés).
-- **Next.js 16.2.9** (App Router, TS strict), **Tailwind v4**, React 19.2.
-- **Prisma 7.8** (générateur `prisma-client` ESM + driver adapter `@prisma/adapter-pg`,
-  config `prisma.config.ts`). Migration `init` appliquée.
-- Outillage : ESLint 9 (flat), Prettier 3.9 (+ plugin Tailwind), TypeScript 5.9.
-- Node 22 ciblé (CI/Docker), Node 24 en local.
+- Monorepo **pnpm** : `apps/web` (public), `apps/admin` (back office), `packages/db` (Prisma),
+  `packages/core` (types/utils + logique partagée), `services/converter`.
+- **Next.js 16.2.9** (App Router, RSC, TS strict), **Tailwind v4**, React 19.2.
+- **Prisma 7.8** (générateur `prisma-client` ESM + adapter `@prisma/adapter-pg`).
+- **Tests** : Vitest 4 (config partagée node + jsdom/RTL), DB de test isolée (schéma `test`),
+  factories, mock LLM, **Playwright** (E2E) ; CI = lint·typecheck·test·build + job E2E (Postgres).
 
 ## Modèle de données (schema.prisma)
-- **Profile** (singleton, identité site) + `cvHtml` (CV HTML éditable au BO) + `cvPdfUrl` ; **SocialLink**.
-- **Project** + **ProjectImage** + **Technology** (m2m).
-- **Article** (news, tags `String[]`, statut DRAFT/PUBLISHED).
-- **MediaAsset** (chaque webp converti, tracé ; référencé par avatar/cover/galerie).
-- **Auth** : **AdminUser** (argon2id, TOTP, compteurs lockout), **Session** (token opaque hashé,
-  `mfaPending`), **LoginAttempt** (audit). Tables `REVOKE`d pour `app_web` (isolation des secrets).
-- Enums natifs : `ProjectStatus`, `ArticleStatus`.
-- **CV** : pas de modèles structurés — le HTML premium est stocké tel quel en DB (éditable au BO).
+- **Identité** : Profile (singleton, hero/CV/SEO) + SocialLink.
+- **Contenu home** : SiteSettings, HomeSection, Kpi, Skill, CareerTrack/Milestone, CareerGoal,
+  Analysis (SWOT/PESTEL/PORTER) + AnalysisItem, FaqEntry.
+- **Projets** : Project (+ type, blocs `ProjectBlock`, liens, images), Technology.
+- **News** : Article (statuts DRAFT/**SCHEDULED**/PUBLISHED, `scheduledAt`, lien évènement, galerie).
+- **Agenda** : Event (date/lieu/online/inscription externe, visibilité, programmable), EventMedia.
+- **Médias** : MediaAsset (IMAGE/**VIDEO**/**EMBED**, dimensions optionnelles, provider/externalUrl/poster).
+- **Modération / inbox** : Testimonial (PENDING/APPROVED/REJECTED), ContactMessage, **AppointmentRequest**.
+- **Auth** : AdminUser (argon2id, TOTP), Session (opaque), LoginAttempt.
 
-## Authentification BO (livrée)
-- Login argon2id → **MFA TOTP obligatoire** ; enrôlement par QR (secret persisté après preuve d'un code).
-- Sessions opaques (cookie `httpOnly`/`SameSite`/`Secure`, 8 h) ; `proxy` = garde grossière,
-  validation réelle côté serveur (`lib/auth/guards.ts`).
-- Anti brute-force : lockout compte (5 échecs / 15 min) + rate-limit IP + audit `LoginAttempt`,
-  erreurs génériques (anti-énumération), mitigation timing.
-- Code : `packages/core/src/auth/*` (password/token/totp), `apps/admin/lib/auth/*`,
-  pages `/login`, `/login/verify`, `/security/totp`. Seed admin : `db:seed`.
+## Sécurité DB (moindre privilège)
+- `app_web` : lecture seule du contenu public + **INSERT seul** sur `ContactMessage`,
+  `Testimonial` (sans PII ni statut) et **`AppointmentRequest`** (jamais de lecture).
+- `app_admin` : lecture/écriture cantonnée. Tables d'auth `REVOKE`d pour `app_web`.
 
-## Infra Docker (phasée)
-- **Phase A livrée** : `docker-compose.yml` avec **db** (postgres:16, hôte 5436), **minio**
-  (9100/9101), **umami** (3102) + base/rôle `umami` dédiés (init `datas/init/`). Réseaux
-  `edge`/`internal`. Migration `init` appliquée. `.env`/`.env.example` à la racine.
-  - Note dev : `db` est aussi sur `edge` pour publier 5436 (un réseau `internal` n'est pas
-    routable depuis l'hôte) → en prod, retirer `edge` + port (override).
-- **Phase B livrée** : service **`converter`** (`services/converter`, Node/Fastify/**sharp**,
-  image→webp + strip EXIF + validation mime/taille/dimensions). Interne uniquement. Dockerfile
-  multi-stage non-root (pnpm `deploy --legacy`). Vérifié end-to-end (200 image/webp).
-- **Phase C livrée** : images **`web`/`admin`** (Next **standalone** monorepo, multi-stage non-root)
-  + **proxy Caddy** (routage `web`/`admin`/`umami` par Host + `/media`→MinIO, en-têtes sécu).
-  Sites en `http://` pilotés par env (dev) → domaines nus = HTTPS auto (prod). Vérifié : web/admin/stats `200`.
-- **Phase D livrée (durcissement)** : bucket MinIO **`media`** (lecture publique, init one-shot `minio-init`)
-  + **rôles DB moindre-privilège** (`app_web` lecture seule, `app_admin` RW ; `web`/`admin` câblés avec
-    leur `DATABASE_URL` scopé). Vérifié : app_web INSERT refusé, /media/objet → 200.
-- **Infra Docker complète & durcie** : 8 services. Reste : clé d'écriture MinIO scopée (vs root), durcissement prod (db hors edge).
+## Site public (`apps/web`)
+- **Home complète depuis la DB**, ordonnée par `HomeSection` (sections masquées/omises si sans
+  données) : hero (typewriter sans saut), profil (KPI + analyses), écosystème (orbit), parcours
+  (timeline des 4 voies), cap (objectifs), projets (scènes → `/projets/[slug]`).
+- DA « éditorial sombre + or » (`app/globals.css`, tokens portés des maquettes). Aucun contenu en dur.
+- Loader groupé `lib/data/home.ts` (`select` explicites, filtres `PUBLISHED`/`isVisible`).
+- Rendu **dynamique** (SSR par requête) → pas de dépendance DB au build (CI build sans DB).
 
-## Ports (dev local, sans conflit OXO/KORTEKS)
-- `web` 3100 · `admin` 3101 · (Docker) umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
+## Infra Docker (8 services, durcie)
+proxy (Caddy, seul exposé 443/8090), web, admin, **image-processor** (webp+EXIF, Flask+Pillow,
+réutilisé d'OXO — remplace l'ancien converter Node), minio (media public), db (Postgres, rôles
+séparés), umami. Réseaux `edge`/`internal`. Reste : retirer `services/converter` (mort), clé MinIO
+scopée, prod (db hors edge), diagnostiquer `minio-init`.
 
-## Décisions notables
-- **Tout le contenu éditable passe par le BO** (principe produit, cf. CLAUDE.md).
-- **Versions** : dernières, sauf TS/ESLint en 5/9 (testées par Next 16). Voir TASKS.
-- Packages workspace en **source TS** (`transpilePackages`). Build scripts natifs : `allowBuilds` pnpm 11.
+## Avatar / médias
+- Photo de profil convertie en webp (sharp, manuel) et poussée dans **MinIO** (`media/profile.webp`,
+  lecture publique). `MediaAsset` créé + `Profile.avatar` lié (URL pilotée par `MEDIA_PUBLIC_BASE_URL`).
+  Affichée dans le hero (duotone or) ; monogramme en fallback si pas d'avatar. À re-générer via
+  `image-processor` une fois l'upload BO (P11) livré.
 
-> Direction artistique : `.claude/rules/DESIGN_SYSTEM.md` (DA « éditorial sombre + or », pour le site — pas encore attaqué).
+## Ports (dev local)
+`web` 3100 · `admin` 3101 · umami 3102 · minio 9100/9101 · proxy 8090 · db 5436.
+
+## Site public — fiches projet (P3)
+- `/projets/[slug]` rendue depuis la DB (publiés only, 404 propre). **Renderer de blocs modulaires**
+  (12 types, `data` JSON validé Zod `@portfolio/core`, fail-safe). Hero d'étude de cas + nav suivant.
+  1 composant + CSS Module par bloc (standard `CODE-STANDARDS`).
+
+## Site public — News & Agenda (P4)
+- Pages `/actus` + `/agenda` (liste + détail) depuis la DB ; markdown **sûr** (zéro injection HTML),
+  galerie image/vidéo/embed. Cron de publication programmée dans `admin` (`/api/cron/publish`,
+  protégé `CRON_SECRET`, rôle `app_admin`). i18n `[locale]` reportée à Pi18n.
+
+## Site public — Témoignages (P5)
+- `/temoignages` : affichage des `APPROVED` (`select` sûr, zéro PII) + formulaire de soumission
+  (`POST /api/testimonials` : rate-limit 3/h/IP + honeypot + Zod → `PENDING`, jamais auto-validé).
+
+## Bilingue FR/EN (Pi18n)
+- `next-intl` : `/` FR, `/en` EN (routes sous `app/[locale]/`). Table `Translation` (overlay EN,
+  fallback FR), `localize()` ; traduction IA (`translateFields`, mock en test) + re-traduction au
+  save (FR change → EN réécrasé). BO : `LocalizedField`. Timeline animée du parcours **restaurée**.
+
+## Back office (P8–P13)
+- Shell gardé `(dashboard)` (session + MFA), nav, dashboard (compteurs). Édition : **Profil**,
+  **KPI** (pattern réutilisable Zod + Server Actions `app_admin`), **Projets** (+ actions de blocs
+  validées Zod par type), **Articles** (+ programmation), **Médias** (pipeline upload sécurisé
+  image-processor→MinIO), **Agenda** (+ génération d'actu), **Modération** (témoignages),
+  **Inbox** (contact, RDV). Autres écrans home (SiteSettings/HomeSection/Skill/Career*/Analysis)
+  à ajouter selon le même pattern.
+
+## IA (P14–P15)
+- BO : adaptateur **OpenRouter** (clé `.env`), assistance par champ (5 actions), budget tokens,
+  `AiAssistantConfig`. Public : **chatbot** (contexte public-only, garde-fous anti-injection,
+  outil `book_appointment`, `/api/chat` désactivé par défaut, widget). Tout testé LLM **mocké**.
 
 ## Dernière livraison
-- **Auth BO complète** (v0.2.0) : modèles d'auth + migrations, login + sessions, MFA TOTP,
-  anti brute-force, 22 tests Vitest. Vérifiée verte, committée et poussée sur `dev`.
+- **v0.4.8** : **mail & calendrier dans le BO** (ports `Mailbox`/`Calendar` provider-agnostiques ;
+  calendrier réel DB = agenda + RDV ; mail démo + **adaptateur Microsoft Graph OAuth app-only** prêt
+  à activer ; doc Azure). **144 tests Vitest + 16 E2E.** Voir `docs/technical/INTEGRATIONS.md`.
+- **v0.4.7** : finitions BO/site (vrai Gantt + éditeur Gantt BO, quick-login dev, orbite, icône
+  chatbot SVG, avatar singleton, i18n home + liens nav, chargement `.env` racine) + **témoignages
+  enrichis** (entreprise + lien hiérarchique).
+- **v0.4.6** : IA (assistance BO + chatbot public). Plans **P0–P15 livrés** ; **P16 = plan-only**.
+- **Audit BO clos** : éditeurs **Sections, KPI, Compétences, Parcours, Analyses, FAQ, Réglages**,
+  **Profil** (avatar + socials + dispo + résumé IA), et **éditeurs de blocs** (Gantt/CONTEXT/TEXT/
+  RESULTS + JSON validé pour les autres). **i18n** branché sur toutes les sous-pages (`/en` complet).
+- ℹ️ `CRON_SECRET` faible en dev — laissé tel quel sur demande (à régénérer avant prod).
+
+## Plans livrés : **P0–P15 + Pi18n** (+ image-processor OXO, avatar MinIO). P16 = plan documenté.
+> Reste (non bloquant) : écrans BO restants (même pattern), câblage `localize()` des loaders
+> projet/news/agenda, E2E BO-login (TOTP), nettoyage `services/converter`, diag `minio-init`.
+> Détails : `docs/HANDOFF-2026-06-29.md` + `TASKS.md`.
 
 ## Prochaines étapes
-Voir `TASKS.md` — **features de contenu** : pages site public (`web`), CRUD BO, pipeline upload.
-Hardening restant : clé MinIO scopée, prod (db hors edge), E2E Playwright, application de la DA.
+Voir `TASKS.md` — suite des plans : **P3** (fiches projet), P4 (news/agenda), Pi18n, P5 (témoignages),
+P6 (contact), P7 (SEO/AEO), P8–P13 (back office), P14/P15 (IA), P16 (réseaux, plan only).

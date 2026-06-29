@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rail · Projets — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .md { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 1000px) { .md { grid-template-columns: 320px 1fr; align-items: start; } }
+      .mlist { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+      .mrow { display: flex; align-items: center; gap: 11px; padding: 12px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+      .mrow:last-child { border-bottom: 0; }
+      .mrow:hover { background: var(--hover); }
+      .mrow.sel { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+      .mrow .thumb { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, var(--surface-2), var(--bg)); border: 1px solid var(--border); flex: 0 0 auto; }
+      .mrow b { font-size: 13.5px; color: var(--text); display: block; }
+      .mrow small { font-size: 11.5px; color: var(--text-muted); }
+    </style>
+  </head>
+  <body>
+    <div class="app app--rail">
+      <nav class="rail">
+        <div class="rail-logo">Y</div>
+        <a class="rail-item" href="./dashboard.html">▦<span class="tip">Dashboard</span></a>
+        <a class="rail-item is-active" href="./projets.html">◆<span class="tip">Projets</span></a>
+        <a class="rail-item" href="./articles.html">✎<span class="tip">Articles</span></a>
+        <a class="rail-item" href="./profil.html">☺<span class="tip">Me concernant</span></a>
+        <a class="rail-item" href="#">▣<span class="tip">Médias</span></a>
+        <div style="height:14px"></div>
+        <a class="rail-item" href="#">✉<span class="dot"></span><span class="tip">Boîte mail · 4</span></a>
+        <a class="rail-item" href="#">⚇<span class="tip">CRM · Contacts</span></a>
+        <a class="rail-item" href="#">◔<span class="tip">Statistiques</span></a>
+        <span class="rail-sp"></span>
+        <a class="rail-item" href="#">⚙<span class="tip">Réglages</span></a>
+        <img class="rail-avatar" src="../../profile.jpg" alt="" />
+      </nav>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher un projet…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div>
+              <div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Projets</div>
+              <h1 class="page-title">Projets</h1>
+              <p class="page-sub">6 projets · clique pour éditer à droite.</p>
+            </div>
+            <div class="page-actions"><a class="btn btn-primary" href="#">+ Nouveau projet</a></div>
+          </div>
+
+          <div class="toolbar">
+            <div class="segmented">
+              <button class="seg is-active">Tous <span class="count">6</span></button>
+              <button class="seg">Publiés <span class="count">3</span></button>
+              <button class="seg">En revue <span class="count">1</span></button>
+              <button class="seg">Brouillons <span class="count">2</span></button>
+            </div>
+            <span class="spacer"></span>
+            <span class="search" style="max-width:220px">⌕ Filtrer la liste…</span>
+          </div>
+
+          <div class="md">
+            <!-- LISTE -->
+            <div class="mlist">
+              <div class="mrow sel"><span class="thumb"></span><div style="flex:1"><b>Domestic Revolt</b><small>Projet phare · 1 240 vues</small></div><span class="status is-published"></span></div>
+              <div class="mrow"><span class="thumb"></span><div style="flex:1"><b>OXO</b><small>Plateforme · 430 vues</small></div><span class="status is-published"></span></div>
+              <div class="mrow"><span class="thumb"></span><div style="flex:1"><b>Étude PME — Saveurs du Nord</b><small>Business · 280 vues</small></div><span class="status is-published"></span></div>
+              <div class="mrow"><span class="thumb"></span><div style="flex:1"><b>Refonte e-commerce</b><small>Site web · en revue</small></div><span class="status is-review"></span></div>
+              <div class="mrow"><span class="thumb"></span><div style="flex:1"><b>Portfolio v1</b><small>Site web · brouillon</small></div><span class="status is-draft"></span></div>
+              <div class="mrow"><span class="thumb"></span><div style="flex:1"><b>YoguiRecords</b><small>Side-project · brouillon</small></div><span class="status is-draft"></span></div>
+            </div>
+
+            <!-- ÉDITEUR -->
+            <div class="panel">
+              <div class="panel-head">
+                <span class="status is-published">Publié</span><h3 style="margin-left:4px">Domestic Revolt</h3>
+                <a class="panel-link" href="#">Aperçu ↗</a>
+                <span class="act del" title="Supprimer" style="margin-left:8px">🗑</span>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid cols-2">
+                  <div class="field"><label>Titre</label><input class="input" value="Domestic Revolt" /></div>
+                  <div class="field"><label>Type</label><select class="select"><option>Projet phare</option><option>Plateforme</option><option>Site web</option><option>Business</option></select></div>
+                  <div class="field field-full"><label>Sous-titre</label><input class="input" value="Du concept au déploiement, en solo." /></div>
+                  <div class="field field-full"><label>Résumé <span class="hint">— affiché sur la carte du projet</span></label><textarea class="textarea">Plateforme conçue de A à Z : game design, architecture, sécurité by design, CI/CD et mise en production.</textarea></div>
+                  <div class="field field-full"><label>Technologies</label><div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="chip add">+ ajouter</span></div></div>
+                  <div class="field"><label>Statut</label><select class="select"><option>Publié</option><option>En revue</option><option>Brouillon</option></select></div>
+                  <div class="field"><label>Image de couverture</label><div class="dropzone" style="padding:12px">Glisser une image · ou <a href="#" style="color:var(--accent)">parcourir</a></div></div>
+                </div>
+              </div>
+              <div class="savebar" style="margin:0;border-radius:0 0 var(--radius) var(--radius);position:static;border-top:1px solid var(--border)">
+                <span class="status-text"><span class="d"></span> Enregistré · 14:09</span>
+                <span class="spacer"></span>
+                <a class="btn btn-ghost btn-sm" href="#">Annuler</a>
+                <a class="btn btn-primary btn-sm" href="#">Enregistrer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

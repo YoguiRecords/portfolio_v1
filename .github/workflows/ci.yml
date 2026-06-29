@@ -14,6 +14,23 @@ jobs:
   build:
     name: Lint · Typecheck · Test · Build
     runs-on: ubuntu-latest
+
+    # Postgres éphémère pour les tests d'intégration (schéma `test` isolé).
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: portfolio
+          POSTGRES_PASSWORD: portfolio_dev
+          POSTGRES_DB: portfolio
+        ports:
+          - 5436:5432
+        options: >-
+          --health-cmd "pg_isready -U portfolio"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v7
         with:
@@ -35,14 +52,81 @@ jobs:
       - name: Generate Prisma client
         run: pnpm --filter @portfolio/db db:generate
 
+      # `.env.test` est git-ignoré : on le matérialise pour la CI (DB du service).
+      - name: Prepare test env
+        run: echo "DATABASE_URL=postgresql://portfolio:portfolio_dev@localhost:5436/portfolio?schema=test" > .env.test
+
+      - name: Deploy migrations to test schema
+        run: pnpm --filter @portfolio/db db:test:deploy
+
       - name: Lint
         run: pnpm -r lint
 
       - name: Typecheck
         run: pnpm -r typecheck
 
+      # `pnpm test` serializes packages (--workspace-concurrency=1) so the
+      # DB-backed suites don't race on the shared `test` schema.
       - name: Test
-        run: pnpm -r test
+        run: pnpm test
 
       - name: Build
         run: pnpm -r build
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: portfolio
+          POSTGRES_PASSWORD: portfolio_dev
+          POSTGRES_DB: portfolio
+        ports:
+          - 5436:5432
+        options: >-
+          --health-cmd "pg_isready -U portfolio"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Le serveur web (next dev lancé par Playwright) lit la DB sur le schéma public.
+      DATABASE_URL: postgresql://portfolio:portfolio_dev@localhost:5436/portfolio?schema=public
+      CI: "true"
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @portfolio/db db:generate
+
+      - name: Deploy migrations (public schema)
+        run: pnpm --filter @portfolio/db db:deploy
+
+      # Le seed de CONTENU (profil, projets, sections) alimente la home publique
+      # testée en E2E — pas le seed admin (qui exige des identifiants).
+      - name: Seed content
+        run: pnpm --filter @portfolio/db exec tsx prisma/seed-content.ts
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: pnpm test:e2e

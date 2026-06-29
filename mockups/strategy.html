@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Analyse stratégique (SWOT · PESTEL · PORTER)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body {
+        background: #0b0b0b;
+        color: var(--on-dark);
+      }
+      .nav[data-scrollfx] {
+        color: var(--on-dark);
+      }
+      .nav.scrolled {
+        background: rgba(11, 11, 11, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-dark);
+      }
+
+      .intro {
+        padding: 130px 0 50px;
+      }
+      .intro .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .intro .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 2px;
+        background: var(--accent);
+      }
+      .intro h1 {
+        font-size: clamp(34px, 8vw, 72px);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 0.98;
+      }
+      .intro h1 .or {
+        color: var(--accent);
+      }
+      .intro p {
+        margin-top: 22px;
+        max-width: 60ch;
+        font-weight: 300;
+        font-size: clamp(15px, 4vw, 18px);
+        color: var(--on-dark-2);
+        line-height: 1.65;
+      }
+
+      .block {
+        padding: 50px 0 20px;
+      }
+      .block .bh {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+      .block .bh .tag-method {
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+      }
+      .block .bh h2 {
+        font-size: clamp(24px, 6vw, 40px);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
+      .block .bdesc {
+        color: var(--on-dark-muted);
+        font-size: 14px;
+        max-width: 64ch;
+        margin-bottom: 28px;
+      }
+
+      /* ---- SWOT ---- */
+      .swot {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .quad {
+        border: 1px solid var(--border-dark);
+        border-top: 3px solid var(--accent);
+        border-radius: 10px;
+        background: var(--dark-800);
+        padding: 24px 22px;
+      }
+      .quad h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .quad h3 .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .quad ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+      }
+      .quad li {
+        position: relative;
+        padding-left: 18px;
+        font-size: 14.5px;
+        color: var(--on-dark-2);
+        line-height: 1.5;
+      }
+      .quad li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        width: 6px;
+        height: 6px;
+        border-radius: 1px;
+        background: var(--accent);
+        transform: rotate(45deg);
+      }
+      .quad.s {
+        border-top-color: var(--status-ok);
+      }
+      .quad.s h3 .dot {
+        background: var(--status-ok);
+      }
+      .quad.w {
+        border-top-color: var(--status-wip);
+      }
+      .quad.w h3 .dot {
+        background: var(--status-wip);
+      }
+      .quad.o h3 .dot {
+        background: var(--accent);
+      }
+      .quad.t {
+        border-top-color: #b03030;
+      }
+      .quad.t h3 .dot {
+        background: #b03030;
+      }
+      @media (min-width: 780px) {
+        .swot {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* ---- PORTER (5 forces) ---- */
+      .porter {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .force {
+        border: 1px solid var(--border-dark);
+        border-radius: 10px;
+        background: var(--dark-800);
+        padding: 20px;
+      }
+      .force .ttl {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .force p {
+        font-size: 14px;
+        color: var(--on-dark-2);
+        line-height: 1.55;
+      }
+      .force.center {
+        background: var(--accent);
+        color: #1a1400;
+        border-color: var(--accent);
+      }
+      .force.center .ttl {
+        color: #1a1400;
+      }
+      .force.center p {
+        color: #2a2200;
+      }
+      .lvl {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 3px;
+        margin-left: auto;
+      }
+      .lvl.hi {
+        background: rgba(176, 48, 48, 0.18);
+        color: #e06a6a;
+      }
+      .lvl.mid {
+        background: rgba(230, 81, 0, 0.16);
+        color: #ff8a3d;
+      }
+      .lvl.lo {
+        background: rgba(26, 107, 60, 0.18);
+        color: #4fc486;
+      }
+      @media (min-width: 860px) {
+        .porter {
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-areas:
+            ".     new   ."
+            "supp  riv   cli"
+            ".     sub   .";
+          gap: 14px;
+        }
+        .f-new {
+          grid-area: new;
+        }
+        .f-supp {
+          grid-area: supp;
+        }
+        .f-riv {
+          grid-area: riv;
+        }
+        .f-cli {
+          grid-area: cli;
+        }
+        .f-sub {
+          grid-area: sub;
+        }
+      }
+
+      /* ---- PESTEL ---- */
+      .pestel {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .pcell {
+        border: 1px solid var(--border-dark);
+        border-left: 2.5px solid var(--accent);
+        border-radius: 8px;
+        background: var(--dark-800);
+        padding: 18px 20px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .pcell .L {
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--accent);
+        line-height: 1;
+        width: 30px;
+        flex-shrink: 0;
+      }
+      .pcell .ttl {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .pcell p {
+        font-size: 14px;
+        color: var(--on-dark-2);
+        line-height: 1.5;
+      }
+      @media (min-width: 780px) {
+        .pestel {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links">
+        <a href="#">Projets</a><a href="#">CV</a><a href="#">Contact</a
+        ><a href="./index.html" class="muted">← Maquettes</a>
+      </div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu">
+      <a href="#"><span class="n">01</span>Projets</a>
+      <a href="#"><span class="n">02</span>CV</a>
+      <a href="#"><span class="n">03</span>Contact</a>
+      <a href="./index.html"><span class="n">←</span>Maquettes</a>
+    </div>
+
+    <section class="intro wrap">
+      <span class="eyebrow">Méta · j'applique mes propres outils, à moi-même</span>
+      <h1>Analyse stratégique<br /><span class="or">de moi-même.</span></h1>
+      <p>
+        Plutôt que de te dire que je maîtrise l'analyse stratégique, je te le
+        montre — en me prenant comme sujet d'étude. SWOT, 5 forces de Porter,
+        PESTEL : la preuve de la compétence par l'exemple.
+      </p>
+    </section>
+
+    <!-- SWOT -->
+    <section class="block wrap">
+      <div class="bh reveal">
+        <span class="tag-method">SWOT</span>
+        <h2>Forces, faiblesses, opportunités, menaces</h2>
+      </div>
+      <p class="bdesc reveal">Lecture honnête de ma situation, en interne comme en externe.</p>
+      <div class="swot">
+        <div class="quad s reveal">
+          <h3><span class="dot"></span>Forces</h3>
+          <ul>
+            <li>Polyvalence rare : technique <em>et</em> vision business.</li>
+            <li>Exécution de bout en bout — je livre des produits finis.</li>
+            <li>Autodidacte rapide, capable de tout apprendre vite.</li>
+            <li>Sens du produit et de la sécurité dès la conception.</li>
+          </ul>
+        </div>
+        <div class="quad w reveal">
+          <h3><span class="dot"></span>Faiblesses</h3>
+          <ul>
+            <li>Pas de diplôme formel à brandir.</li>
+            <li>Seul → bande passante limitée sur les gros volumes.</li>
+            <li>Notoriété et réseau encore à construire.</li>
+          </ul>
+        </div>
+        <div class="quad o reveal">
+          <h3><span class="dot"></span>Opportunités</h3>
+          <ul>
+            <li>Forte demande de profils full-stack orientés produit.</li>
+            <li>L'IA accélère la création — avantage à qui sait livrer.</li>
+            <li>Digitalisation des PME &amp; marché freelance en croissance.</li>
+          </ul>
+        </div>
+        <div class="quad t reveal">
+          <h3><span class="dot"></span>Menaces</h3>
+          <ul>
+            <li>Concurrence de profils diplômés mieux identifiés.</li>
+            <li>No-code &amp; automatisation sur les projets simples.</li>
+            <li>Préjugé persistant autour de l'absence de diplôme.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTER -->
+    <section class="block wrap">
+      <div class="bh reveal">
+        <span class="tag-method">PORTER</span>
+        <h2>Les 5 forces de mon marché</h2>
+      </div>
+      <p class="bdesc reveal">
+        Mon positionnement face à la dynamique concurrentielle du
+        développement &amp; du freelance produit.
+      </p>
+      <div class="porter">
+        <div class="force f-new reveal">
+          <div class="ttl">Nouveaux entrants <span class="lvl hi">Fort</span></div>
+          <p>Beaucoup de juniors arrivent. Je me différencie par un portfolio de produits réellement livrés.</p>
+        </div>
+        <div class="force f-supp reveal">
+          <div class="ttl">Fournisseurs <span class="lvl lo">Faible</span></div>
+          <p>Stack open-source, faible dépendance à un éditeur. Autonomie quasi totale.</p>
+        </div>
+        <div class="force center f-riv reveal">
+          <div class="ttl">Rivalité — moi</div>
+          <p>Beaucoup de devs, peu combinent technique + vision business + exécution complète. C'est mon créneau.</p>
+        </div>
+        <div class="force f-cli reveal">
+          <div class="ttl">Clients <span class="lvl mid">Moyen</span></div>
+          <p>Offre abondante = clients exigeants. Compensé par la preuve (réalisations) et la spécialisation.</p>
+        </div>
+        <div class="force f-sub reveal">
+          <div class="ttl">Substituts <span class="lvl mid">Moyen</span></div>
+          <p>No-code, IA, agences offshore. Je mise sur le sur-mesure, la fiabilité et la sécurité.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTEL -->
+    <section class="block wrap" style="padding-bottom: 80px">
+      <div class="bh reveal">
+        <span class="tag-method">PESTEL</span>
+        <h2>Le contexte macro de mon activité</h2>
+      </div>
+      <p class="bdesc reveal">Les grands facteurs externes qui jouent sur mon terrain.</p>
+      <div class="pestel">
+        <div class="pcell reveal">
+          <span class="L">P</span>
+          <div><div class="ttl">Politique</div><p>Soutien à l'entrepreneuriat &amp; au statut indépendant.</p></div>
+        </div>
+        <div class="pcell reveal">
+          <span class="L">E</span>
+          <div><div class="ttl">Économique</div><p>Budgets digitaux soutenus, tension sur le recrutement tech.</p></div>
+        </div>
+        <div class="pcell reveal">
+          <span class="L">S</span>
+          <div><div class="ttl">Socioculturel</div><p>Digitalisation des PME, télétravail, culture du portfolio.</p></div>
+        </div>
+        <div class="pcell reveal">
+          <span class="L">T</span>
+          <div><div class="ttl">Technologique</div><p>IA &amp; frameworks modernes — exactement mon terrain de jeu.</p></div>
+        </div>
+        <div class="pcell reveal">
+          <span class="L">E</span>
+          <div><div class="ttl">Écologique</div><p>Éco-conception &amp; sobriété numérique, de plus en plus attendues.</p></div>
+        </div>
+        <div class="pcell reveal">
+          <span class="L">L</span>
+          <div><div class="ttl">Légal</div><p>RGPD &amp; sécurité — un point fort que j'intègre par défaut.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="row">
+          <h2>Convaincu ?<br /><span>Parlons-en.</span></h2>
+          <div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div>
+        </div>
+        <div class="legal">
+          <span>© 2026 Yohan Debusscher</span><span>Contenu éditable au back office</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./reveal.js"></script>
+  </body>
+</html>

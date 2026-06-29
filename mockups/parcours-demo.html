@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (3 formes)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* page bespoke — on n'utilise PAS .pill/.tag/.stat (primitives au look "IA") */
+      body { background: #0c0d0f; color: #e9e9e6; font-family: "Inter", sans-serif; }
+      .mono { font-family: "JetBrains Mono", monospace; }
+      .page { max-width: 920px; margin: 0 auto; padding: 70px clamp(18px,5vw,40px) 100px; }
+
+      .page > .intro { margin-bottom: 56px; }
+      .page > .intro .lab { font: 600 11px "JetBrains Mono", monospace; letter-spacing:.22em; text-transform:uppercase; color: var(--accent); }
+      .page > .intro h1 { font-size: clamp(28px,6vw,46px); font-weight:800; letter-spacing:-.03em; line-height:1.04; margin: 14px 0 12px; }
+      .page > .intro p { color:#9a9d9a; font-weight:300; font-size: 15px; line-height:1.6; max-width: 60ch; }
+
+      .demo { padding: 46px 0; border-top: 1px solid rgba(255,255,255,.09); }
+      .demo > .tag { display:flex; align-items:baseline; gap:14px; margin-bottom: 30px; }
+      .demo > .tag .id { font: 600 12px "JetBrains Mono", monospace; letter-spacing:.14em; color: var(--accent); }
+      .demo > .tag .nm { font-size: 18px; font-weight:700; letter-spacing:-.01em; }
+      .demo > .tag .why { margin-left:auto; font-size:12px; color:#6f7370; font-style:italic; text-align:right; }
+
+      /* états — couleurs sobres, pas de vert "live" */
+      .stat { font: 500 10.5px "JetBrains Mono", monospace; letter-spacing:.14em; text-transform:uppercase; }
+      .is-done .stat { color:#6a6f6c; }
+      .is-now  .stat { color: var(--accent); }
+      .is-next .stat { color:#83878c; }
+      .is-far  .stat { color:#5c6064; }
+
+      /* ============ FORME A — TIMELINE ÉDITORIALE ============ */
+      .tl { list-style:none; }
+      .tl li { position:relative; display:grid; grid-template-columns: 24px 64px 1fr auto; gap: 18px; align-items:baseline;
+        padding: 16px 0; }
+      .tl li::before { content:""; position:absolute; left:11px; top:0; bottom:0; width:1px; background: rgba(255,255,255,.12); }
+      .tl li:first-child::before { top: 26px; }
+      .tl li:last-child::before { bottom: auto; height: 26px; }
+      .tl .dot { position:relative; z-index:1; width:11px; height:11px; margin-top:7px; border-radius:50%; }
+      .is-done .dot { background:#52564f; }
+      .is-now  .dot { background: var(--accent); box-shadow: 0 0 0 4px rgba(240,168,0,.16); }
+      .is-next .dot, .is-far .dot { background: transparent; border:1px solid rgba(255,255,255,.32); }
+      .tl .yr { font: 500 13px "JetBrains Mono", monospace; color:#7a7e7b; font-variant-numeric: tabular-nums; }
+      .tl .role { font-size: clamp(19px,3.4vw,26px); font-weight:700; letter-spacing:-.02em; }
+      .is-done .role { color:#b8bbb6; font-weight:500; }
+      .is-now  .role { color:#fff; }
+      .is-next .role, .is-far .role { color:#8c908c; font-weight:500; }
+      .tl .note { grid-column: 3 / 5; margin-top:4px; font-size:13px; color:#83878c; font-style:italic; max-width:52ch; }
+      .tl .dim { grid-template-columns: 24px 64px 1fr auto; }
+      @media (max-width:560px){ .tl li{ grid-template-columns: 24px 1fr auto; } .tl .yr{ display:none; } }
+
+      /* ============ FORME B — OBJECTIFS (LISTE DE STATUT) ============ */
+      .obj-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom: 8px; }
+      .obj-head .t { font: 600 12px "JetBrains Mono", monospace; letter-spacing:.18em; text-transform:uppercase; color:#9a9d9a; }
+      .obj-head .c { font: 600 13px "JetBrains Mono", monospace; color: var(--accent); font-variant-numeric: tabular-nums; }
+      .obj { list-style:none; }
+      .obj li { display:grid; grid-template-columns: 22px 1fr auto; gap:16px; align-items:center; padding: 14px 0; border-top:1px solid rgba(255,255,255,.07); }
+      /* marqueur carré dessiné, pas d'emoji */
+      .box { width:15px; height:15px; border-radius:3px; position:relative; }
+      .is-done .box { background:#43474a; }
+      .is-done .box::after { content:""; position:absolute; left:4px; top:1px; width:5px; height:9px; border:solid #0c0d0f; border-width:0 2px 2px 0; transform: rotate(40deg); }
+      .is-now  .box { border:1.5px solid var(--accent); }
+      .is-now  .box::after { content:""; position:absolute; inset:3px; background: var(--accent); border-radius:1px; }
+      .is-next .box, .is-far .box { border:1.5px solid rgba(255,255,255,.22); }
+      .obj .role { font-size:17px; font-weight:600; letter-spacing:-.01em; }
+      .is-done .obj .role, .obj li.is-done .role { color:#aeb1ac; font-weight:400; }
+      .obj li.is-now .role { color:#fff; font-weight:700; }
+      .obj li.is-next .role, .obj li.is-far .role { color:#8c908c; font-weight:400; }
+
+      /* ============ FORME C — 3 HORIZONS ============ */
+      .hz { display:grid; grid-template-columns: 1fr; gap: 0; }
+      @media (min-width:680px){ .hz{ grid-template-columns: repeat(3,1fr); } }
+      .col { padding: 0 26px; border-left:1px solid rgba(255,255,255,.09); }
+      .col:first-child{ padding-left:0; border-left:0; }
+      @media (max-width:680px){ .col{ padding:22px 0; border-left:0; border-top:1px solid rgba(255,255,255,.09); } .col:first-child{ border-top:0; padding-top:0; } }
+      .col > h4 { font: 600 11px "JetBrains Mono", monospace; letter-spacing:.16em; text-transform:uppercase; margin-bottom:20px; }
+      .col.now > h4 { color: var(--accent); }
+      .col:not(.now) > h4 { color:#73776f; }
+      .col ul { list-style:none; display:flex; flex-direction:column; gap:14px; }
+      .col li { font-size:18px; letter-spacing:-.01em; line-height:1.2; }
+      .col.past li { color:#9da09b; font-weight:500; }
+      .col.now li { color:#fff; font-weight:700; font-size: clamp(20px,3vw,24px); }
+      .col.cap li { color:#85898d; font-weight:500; }
+      .col.now li:first-child { position:relative; }
+      .col li .meta { display:block; font: 500 10.5px "JetBrains Mono", monospace; letter-spacing:.08em; color:#5f6360; margin-top:4px; text-transform:uppercase; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="intro">
+        <span class="lab">Démo · 3 formes</span>
+        <h1>Parcours &amp; objectifs de carrière</h1>
+        <p>Trois façons de raconter la même trajectoire — rôles acquis, position actuelle, caps visés. Volontairement dépouillées : pas de pastilles, pas de jauges, pas de dégradés. On juge la <b>structure</b>, pas la déco.</p>
+      </div>
+
+      <!-- FORME A -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">A</span><span class="nm">Timeline éditoriale</span><span class="why">narratif · vertical · l'œil descend la ligne</span></div>
+        <ol class="tl">
+          <li class="is-done"><span class="dot"></span><span class="yr">2018</span><span class="role">Développeur</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="dot"></span><span class="yr">2019</span><span class="role">Salarié en entreprise</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="dot"></span><span class="yr">2021</span><span class="role">Ingénieur</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="dot"></span><span class="yr">2022</span><span class="role">Gestionnaire de projet</span><span class="stat">Acquis</span></li>
+          <li class="is-now"><span class="dot"></span><span class="yr">2024</span><span class="role">Indépendant · fondateur</span><span class="stat">En cours</span>
+            <span class="note">Où j'en suis : je conçois et livre seul, de la stratégie à la production.</span>
+          </li>
+          <li class="is-next"><span class="dot"></span><span class="yr">—</span><span class="role">Manager</span><span class="stat">Cible</span></li>
+          <li class="is-next"><span class="dot"></span><span class="yr">—</span><span class="role">CTO</span><span class="stat">Cible</span></li>
+          <li class="is-far"><span class="dot"></span><span class="yr">—</span><span class="role">CEO</span><span class="stat">Horizon</span></li>
+        </ol>
+      </section>
+
+      <!-- FORME B -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">B</span><span class="nm">Objectifs (liste de statut)</span><span class="why">ambition cadrée en buts, pas en titres tenus</span></div>
+        <div class="obj-head">
+          <span class="t">Objectifs de carrière</span>
+          <span class="c mono">04 / 08 atteints</span>
+        </div>
+        <ul class="obj">
+          <li class="is-done"><span class="box"></span><span class="role">Développeur</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="box"></span><span class="role">Salarié en entreprise</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="box"></span><span class="role">Ingénieur</span><span class="stat">Acquis</span></li>
+          <li class="is-done"><span class="box"></span><span class="role">Gestionnaire de projet</span><span class="stat">Acquis</span></li>
+          <li class="is-now"><span class="box"></span><span class="role">Indépendant · fondateur</span><span class="stat">En cours</span></li>
+          <li class="is-next"><span class="box"></span><span class="role">Manager</span><span class="stat">Cible</span></li>
+          <li class="is-next"><span class="box"></span><span class="role">CTO</span><span class="stat">Cible</span></li>
+          <li class="is-far"><span class="box"></span><span class="role">CEO</span><span class="stat">Horizon</span></li>
+        </ul>
+      </section>
+
+      <!-- FORME C -->
+      <section class="demo">
+        <div class="tag"><span class="id mono">C</span><span class="nm">3 horizons</span><span class="why">vue stratège · le chemin lu d'un coup d'œil</span></div>
+        <div class="hz">
+          <div class="col past">
+            <h4>Acquis</h4>
+            <ul>
+              <li>Développeur</li>
+              <li>Salarié</li>
+              <li>Ingénieur</li>
+              <li>Gestionnaire de projet</li>
+            </ul>
+          </div>
+          <div class="col now">
+            <h4>Aujourd'hui</h4>
+            <ul>
+              <li>Indépendant<span class="meta">conçoit &amp; livre seul</span></li>
+              <li>Fondateur<span class="meta">de bout en bout</span></li>
+            </ul>
+          </div>
+          <div class="col cap">
+            <h4>Cap visé</h4>
+            <ul>
+              <li>Manager</li>
+              <li>CTO</li>
+              <li>CEO</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

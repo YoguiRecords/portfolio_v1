@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #0a0b0d; color: var(--on-dark); font-family: "JetBrains Mono", ui-monospace, monospace; }
+      ::selection { background: var(--accent); color: #1a1400; }
+
+      /* fenêtre terminal plein écran */
+      .term { min-height: 100vh; display: flex; flex-direction: column; }
+      .titlebar {
+        position: sticky; top: 0; z-index: 10;
+        display: flex; align-items: center; gap: 14px;
+        padding: 12px 18px; background: #141619;
+        border-bottom: 1px solid #23262b;
+      }
+      .dots { display: flex; gap: 8px; }
+      .dots i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+      .dots i:nth-child(1){ background:#ff5f57;} .dots i:nth-child(2){ background:#febc2e;} .dots i:nth-child(3){ background:#28c840;}
+      .titlebar .path { font-size: 12.5px; color: #6b7178; letter-spacing: .02em; }
+      .titlebar .path b { color: var(--accent); font-weight: 500; }
+      .titlebar .tag { margin-left: auto; font-size: 11px; color: #4a4f55; }
+
+      .screen { flex: 1; padding: 26px clamp(16px, 4vw, 48px) 80px; font-size: clamp(13px, 3.4vw, 15px); line-height: 1.9; }
+      .screen .wrap { max-width: 900px; margin: 0 auto; padding: 0; }
+
+      .line { display: flex; gap: 10px; flex-wrap: wrap; }
+      .prompt { color: #28c840; white-space: nowrap; }
+      .prompt .at { color: #6b7178; } .prompt .dir { color: var(--accent); }
+      .cmd { color: #fff; }
+      .out { color: #aeb4ba; margin: 4px 0 22px; }
+      .out .k { color: var(--accent); }
+      .out .hl { color: #fff; font-weight: 700; }
+      .comment { color: #5a6066; }
+
+      /* gros nom ASCII-style via texte */
+      .banner { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.05em;
+        font-size: clamp(44px, 13vw, 130px); line-height: .82; color: #fff; margin: 6px 0 4px; }
+      .banner span { color: var(--accent); }
+      .role { color: #6b7178; margin-bottom: 26px; }
+
+      /* "ls projects" en cartes monospace */
+      .files { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 6px 0 22px; }
+      @media (min-width: 720px){ .files { grid-template-columns: repeat(3, 1fr); } }
+      .file { border: 1px solid #23262b; border-left: 2px solid var(--accent); background: #111316; border-radius: 6px; padding: 16px 16px 18px; transition: .25s; text-decoration: none; color: inherit; display:block; }
+      .file:hover { background: #16191d; transform: translateY(-3px); border-left-color: #fff; }
+      .file .fn { color: var(--accent); font-weight: 700; }
+      .file .meta { color: #5a6066; font-size: 11.5px; margin: 2px 0 10px; }
+      .file .desc { color: #aeb4ba; font-size: 12.5px; line-height: 1.65; font-family: "Inter", sans-serif; }
+      .file .perm { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+      .file .perm span { font-size: 10.5px; color: var(--accent); border:1px solid #2c2410; background: var(--accent-faint); padding: 2px 7px; border-radius: 3px; }
+
+      /* skill bars en ascii */
+      .skills { margin: 4px 0 22px; }
+      .skill { display: grid; grid-template-columns: 130px 1fr auto; gap: 12px; align-items: center; padding: 3px 0; }
+      .skill .bar { color: var(--accent); letter-spacing: 2px; overflow: hidden; white-space: nowrap; }
+      .skill .bar i { color: #2a2d31; font-style: normal; }
+      .skill .pct { color: #6b7178; font-size: 12px; }
+      .skill .lbl { color: #aeb4ba; }
+      @media (max-width: 520px){ .skill { grid-template-columns: 100px 1fr; } .skill .pct{ display:none; } }
+
+      .cursor { display:inline-block; width: 10px; height: 1.1em; background: var(--accent); margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
+
+      .cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top: 8px; }
+      .tbtn { font-family: inherit; text-decoration:none; font-size: 13px; padding: 11px 18px; border-radius: 5px; border:1px solid #2c2410; color: var(--accent); background: var(--accent-faint); transition:.2s; }
+      .tbtn:hover { background: var(--accent); color: #1a1400; }
+      .tbtn.ghost { background: transparent; border-color:#2a2d31; color:#aeb4ba; }
+      .tbtn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+      .typing { border-right: 2px solid var(--accent); animation: blink 1s steps(1) infinite; padding-right: 2px; }
+    </style>
+  </head>
+  <body>
+    <div class="term">
+      <div class="titlebar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span class="path">yohan@portfolio: <b>~/builder</b> — zsh</span>
+        <span class="tag">v1.0 · 80×24</span>
+      </div>
+
+      <div class="screen">
+        <div class="wrap">
+          <div class="line"><span class="prompt"><span class="dir">~</span> $</span> <span class="cmd">whoami</span></div>
+          <h1 class="banner">Yohan<br /><span>Debusscher.</span></h1>
+          <p class="role">// concepteur-développeur &amp; entrepreneur — de l'idée au produit déployé, seul, de bout en bout.</p>
+
+          <div class="line reveal"><span class="prompt"><span class="dir">~</span> $</span> <span class="cmd">cat profile.json</span></div>
+          <p class="out reveal">{<br />
+            &nbsp;&nbsp;<span class="k">"role"</span>: <span class="hl">"Full-stack + Business"</span>,<br />
+            &nbsp;&nbsp;<span class="k">"mode"</span>: <span class="hl">"solo, end-to-end"</span>,<br />
+            &nbsp;&nbsp;<span class="k">"focus"</span>: [<span class="hl">"produit"</span>, <span class="hl">"stratégie"</span>, <span class="hl">"sécurité"</span>],<br />
+            &nbsp;&nbsp;<span class="k">"status"</span>: <span class="hl">"disponible"</span> <span class="comment">// ouvert aux missions</span><br />
+          }</p>
+
+          <div class="line reveal"><span class="prompt"><span class="dir">~</span> $</span> <span class="cmd">ls -la ./projects</span></div>
+          <p class="comment reveal">drwxr-xr-x  3 yohan  staff  — 3 items</p>
+          <div class="files reveal">
+            <a href="#" class="file">
+              <div class="fn">domestic-revolt/</div>
+              <div class="meta">-rwx · projet phare</div>
+              <div class="desc">Produit conçu, développé et déployé seul. Du design à la prod.</div>
+              <div class="perm"><span>Next.js</span><span>Docker</span></div>
+            </a>
+            <a href="#" class="file">
+              <div class="fn">oxo/</div>
+              <div class="meta">-rwx · logiciel</div>
+              <div class="desc">Plateforme complète pilotée seul, du back au front.</div>
+              <div class="perm"><span>React</span><span>Node</span></div>
+            </a>
+            <a href="#" class="file">
+              <div class="fn">etude-pme.md</div>
+              <div class="meta">-rw- · stratégie</div>
+              <div class="desc">Analyse de marché, SWOT et recommandations pour une PME.</div>
+              <div class="perm"><span>SWOT</span><span>Conseil</span></div>
+            </a>
+          </div>
+
+          <div class="line reveal"><span class="prompt"><span class="dir">~</span> $</span> <span class="cmd">./skills --graph</span></div>
+          <div class="skills reveal">
+            <div class="skill"><span class="lbl">Développement</span><span class="bar">██████████<i>██</i></span><span class="pct">90%</span></div>
+            <div class="skill"><span class="lbl">Architecture</span><span class="bar">█████████<i>███</i></span><span class="pct">82%</span></div>
+            <div class="skill"><span class="lbl">Business / Strat.</span><span class="bar">████████<i>████</i></span><span class="pct">75%</span></div>
+            <div class="skill"><span class="lbl">Sécurité</span><span class="bar">████████<i>████</i></span><span class="pct">72%</span></div>
+          </div>
+
+          <div class="line reveal"><span class="prompt"><span class="dir">~</span> $</span> <span class="cmd">./contact <span class="typing">--init</span></span></div>
+          <p class="out reveal">&gt; Ouverture du canal… <span class="hl">prêt.</span></p>
+          <div class="cta-row reveal">
+            <a href="#" class="tbtn">./voir-les-projets →</a>
+            <a href="#" class="tbtn ghost">cat cv.pdf</a>
+            <a href="#" class="tbtn ghost">mail -s "hello"</a>
+          </div>
+
+          <div class="line reveal" style="margin-top:30px"><span class="prompt"><span class="dir">~</span> $</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+    <script src="./reveal.js"></script>
+  </body>
+</html>

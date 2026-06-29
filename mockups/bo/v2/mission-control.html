@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assemblage · Mission control — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .subgrid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 1040px) { .subgrid { grid-template-columns: 1fr 360px; align-items: start; } }
+      .compose { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--border); }
+      .compose .ci { flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text-muted); font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="app app--rail">
+      <nav class="rail">
+        <div class="rail-logo">Y</div>
+        <a class="rail-item" href="./dashboard.html">▦<span class="tip">Dashboard</span></a>
+        <a class="rail-item is-active" href="./mission-control.html">◉<span class="dot"></span><span class="tip">Mission control · 6 à traiter</span></a>
+        <div style="height:12px"></div>
+        <a class="rail-item" href="./projets.html">◆<span class="tip">Projets</span></a>
+        <a class="rail-item" href="./articles.html">✎<span class="tip">Articles</span></a>
+        <a class="rail-item" href="./profil.html">☺<span class="tip">Me concernant</span></a>
+        <a class="rail-item" href="#">▣<span class="tip">Médias</span></a>
+        <div style="height:12px"></div>
+        <a class="rail-item" href="#">✉<span class="dot"></span><span class="tip">Boîte mail · 4</span></a>
+        <a class="rail-item" href="#">⚇<span class="tip">Contacts (CRM)</span></a>
+        <a class="rail-item" href="#">◔<span class="tip">Statistiques</span></a>
+        <span class="rail-sp"></span>
+        <a class="rail-item" href="#">⚙<span class="tip">Réglages</span></a>
+        <img class="rail-avatar" src="../../profile.jpg" alt="" />
+      </nav>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher un contact, un mail, une tâche…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><a class="btn btn-ghost btn-sm" href="#">✎ Composer</a><a class="btn btn-primary btn-sm" href="#">+ Contact</a></div>
+        </header>
+
+        <div class="page">
+          <div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Mission control</div>
+          <div class="page-header" style="margin-bottom:18px">
+            <div><h1 class="page-title">Mission control</h1><p class="page-sub">Tout ce que tu dois traiter, vite — relation client &amp; à-faire.</p></div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi k2"><div class="label"><span class="ico">⚇</span> Contacts</div><div class="value num">38</div><div class="delta up">▲ +3 ce mois</div></div>
+            <div class="kpi"><div class="label"><span class="ico">✉</span> Mails non lus</div><div class="value num">4</div><div class="delta flat">2 prospects chauds</div></div>
+            <div class="kpi"><div class="label"><span class="ico">⛢</span> Affaires en cours</div><div class="value num">5</div><div class="delta up">1 à conclure</div></div>
+            <div class="kpi k2"><div class="label"><span class="ico">◔</span> Délai de réponse</div><div class="value num">3 h</div><div class="delta up">▲ rapide</div></div>
+          </div>
+
+          <div class="subgrid">
+            <div class="panel">
+              <div class="panel-head"><span class="ico">⛢</span><h3>Pipeline commercial</h3><a class="panel-link" href="#">Tout voir →</a></div>
+              <div class="panel-body">
+                <div class="pipeline">
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--info)"></span> Prospect <span class="n">2</span></div><div class="pipe-card"><b>Recrutement Partner</b><small>CTO scale-up · LinkedIn</small></div><div class="pipe-card"><b>Agence Lille</b><small>Refonte vitrine</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--accent)"></span> Qualifié <span class="n">1</span></div><div class="pipe-card"><b>Sophie Lemaire</b><small>Nordsoft · collaboration</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--warn)"></span> Propale <span class="n">1</span></div><div class="pipe-card"><b>Marc Dubois</b><small>OXO v2 · devis envoyé</small></div></div>
+                  <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--ok)"></span> Gagné <span class="n">1</span></div><div class="pipe-card"><b>Saveurs du Nord</b><small>Étude livrée ✓</small></div></div>
+                </div>
+                <div class="divider"></div>
+                <div class="panel-head" style="padding:0;border:0;margin-bottom:8px"><h3>Tâches du jour</h3><span class="muted" style="margin-left:auto;font-size:12px">6 au total</span></div>
+                <div class="feed-item"><div class="fdot" style="color:var(--warn)">↩</div><div><div class="ftext">Répondre à <b>Marc Dubois</b> (devis OXO v2)</div><div class="ftime">Échéance aujourd'hui</div></div></div>
+                <div class="feed-item"><div class="fdot" style="color:var(--accent2)">☎</div><div><div class="ftext">Relancer <b>Recrutement Partner</b></div><div class="ftime">Prévu 16:00</div></div></div>
+                <div class="feed-item"><div class="fdot" style="color:var(--warn)">❝</div><div><div class="ftext">Valider le témoignage de <b>Sophie Lemaire</b></div><div class="ftime">En attente · <a href="#" style="color:var(--accent)">Modérer</a></div></div></div>
+              </div>
+            </div>
+
+            <div class="panel" style="position:sticky;top:74px">
+              <div class="panel-head"><span class="ico">✉</span><h3>Boîte de réception</h3><a class="panel-link" href="#">4 non lus</a></div>
+              <div class="panel-body" style="padding:0">
+                <div class="mail-item unread"><div class="ava">SL</div><div class="mbody"><div class="mfrom">Sophie Lemaire</div><div class="msub">Proposition de collaboration</div></div><div class="mtime">14:02</div></div>
+                <div class="mail-item unread"><div class="ava b">MD</div><div class="mbody"><div class="mfrom">Marc Dubois</div><div class="msub">Re: Refonte OXO v2</div></div><div class="mtime">11:20</div></div>
+                <div class="mail-item"><div class="ava c">JB</div><div class="mbody"><div class="mfrom">Julie Bernard</div><div class="msub">Merci pour l'étude</div></div><div class="mtime">Hier</div></div>
+                <div class="mail-item"><div class="ava" style="background:var(--surface-2);color:var(--text-2)">RP</div><div class="mbody"><div class="mfrom">Recrutement Partner</div><div class="msub">Opportunité CTO — scale-up</div></div><div class="mtime">2 j</div></div>
+              </div>
+              <div class="compose"><span class="ci">Écrire un message…</span><a class="btn btn-primary btn-sm" href="#">Envoyer</a></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

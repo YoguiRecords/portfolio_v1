@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Receipt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      body { background:#17181a; color:#16140f; font-family:"JetBrains Mono",monospace; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding: 50px 16px 80px; }
+
+      /* ticket de caisse */
+      .receipt { width:100%; max-width: 400px; background:#fbfaf6; color:#1c1a16; padding: 30px 26px 16px; position:relative;
+        box-shadow: 0 30px 70px rgba(0,0,0,.5); font-size: 13px; line-height: 1.7; }
+      /* bord déchiré haut & bas */
+      .receipt::before, .receipt::after { content:""; position:absolute; left:0; right:0; height:12px;
+        background:
+          linear-gradient(135deg, #fbfaf6 50%, transparent 50%) 0 0/14px 14px repeat-x,
+          linear-gradient(-135deg, #fbfaf6 50%, transparent 50%) 0 0/14px 14px repeat-x; }
+      .receipt::before { top:-12px; }
+      .receipt::after { bottom:-12px; transform: scaleY(-1); }
+
+      .center { text-align:center; }
+      .logo { font-weight:800; font-size: 22px; letter-spacing:.04em; }
+      .logo span{ color: var(--accent-strong); }
+      .sub { font-size: 11px; letter-spacing:.18em; text-transform:uppercase; color:#6b6557; margin-top:4px; }
+      .meta { font-size: 11px; color:#6b6557; margin-top: 12px; }
+
+      .hr { border:0; border-top:1px dashed #b8b2a4; margin: 14px 0; }
+      .hr.solid { border-top:1px solid #1c1a16; }
+
+      .line { display:flex; justify-content:space-between; gap:10px; }
+      .line .q { color:#6b6557; }
+      .item { margin: 10px 0; }
+      .item .nm { font-weight:700; display:flex; justify-content:space-between; gap:10px; }
+      .item .nm a{ color:#1c1a16; text-decoration:none; }
+      .item .nm a:hover{ color: var(--accent-strong); text-decoration: underline; }
+      .item .ds { font-size: 11px; color:#6b6557; padding-left: 2px; }
+      .price { white-space:nowrap; }
+      .price.gold{ color: var(--accent-strong); font-weight:800; }
+
+      .total .line { font-weight:800; font-size: 15px; }
+      .total .grand { font-size: 18px; }
+      .grand .price{ color: var(--accent-strong); }
+
+      .barcode { display:flex; justify-content:center; align-items:flex-end; gap:2px; height:48px; margin: 18px 0 6px; }
+      .barcode i{ display:block; width:2px; background:#1c1a16; height:100%; }
+      .barcode i:nth-child(2n){ height:65%; } .barcode i:nth-child(3n){ width:3px; } .barcode i:nth-child(5n){ height:45%; }
+      .bc-no { text-align:center; font-size:10px; letter-spacing:.25em; color:#6b6557; }
+
+      .thanks { text-align:center; margin-top: 14px; font-size: 12px; }
+      .thanks b{ color: var(--accent-strong); }
+      .cta { display:block; text-align:center; margin: 18px 0 6px; background:#1c1a16; color:#fbfaf6; text-decoration:none; padding: 13px; font-weight:700; letter-spacing:.04em; transition:.2s; }
+      .cta:hover{ background: var(--accent-strong); }
+      .smol { text-align:center; font-size: 10px; color:#8a847a; margin-top: 8px; line-height:1.8; }
+    </style>
+  </head>
+  <body>
+    <div class="receipt reveal">
+      <div class="center">
+        <div class="logo">YOHAN<span>.MARKET</span></div>
+        <div class="sub">Concepteur-dev &amp; entrepreneur</div>
+        <div class="meta">123 Rue du Produit · Lille<br />TICKET #YD-2026-001 · CAISSE 01<br />28/06/2026 — 14:32 — Vendeur : Yohan (solo)</div>
+      </div>
+
+      <hr class="hr" />
+      <div class="line"><span class="q">QTÉ ARTICLE</span><span>PRIX</span></div>
+      <hr class="hr" />
+
+      <div class="item">
+        <div class="nm"><a href="#">1× Domestic Revolt</a><span class="price gold">PHARE</span></div>
+        <div class="ds">Conçu, codé &amp; déployé seul · Next/Docker</div>
+      </div>
+      <div class="item">
+        <div class="nm"><a href="#">1× OXO</a><span class="price gold">PREMIUM</span></div>
+        <div class="ds">Plateforme complète · React/Node</div>
+      </div>
+      <div class="item">
+        <div class="nm"><a href="#">1× Étude PME</a><span class="price gold">CONSEIL</span></div>
+        <div class="ds">Marché · SWOT · recommandations</div>
+      </div>
+
+      <hr class="hr" />
+      <div class="line"><span>Sous-total compétences</span><span class="price">FULL-STACK</span></div>
+      <div class="line"><span class="q">+ Architecture</span><span class="price q">inclus</span></div>
+      <div class="line"><span class="q">+ Business / stratégie</span><span class="price q">inclus</span></div>
+      <div class="line"><span class="q">+ Sécurité</span><span class="price q">by design</span></div>
+      <div class="line"><span class="q">Remise « intermédiaires »</span><span class="price q">- 100%</span></div>
+
+      <hr class="hr solid" />
+      <div class="total">
+        <div class="line"><span>EXPÉRIENCE</span><span class="price">4 ANS</span></div>
+        <div class="line grand"><span>TOTAL</span><span class="price">DISPONIBLE</span></div>
+      </div>
+      <hr class="hr solid" />
+
+      <div class="line" style="font-size:11px;margin-top:10px"><span class="q">MODE DE PAIEMENT</span><span>UN PROJET</span></div>
+      <div class="line" style="font-size:11px"><span class="q">STATUT</span><span>★ APPROUVÉ</span></div>
+
+      <div class="barcode" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="bc-no">YD · 2026 · 0001</div>
+
+      <a href="#" class="cta">VOIR LE PANIER → PROJETS</a>
+
+      <div class="thanks">Merci de votre visite !<br /><b>Article non remboursable : 1 seul exemplaire.</b></div>
+      <div class="smol">GitHub · LinkedIn · Email<br />Conservez ce ticket — il vaut une mission.</div>
+    </div>
+    <script src="../reveal.js"></script>
+  </body>
+</html>

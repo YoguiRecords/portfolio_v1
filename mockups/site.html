@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Portfolio (assemblage)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #060606; color: var(--on-dark); }
+      .mono { font-family: "JetBrains Mono", monospace; }
+      .up { color: #46c98b; }
+
+      /* indicateur vert mono — remplace les pills */
+      .sig { font-family:"JetBrains Mono",monospace; font-size: clamp(13px,2.4vw,15px); font-weight:600; color:#46c98b; letter-spacing:.02em; display:inline-flex; align-items:center; gap:8px; }
+      .sig::before{ content:"▲"; font-size:.85em; }
+
+      .nav[data-scrollfx] { color: #fff; }
+      .nav.scrolled { background: rgba(6,6,6,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-dark); }
+
+      /* ============ HERO — duotone + cinéma + typewriter ============ */
+      .hero { position: relative; min-height: 100vh; display:flex; align-items:center; overflow:hidden; background: var(--dark-900); }
+      /* letterbox cinéma */
+      .hero::before, .hero::after { content:""; position:absolute; left:0; right:0; height:7vh; background:#000; z-index:4; }
+      .hero::before{ top:0; } .hero::after{ bottom:0; }
+      .hero .wrap { position:relative; z-index:2; display:grid; grid-template-columns:1fr; gap:34px; padding-top:100px; padding-bottom:80px; align-items:center; }
+      @media (min-width:1000px){ .hero .wrap{ grid-template-columns:1.12fr .88fr; gap:56px; } }
+
+      .hero .credit { font:600 12px/1 "JetBrains Mono",monospace; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); margin-bottom:22px; }
+      .hero .name { font-size: clamp(20px,5vw,30px); font-weight:700; color:var(--on-dark-muted); letter-spacing:-.01em; margin-bottom:10px; }
+      .hero .type { font-size: clamp(38px,9vw,86px); font-weight:900; letter-spacing:-.04em; line-height:.98; min-height:1.95em; color:#fff; }
+      .hero .type .accent { color: var(--accent); }
+      .caret { color:var(--accent); font-weight:400; animation:blink 1s steps(1) infinite; }
+      .hero .type .ghost { color:transparent; }
+      @keyframes blink { 50% { opacity:0; } }
+      @media (prefers-reduced-motion:reduce){ .caret{ animation:none; } }
+      .hero .lead { margin-top:26px; max-width:48ch; color:var(--on-dark-2); font-weight:300; font-size:clamp(15px,4vw,19px); line-height:1.6; }
+      .hero .sig { margin-top:22px; }
+      .hero .cta { margin-top:30px; }
+
+      .photoframe { position:relative; width:100%; aspect-ratio:4/5; max-height:56vh; border-radius:14px; overflow:hidden; border:1px solid var(--border-dark); box-shadow:var(--shadow-deep); }
+      .photoframe img { width:100%; height:100%; object-fit:cover; object-position:center 16%; filter:grayscale(1) contrast(1.06) brightness(.95); display:block; }
+      .photoframe .tone { position:absolute; inset:0; background:var(--accent); mix-blend-mode:color; opacity:.26; }
+      .photoframe .shade { position:absolute; inset:0; background: linear-gradient(180deg, rgba(6,6,6,.1), rgba(6,6,6,.6) 85%), radial-gradient(60% 50% at 70% 10%, rgba(240,168,0,.22), transparent 60%); }
+      .photoframe::after { content:""; position:absolute; inset:0; border-radius:14px; pointer-events:none; box-shadow: inset 0 0 0 1px rgba(240,168,0,.2); }
+      @media (min-width:1000px){ .photoframe{ max-height:none; max-width:430px; justify-self:end; } }
+
+      /* ============ CHAPITRES ============ */
+      .chapter { padding: 92px 0; border-top:1px solid var(--border-dark); }
+      .chapter .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+      .chapter h2 { font-size: clamp(30px,7.5vw,64px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:20px; }
+      .chapter .txt { max-width:58ch; font-size:clamp(15px,4vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.7; }
+      .chapter .txt strong{ color:#fff; font-weight:600; }
+
+      /* ====== Terminal stratégique (qui je suis) ====== */
+      .term { margin-top:38px; font-family:"JetBrains Mono",monospace; }
+      .panelbox { border:1px solid #1b1f24; background:#0c0e11; border-radius:10px; }
+      .thead { display:grid; grid-template-columns:1fr; gap:26px; padding: clamp(20px,4vw,32px); }
+      @media (min-width:900px){ .thead{ grid-template-columns:1.1fr 1fr; align-items:center; } }
+      .thead .sysline { font-size:11.5px; letter-spacing:.14em; color:#6b7178; text-transform:uppercase; }
+      .thead .sysline b{ color:var(--accent); }
+      .thead h3 { font-family:"Inter",sans-serif; font-size:clamp(34px,7vw,62px); font-weight:900; letter-spacing:-.04em; line-height:.9; color:#fff; margin:12px 0 4px; }
+      .thead .alias { font-size:clamp(20px,4vw,30px); font-weight:700; color:#d8dadf; letter-spacing:-.01em; }
+      .thead .sig { margin:14px 0; }
+      .thead p { font-family:"Inter",sans-serif; font-size:14px; color:#aeb3b8; font-weight:300; line-height:1.6; max-width:46ch; }
+      .thead .cta { margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; }
+
+      .chart { background:#090b0d; border:1px solid #1b1f24; border-radius:8px; padding:16px; min-height:230px; display:flex; flex-direction:column; }
+      .chart .ct { display:flex; justify-content:space-between; font-size:11px; color:#6b7178; letter-spacing:.1em; margin-bottom:8px; text-transform:uppercase; }
+      .chart .ct b{ color:#46c98b; } .chart svg{ width:100%; flex:1; }
+
+      .kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:12px; }
+      @media (min-width:820px){ .kpis{ grid-template-columns:repeat(4,1fr); } }
+      .kpi { border:1px solid #1b1f24; background:#0c0e11; border-radius:10px; padding:16px 18px; }
+      .kpi .k { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#6b7178; }
+      .kpi .v { font-family:"Inter",sans-serif; font-size:23px; font-weight:800; color:#fff; margin-top:8px; line-height:1.05; }
+      .kpi .v b{ color:var(--accent); }
+      .kpi .s { font-size:11px; margin-top:5px; }
+
+      /* SWOT / PESTEL / PORTER */
+      .analysis { display:grid; grid-template-columns:1fr; gap:12px; margin-top:12px; }
+      @media (min-width:760px){ .analysis{ grid-template-columns:repeat(2,1fr); } }
+      @media (min-width:1080px){ .analysis{ grid-template-columns:2fr 1fr 1fr; } }
+      .mod { border:1px solid #1b1f24; background:#0c0e11; border-radius:10px; padding:18px; }
+      .mod .mh { display:flex; justify-content:space-between; align-items:baseline; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#6b7178; margin-bottom:14px; }
+      .mod .mh b{ color:var(--accent); }
+      .swot-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+      .q { border:1px solid #1b1f24; border-radius:6px; padding:12px; }
+      .q .k { font:700 11px/1 "Inter",sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
+      .q ul { list-style:none; display:flex; flex-direction:column; gap:5px; }
+      .q li { font:400 12px/1.4 "Inter",sans-serif; color:#c4c8ce; padding-left:12px; position:relative; }
+      .q li::before{ content:"·"; position:absolute; left:2px; color:var(--accent); }
+      .q.s{ border-left:2px solid #46c98b; } .q.s .k{ color:#46c98b; }
+      .q.w{ border-left:2px solid #d98a3a; } .q.w .k{ color:#d98a3a; }
+      .q.o{ border-left:2px solid var(--accent); } .q.o .k{ color:var(--accent); }
+      .q.t{ border-left:2px solid #c0566a; } .q.t .k{ color:#c0566a; }
+      .verdict { display:flex; flex-direction:column; gap:0; }
+      .verdict .vr { display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-top:1px solid #15181c; font-family:"Inter",sans-serif; font-size:13px; }
+      .verdict .vr:first-child{ border-top:0; }
+      .verdict .vr .f{ color:#aeb3b8; } .verdict .vr .d{ color:#fff; font-weight:600; }
+      .verdict .vr .d.alert{ color:var(--accent); }
+
+      /* portefeuille */
+      .book { margin-top:12px; border:1px solid #1b1f24; border-radius:10px; overflow:hidden; }
+      .book .bh { display:grid; grid-template-columns:64px 1fr 1fr auto; gap:12px; padding:12px 18px; background:#0e1013; font-size:10.5px; letter-spacing:.12em; color:#6b7178; text-transform:uppercase; }
+      .book .row { display:grid; grid-template-columns:64px 1fr 1fr auto; gap:12px; padding:16px 18px; border-top:1px solid #1b1f24; text-decoration:none; color:inherit; align-items:center; transition:.2s; }
+      .book .row:hover{ background:#101419; }
+      .book .row .tk{ color:var(--accent); font-weight:700; }
+      .book .row .nm b{ font-family:"Inter",sans-serif; color:#fff; font-size:16px; font-weight:700; display:block; }
+      .book .row .nm small{ font-family:"Inter",sans-serif; color:#8a9098; font-size:12px; }
+      .book .row .pos{ font-family:"Inter",sans-serif; color:#aeb3b8; font-size:13px; }
+      .book .row .sg{ font-weight:700; white-space:nowrap; color:#46c98b; }
+      @media (max-width:620px){ .book .bh,.book .row{ grid-template-columns:52px 1fr auto; } .book .pos{ display:none; } }
+
+      /* ====== Objectifs — liste checkée (forme B) ====== */
+      .obj { margin-top:34px; }
+      .obj-head { display:flex; align-items:baseline; justify-content:space-between; padding-bottom:14px; border-bottom:1px solid var(--border-dark); }
+      .obj-head .t { font:600 12px/1 "JetBrains Mono",monospace; letter-spacing:.18em; text-transform:uppercase; color:var(--on-dark-muted); }
+      .obj-head .c { font:600 13px/1 "JetBrains Mono",monospace; color:var(--accent); font-variant-numeric:tabular-nums; }
+      .obj ul { list-style:none; }
+      .obj li { display:grid; grid-template-columns:24px 1fr auto; gap:16px; align-items:center; padding:16px 0; border-bottom:1px solid var(--border-dark); }
+      .box { width:17px; height:17px; border-radius:4px; position:relative; }
+      .is-done .box { background:#3a3f44; }
+      .is-done .box::after{ content:""; position:absolute; left:5px; top:1px; width:5px; height:10px; border:solid #0c0e11; border-width:0 2px 2px 0; transform:rotate(40deg); }
+      .is-now .box { border:1.5px solid var(--accent); }
+      .is-now .box::after{ content:""; position:absolute; inset:3px; background:var(--accent); border-radius:1px; }
+      .is-next .box, .is-far .box { border:1.5px solid rgba(255,255,255,.22); }
+      .obj .role { font-size:17px; font-weight:600; letter-spacing:-.01em; }
+      .is-done .role { color:#aeb1b4; font-weight:400; }
+      .is-now .role { color:#fff; font-weight:700; }
+      .is-next .role, .is-far .role { color:#8c9094; font-weight:400; }
+      .st { font:600 10px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; padding:7px 12px; border-radius:5px; border:1px solid var(--border-dark); }
+      .is-done .st { color:#6a6f72; }
+      .is-now .st { color:var(--accent); border-color:rgba(240,168,0,.4); background:rgba(240,168,0,.06); }
+      .is-next .st, .is-far .st { color:#73777b; }
+
+      /* ====== Gantt parcours ====== */
+      .gantt-wrap { margin-top:38px; overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border-dark); border-radius:10px; background:var(--dark-900); }
+      .gantt { min-width:680px; padding:22px; }
+      .gantt .years { display:grid; grid-template-columns:150px repeat(7,1fr); font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.04em; color:var(--on-dark-muted); border-bottom:1px solid var(--border-dark); padding-bottom:10px; margin-bottom:14px; }
+      .gantt .years span{ text-align:center; } .gantt .years span:first-child{ text-align:left; }
+      .grow { display:grid; grid-template-columns:150px repeat(7,1fr); align-items:center; margin:9px 0; }
+      .grow .lab { font-size:13px; font-weight:600; color:var(--on-dark-2); }
+      .grow .track { grid-column:2 / -1; position:relative; height:30px; }
+      .bar { position:absolute; top:3px; height:24px; border-radius:6px; display:flex; align-items:center; padding:0 12px; font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; color:#1a1400; background:var(--accent); }
+      .bar.soft { background:rgba(240,168,0,.22); color:var(--accent); border:1px solid rgba(240,168,0,.4); }
+      .bar.green { background:rgba(70,201,139,.18); color:#46c98b; border:1px solid rgba(70,201,139,.4); }
+      .bar.dark { background:var(--dark-700); color:var(--on-dark-2); border:1px solid var(--border-dark); }
+
+      /* ====== Scènes (projets) ====== */
+      .scenes { margin-top:38px; }
+      .scene { position:relative; border-radius:12px; overflow:hidden; min-height:62vh; display:flex; align-items:flex-end; margin-bottom:22px; background:linear-gradient(135deg,#232323,#060606); border:1px solid var(--border-dark); }
+      .scene::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 20%, rgba(240,168,0,.22), transparent 55%); }
+      .scene::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,.85), transparent 60%); }
+      .scene .cap { position:relative; z-index:2; padding:30px 24px 34px; }
+      .scene .num { font:900 13px/1 "JetBrains Mono",monospace; color:var(--accent); letter-spacing:.1em; }
+      .scene .cat { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--on-dark-muted); margin:10px 0 8px; }
+      .scene h3 { font-size:clamp(30px,8vw,56px); font-weight:900; letter-spacing:-.03em; text-transform:uppercase; line-height:.95; margin-bottom:12px; }
+      .scene p { color:var(--on-dark-2); max-width:50ch; line-height:1.6; margin-bottom:14px; }
+      .scene .tags { display:flex; gap:10px; flex-wrap:wrap; }
+      .scene .tags span { font:500 12px/1 "JetBrains Mono",monospace; color:var(--accent); }
+      @media (min-width:900px){ .scene .cap{ padding:56px; max-width:72%; } }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links"><a href="#about">Profil</a><a href="#goals">Cap</a><a href="#path">Parcours</a><a href="#work">Projets</a><a href="#" class="muted">Contact</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu">
+      <a href="#about"><span class="n">01</span>Profil</a>
+      <a href="#goals"><span class="n">02</span>Cap &amp; objectifs</a>
+      <a href="#path"><span class="n">03</span>Parcours</a>
+      <a href="#work"><span class="n">04</span>Projets</a>
+      <a href="#contact"><span class="n">05</span>Contact</a>
+    </div>
+
+    <!-- ===================== HERO ===================== -->
+    <header class="hero">
+      <div class="wrap">
+        <div class="content">
+          <div class="credit">Un portfolio de Yohan Debusscher</div>
+          <div class="name">Yohan Debusscher —</div>
+          <div class="type"><span id="typed"></span><span class="caret" aria-hidden="true">▏</span><span id="ghost" class="ghost"></span></div>
+          <p class="lead">Concepteur-développeur &amp; entrepreneur. Je porte une vision produit, je pilote des équipes et je garde les mains dans le code — de la stratégie jusqu'à la production.</p>
+          <span class="sig">vision · management · exécution</span>
+          <div class="cta"><a href="#about" class="btn btn-primary">Découvrir le profil →</a><a href="#" class="btn btn-ghost on-dark">Le CV</a></div>
+        </div>
+        <figure class="photoframe">
+          <img src="./profile2.jpg" alt="Yohan Debusscher" />
+          <span class="tone"></span><span class="shade"></span>
+        </figure>
+      </div>
+    </header>
+
+    <!-- ============ CHAPITRE 01 — QUI JE SUIS (terminal stratégique) ============ -->
+    <section class="chapter" id="about">
+      <div class="wrap">
+        <div class="marker reveal">Chapitre 01 — Qui je suis</div>
+        <h2 class="reveal">Le profil,<br />en tableau de bord.</h2>
+        <p class="txt reveal">Un même cerveau qui parle aux <strong>marchés</strong> et aux <strong>machines</strong> : vision business, leadership d'équipe, exécution technique. Voici la lecture, avec mes propres outils d'analyse.</p>
+
+        <div class="term">
+          <!-- en-tête -->
+          <div class="panelbox thead reveal">
+            <div>
+              <div class="sysline">PROFIL <b>·</b> YHN <b>·</b> YOHAN DEBUSSCHER <b>·</b> CONCEPTEUR-DÉVELOPPEUR &amp; ENTREPRENEUR</div>
+              <h3>Yohan Debusscher</h3>
+              <div class="alias">Builder · Lead · Vision</div>
+              <span class="sig">tech · management · business</span>
+              <p>Profil hybride à forte croissance : porte une idée de la stratégie jusqu'à la mise en production, en pilotant les équipes et les décisions sur toute la chaîne.</p>
+              <div class="cta"><a href="#work" class="btn btn-primary">Voir le portefeuille →</a><a href="#" class="btn btn-ghost on-dark">Le CV</a></div>
+            </div>
+            <div class="chart">
+              <div class="ct"><span>PARCOURS · 4 ANS</span><span><b>▲ CROISSANCE</b></span></div>
+              <svg viewBox="0 0 320 160" preserveAspectRatio="none" aria-hidden="true">
+                <polyline points="0,150 40,138 80,118 120,108 160,78 200,66 240,40 280,28 320,12" fill="none" stroke="#46c98b" stroke-width="2"/>
+                <polygon points="0,150 40,138 80,118 120,108 160,78 200,66 240,40 280,28 320,12 320,160 0,160" fill="rgba(70,201,139,.08)"/>
+                <g stroke="#f0a800" stroke-width="6">
+                  <line x1="60" y1="120" x2="60" y2="146"/><line x1="120" y1="98" x2="120" y2="126"/>
+                  <line x1="180" y1="60" x2="180" y2="92"/><line x1="240" y1="40" x2="240" y2="74"/>
+                  <line x1="290" y1="20" x2="290" y2="48"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- KPIs (sans jauges) -->
+          <div class="kpis reveal">
+            <div class="kpi"><div class="k">Expérience</div><div class="v"><b>4</b> ans</div><div class="s up">▲ en hausse</div></div>
+            <div class="kpi"><div class="k">Périmètre</div><div class="v">Tech + <b>Business</b></div><div class="s" style="color:#8a9098">vision × exécution</div></div>
+            <div class="kpi"><div class="k">Management</div><div class="v">Équipes <b>pilotées</b></div><div class="s up">▲ leadership</div></div>
+            <div class="kpi"><div class="k">Recommandation</div><div class="v"><b>STRONG HIRE</b></div><div class="s up">▲ disponible</div></div>
+          </div>
+
+          <!-- SWOT / PESTEL / PORTER -->
+          <div class="analysis reveal">
+            <div class="mod">
+              <div class="mh"><span>ANALYSE — <b>SWOT</b></span><span>appliqué à mon profil</span></div>
+              <div class="swot-grid">
+                <div class="q s"><div class="k">Forces</div><ul><li>Vision + management + exécution</li><li>Bilingue tech ↔ business</li></ul></div>
+                <div class="q w"><div class="k">Faiblesses</div><ul><li>Profil hybride à incarner net</li><li>Séniorité direction à consolider</li></ul></div>
+                <div class="q o"><div class="k">Opportunités</div><ul><li>Demande de leaders tech hybrides</li><li>Rôles CTO / direction produit</li></ul></div>
+                <div class="q t"><div class="k">Menaces</div><ul><li>Spécialistes plus pointus par maillon</li><li>Marché concurrentiel</li></ul></div>
+              </div>
+            </div>
+            <div class="mod">
+              <div class="mh"><span>MACRO — <b>PESTEL</b></span></div>
+              <div class="verdict">
+                <div class="vr"><span class="f">Politique</span><span class="d">Neutre</span></div>
+                <div class="vr"><span class="f">Économique</span><span class="d">Porteur</span></div>
+                <div class="vr"><span class="f">Socioculturel</span><span class="d">Favorable</span></div>
+                <div class="vr"><span class="f">Technologique</span><span class="d alert">Moteur</span></div>
+                <div class="vr"><span class="f">Écologique</span><span class="d">Latent</span></div>
+                <div class="vr"><span class="f">Légal</span><span class="d">Vigilance</span></div>
+              </div>
+            </div>
+            <div class="mod">
+              <div class="mh"><span>SECTEUR — <b>PORTER</b></span></div>
+              <div class="verdict">
+                <div class="vr"><span class="f">Rivalité</span><span class="d alert">Élevée</span></div>
+                <div class="vr"><span class="f">Pouvoir clients</span><span class="d">Fort</span></div>
+                <div class="vr"><span class="f">Nouveaux entrants</span><span class="d">Moyen</span></div>
+                <div class="vr"><span class="f">Substituts</span><span class="d">Moyen</span></div>
+                <div class="vr"><span class="f">Fournisseurs</span><span class="d">Faible</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- portefeuille de réalisations -->
+          <div class="book reveal">
+            <div class="bh"><span>Réf.</span><span>Projet</span><span>Catégorie</span><span>Statut</span></div>
+            <a href="#work" class="row"><span class="tk">DMR</span><span class="nm"><b>Domestic Revolt</b><small>Conçu, piloté &amp; déployé</small></span><span class="pos">Produit · phare · Next/Docker</span><span class="sg">▲ SHIPPED</span></a>
+            <a href="#work" class="row"><span class="tk">OXO</span><span class="nm"><b>OXO</b><small>Plateforme complète</small></span><span class="pos">Logiciel · React/Node</span><span class="sg">▲ LIVE</span></a>
+            <a href="#work" class="row"><span class="tk">PME</span><span class="nm"><b>Étude PME</b><small>Marché · SWOT</small></span><span class="pos">Stratégie · conseil</span><span class="sg">▲ DELIVERED</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPITRE 02 — CAP & OBJECTIFS (liste checkée) ============ -->
+    <section class="chapter" id="goals">
+      <div class="wrap">
+        <div class="marker reveal">Chapitre 02 — Le cap</div>
+        <h2 class="reveal">Où je suis,<br />où je vais.</h2>
+        <p class="txt reveal">Une trajectoire assumée : des rôles acquis, une position actuelle, et un cap clair vers la <strong>direction technique et générale</strong>.</p>
+
+        <div class="obj reveal">
+          <div class="obj-head"><span class="t">Objectifs de carrière</span><span class="c">04 / 08 atteints</span></div>
+          <ul>
+            <li class="is-done"><span class="box"></span><span class="role">Développeur</span><span class="st">Acquis</span></li>
+            <li class="is-done"><span class="box"></span><span class="role">Salarié en entreprise</span><span class="st">Acquis</span></li>
+            <li class="is-done"><span class="box"></span><span class="role">Ingénieur</span><span class="st">Acquis</span></li>
+            <li class="is-done"><span class="box"></span><span class="role">Gestionnaire de projet</span><span class="st">Acquis</span></li>
+            <li class="is-now"><span class="box"></span><span class="role">Indépendant · fondateur</span><span class="st">En cours</span></li>
+            <li class="is-next"><span class="box"></span><span class="role">Manager</span><span class="st">Cible</span></li>
+            <li class="is-next"><span class="box"></span><span class="role">CTO</span><span class="st">Cible</span></li>
+            <li class="is-far"><span class="box"></span><span class="role">CEO</span><span class="st">Horizon</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPITRE 03 — PARCOURS (Gantt) ============ -->
+    <section class="chapter" id="path">
+      <div class="wrap">
+        <div class="marker reveal">Chapitre 03 — La trajectoire</div>
+        <h2 class="reveal">Mon parcours,<br />en une frise.</h2>
+        <p class="txt reveal">Montée en compétences techniques, encadrement d'équipes, projets livrés, puis l'entrepreneuriat. Tout se chevauche — on n'arrête jamais d'apprendre en pilotant.</p>
+
+        <div class="gantt-wrap reveal">
+          <div class="gantt">
+            <div class="years"><span>Parcours</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025+</span></div>
+            <div class="grow"><span class="lab">Formation</span><div class="track"><div class="bar soft" style="left:0%;width:58%">Autoformation &amp; études</div></div></div>
+            <div class="grow"><span class="lab">Développement</span><div class="track"><div class="bar" style="left:14%;width:86%">Full-stack · web · produit</div></div></div>
+            <div class="grow"><span class="lab">Management</span><div class="track"><div class="bar green" style="left:43%;width:50%">Encadrement &amp; gestion d'équipe</div></div></div>
+            <div class="grow"><span class="lab">Réalisations</span><div class="track"><div class="bar" style="left:43%;width:57%">OXO · Domestic Revolt…</div></div></div>
+            <div class="grow"><span class="lab">Entrepreneuriat</span><div class="track"><div class="bar soft" style="left:71%;width:29%">Mes propres projets →</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPITRE 04 — PROJETS (scènes) ============ -->
+    <section class="chapter" id="work">
+      <div class="wrap">
+        <div class="marker reveal">Chapitre 04 — Les preuves</div>
+        <h2 class="reveal">Ce que j'ai<br />livré.</h2>
+        <p class="txt reveal">Chaque projet est une scène : un problème, une démarche, un résultat.</p>
+
+        <div class="scenes">
+          <article class="scene reveal">
+            <div class="cap">
+              <span class="num">Scène 01 — ★ Phare</span>
+              <div class="cat">Produit / Logiciel</div>
+              <h3>Domestic Revolt</h3>
+              <p>Conçu, piloté et déployé. Du problème à la mise en production, en gardant le cap produit.</p>
+              <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Docker</span></div>
+            </div>
+          </article>
+          <article class="scene reveal">
+            <div class="cap">
+              <span class="num">Scène 02</span>
+              <div class="cat">Produit / Logiciel</div>
+              <h3>OXO</h3>
+              <p>Plateforme complète, pensée produit et menée avec une équipe.</p>
+              <div class="tags"><span>React</span><span>Node</span></div>
+            </div>
+          </article>
+          <article class="scene reveal">
+            <div class="cap">
+              <span class="num">Scène 03</span>
+              <div class="cat">Stratégie &amp; Business</div>
+              <h3>Étude PME</h3>
+              <p>Analyse de marché, SWOT et recommandations actionnables.</p>
+              <div class="tags"><span>SWOT</span><span>Stratégie</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" id="contact">
+      <div class="wrap">
+        <div class="row">
+          <h2>La suite<br />s'écrit<br /><span>ensemble.</span></h2>
+          <div class="socials"><a href="#">GitHub ↗</a><a href="#">LinkedIn ↗</a><a href="#">Email ↗</a></div>
+        </div>
+        <div class="legal"><span>© 2026 Yohan Debusscher</span><span>Vision · management · exécution</span></div>
+      </div>
+    </footer>
+
+    <script src="./reveal.js"></script>
+    <script>
+      (function(){
+        var typed=document.getElementById('typed'), ghost=document.getElementById('ghost');
+        if(!typed||!ghost) return;
+        var lines=['Je conçois des produits.','Je pilote des équipes.','Je livre, en vrai.','Je pense business.'];
+        var li=0, ci=0, del=false;
+        // typed = visible ; ghost = reste de la phrase (transparent) → la mise en page finale
+        // est réservée d'emblée, donc le mot qui doit passer à la ligne y est déjà : aucun saut.
+        function render(){ var full=lines[li]; typed.textContent=full.slice(0,ci); ghost.textContent=full.slice(ci); }
+        function tick(){
+          var full=lines[li];
+          render();
+          if(!del){ if(ci<full.length){ ci++; setTimeout(tick,55);} else { setTimeout(function(){del=true;tick();},1400);} }
+          else { if(ci>0){ ci--; setTimeout(tick,28);} else { del=false; li=(li+1)%lines.length; setTimeout(tick,250);} }
+        }
+        if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ tick(); } else { ci=lines[0].length; render(); }
+      })();
+    </script>
+  </body>
+</html>

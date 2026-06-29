@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Parcours (3 voies verticales animées)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); font-family:"Inter",sans-serif; }
+      .mono { font-family:"JetBrains Mono",monospace; }
+      .wrap2 { max-width:1040px; margin:0 auto; padding:80px clamp(18px,5vw,40px) 120px; }
+
+      .head .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+      .head h2 { font-size:clamp(30px,7vw,60px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:18px; }
+      .head .txt { max-width:60ch; font-size:clamp(15px,3vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.7; }
+      .head .txt strong{ color:#fff; font-weight:600; }
+
+      /* 3 voies verticales */
+      .tl6 { margin-top:50px; }
+      .lanes6 { display:grid; grid-template-columns:1fr; gap:40px; }
+      @media (min-width:780px){ .lanes6{ grid-template-columns:repeat(3,1fr); gap:24px; } }
+
+      .lane6 .lh { display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+      .lane6 .lh .nm { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; }
+      .lane6 .lh .bar { height:3px; width:42px; border-radius:3px; transform:scaleX(0); transform-origin:left; transition:transform .6s ease; }
+      .tl6.play .lane6 .lh .bar { transform:scaleX(1); }
+      .lane6.dev  .lh .nm{ color:#f0a800; } .lane6.dev  .lh .bar{ background:#f0a800; }
+      .lane6.mgmt .lh .nm{ color:#e0a04a; } .lane6.mgmt .lh .bar{ background:#e0a04a; }
+      .lane6.biz  .lh .nm{ color:#9fb2bf; } .lane6.biz  .lh .bar{ background:#9fb2bf; }
+
+      /* la ligne verticale de chaque voie */
+      .track { position:relative; padding-left:30px; }
+      .track::before { content:""; position:absolute; left:9px; top:6px; bottom:10px; width:2px; background:var(--border-dark); }
+      .track::after { content:""; position:absolute; left:9px; top:6px; width:2px; height:calc(100% - 16px); transform:scaleY(0); transform-origin:top; border-radius:2px; }
+      .lane6.dev  .track::after{ background:#f0a800; }
+      .lane6.mgmt .track::after{ background:#e0a04a; }
+      .lane6.biz  .track::after{ background:#9fb2bf; }
+      .tl6.play .track::after { animation:growLine 1.2s cubic-bezier(.16,1,.3,1) .25s forwards; }
+      @keyframes growLine { to { transform:scaleY(1); } }
+
+      .node { position:relative; padding-bottom:20px; opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s cubic-bezier(.16,1,.3,1); }
+      .node:last-child { padding-bottom:0; }
+      .tl6.play .node { opacity:1; transform:none; }
+      .lane6.dev  .node:nth-child(1){ transition-delay:.45s;} .lane6.dev .node:nth-child(2){ transition-delay:.7s;} .lane6.dev .node:nth-child(3){ transition-delay:.95s;}
+      .lane6.mgmt .node:nth-child(1){ transition-delay:.6s;}  .lane6.mgmt .node:nth-child(2){ transition-delay:.85s;}
+      .lane6.biz  .node:nth-child(1){ transition-delay:.75s;} .lane6.biz .node:nth-child(2){ transition-delay:1s;}
+      .node .dot { position:absolute; left:-26px; top:6px; width:13px; height:13px; border-radius:50%; background:#060606; border:3px solid var(--accent); }
+      .lane6.dev  .node .dot{ border-color:#f0a800; }
+      .lane6.mgmt .node .dot{ border-color:#e0a04a; }
+      .lane6.biz  .node .dot{ border-color:#9fb2bf; }
+      .card { background:var(--dark-800); border:1px solid var(--border-dark); border-radius:10px; padding:15px 18px; }
+      .card .yr { font:600 12px/1 "JetBrains Mono",monospace; color:var(--accent); letter-spacing:.06em; }
+      .lane6.biz .card .yr{ color:#9fb2bf; }
+      .card .role { font:800 18px/1.1 "Inter",sans-serif; letter-spacing:-.01em; margin:9px 0 6px; }
+      .card .desc { font-size:13px; color:var(--on-dark-muted); line-height:1.5; }
+
+      /* convergence */
+      .merge6 { margin-top:8px; }
+      .hbar { height:2px; background:linear-gradient(90deg, rgba(240,168,0,.5), rgba(224,160,74,.5), rgba(159,178,191,.5)); border-radius:2px; opacity:0; transition:opacity .6s ease 1.1s; }
+      .tl6.play .hbar { opacity:1; }
+      .drop { width:2px; height:46px; margin:0 auto; background:linear-gradient(var(--accent), #46c98b); opacity:0; transition:opacity .6s ease 1.3s; }
+      .tl6.play .drop { opacity:1; }
+      .today6 { width:100%; max-width:560px; margin:0 auto; text-align:center; background:linear-gradient(160deg, rgba(70,201,139,.12), var(--dark-800) 60%);
+        border:1px solid rgba(70,201,139,.35); border-radius:14px; padding:28px clamp(22px,4vw,38px); box-shadow:0 30px 70px rgba(0,0,0,.4);
+        opacity:0; transform:translateY(16px) scale(.98); transition:opacity .6s ease 1.4s, transform .7s cubic-bezier(.16,1,.3,1) 1.4s; }
+      .tl6.play .today6 { opacity:1; transform:none; }
+      .today6 .lbl { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.18em; text-transform:uppercase; color:#46c98b; display:inline-flex; align-items:center; gap:9px; }
+      .today6 .lbl::before { content:""; width:9px; height:9px; border-radius:50%; background:#46c98b; box-shadow:0 0 12px #46c98b; }
+      .today6 .role { font:900 clamp(24px,5vw,36px)/1 "Inter",sans-serif; letter-spacing:-.03em; margin:14px 0 12px; }
+      .today6 p { color:var(--on-dark-2); font-weight:300; font-size:14.5px; line-height:1.6; max-width:42ch; margin:0 auto; }
+      .today6 .sig { margin-top:16px; font:600 13px "JetBrains Mono",monospace; color:#46c98b; display:inline-flex; gap:8px; align-items:center; }
+      .today6 .sig::before { content:"▲"; font-size:.85em; }
+
+      @media (prefers-reduced-motion:reduce){
+        .tl6 .lane6 .lh .bar, .node, .hbar, .drop, .today6 { transition:none !important; opacity:1 !important; transform:none !important; }
+        .tl6 .track::after { animation:none; transform:scaleY(1); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap2">
+      <div class="head">
+        <div class="marker">Chapitre 03 — La trajectoire</div>
+        <h2>Trois voies,<br />un même cap.</h2>
+        <p class="txt">Je ne viens pas d'une seule ligne. <strong>Dev</strong>, <strong>management</strong> et <strong>business</strong> ont avancé en parallèle — chacune sa voie — et se rejoignent aujourd'hui.</p>
+      </div>
+
+      <div class="tl6">
+        <div class="lanes6">
+          <div class="lane6 dev">
+            <div class="lh"><span class="nm">Dev</span><span class="bar"></span></div>
+            <div class="track">
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2019</div><div class="role">Développeur</div><div class="desc">Premières livraisons, l'obsession du « comment ça se construit ».</div></div></div>
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2021</div><div class="role">Ingénieur</div><div class="desc">Montée en architecture &amp; responsabilité technique.</div></div></div>
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2022</div><div class="role">Full-stack</div><div class="desc">Du front à l'infra, le produit de bout en bout.</div></div></div>
+            </div>
+          </div>
+
+          <div class="lane6 mgmt">
+            <div class="lh"><span class="nm">Management</span><span class="bar"></span></div>
+            <div class="track">
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2022</div><div class="role">Gestion de projet</div><div class="desc">Cadrer, prioriser, livrer dans les temps.</div></div></div>
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2023</div><div class="role">Encadrement</div><div class="desc">Faire grandir une équipe, pas seulement avancer le code.</div></div></div>
+            </div>
+          </div>
+
+          <div class="lane6 biz">
+            <div class="lh"><span class="nm">Business</span><span class="bar"></span></div>
+            <div class="track">
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2023</div><div class="role">Entrepreneuriat</div><div class="desc">La vision produit et le sens du marché.</div></div></div>
+              <div class="node"><span class="dot"></span><div class="card"><div class="yr">2024</div><div class="role">Étude PME</div><div class="desc">Marché, SWOT, recommandations actionnables.</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="merge6">
+          <div class="hbar"></div>
+          <div class="drop"></div>
+          <div class="today6">
+            <span class="lbl">Aujourd'hui · vous êtes ici</span>
+            <div class="role">Indépendant · fondateur</div>
+            <p>Les trois voies réunies dans la même main : vision business, management d'équipe et exécution technique.</p>
+            <span class="sig">vision · management · exécution</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        var tl=document.querySelector('.tl6');
+        if(!tl) return;
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ tl.classList.add('play'); return; }
+        var io=new IntersectionObserver(function(es){
+          es.forEach(function(e){ if(e.isIntersecting){ tl.classList.add('play'); io.disconnect(); } });
+        }, { threshold:.18 });
+        io.observe(tl);
+      })();
+    </script>
+  </body>
+</html>

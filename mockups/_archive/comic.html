@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Comic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared.css" />
+    <style>
+      body { background: #f4d35e; color:#15110a;
+        background-image: radial-gradient(#15110a22 1.4px, transparent 1.4px); background-size: 12px 12px; }
+      .pow { font-family:"Bangers", Impact, sans-serif; letter-spacing:.02em; }
+
+      .book { max-width: 1080px; margin: 0 auto; padding: 28px clamp(14px,4vw,34px) 70px; }
+      .cover-title { text-align:center; margin-bottom: 22px; }
+      .cover-title .issue { display:inline-block; background:#15110a; color:#f4d35e; font:800 11px "Inter",sans-serif; letter-spacing:.2em; padding:5px 14px; border-radius:20px; }
+      .cover-title h1 { font-family:"Bangers",sans-serif; font-size: clamp(48px,14vw,120px); line-height:.9; color:#fff;
+        -webkit-text-stroke: 3px #15110a; text-shadow: 6px 6px 0 var(--accent), 10px 10px 0 #15110a; margin-top: 6px; }
+      .cover-title .sub { font:800 13px "Inter",sans-serif; letter-spacing:.14em; text-transform:uppercase; margin-top:14px; }
+
+      .grid { display:grid; grid-template-columns:1fr; gap: 16px; }
+      @media (min-width: 720px){ .grid{ grid-template-columns: repeat(6,1fr); grid-auto-rows: minmax(150px,auto); } }
+
+      .panel { position:relative; background:#fff; border:3px solid #15110a; border-radius:6px; padding: 20px;
+        box-shadow: 6px 6px 0 #15110a; overflow:hidden; }
+      @media (min-width:720px){
+        .panel.big{ grid-column: span 4; grid-row: span 2; }
+        .panel.tall{ grid-column: span 2; grid-row: span 2; }
+        .panel.wide{ grid-column: span 3; }
+        .panel.sm{ grid-column: span 2; }
+        .panel.sm3{ grid-column: span 3; }
+      }
+      /* halftone coin */
+      .panel::after{ content:""; position:absolute; right:-10px; bottom:-10px; width:90px; height:90px;
+        background: radial-gradient(#15110a 30%, transparent 32%); background-size:10px 10px; opacity:.18; pointer-events:none; }
+
+      .kicker { font:900 11px "Inter",sans-serif; letter-spacing:.14em; text-transform:uppercase; color: var(--accent-strong); }
+      .panel h2 { font-family:"Bangers",sans-serif; font-size: clamp(26px,6vw,46px); line-height:.95; margin: 6px 0; }
+      .panel p { font:500 14px/1.5 "Inter",sans-serif; color:#3a3326; }
+
+      /* bulle de dialogue */
+      .bubble { position:relative; background:#fff; border:3px solid #15110a; border-radius:18px; padding:16px 18px; font:700 17px "Inter",sans-serif; display:inline-block; }
+      .bubble::after{ content:""; position:absolute; left:30px; bottom:-16px; width:0;height:0; border:8px solid transparent; border-top-color:#15110a; }
+      .bubble::before{ content:""; position:absolute; left:32px; bottom:-10px; width:0;height:0; border:6px solid transparent; border-top-color:#fff; z-index:2; }
+
+      /* onomatopée */
+      .sfx { font-family:"Bangers",sans-serif; font-size: clamp(38px,9vw,72px); color: var(--accent); -webkit-text-stroke:3px #15110a; transform: rotate(-8deg); line-height:.9; }
+
+      /* panneau sombre projet */
+      .panel.dark { background:#15110a; color:#fff; }
+      .panel.dark p{ color:#d8d2c4; } .panel.dark .kicker{ color: var(--accent); }
+      .panel.dark::after{ background: radial-gradient(var(--accent) 30%, transparent 32%); background-size:10px 10px; opacity:.25; }
+
+      .tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+      .tags span{ font:800 10.5px "Inter",sans-serif; background: var(--accent); color:#15110a; border:2px solid #15110a; padding:3px 8px; border-radius:4px; }
+
+      .cta-panel{ display:flex; flex-direction:column; gap:12px; justify-content:center; }
+      .cbtn{ text-decoration:none; text-align:center; font:900 14px "Inter",sans-serif; letter-spacing:.04em; padding:14px; border:3px solid #15110a; border-radius:8px; box-shadow:4px 4px 0 #15110a; transition:.12s; }
+      .cbtn.p{ background:var(--accent); color:#15110a; } .cbtn.d{ background:#15110a; color:#fff; }
+      .cbtn:hover{ transform: translate(2px,2px); box-shadow:2px 2px 0 #15110a; }
+      a.panel{ text-decoration:none; color:inherit; display:block; transition:.12s; }
+      a.panel:hover{ transform: translate(2px,2px); box-shadow:4px 4px 0 #15110a; }
+    </style>
+  </head>
+  <body>
+    <div class="book">
+      <div class="cover-title reveal">
+        <span class="issue">N° 1 · ÉDITION COLLECTOR</span>
+        <h1 class="pow">The Solo Builder</h1>
+        <div class="sub">Les aventures de Yohan Debusscher — concepteur-développeur &amp; entrepreneur</div>
+      </div>
+
+      <div class="grid">
+        <div class="panel big reveal">
+          <span class="kicker">Épisode 1 — L'origine</span>
+          <h2 class="pow">Une idée. Un seul homme. Tout le chemin.</h2>
+          <p style="margin-bottom:18px">Notre héros ne se contente pas de coder : il conçoit, décide, sécurise et déploie. De la stratégie business jusqu'à la prod — sans jamais appeler de renfort.</p>
+          <span class="bubble">« Donne-moi une idée… je te rends un produit ! »</span>
+        </div>
+
+        <div class="panel tall dark reveal" style="display:flex;align-items:center;justify-content:center">
+          <span class="sfx pow">SHIP!</span>
+        </div>
+
+        <a href="#" class="panel sm3 dark reveal">
+          <span class="kicker">Pouvoir n°1 · Produit</span>
+          <h2 class="pow">Domestic Revolt</h2>
+          <p>Conçu, codé et déployé en solo. Du croquis à la mise en ligne.</p>
+          <div class="tags"><span>Next.js</span><span>Docker</span></div>
+        </a>
+
+        <a href="#" class="panel sm3 reveal">
+          <span class="kicker">Pouvoir n°2 · Logiciel</span>
+          <h2 class="pow">OXO</h2>
+          <p>Plateforme complète tenue d'une seule main, du back au front.</p>
+          <div class="tags"><span>React</span><span>Node</span></div>
+        </a>
+
+        <a href="#" class="panel sm reveal">
+          <span class="kicker">Pouvoir n°3</span>
+          <h2 class="pow" style="font-size:30px">Étude PME</h2>
+          <p>Marché, SWOT &amp; reco.</p>
+        </a>
+
+        <div class="panel wide reveal" style="display:flex;align-items:center;gap:14px">
+          <span class="sfx pow" style="transform:rotate(6deg)">POW!</span>
+          <p style="font-weight:800;font-size:16px">Tech <b style="color:var(--accent-strong)">×</b> Business = un combo que peu maîtrisent.</p>
+        </div>
+
+        <div class="panel sm3 cta-panel reveal">
+          <a href="#" class="cbtn p">LIRE LA SUITE → PROJETS</a>
+          <a href="#" class="cbtn d">LE CV · ORIGIN STORY</a>
+        </div>
+      </div>
+    </div>
+    <script src="../reveal.js"></script>
+  </body>
+</html>

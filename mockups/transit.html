@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yohan Debusscher — Transit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background: #0f1115; color: #e8e9ec; }
+      .nav { color:#fff; } .nav .brand span{ color: var(--accent); }
+
+      .map-sec { min-height: 100vh; padding: 100px 0 70px; }
+      .head { margin-bottom: 30px; }
+      .head .eyebrow{ display:inline-flex; gap:10px; align-items:center; margin-bottom:16px; }
+      .head .eyebrow::before{ content:""; width:30px;height:2px;background:var(--accent); }
+      .head h1 { font-size: clamp(38px, 9vw, 84px); font-weight:900; letter-spacing:-.04em; line-height:.92; }
+      .head h1 span{ color: var(--accent); }
+      .head p { margin-top:16px; max-width:54ch; color:#a9adb6; font-weight:300; font-size: clamp(15px,3.6vw,18px); line-height:1.6; }
+
+      .mapwrap { background:#15181e; border:1px solid #242832; border-radius: 16px; padding: clamp(14px,3vw,28px); overflow-x:auto; }
+      svg.map { width: 100%; min-width: 680px; height: auto; display:block; }
+      .station-label { font: 600 13px "Inter", sans-serif; fill:#e8e9ec; }
+      .station-sub { font: 400 10.5px "Inter", sans-serif; fill:#7e8390; letter-spacing:.04em; }
+      .line-name { font: 800 13px "Inter", sans-serif; }
+      .interchange { font: 900 14px "Inter", sans-serif; fill:#fff; }
+      a.st { cursor:pointer; } a.st:hover .station-label { fill: var(--accent); }
+      a.st:hover circle.dot { stroke: var(--accent); }
+      .youarehere { font: 800 11px "Inter", sans-serif; fill: var(--accent); letter-spacing:.1em; }
+
+      /* légende */
+      .legend { display:grid; grid-template-columns:1fr; gap: 14px; margin-top: 24px; }
+      @media (min-width:680px){ .legend{ grid-template-columns: repeat(3,1fr); } }
+      .lg { display:flex; gap:12px; align-items:flex-start; background:#15181e; border:1px solid #242832; border-radius:10px; padding:16px 18px; }
+      .lg .bar { width:6px; align-self:stretch; border-radius:4px; min-height:42px; }
+      .lg h4 { font-size:14px; font-weight:800; } .lg p{ font-size:12.5px; color:#a9adb6; margin-top:3px; line-height:1.5; }
+
+      .cta { margin-top: 28px; }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-dot"></div>
+    <nav class="nav" data-scrollfx>
+      <a href="#" class="brand">Yohan<span>.</span></a>
+      <div class="links"><a href="#">Lignes</a><a href="#">CV</a><a href="#">Contact</a><a href="#" class="muted">News</a></div>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-menu"><a href="#"><span class="n">01</span>Lignes</a><a href="#"><span class="n">02</span>CV</a><a href="#"><span class="n">03</span>Contact</a></div>
+
+    <section class="map-sec">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow">Plan du réseau · Yohan Transit</span>
+          <h1>Mon parcours<br />en <span>lignes &amp; stations.</span></h1>
+          <p>Deux lignes qui se croisent : la <b style="color:#f0a800">Dev</b> et la <b style="color:#52c4ff">Business</b>. Chaque station est un jalon ou une réalisation. Terminus : un produit livré.</p>
+        </div>
+
+        <div class="mapwrap reveal">
+          <svg class="map" viewBox="0 0 900 420" role="img" aria-label="Plan de métro du parcours">
+            <!-- LIGNE DEV (or) -->
+            <polyline points="70,130 250,130 330,210 560,210" fill="none" stroke="#f0a800" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- LIGNE BUSINESS (bleu) -->
+            <polyline points="70,300 330,300 410,210 560,210 700,210" fill="none" stroke="#52c4ff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- branche projets (or) vers terminus -->
+            <polyline points="560,210 700,210 820,110" fill="none" stroke="#f0a800" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- labels lignes -->
+            <text class="line-name" x="70" y="112" fill="#f0a800">LIGNE DEV</text>
+            <text class="line-name" x="70" y="282" fill="#52c4ff">LIGNE BUSINESS</text>
+
+            <!-- Stations Dev -->
+            <a class="st" href="#"><circle class="dot" cx="70" cy="130" r="9" fill="#0f1115" stroke="#f0a800" stroke-width="4"/><text class="station-label" x="70" y="160" text-anchor="middle">Formation</text><text class="station-sub" x="70" y="176" text-anchor="middle">concepteur-dev</text></a>
+            <a class="st" href="#"><circle class="dot" cx="250" cy="130" r="9" fill="#0f1115" stroke="#f0a800" stroke-width="4"/><text class="station-label" x="250" y="110" text-anchor="middle">Full-stack</text><text class="station-sub" x="250" y="98" text-anchor="middle">front · back · infra</text></a>
+
+            <!-- Stations Business -->
+            <a class="st" href="#"><circle class="dot" cx="70" cy="300" r="9" fill="#0f1115" stroke="#52c4ff" stroke-width="4"/><text class="station-label" x="70" y="330" text-anchor="middle">Entrepreneuriat</text><text class="station-sub" x="70" y="346" text-anchor="middle">vision produit</text></a>
+            <a class="st" href="#"><circle class="dot" cx="330" cy="300" r="9" fill="#0f1115" stroke="#52c4ff" stroke-width="4"/><text class="station-label" x="330" y="330" text-anchor="middle">Étude PME</text><text class="station-sub" x="330" y="346" text-anchor="middle">marché · SWOT</text></a>
+
+            <!-- Correspondance (interchange) -->
+            <rect x="390" y="190" width="40" height="40" rx="20" fill="#0f1115" stroke="#fff" stroke-width="4"/>
+            <text class="interchange" x="410" y="178" text-anchor="middle">Correspondance</text>
+            <text class="station-sub" x="410" y="252" text-anchor="middle">Tech × Business</text>
+
+            <!-- Stations projets sur tronc commun -->
+            <a class="st" href="#"><circle class="dot" cx="560" cy="210" r="10" fill="#0f1115" stroke="#f0a800" stroke-width="4"/><text class="station-label" x="560" y="188" text-anchor="middle">OXO</text><text class="station-sub" x="560" y="248" text-anchor="middle">plateforme · React/Node</text></a>
+            <a class="st" href="#"><circle class="dot" cx="700" cy="210" r="10" fill="#0f1115" stroke="#f0a800" stroke-width="4"/><text class="station-label" x="700" y="250" text-anchor="middle">Domestic Revolt</text><text class="station-sub" x="700" y="266" text-anchor="middle">projet phare · Next/Docker</text></a>
+
+            <!-- Terminus -->
+            <a class="st" href="#"><circle class="dot" cx="820" cy="110" r="12" fill="#f0a800" stroke="#fff" stroke-width="4"/><text class="station-label" x="820" y="88" text-anchor="middle" style="font-weight:900">PRODUIT LIVRÉ</text><text class="youarehere" x="820" y="146" text-anchor="middle">◉ TERMINUS</text></a>
+          </svg>
+        </div>
+
+        <div class="legend reveal">
+          <div class="lg"><span class="bar" style="background:#f0a800"></span><div><h4>Ligne Dev</h4><p>Conception, code, architecture, déploiement. Full-stack de bout en bout.</p></div></div>
+          <div class="lg"><span class="bar" style="background:#52c4ff"></span><div><h4>Ligne Business</h4><p>Stratégie, marché, vision produit. La casquette entrepreneur.</p></div></div>
+          <div class="lg"><span class="bar" style="background:#fff"></span><div><h4>Correspondance</h4><p>Là où les deux lignes se rejoignent : des produits qui tiennent debout des deux côtés.</p></div></div>
+        </div>
+
+        <div class="cta reveal"><a href="#" class="btn btn-primary">Voir toutes les stations →</a><a href="#" class="btn btn-ghost on-dark">Plan complet (CV)</a></div>
+      </div>
+    </section>
+    <script src="./reveal.js"></script>
+  </body>
+</html>
