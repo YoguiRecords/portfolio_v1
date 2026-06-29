@@ -1,4 +1,7 @@
 import { getHome } from "../../lib/data/home";
+import { JsonLd } from "../../components/json-ld/json-ld";
+import { personJsonLd } from "../../lib/seo/jsonld";
+import { localizedUrl } from "../../lib/seo/url";
 import { Hero } from "../../components/sections/hero";
 import { Profil } from "../../components/sections/profil";
 import { Ecosysteme } from "../../components/sections/ecosysteme";
@@ -19,9 +22,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   const data = await getHome(locale);
   const { profile, sections } = data;
+  const loc = locale === "en" ? "en" : "fr";
+  const person = profile
+    ? personJsonLd({
+        name: profile.fullName,
+        jobTitle: profile.headline,
+        description: profile.aiSummary ?? profile.bio,
+        url: localizedUrl("/", loc),
+        sameAs: (profile.socials ?? []).map((s) => s.url),
+      })
+    : null;
 
   return (
     <main>
+      {person ? <JsonLd data={person} /> : null}
       {sections.map((section) => {
         switch (section.key) {
           case "hero":
