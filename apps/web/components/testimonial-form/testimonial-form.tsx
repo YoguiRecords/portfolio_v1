@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
+import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core/testimonials";
 import styles from "./testimonial-form.module.css";
 
 type Status = "idle" | "sending" | "ok" | "error";
