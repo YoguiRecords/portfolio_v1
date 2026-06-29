@@ -77,3 +77,17 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
 - **Mail** : `markMailReadAction(id, isRead)`, `sendMailAction(prev, formData)` (Zod) — via le port
   `Mailbox` (Exchange/Graph si configuré, sinon démo). Le calendrier (`/calendrier`) lit le port
   `CalendarProvider` (agenda + RDV DB, fusion Outlook si configuré).
+- **Profil/CV** : `updateProjectAction`, `updateArticleAction`, `updateCvHtmlAction` (CV HTML stocké,
+  rendu isolé en iframe sandbox). RDV : `confirmAppointmentAction` crée aussi un évènement calendrier
+  (best-effort via `getCalendar()`).
+- **Boîte de réception unifiée** : agrégation pure `aggregateInbox(deps, filter)` (`lib/inbox/aggregate`)
+  fusionne Mails (Graph) + `ContactMessage` → `InboxItem`. Pages `/inbox` + `/inbox/[source]/[id]`
+  (réponse via `sendMailAction`).
+- **CRM** (rôle `app_admin`, tables privées — `app_web` REVOKE) : `crm-actions.ts` —
+  Contacts (`createContactAction`/`updateContactAction`/`deleteContactAction`),
+  Sociétés (`createCompanyAction`/`updateCompanyAction`/`deleteCompanyAction`),
+  Deals (`createDealAction`/`updateDealAction`/`deleteDealAction`/`setDealStageAction`),
+  Activités (`createActivityAction`/`deleteActivityAction`),
+  Tâches (`createTaskAction`/`setTaskDoneAction`/`deleteTaskAction`). Validation Zod via `@portfolio/core` (`crm/schemas`).
+- **Agrégations (lecture)** : `getDashboardData` (dashboard portfolio/audience), `getMissionControlData`
+  (relation client + à-traiter), `getNavBadges` (compteurs nav).
