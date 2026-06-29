@@ -10,7 +10,7 @@ import { Icon, type IconName } from "./icons";
 const PRIMARY: { href: string; label: string; icon: IconName }[] = [
   { href: "/", label: "Accueil", icon: "dashboard" },
   { href: "/projets", label: "Projets", icon: "project" },
-  { href: "/mails", label: "Mails", icon: "mail" },
+  { href: "/inbox", label: "Inbox", icon: "mail" },
   { href: "/temoignages", label: "Avis", icon: "testimonial" },
 ];
 
