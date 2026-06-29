@@ -28,7 +28,8 @@ test("BlockRenderer rend les blocs valides et ignore les invalides", () => {
   );
 
   expect(screen.getByText("Un problème")).toBeInTheDocument();
-  expect(screen.getByText("Cadrage")).toBeInTheDocument();
+  // « Cadrage » apparaît 2× dans le Gantt (colonne tâche + barre).
+  expect(screen.getAllByText("Cadrage").length).toBeGreaterThan(0);
   expect(screen.getByText("Le contexte")).toBeInTheDocument();
   // Le bloc RESULTS invalide ne rend aucune stat
   expect(screen.queryByText(/livré/)).not.toBeInTheDocument();
