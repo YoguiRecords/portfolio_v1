@@ -71,10 +71,13 @@ export {
   type TextData,
 } from "./project-blocks/schemas";
 
-// AI (LLM port — OpenRouter implementation lands in P14/P15)
+// AI (LLM port + OpenRouter adapter + assistance + budget guard)
 export type {
   Llm,
   LlmMessage,
   LlmRequest,
   LlmResult,
 } from "./ai/llm";
+export { createOpenRouterLlm, type OpenRouterOptions } from "./ai/openrouter";
+export { assistText, type AssistAction } from "./ai/assist";
+export { assertBudget, recordUsage, type AiBudget } from "./ai/budget";

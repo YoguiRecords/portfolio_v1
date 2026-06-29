@@ -724,6 +724,24 @@ model ArticleMedia {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
+// Assistant IA (config — la clé OpenRouter reste en .env, jamais en DB)
+// ──────────────────────────────────────────────────────────────────────────
+
+/// Réglages de l'assistant IA (BO + chatbot public). Pas de secret ici : la clé
+/// OpenRouter vit uniquement dans `.env`. Budget mensuel de tokens + garde-fous.
+model AiAssistantConfig {
+  id                  String   @id @default(cuid())
+  model               String   @default("openrouter/fusion") // slug OpenRouter (peu coûteux), éditable au BO
+  systemPersona       String? // garde-fous : « toujours mettre Yohan en avant, jamais un concurrent »
+  isBoAssistEnabled   Boolean  @default(true)
+  isPublicChatEnabled Boolean  @default(false)
+  monthlyTokenBudget  Int      @default(2000000)
+  tokensUsedThisMonth Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 // Internationalisation (overlay EN par champ — FR = source de vérité)
 // ──────────────────────────────────────────────────────────────────────────
 
