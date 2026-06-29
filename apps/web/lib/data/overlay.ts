@@ -19,7 +19,7 @@ export async function overlayMany<T extends { id: string }>(
   locale: string,
   model: string,
   records: T[],
-  fields: (keyof T & string)[],
+  fields: string[],
 ): Promise<T[]> {
   if (locale === "fr" || records.length === 0) return records;
 
@@ -28,13 +28,14 @@ export async function overlayMany<T extends { id: string }>(
     select: { recordId: true, field: true, locale: true, value: true },
   });
 
-  return records.map((record) =>
-    localize(
-      record,
-      rows.filter((t) => t.recordId === record.id) as FieldTranslation[],
-      locale,
-      fields,
-    ),
+  return records.map(
+    (record) =>
+      localize(
+        record as Record<string, unknown>,
+        rows.filter((t) => t.recordId === record.id) as FieldTranslation[],
+        locale,
+        fields,
+      ) as unknown as T,
   );
 }
 
@@ -44,7 +45,7 @@ export async function overlayOne<T extends { id: string }>(
   locale: string,
   model: string,
   record: T | null,
-  fields: (keyof T & string)[],
+  fields: string[],
 ): Promise<T | null> {
   if (!record) return record;
   const [out] = await overlayMany(prisma, locale, model, [record], fields);
