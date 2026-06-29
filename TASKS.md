@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P7 — Témoignages** (modération) — `phase-07-temoignages.md`
 - [ ] **P8 — Agenda / Events + Demandes de RDV** (accepter/refuser → agenda) — `phase-08-agenda-rdv.md`
 - [ ] **P9 — Boîte de réception unique** (Mails + Messages) — `phase-09-inbox.md`
 - [ ] **P10 — CRM : schéma & socle** (migration + rôles DB) — `phase-10-crm-schema.md`
@@ -29,9 +28,10 @@
 - [x] **P4 — Articles** — liste DataTable + éditeur markdown (aperçu live réutilisé) + programmation (SCHEDULED/scheduledAt) + tags/SEO + renderer markdown sûr admin.
 - [x] **P5 — Profil / Home / CV** — form « Me concernant » v2 + aperçu live « À propos », sections home reskin, éditeur CV HTML isolé (iframe sandbox).
 - [x] **P6 — Médias** — dropzone (pipeline webp/MinIO inchangé) + grille v2 + panneau détails (dimensions/poids/format/durée), support VIDEO/EMBED.
+- [x] **P7 — Témoignages** — file modération v2 (onglets statut, édition texte affiché vs original/audit, mise en avant, refus confirmé), hook CRM en stub.
 
 ## En cours
-- **P7 — Témoignages (modération)**.
+- **P8 — Agenda / Events + Demandes de RDV**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

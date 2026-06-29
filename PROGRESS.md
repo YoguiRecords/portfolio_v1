@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P6 — Médias** (dropzone + grille + panneau détails ; pipeline inchangé).
+- **Dernier jalon livré :** **P7 — Témoignages** (modération v2 : onglets, édition, mise en avant, refus confirmé).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 7 — Témoignages (modération)** (`docs/plans/2026-06-29-phase-07-temoignages.md`) : file PENDING/APPROVED/REJECTED, champs auteur, édition texte affiché vs original, mise en avant, ordre, lien CRM préparé.
+- Exécuter **Phase 8 — Agenda / Events + Demandes de RDV** (`docs/plans/2026-06-29-phase-08-agenda-rdv.md`) : CRUD agenda + file RDV (accepter/refuser → évènement calendrier composite).
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -35,7 +35,8 @@
 - **P4** — Articles v2 : `components/markdown/markdown.tsx` (renderer sûr admin), `components/articles/{articles-list,article-editor,article-preview}.tsx`, action `updateArticleAction`, pages `articles/{page,[id]/page}.tsx`. Liste DataTable + filtres statut + éditeur markdown + aperçu live + programmation (SCHEDULED/scheduledAt).
 - **P5** — Profil/Home/CV : `app/(dashboard)/profile/profile-form.tsx` (contrôlé + aperçu live), `components/profile/about-preview.tsx`, `content/page.tsx` reskin (sections+KPIs), `components/cv/cv-editor.tsx` + `app/(dashboard)/cv/page.tsx` (iframe `sandbox` srcDoc), action `updateCvHtmlAction`, entrée nav `/cv`.
 - **P6** — Médias v2 : `components/media/{dropzone,media-grid}.tsx`, page `media/page.tsx`. Dropzone (validation client + pipeline serveur inchangé), grille + panneau détails (dimensions/poids/format/durée/alt), support VIDEO/EMBED.
-- Gate vert : 126 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P7** — Témoignages v2 : `components/testimonials/testimonials-list.tsx`, page `temoignages/page.tsx`. Onglets statut, édition `content` (audit `submittedContent` préservé), mise en avant, refus confirmé, hook CRM stub (P11).
+- Gate vert : 128 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
