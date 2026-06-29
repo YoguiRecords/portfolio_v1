@@ -9,7 +9,7 @@
       (Reste : câbler `localize()` dans les loaders projet/news/agenda/témoignages — mécanique.)
 - [x] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission modérée). ✅
 - [x] **P6** — Web : Contact + demande de RDV (endpoints insert-only, Zod, rate-limit, honeypot) + page. ✅
-- [ ] **P7** — Web : SEO/AEO (metadata, sitemap, robots, llms.txt, JSON-LD, FAQPage, OG).
+- [x] **P7** — Web : SEO/AEO (JSON-LD Person/CreativeWork/FAQ, metadata+hreflang, sitemap, robots, llms.txt). ✅
 - [ ] **P8** — Admin : garde des routes + shell BO (nav, layout).
 - [ ] **P9** — Admin : CRUD contenu home (Profile, SiteSettings, HomeSection, KPI, Skill, Career*, Analysis, Goal).
 - [ ] **P10** — Admin : Projets + éditeur de blocs.

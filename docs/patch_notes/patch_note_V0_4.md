@@ -1,5 +1,15 @@
 # Patch notes — v0.4.x
 
+## v0.4.2 — SEO / AEO (2026-06-29)
+
+- **JSON-LD** (builders purs) : Person (home), CreativeWork + FAQPage (projet), Article, Event,
+  Breadcrumb. Injection sûre via `<JsonLd>` (échappement `<`).
+- **Builder metadata** : titres/descriptions dérivés de `SiteSettings`, **OpenGraph** + **Twitter**,
+  **hreflang** FR/EN.
+- **`/sitemap.xml`** (contenu publié, 2 locales + alternates), **`/robots.txt`** (politique crawlers
+  IA selon `SiteSettings.allowAiCrawlers`), **`/llms.txt`** (présentation IA depuis `SiteSettings`).
+- Builders testés (unit) ; E2E (title, meta, JSON-LD Person, sitemap, llms.txt).
+
 ## v0.4.1 — Contact & demande de RDV (2026-06-29)
 
 - Page `/contact` : formulaire de **contact** (→ `ContactMessage`) et de **demande de RDV**
