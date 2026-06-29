@@ -48,6 +48,21 @@ export {
   ReorderItem,
 } from "./admin/content-schemas";
 
+// CRM schemas & types (private back-office data)
+export {
+  CompanyInput,
+  CrmContactInput,
+  DealInput,
+  ActivityInput,
+  CrmTaskInput,
+  DEAL_STAGES,
+  ACTIVITY_TYPES,
+  CRM_CONTACT_STATUSES,
+  type DealStage,
+  type ActivityType,
+  type CrmContactStatus,
+} from "./crm/schemas";
+
 // Media upload validation (mime/size/dimensions)
 export { validateUpload, ALLOWED_IMAGE_MIME, type UploadCandidate } from "./media/validate";
 
