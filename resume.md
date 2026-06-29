@@ -54,9 +54,15 @@
 - **DT2 (P8)** : pas d'**éditeur d'évènement `[id]`** dédié (l'agenda reste liste + création + suppression + génération d'actu, reskinnés). L'évènement complet (édition dates/lieu/programmation/galerie) est un complément à ajouter si besoin. La nouveauté clé de P8 (workflow RDV→calendrier) est livrée + testée.
 - **DT3 (P6)** : panneau détails média sans « utilisé dans » (relations) — ajout possible plus tard.
 
-## Phases sensibles (à venir — choix pro par défaut, loggués ici)
-- **P10 (CRM schéma + rôles DB)** : migration avec `REVOKE ALL` pour `app_web` sur les tables CRM
-  (même posture que `ContactMessage`). Détails reportés ici à l'exécution.
+## Phases sensibles
+- **P10 (CRM schéma + rôles DB) — LIVRÉE.** Choix :
+  - Migration SQL générée via **`prisma migrate diff`** (ancien schéma git → nouveau), **sans toucher
+    de DB** (pas de `migrate dev` risqué), puis bloc **`REVOKE ALL FROM app_web`** ajouté à la main
+    (garde `pg_roles`). Appliquée et **validée sur le test DB** (`db:test:deploy` OK).
+  - **Liens cross-domaine souples** : `Contact.linkedProjectId/testimonialId/contactMessageId` sont
+    de simples `String?` (pas de FK) → migration auto-contenue, **aucune table existante modifiée**
+    (rayon de souffle minimal). La fiche 360° (P11) les résoudra par requête. _Réversible._
+  - `API_REFERENCE.md` détaillé des actions CRM : **reporté à P15** (consolidation docs).
 - **P16 (RBAC + auth)** : dépendance `zxcvbn` (score ≥ 3) — déjà marquée « approved » dans le plan.
 
 ---

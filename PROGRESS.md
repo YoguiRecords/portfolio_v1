@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P9 — Boîte de réception unique** (Mails Graph + Messages de contact, réponse email).
+- **Dernier jalon livré :** **P10 — CRM schéma & socle** (modèles + migration REVOKE app_web + actions Zod).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,7 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 10 — CRM : schéma & socle (SENSIBLE)** (`docs/plans/2026-06-29-phase-10-crm-schema.md`) : modèles Prisma (Contact/Company/Deal/Activity/Task) + **migration REVOKE app_web** + actions Zod. ⚠️ Phase à risque (DB + rôles) — choix loggués dans `resume.md`.
+- Exécuter **Phase 11 — CRM : UI** (`docs/plans/2026-06-29-phase-11-crm-ui.md`) : Contacts (liste + fiche 360°), Sociétés, Pipeline (board DnD par DealStage), activités/tâches. Branche les hooks « créer contact » (inbox/témoignages).
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -38,7 +38,8 @@
 - **P7** — Témoignages v2 : `components/testimonials/testimonials-list.tsx`, page `temoignages/page.tsx`. Onglets statut, édition `content` (audit `submittedContent` préservé), mise en avant, refus confirmé, hook CRM stub (P11).
 - **P8** — Agenda + RDV : `components/rdv/rdv-list.tsx`, pages `rdv/page.tsx` + `agenda/page.tsx` reskin ; `confirmAppointmentWithEvent` (moderation.ts) crée un évènement calendrier (best-effort via `getCalendar()`), confirm/decline. RDV hors inbox.
 - **P9** — Inbox unifiée : `lib/inbox/aggregate.ts` (+ test résilience), `components/inbox/inbox-list.tsx`, pages `/inbox` + `/inbox/[source]/[id]` (réponse via `mail-reply-form`/Graph). Nav : « Boîte de réception » remplace Mails+Messages (routes conservées).
-- Gate vert : 139 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P10** — CRM socle : modèles Prisma + migration `20260630120000_crm` (REVOKE `app_web`, validée test DB), `packages/core/src/crm/schemas.ts` (Zod), `apps/admin/lib/crm/crm.ts` + `lib/actions/crm-actions.ts` (CRUD + guard). Liens cross-domaine en IDs souples. `SECURITY.md` mis à jour.
+- Gate vert : 142 tests admin + 48 core, `tsc --noEmit` OK (admin+core), lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
