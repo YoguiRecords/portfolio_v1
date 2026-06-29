@@ -127,24 +127,56 @@ enum AppointmentSource {
 // Authentification back office (compte admin unique, sessions opaques)
 // ──────────────────────────────────────────────────────────────────────────
 
-/// Compte administrateur unique du back office.
+/// Rôle d'un compte BO = préréglage de modules + étiquette (cf. RBAC).
+enum AdminRole {
+  OWNER
+  EDITOR
+  SECRETARY
+  VIEWER
+}
+
+/// Compte administrateur du back office (multi-utilisateurs + RBAC).
 /// Auth durcie : mot de passe haché argon2id + TOTP (MFA obligatoire).
 /// Ces tables ne sont JAMAIS accessibles au rôle DB public `app_web`
 /// (REVOKE explicite dans la migration) — seul `app_admin` y accède.
 model AdminUser {
   id             String    @id @default(cuid())
   email          String    @unique
-  passwordHash   String // argon2id
+  passwordHash   String // argon2id (placeholder tant qu'une invitation n'est pas honorée ; compte alors isActive=false)
   totpSecret     String? // secret TOTP (base32), null tant que non enrôlé
   isTotpEnabled  Boolean   @default(false)
   failedAttempts Int       @default(0) // compteur anti brute-force
   lockedUntil    DateTime? // verrou temporaire après trop d'échecs
   lastLoginAt    DateTime?
 
+  // RBAC multi-utilisateurs
+  role        AdminRole @default(OWNER)
+  permissions String[]  @default([]) // modules accordés (OWNER = tous, bypass)
+  isActive    Boolean   @default(true)
+  displayName String?
+  createdById String? // qui a créé ce compte (auto-référence souple)
+
   sessions Session[]
+  invites  AdminInvite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/// Invitation d'onboarding (single-use, expirable, révocable). Seul le hash du
+/// token est stocké — jamais le token en clair. Pas d'inscription publique.
+model AdminInvite {
+  id          String    @id @default(cuid())
+  email       String
+  adminUserId String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  tokenHash   String    @unique // SHA-256 du token d'invitation
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdById String?
+  createdAt   DateTime  @default(now())
+
+  @@index([adminUserId])
 }
 
 /// Session opaque côté serveur : un token aléatoire est posé en cookie httpOnly,
@@ -800,4 +832,138 @@ model AppointmentRequest {
   updatedAt DateTime @updatedAt
 
   @@index([status, requestedAt])
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// CRM — données PRIVÉES (back office uniquement). `app_web` n'y accède JAMAIS
+// (REVOKE ALL dans la migration, comme ContactMessage). Liens cross-domaine
+// (projet/témoignage/message) en identifiants souples, résolus par requête au BO.
+// ──────────────────────────────────────────────────────────────────────────
+
+enum DealStage {
+  PROSPECT
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+enum ActivityType {
+  CALL
+  EMAIL
+  MEETING
+  NOTE
+}
+
+enum CrmContactStatus {
+  LEAD
+  ACTIVE
+  CUSTOMER
+  ARCHIVED
+}
+
+model Company {
+  id        String    @id @default(cuid())
+  name      String
+  website   String?
+  notes     String?
+  contacts  Contact[]
+  deals     Deal[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([name])
+}
+
+model Contact {
+  id         String           @id @default(cuid())
+  firstName  String
+  lastName   String?
+  email      String?
+  phone      String?
+  role       String?
+  source     String?
+  status     CrmContactStatus @default(LEAD)
+  ownerNotes String?
+
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  // Références souples vers les autres domaines (pas de FK — résolues côté BO).
+  linkedProjectId  String?
+  testimonialId    String?
+  contactMessageId String?
+
+  deals      Deal[]
+  activities Activity[]
+  tasks      CrmTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([companyId])
+}
+
+model Deal {
+  id              String    @id @default(cuid())
+  title           String
+  valueCents      Int?
+  stage           DealStage @default(PROSPECT)
+  probability     Int?
+  expectedCloseAt DateTime?
+
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  activities Activity[]
+  tasks      CrmTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stage])
+  @@index([contactId])
+  @@index([companyId])
+}
+
+model Activity {
+  id         String       @id @default(cuid())
+  type       ActivityType @default(NOTE)
+  content    String
+  occurredAt DateTime     @default(now())
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([contactId])
+  @@index([dealId])
+  @@index([occurredAt])
+}
+
+model CrmTask {
+  id     String    @id @default(cuid())
+  title  String
+  dueAt  DateTime?
+  isDone Boolean   @default(false)
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dueAt])
+  @@index([isDone])
+  @@index([contactId])
+  @@index([dealId])
 }

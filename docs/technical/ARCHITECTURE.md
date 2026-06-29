@@ -80,8 +80,18 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 4. L'URL est enregistrée comme `MediaAsset` en base. Les vidéos/embeds (`MediaKind` VIDEO/EMBED)
    contournent la conversion et référencent une URL externe.
 
+## Back office (BO v2)
+Le back office (`apps/admin`) s'appuie sur un **design-system de primitives** (`components/ui/*`,
+tokens graphite + or) et un **shell** rail-icônes + topbar + barre mobile (`components/admin-layout/*`).
+Modules : Dashboard (portfolio/audience) et **Mission Control** (relation client/à-traiter) distincts ;
+éditeurs avec **aperçu live** (`components/live-preview`) pour projets/articles/profil ; **boîte de
+réception unifiée** (mails Graph + messages de contact ; RDV traités à part) ; **CRM** (Contacts +
+Sociétés + Pipeline + activités/tâches) en **données privées** (`app_web` REVOKE) ; **palette ⌘K**
+globale. Le CV HTML est rendu **isolé** (iframe sandbox).
+
 ## Données
-Schéma relationnel géré par Prisma. Voir `docs/erd/schema_erd_global.md`.
+Schéma relationnel géré par Prisma. Voir `docs/erd/schema_erd_global.md`. Les tables CRM
+(`Company`/`Contact`/`Deal`/`Activity`/`CrmTask`) sont privées (back office uniquement).
 
 ## Environnements
 Les URLs sont pilotées par l'environnement : liens internes en développement, domaines directs en

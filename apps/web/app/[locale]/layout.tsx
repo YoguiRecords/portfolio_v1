@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "../globals.css";
+import { prisma } from "@portfolio/db";
 import { routing } from "../../i18n/routing";
 import { getHome } from "../../lib/data/home";
 import { SiteNav, type NavLink } from "../../components/site-nav";
@@ -63,6 +64,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const { profile, sections, settings } = await getHome(locale);
+  const chatConfig = await prisma.aiAssistantConfig.findFirst({ select: { isPublicChatEnabled: true } });
 
   const prefix = locale === "fr" ? "" : "/en";
   const isEn = locale === "en";
@@ -97,7 +99,7 @@ export default async function LocaleLayout({
             socials={socials}
             legalName={profile?.fullName ?? "Yohan Debusscher"}
           />
-          <ChatWidget />
+          <ChatWidget enabled={chatConfig?.isPublicChatEnabled ?? false} />
         </NextIntlClientProvider>
       </body>
     </html>

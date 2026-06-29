@@ -3,8 +3,9 @@
 ## Branches
 - **main** — production, **réservée à l'utilisateur** | requires PR + tests passing. **L'IA ne push, ne merge, ni ne tag JAMAIS sur `main`.**
 - **dev** — integration branch. Alimentée **uniquement par PR** (jamais de push direct de l'IA).
+  L'IA peut **merger** une PR `llm → dev` selon la règle de merge ci-dessous.
 - **llm** — branche de travail **dédiée à l'IA (Claude)**, longue durée. C'est la **seule** branche
-  sur laquelle l'IA commit et push. Toute intégration se fait via **Pull Request `llm` → `dev`** (revue humaine obligatoire).
+  sur laquelle l'IA commit et push. Toute intégration se fait via **Pull Request `llm` → `dev`**.
 - **feature/{name}**, **fix/{name}**, **refactor/{name}**, **chore/{name}**, **docs/{name}** — branches éphémères humaines si besoin.
 
 Naming: lowercase, hyphens, max 50 chars
@@ -39,8 +40,15 @@ Closes #234
 2. Resynchroniser régulièrement depuis `dev` : `git merge origin/dev` (éviter la divergence).
 3. Push sur `origin/llm`.
 4. Ouvrir une **PR `llm` → `dev`** (atomique : une PR = une feature/fix cohérent).
-5. **Revue humaine + tests** → merge sur `dev` par l'utilisateur.
+5. **Merger** selon la **Règle de merge PR** ci-dessous.
 6. `dev` → `main` et tag `vX.Y.Z` : **réservé à l'utilisateur** (l'IA n'y touche pas).
+
+## Règle de merge PR `llm → dev` (IA)
+**Condition unique et obligatoire : la PR doit être VERTE** (tous les checks CI au vert).
+- ❌ **PR rouge** → ne PAS merger. Corriger (lint/typecheck/test/build) **jusqu'au vert**, puis merger.
+- ✅ **PR verte + aucun conflit** → l'IA **merge automatiquement** (pas besoin d'autorisation).
+- ✅ **PR verte + conflit** → l'IA **demande l'autorisation** avant de merger ; autorisation donnée → merge.
+- `main` reste **réservée à l'utilisateur** (l'IA n'y merge/tag jamais).
 
 ## Workflow humain (branches éphémères, optionnel)
 1. Create branch: `git checkout -b feature/name`
@@ -65,7 +73,9 @@ Closes #234
 - Patch++ bug fixes | Minor++ features | Major++ breaking
 
 ## Forbidden
-- **Push / merge / tag de l'IA sur `main` ou `dev`** (l'IA passe TOUJOURS par `llm` + PR).
+- **Push direct / tag de l'IA sur `main` ou `dev`** (l'IA passe TOUJOURS par `llm` + PR).
+- **Merge de l'IA sur `main`** (réservé à l'utilisateur). Le merge `llm → dev` suit la « Règle de merge PR ».
+- **Merge d'une PR rouge** (CI non verte) — corriger d'abord.
 - Force push to main
 - Amending published commits
 - Uncommitted code before switching branches

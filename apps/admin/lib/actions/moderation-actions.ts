@@ -10,9 +10,10 @@ import {
   featureTestimonial,
   markMessageRead,
   markMessageSpam,
-  confirmAppointment,
+  confirmAppointmentWithEvent,
   declineAppointment,
 } from "@/lib/content/moderation";
+import { getCalendar } from "@/lib/integrations/factory";
 
 function id(form: FormData): string | undefined {
   const v = form.get("id");
@@ -61,8 +62,9 @@ export async function markMessageSpamAction(form: FormData): Promise<void> {
 export async function confirmAppointmentAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const i = id(form);
-  if (i) await confirmAppointment(prisma, i);
+  if (i) await confirmAppointmentWithEvent(prisma, getCalendar(), i);
   revalidatePath("/rdv");
+  revalidatePath("/calendrier");
 }
 export async function declineAppointmentAction(form: FormData): Promise<void> {
   await requireEnrolledSession();

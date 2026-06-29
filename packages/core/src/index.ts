@@ -13,6 +13,18 @@ export type AppName = "web" | "admin";
 
 // Auth (back office)
 export { hashPassword, verifyPassword } from "./auth/password";
+export {
+  BO_MODULES,
+  ROLE_PRESETS,
+  effectivePermissions,
+  can,
+  presetFor,
+  isReadOnly,
+  type BoModule,
+  type AdminRole,
+  type PermissionUser,
+} from "./auth/permissions";
+export { checkPasswordStrength, type PasswordCheck } from "./auth/password-policy";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 
@@ -47,6 +59,21 @@ export {
   EventInput,
   ReorderItem,
 } from "./admin/content-schemas";
+
+// CRM schemas & types (private back-office data)
+export {
+  CompanyInput,
+  CrmContactInput,
+  DealInput,
+  ActivityInput,
+  CrmTaskInput,
+  DEAL_STAGES,
+  ACTIVITY_TYPES,
+  CRM_CONTACT_STATUSES,
+  type DealStage,
+  type ActivityType,
+  type CrmContactStatus,
+} from "./crm/schemas";
 
 // Media upload validation (mime/size/dimensions)
 export { validateUpload, ALLOWED_IMAGE_MIME, type UploadCandidate } from "./media/validate";

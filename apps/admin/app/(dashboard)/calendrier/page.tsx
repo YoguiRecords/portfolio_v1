@@ -6,9 +6,9 @@ export const dynamic = "force-dynamic";
 
 const WEEKDAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const KIND_COLOR: Record<CalendarEvent["kind"], string> = {
-  event: "bg-amber-500/20 text-amber-200",
-  appointment: "bg-emerald-500/20 text-emerald-200",
-  external: "bg-sky-500/20 text-sky-200",
+  event: "bg-accent/20 text-accent",
+  appointment: "bg-ok/20 text-ok",
+  external: "bg-info/20 text-info",
 };
 
 /** Parses `?m=YYYY-MM` into a [year, monthIndex], defaulting to the current month. */
@@ -62,38 +62,38 @@ export default async function CalendarPage({
   return (
     <div className="flex max-w-5xl flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold capitalize text-zinc-50">{monthLabel}</h1>
+        <h1 className="text-2xl font-bold capitalize text-ink">{monthLabel}</h1>
         <div className="flex items-center gap-2">
           <span
             className={`rounded-full px-3 py-1 text-xs font-medium ${
-              isGraphLive() ? "bg-emerald-500/15 text-emerald-300" : "bg-amber-500/15 text-amber-300"
+              isGraphLive() ? "bg-ok/15 text-ok" : "bg-warn/15 text-warn"
             }`}
           >
             {isGraphLive() ? "Outlook + site" : "Site (agenda + RDV)"}
           </span>
-          <Link href={`/calendrier?m=${shiftMonth(year, month, -1)}`} className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+          <Link href={`/calendrier?m=${shiftMonth(year, month, -1)}`} className="rounded-control border border-border px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
             ←
           </Link>
-          <Link href="/calendrier" className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
-            Aujourd&apos;hui
+          <Link href="/calendrier" className="rounded-control border border-border px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
+            Aujourd’hui
           </Link>
-          <Link href={`/calendrier?m=${shiftMonth(year, month, 1)}`} className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+          <Link href={`/calendrier?m=${shiftMonth(year, month, 1)}`} className="rounded-control border border-border px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
             →
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-px overflow-hidden rounded-lg border border-zinc-800 bg-zinc-800">
+      <div className="grid grid-cols-7 gap-px overflow-hidden rounded-card border border-border bg-border">
         {WEEKDAYS.map((w) => (
-          <div key={w} className="bg-zinc-950 p-2 text-center text-xs font-medium text-zinc-500">
+          <div key={w} className="bg-bg p-2 text-center text-xs font-medium text-muted">
             {w}
           </div>
         ))}
         {cells.map((date, i) => (
-          <div key={i} className="min-h-24 bg-zinc-950 p-1.5">
+          <div key={i} className="min-h-24 bg-bg p-1.5">
             {date ? (
               <>
-                <div className="mb-1 text-xs text-zinc-500">{date.getDate()}</div>
+                <div className="mb-1 text-xs text-muted">{date.getDate()}</div>
                 <div className="flex flex-col gap-1">
                   {(byDay.get(dayKey(date)) ?? []).map((e) => (
                     <div
@@ -111,10 +111,10 @@ export default async function CalendarPage({
         ))}
       </div>
 
-      <p className="text-xs text-zinc-500">
-        <span className="text-amber-300">●</span> Évènement agenda ·{" "}
-        <span className="text-emerald-300">●</span> RDV confirmé ·{" "}
-        <span className="text-sky-300">●</span> Outlook
+      <p className="text-xs text-muted">
+        <span className="text-accent">●</span> Évènement agenda ·{" "}
+        <span className="text-ok">●</span> RDV confirmé ·{" "}
+        <span className="text-info">●</span> Outlook
       </p>
     </div>
   );

@@ -168,6 +168,14 @@ P0→P2 d'abord (socle visible). Le CRM (P10/P11) peut démarrer **en parallèle
 **Tâches :** états **vides / erreurs / confirmation de suppression** partout ; audit **a11y** ; **responsive** complet (rail→bottom bar, tables→cartes) ; **Playwright** E2E (login MFA → CRUD projet → modération → inbox → CRM → mission control) ; perf (lazy, pagination serveur) ; **docs finales** (`ARCHITECTURE`/`SECURITY`/`API_REFERENCE`) + **patch note vX.Y.0** + `PROGRESS.md`.
 **DoD :** checklist sécu (cf. `STACK_SECURITY`) verte, E2E verts, docs à jour.
 
+### P16 — Multi-users BO + RBAC (SENSIBLE)
+**Tâches :** rôles + permissions par module, VIEWER lecture seule + masquage PII, invitations email + politique mot de passe forte (zxcvbn score≥3). Phase à risque auth → détailler/valider avant exécution.
+→ **Plan détaillé : `docs/plans/2026-06-29-phase-16-bo-users-rbac.md`**
+
+### P17 — Chatbot public IA (rendre fonctionnel) — AJOUTÉE
+**Objectif :** rendre opérationnel le chatbot public existant (`apps/web`) : répondre « prochain évènement / où sera Yohan » (agenda public à venir) + questions sur le contenu (profil/projets/articles), garde-fous (toujours promouvoir Yohan), proposer un RDV (tool → `AppointmentRequest`). Modèle **`openrouter/fusion`**. Activable au BO. Tests LLM mockés.
+→ **Plan détaillé : `docs/plans/2026-06-30-phase-17-public-chatbot.md`**
+
 ---
 
 ## Suivi

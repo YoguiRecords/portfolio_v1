@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+/* BO v2 design tokens — graphite (noir/gris) + accent or, statuts, rayons.
+   Valeurs de référence : mockups/bo/assets/bo.css. Aucune couleur en dur dans
+   les composants : tout passe par ces tokens (bg-bg, text-ink, text-accent…). */
+@theme {
+  /* Accent or signature */
+  --color-accent: #f0a800;
+  --color-accent-strong: #c07800;
+
+  /* Surfaces graphite (noir/gris — pas de bleu) */
+  --color-bg: #0d0e10;
+  --color-surface: #16181b;
+  --color-surface-2: #1c1f23;
+  --color-elevated: #22262b;
+  --color-border: #24272c;
+  --color-border-strong: #31353b;
+
+  /* Texte */
+  --color-ink: #f1f2f4;
+  --color-ink-2: #b3b9c0;
+  --color-muted: #79808a;
+
+  /* Statuts */
+  --color-ok: #3fb27f;
+  --color-warn: #e0902f;
+  --color-danger: #e0606e;
+  --color-info: #5b9bd5;
+
+  /* Rayons */
+  --radius-card: 10px;
+  --radius-control: 8px;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

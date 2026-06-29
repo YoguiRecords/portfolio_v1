@@ -29,12 +29,13 @@ export function buildContext(input: ChatContextInput): string {
   if (input.articles?.length) {
     lines.push(`Actualités : ${input.articles.map((a) => a.title).join(" · ")}`);
   }
-  if (input.events?.length) {
-    lines.push(
-      `Agenda : ${input.events
-        .map((e) => `${e.title} (${e.startAt.toISOString().slice(0, 10)})`)
-        .join(" · ")}`,
-    );
+  const [next, ...rest] = input.events ?? [];
+  if (next) {
+    const fmt = (d: Date) => d.toISOString().slice(0, 16).replace("T", " ");
+    lines.push(`Prochain évènement : ${next.title} le ${fmt(next.startAt)} (UTC).`);
+    if (rest.length) {
+      lines.push(`Autres dates à venir : ${rest.map((e) => `${e.title} (${fmt(e.startAt)})`).join(" · ")}`);
+    }
   }
   return lines.join("\n");
 }
