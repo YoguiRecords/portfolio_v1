@@ -67,6 +67,7 @@ export function LoginForm() {
           <button
             type="submit"
             formAction={quickLoginAction}
+            formNoValidate
             className="w-full rounded-md border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20"
           >
             ⚡ Quick login (dev)
