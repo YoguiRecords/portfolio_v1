@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P11 — CRM : UI** (Contacts, Sociétés, Pipeline, activités/relances) — `phase-11-crm-ui.md`
 - [ ] **P12 — Mission Control** (agrégation) — `phase-12-mission-control.md`
 - [ ] **P13 — Assistant IA + Calendrier** (reskin) — `phase-13-ia-calendrier.md`
 - [ ] **P14 — Réglages + SEO/FAQ + recherche ⌘K** — `phase-14-reglages-recherche.md`
@@ -29,9 +28,10 @@
 - [x] **P8 — Agenda + RDV** — agenda reskin (liste/création/suppression/génération actu) + file RDV v2 (accepter→évènement calendrier best-effort / refuser confirmé). _Reste : éditeur event `[id]` (DT2)._
 - [x] **P9 — Boîte de réception unique** — `lib/inbox/aggregate.ts` (Mails Graph + ContactMessage → InboxItem, tri/filtre, résilient) + page `/inbox` + détail `/inbox/[source]/[id]` + réponse (Graph). Mails/Messages absorbés (nav). RDV exclus.
 - [x] **P10 — CRM schéma & socle** — modèles Prisma (Company/Contact/Deal/Activity/CrmTask) + migration **REVOKE app_web** (validée test DB) + schémas Zod `core/crm` + actions CRUD `crm-actions` (guard+Zod).
+- [x] **P11 — CRM UI** — Contacts (liste + fiche 360° deals/activités/tâches), Sociétés, Pipeline (board par stage + déplacement). _Reste : DnD (DT4), agrégation 360° cross-domaine + hooks « créer contact » (DT5)._
 
 ## En cours
-- **P11 — CRM : UI**.
+- **P12 — Mission Control**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

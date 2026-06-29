@@ -53,6 +53,8 @@
 - **DT1 (P4/P5)** : renderer markdown dupliqué `apps/web` ↔ `apps/admin` → à extraire dans `@portfolio/core`.
 - **DT2 (P8)** : pas d'**éditeur d'évènement `[id]`** dédié (l'agenda reste liste + création + suppression + génération d'actu, reskinnés). L'évènement complet (édition dates/lieu/programmation/galerie) est un complément à ajouter si besoin. La nouveauté clé de P8 (workflow RDV→calendrier) est livrée + testée.
 - **DT3 (P6)** : panneau détails média sans « utilisé dans » (relations) — ajout possible plus tard.
+- **DT4 (P11)** : pipeline = déplacement par **select** (pas drag-and-drop natif) — fonctionnel + testable, zéro dépendance ; DnD = amélioration UX.
+- **DT5 (P11)** : fiche contact 360° = deals + activités + tâches (cœur CRM). L'**agrégation cross-domaine** (mails/messages par email, projets/témoignages liés) et les **hooks « créer contact »** depuis inbox/témoignages sont reportés (liens souples déjà en base).
 
 ## Phases sensibles
 - **P10 (CRM schéma + rôles DB) — LIVRÉE.** Choix :
