@@ -801,3 +801,137 @@ model AppointmentRequest {
 
   @@index([status, requestedAt])
 }
+
+// ──────────────────────────────────────────────────────────────────────────
+// CRM — données PRIVÉES (back office uniquement). `app_web` n'y accède JAMAIS
+// (REVOKE ALL dans la migration, comme ContactMessage). Liens cross-domaine
+// (projet/témoignage/message) en identifiants souples, résolus par requête au BO.
+// ──────────────────────────────────────────────────────────────────────────
+
+enum DealStage {
+  PROSPECT
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+enum ActivityType {
+  CALL
+  EMAIL
+  MEETING
+  NOTE
+}
+
+enum CrmContactStatus {
+  LEAD
+  ACTIVE
+  CUSTOMER
+  ARCHIVED
+}
+
+model Company {
+  id        String    @id @default(cuid())
+  name      String
+  website   String?
+  notes     String?
+  contacts  Contact[]
+  deals     Deal[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([name])
+}
+
+model Contact {
+  id         String           @id @default(cuid())
+  firstName  String
+  lastName   String?
+  email      String?
+  phone      String?
+  role       String?
+  source     String?
+  status     CrmContactStatus @default(LEAD)
+  ownerNotes String?
+
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  // Références souples vers les autres domaines (pas de FK — résolues côté BO).
+  linkedProjectId  String?
+  testimonialId    String?
+  contactMessageId String?
+
+  deals      Deal[]
+  activities Activity[]
+  tasks      CrmTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([companyId])
+}
+
+model Deal {
+  id              String    @id @default(cuid())
+  title           String
+  valueCents      Int?
+  stage           DealStage @default(PROSPECT)
+  probability     Int?
+  expectedCloseAt DateTime?
+
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  activities Activity[]
+  tasks      CrmTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stage])
+  @@index([contactId])
+  @@index([companyId])
+}
+
+model Activity {
+  id         String       @id @default(cuid())
+  type       ActivityType @default(NOTE)
+  content    String
+  occurredAt DateTime     @default(now())
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([contactId])
+  @@index([dealId])
+  @@index([occurredAt])
+}
+
+model CrmTask {
+  id     String    @id @default(cuid())
+  title  String
+  dueAt  DateTime?
+  isDone Boolean   @default(false)
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dueAt])
+  @@index([isDone])
+  @@index([contactId])
+  @@index([dealId])
+}
