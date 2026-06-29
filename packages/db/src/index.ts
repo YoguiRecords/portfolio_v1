@@ -12,8 +12,22 @@ import { PrismaClient } from "../generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
+/** Extracts the `schema` query parameter from a Postgres URL (defaults to `public`). */
+function schemaFromUrl(url: string | undefined): string {
+  if (!url) return "public";
+  try {
+    return new URL(url).searchParams.get("schema") ?? "public";
+  } catch {
+    return "public";
+  }
+}
+
 function createClient(): PrismaClient {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+  const connectionString = process.env.DATABASE_URL;
+  // The pg driver adapter ignores the URL `?schema=` param, so it is parsed and
+  // passed explicitly — otherwise every query would silently hit `public`
+  // (breaks tests that point at the isolated `test` schema).
+  const adapter = new PrismaPg({ connectionString }, { schema: schemaFromUrl(connectionString) });
   return new PrismaClient({ adapter });
 }
 
