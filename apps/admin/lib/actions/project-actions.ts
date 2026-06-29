@@ -23,6 +23,29 @@ export async function createProjectAction(form: FormData): Promise<void> {
   revalidatePath("/projets");
 }
 
+/** Updates a project header from the editor form (merges with current values). */
+export async function updateProjectAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const id = str(form, "id");
+  if (!id) return;
+  const current = await prisma.project.findUnique({ where: { id } });
+  if (!current) return;
+  await updateProject(prisma, id, {
+    ...current,
+    title: str(form, "title") ?? current.title,
+    slug: str(form, "slug") ?? current.slug,
+    summary: str(form, "summary") ?? current.summary,
+    type: str(form, "type") ?? current.type,
+    role: str(form, "role"),
+    tagline: str(form, "tagline"),
+    statusLabel: str(form, "statusLabel"),
+    status: str(form, "status") ?? current.status,
+    featured: form.get("featured") === "on",
+  });
+  revalidatePath("/projets");
+  revalidatePath(`/projets/${id}`);
+}
+
 /** Toggles a project between DRAFT and PUBLISHED. */
 export async function setProjectStatusAction(form: FormData): Promise<void> {
   await requireEnrolledSession();

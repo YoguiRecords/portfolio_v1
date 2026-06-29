@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
 import { addBlockAction, deleteBlockAction } from "@/lib/actions/block-actions";
+import { updateProjectAction } from "@/lib/actions/project-actions";
+import { ProjectEditor, type ProjectEditorData } from "@/components/projects/project-editor";
 import { ProcessEditor } from "@/components/block-editors/process-editor";
 import { ContextEditor } from "@/components/block-editors/context-editor";
 import { TextEditor } from "@/components/block-editors/text-editor";
@@ -42,8 +44,8 @@ function BlockEditor({ block, projectId }: { block: { id: string; type: string; 
   }
 }
 
-/** Project block editor: add/remove blocks and edit the Gantt (PROCESS) visually. */
-export default async function ProjectBlocksPage({ params }: { params: Promise<{ id: string }> }) {
+/** Project editor v2: header form + live preview, then flexible block editors. */
+export default async function ProjectEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const project = await prisma.project.findUnique({
     where: { id },
@@ -51,45 +53,63 @@ export default async function ProjectBlocksPage({ params }: { params: Promise<{ 
   });
   if (!project) notFound();
 
+  const editorData: ProjectEditorData = {
+    id: project.id,
+    title: project.title,
+    slug: project.slug,
+    summary: project.summary,
+    tagline: project.tagline ?? "",
+    role: project.role ?? "",
+    type: project.type,
+    statusLabel: project.statusLabel ?? "",
+    status: project.status,
+    featured: project.featured,
+  };
+
   return (
-    <div className="flex max-w-4xl flex-col gap-8">
+    <div className="flex max-w-5xl flex-col gap-8">
       <div>
-        <Link href="/projets" className="font-mono text-xs text-zinc-500 hover:text-amber-400">
+        <Link href="/projets" className="font-mono text-xs text-muted hover:text-accent">
           ← Projets
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold text-zinc-50">Blocs — {project.title}</h1>
+        <h1 className="mt-2 text-2xl font-bold text-ink">{project.title}</h1>
       </div>
 
-      {project.blocks.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun bloc. Ajoutez-en un ci-dessous.</p>
-      ) : (
-        project.blocks.map((block) => (
-          <section key={block.id} className="flex flex-col gap-3 rounded-lg border border-zinc-800 p-4">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs uppercase tracking-wide text-amber-400">{block.type}</span>
-              <form action={deleteBlockAction.bind(null, block.id, project.id)}>
-                <button type="submit" className="rounded-md border border-zinc-700 px-3 py-1 text-sm text-zinc-400 hover:bg-zinc-800">
-                  Supprimer le bloc
+      <ProjectEditor project={editorData} action={updateProjectAction} />
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold text-ink">Blocs de la fiche</h2>
+        {project.blocks.length === 0 ? (
+          <p className="text-sm text-muted">Aucun bloc. Ajoutez-en un ci-dessous.</p>
+        ) : (
+          project.blocks.map((block) => (
+            <section key={block.id} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs uppercase tracking-wide text-accent">{block.type}</span>
+                <form action={deleteBlockAction.bind(null, block.id, project.id)}>
+                  <button type="submit" className="rounded-control border border-border px-3 py-1 text-sm text-muted hover:bg-surface-2">
+                    Supprimer le bloc
+                  </button>
+                </form>
+              </div>
+              <BlockEditor block={block} projectId={project.id} />
+            </section>
+          ))
+        )}
+
+        <div className="flex flex-col gap-2 rounded-card border border-border bg-surface p-4">
+          <h3 className="text-sm font-semibold text-ink-2">Ajouter un bloc</h3>
+          <div className="flex flex-wrap gap-2">
+            {BLOCK_TYPES.map((t) => (
+              <form key={t} action={addBlockAction.bind(null, project.id, t)}>
+                <button type="submit" className="rounded-control border border-border px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
+                  + {t}
                 </button>
               </form>
-            </div>
-            <BlockEditor block={block} projectId={project.id} />
-          </section>
-        ))
-      )}
-
-      <div className="flex flex-col gap-2 rounded-lg border border-zinc-800 p-4">
-        <h2 className="text-sm font-semibold text-zinc-200">Ajouter un bloc</h2>
-        <div className="flex flex-wrap gap-2">
-          {BLOCK_TYPES.map((t) => (
-            <form key={t} action={addBlockAction.bind(null, project.id, t)}>
-              <button type="submit" className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
-                + {t}
-              </button>
-            </form>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
