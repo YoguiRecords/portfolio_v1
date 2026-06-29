@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P4 — Articles** (liste + éditeur + programmation) — `phase-04-articles.md`
 - [ ] **P5 — Me concernant + Contenu home + CV** — `phase-05-profil-home-cv.md`
 - [ ] **P6 — Médias** — `phase-06-medias.md`
 - [ ] **P7 — Témoignages** (modération) — `phase-07-temoignages.md`
@@ -29,9 +28,10 @@
 - [x] **P1 — Shell v2** — rail icônes groupé + topbar (search ⌘K placeholder/notif/Créer/avatar) + bottom bar mobile + tiroir, compteurs serveur.
 - [x] **P2 — Dashboard v2** — KPIs + trafic Umami (fallback) + « à traiter » + top contenus, sur primitives P0.
 - [x] **P3 — Projets** — liste DataTable (recherche/filtre/pagination/suppression confirmée) + éditeur entête avec aperçu live (composant `live-preview` réutilisable) + blocs préservés.
+- [x] **P4 — Articles** — liste DataTable + éditeur markdown (aperçu live réutilisé) + programmation (SCHEDULED/scheduledAt) + tags/SEO + renderer markdown sûr admin.
 
 ## En cours
-- **P4 — Articles** (liste + éditeur + programmation).
+- **P5 — Me concernant + Contenu home + CV**.
 
 ## Bloqué / à arbitrer
 - _(rien)_
