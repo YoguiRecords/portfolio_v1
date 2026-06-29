@@ -37,6 +37,18 @@
   suite (au prix d'avancer moins vite sur les features). En l'état, je priorise « TOUTES les
   phases » comme demandé, screenshots consolidés en P15.
 
+## Monitoring usage tokens (claude.ai)
+- **D07 — Moniteur d'usage.** Environnement **local** (navigateur visible confirmé). Un moniteur
+  Playwright (`scripts/usage-monitor.cjs`, profil persistant, hors dépôt dans scratchpad) screenshote
+  `claude.ai/settings/usage` toutes les 2 min → `scratchpad/usage/usage-latest.png`.
+  **Règle de pause :** surveiller la ligne **« Session actuelle »** (reset toutes les 5 h). Si elle
+  approche **90-95 %**, se mettre en **pause pour la durée restante avant reset** (reprise auto
+  programmée) → le quota se recharge, pas de blocage.
+  ⚠️ **Auto-monitoring abandonné** : piloter ton Chrome réel exige qu'il soit fermé (verrou de
+  profil), et un Chrome séparé est bloqué par Cloudflare au login claude.ai. La page Usage est une
+  **modale** (`claude.ai/new#settings/usage`). → **Mode manuel** : tu me donnes le % quand tu veux ;
+  je me mets en pause si ~90 %. Scripts jetables supprimés. Dernier relevé : 36 %, reset ~01:25.
+
 ## Phases sensibles (à venir — choix pro par défaut, loggués ici)
 - **P10 (CRM schéma + rôles DB)** : migration avec `REVOKE ALL` pour `app_web` sur les tables CRM
   (même posture que `ContactMessage`). Détails reportés ici à l'exécution.

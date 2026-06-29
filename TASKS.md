@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P3 — Projets** (liste + éditeur + aperçu live) — `phase-03-projets.md`
 - [ ] **P4 — Articles** (liste + éditeur + programmation) — `phase-04-articles.md`
 - [ ] **P5 — Me concernant + Contenu home + CV** — `phase-05-profil-home-cv.md`
 - [ ] **P6 — Médias** — `phase-06-medias.md`
@@ -23,14 +22,16 @@
 - [ ] **P14 — Réglages + SEO/FAQ + recherche ⌘K** — `phase-14-reglages-recherche.md`
 - [ ] **P15 — Finitions transverses** (états vides/erreur, a11y, responsive, E2E, docs) — `phase-15-finitions.md`
 - [ ] **P16 — Multi-users BO + RBAC** (rôles + permissions, VIEWER read-only + masquage PII, invitations) — `phase-16-bo-users-rbac.md`
+- [ ] **P17 — Chatbot public IA** (rendre fonctionnel : prochain évènement + contenu site + garde-fous + RDV) — `2026-06-30-phase-17-public-chatbot.md`
 
 ## Livré
 - [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
 - [x] **P1 — Shell v2** — rail icônes groupé + topbar (search ⌘K placeholder/notif/Créer/avatar) + bottom bar mobile + tiroir, compteurs serveur.
 - [x] **P2 — Dashboard v2** — KPIs + trafic Umami (fallback) + « à traiter » + top contenus, sur primitives P0.
+- [x] **P3 — Projets** — liste DataTable (recherche/filtre/pagination/suppression confirmée) + éditeur entête avec aperçu live (composant `live-preview` réutilisable) + blocs préservés.
 
 ## En cours
-- **P3 — Projets** (liste + éditeur + aperçu live).
+- **P4 — Articles** (liste + éditeur + programmation).
 
 ## Bloqué / à arbitrer
 - _(rien)_
