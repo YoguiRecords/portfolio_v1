@@ -22,6 +22,7 @@ test("Parcours rend le rôle d'un jalon de voie", () => {
   ] as unknown as HomeData["tracks"];
 
   render(<Parcours section={section} tracks={tracks} currentRole="Fondateur" signature="sig" />);
-  expect(screen.getByText("Développeur")).toBeInTheDocument();
-  expect(screen.getByText("Fondateur")).toBeInTheDocument();
+  // Rendu en double (desktop axe temporel + mobile chronologique) → au moins 1.
+  expect(screen.getAllByText("Développeur").length).toBeGreaterThan(0);
+  expect(screen.getAllByText("Fondateur").length).toBeGreaterThan(0);
 });
