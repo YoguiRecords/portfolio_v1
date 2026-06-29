@@ -16,6 +16,12 @@ export { hashPassword, verifyPassword } from "./auth/password";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 
+// i18n (overlay localize + AI translation + change detection)
+export { localize, type FieldTranslation } from "./i18n/localize";
+export { translateFields, type TranslatedField } from "./i18n/translate";
+export { frChanged, type SourceHashed } from "./i18n/changed";
+export { hashSource } from "./i18n/hash";
+
 // Testimonials (public submission schema)
 export { TestimonialInput } from "./testimonials/schema";
 
