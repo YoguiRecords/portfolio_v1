@@ -49,6 +49,11 @@
   **modale** (`claude.ai/new#settings/usage`). → **Mode manuel** : tu me donnes le % quand tu veux ;
   je me mets en pause si ~90 %. Scripts jetables supprimés. Dernier relevé : 36 %, reset ~01:25.
 
+## Reports/dettes techniques (mineurs)
+- **DT1 (P4/P5)** : renderer markdown dupliqué `apps/web` ↔ `apps/admin` → à extraire dans `@portfolio/core`.
+- **DT2 (P8)** : pas d'**éditeur d'évènement `[id]`** dédié (l'agenda reste liste + création + suppression + génération d'actu, reskinnés). L'évènement complet (édition dates/lieu/programmation/galerie) est un complément à ajouter si besoin. La nouveauté clé de P8 (workflow RDV→calendrier) est livrée + testée.
+- **DT3 (P6)** : panneau détails média sans « utilisé dans » (relations) — ajout possible plus tard.
+
 ## Phases sensibles (à venir — choix pro par défaut, loggués ici)
 - **P10 (CRM schéma + rôles DB)** : migration avec `REVOKE ALL` pour `app_web` sur les tables CRM
   (même posture que `ContactMessage`). Détails reportés ici à l'exécution.

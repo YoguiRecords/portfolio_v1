@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P8 — Agenda / Events + Demandes de RDV** (accepter/refuser → agenda) — `phase-08-agenda-rdv.md`
 - [ ] **P9 — Boîte de réception unique** (Mails + Messages) — `phase-09-inbox.md`
 - [ ] **P10 — CRM : schéma & socle** (migration + rôles DB) — `phase-10-crm-schema.md`
 - [ ] **P11 — CRM : UI** (Contacts, Sociétés, Pipeline, activités/relances) — `phase-11-crm-ui.md`
@@ -29,9 +28,10 @@
 - [x] **P5 — Profil / Home / CV** — form « Me concernant » v2 + aperçu live « À propos », sections home reskin, éditeur CV HTML isolé (iframe sandbox).
 - [x] **P6 — Médias** — dropzone (pipeline webp/MinIO inchangé) + grille v2 + panneau détails (dimensions/poids/format/durée), support VIDEO/EMBED.
 - [x] **P7 — Témoignages** — file modération v2 (onglets statut, édition texte affiché vs original/audit, mise en avant, refus confirmé), hook CRM en stub.
+- [x] **P8 — Agenda + RDV** — agenda reskin (liste/création/suppression/génération actu) + file RDV v2 (accepter→évènement calendrier best-effort / refuser confirmé). _Reste : éditeur event `[id]` (DT2)._
 
 ## En cours
-- **P8 — Agenda / Events + Demandes de RDV**.
+- **P9 — Boîte de réception unique**.
 
 ## Bloqué / à arbitrer
 - _(rien)_
