@@ -28,6 +28,16 @@ export { TestimonialInput } from "./testimonials/schema";
 // Contact & appointment (public submission schemas)
 export { ContactInput, AppointmentInput } from "./contact/schema";
 
+// Admin content editing schemas
+export {
+  KpiInput,
+  SkillInput,
+  CareerGoalInput,
+  HomeSectionInput,
+  ProfileInput,
+  ReorderItem,
+} from "./admin/content-schemas";
+
 // Security (in-memory rate limiter)
 export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";
 

@@ -12,6 +12,7 @@ export interface AdminNavItem {
 /** Back-office sections (pages land progressively in P9–P14). */
 export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/", label: "Tableau de bord" },
+  { href: "/profile", label: "Profil" },
   { href: "/content", label: "Contenu home" },
   { href: "/projects", label: "Projets" },
   { href: "/articles", label: "Articles" },
