@@ -10,7 +10,7 @@
 - [x] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission modérée). ✅
 - [x] **P6** — Web : Contact + demande de RDV (endpoints insert-only, Zod, rate-limit, honeypot) + page. ✅
 - [x] **P7** — Web : SEO/AEO (JSON-LD Person/CreativeWork/FAQ, metadata+hreflang, sitemap, robots, llms.txt). ✅
-- [ ] **P8** — Admin : garde des routes + shell BO (nav, layout).
+- [x] **P8** — Admin : shell BO (`(dashboard)` gardé, AdminNav/AdminLayout, dashboard stats). ✅
 - [ ] **P9** — Admin : CRUD contenu home (Profile, SiteSettings, HomeSection, KPI, Skill, Career*, Analysis, Goal).
 - [ ] **P10** — Admin : Projets + éditeur de blocs.
 - [ ] **P11** — Admin : Articles (+ programmation) + **upload média** (via `image-processor` → MinIO).

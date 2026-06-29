@@ -1,5 +1,14 @@
 # Patch notes — v0.4.x
 
+## v0.4.3 — Back office : shell & gardes (2026-06-29)
+
+- Groupe de routes **`(dashboard)`** entièrement **protégé** (session + MFA via les guards existants ;
+  redirige login/verify/enrôlement sinon). Shell modulaire : **AdminNav** (sections + item actif),
+  **AdminLayout** (sidebar + logout), **dashboard** avec compteurs (projets, articles, témoignages
+  PENDING, messages non lus, RDV en attente — alertes mises en avant).
+- Tests : gardes (unit), AdminNav (RTL) ; E2E garde (accès non authentifié → `/login`). Serveur BO
+  (3101) ajouté au harnais Playwright.
+
 ## v0.4.2 — SEO / AEO (2026-06-29)
 
 - **JSON-LD** (builders purs) : Person (home), CreativeWork + FAQPage (projet), Article, Event,
