@@ -31,6 +31,7 @@ export const NAV_GROUPS: NavGroup[] = ["Contenu", "Relation client", "Mesure"];
 /** Sections du back office (les pages CRM/Inbox arrivent en P9–P12). */
 export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/", label: "Tableau de bord", icon: "dashboard" },
+  { href: "/mission-control", label: "Mission Control", icon: "mission" },
   { href: "/profile", label: "Profil", icon: "user", group: "Contenu" },
   { href: "/cv", label: "CV", icon: "article", group: "Contenu" },
   { href: "/content", label: "Contenu home", icon: "home", group: "Contenu" },
