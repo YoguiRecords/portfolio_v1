@@ -10,10 +10,12 @@
  *
  * Lancer : `pnpm --filter @portfolio/db exec tsx prisma/seed-content.ts`
  */
+import { hashSource } from "@portfolio/core";
 import { prisma } from "../src/index";
 
 async function main(): Promise<void> {
   // 1. Reset du contenu éditorial (les FK enfants tombent en cascade)
+  await prisma.translation.deleteMany();
   await prisma.event.deleteMany();
   await prisma.article.deleteMany();
   await prisma.project.deleteMany();
@@ -113,6 +115,23 @@ async function main(): Promise<void> {
       { key: "footer", title: "La suite s'écrit ensemble.", order: 6 },
     ],
   });
+
+  // 4b. Overlay EN (démo i18n) : traduction du titre de la section « profil ».
+  const profilSection = await prisma.homeSection.findUnique({ where: { key: "profil" } });
+  if (profilSection) {
+    const frTitle = "Le profil, en clair.";
+    await prisma.translation.create({
+      data: {
+        model: "HomeSection",
+        recordId: profilSection.id,
+        field: "title",
+        locale: "en",
+        value: "The profile, in clear.",
+        isAuto: true,
+        sourceHash: hashSource(frTitle),
+      },
+    });
+  }
 
   // 5. KPI
   await prisma.kpi.createMany({
