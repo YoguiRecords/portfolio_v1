@@ -1,44 +1,50 @@
 import { prisma } from "@portfolio/db";
+import { Button, Status } from "@/components/ui";
 import { listEvents } from "@/lib/content/event";
 import { createEventAction, deleteEventAction, generateNewsAction } from "@/lib/actions/event-actions";
 
 export const dynamic = "force-dynamic";
 
 const inputCls =
-  "rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:outline focus:outline-2 focus:outline-amber-500";
+  "rounded-control border border-border bg-surface-2 px-3 py-2 text-sm text-ink placeholder:text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent";
 
-/** Agenda editor — event CRUD + manual "generate news from event". */
+const STATUS_LABEL: Record<string, string> = { DRAFT: "Brouillon", SCHEDULED: "Programmé", PUBLISHED: "Publié" };
+
+/** Agenda editor v2 — event CRUD + "generate news from event". */
 export default async function AdminAgendaPage() {
   const events = await listEvents(prisma);
 
   return (
     <div className="flex max-w-3xl flex-col gap-8">
-      <h1 className="text-2xl font-semibold text-zinc-50">Agenda</h1>
+      <h1 className="text-2xl font-bold text-ink">Agenda</h1>
 
-      <ul className="flex flex-col divide-y divide-zinc-800 rounded-lg border border-zinc-800">
+      <ul className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface">
         {events.length === 0 ? (
-          <li className="p-4 text-sm text-zinc-500">Aucun évènement.</li>
+          <li className="p-4 text-sm text-muted">Aucun évènement.</li>
         ) : (
           events.map((e) => (
             <li key={e.id} className="flex items-center justify-between gap-4 p-4">
               <div>
-                <div className="font-semibold text-zinc-100">{e.title}</div>
-                <div className="text-xs text-zinc-500">
-                  {e.startAt.toISOString().slice(0, 16)} · {e.visibility} · {e.status}
+                <div className="font-semibold text-ink">{e.title}</div>
+                <div className="flex items-center gap-2 text-xs text-muted">
+                  {e.startAt.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })} · {e.visibility}
+                  <Status variant={e.status === "PUBLISHED" ? "published" : "draft"}>
+                    {STATUS_LABEL[e.status] ?? e.status}
+                  </Status>
                 </div>
               </div>
               <div className="flex gap-2">
                 <form action={generateNewsAction}>
                   <input type="hidden" name="id" value={e.id} />
-                  <button type="submit" className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+                  <Button variant="subtle" size="sm" type="submit">
                     Générer une actu
-                  </button>
+                  </Button>
                 </form>
                 <form action={deleteEventAction}>
                   <input type="hidden" name="id" value={e.id} />
-                  <button type="submit" className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+                  <Button variant="subtle" size="sm" type="submit">
                     Supprimer
-                  </button>
+                  </Button>
                 </form>
               </div>
             </li>
@@ -46,24 +52,24 @@ export default async function AdminAgendaPage() {
         )}
       </ul>
 
-      <form action={createEventAction} className="flex flex-col gap-3 rounded-lg border border-zinc-800 p-4">
-        <h2 className="text-sm font-semibold text-zinc-200">Nouvel évènement</h2>
+      <form action={createEventAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4">
+        <h2 className="text-sm font-semibold text-ink-2">Nouvel évènement</h2>
         <input className={inputCls} name="title" placeholder="Titre" required />
         <input className={inputCls} name="slug" placeholder="slug-evenement" required />
         <input className={inputCls} name="startAt" type="datetime-local" required />
         <input className={inputCls} name="locationName" placeholder="Lieu" />
         <input className={inputCls} name="city" placeholder="Ville" />
         <input className={inputCls} name="registrationUrl" placeholder="https://inscription…" />
-        <label className="flex items-center gap-2 text-sm text-zinc-300">
+        <label className="flex items-center gap-2 text-sm text-ink-2">
           <input type="checkbox" name="isOnline" /> En ligne
         </label>
         <select className={inputCls} name="status" defaultValue="DRAFT">
           <option value="DRAFT">Brouillon</option>
           <option value="PUBLISHED">Publié</option>
         </select>
-        <button type="submit" className="self-start rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-amber-950 hover:bg-amber-600">
+        <Button variant="primary" type="submit" className="self-start">
           Créer
-        </button>
+        </Button>
       </form>
     </div>
   );
