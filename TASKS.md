@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P6 — Médias** — `phase-06-medias.md`
 - [ ] **P7 — Témoignages** (modération) — `phase-07-temoignages.md`
 - [ ] **P8 — Agenda / Events + Demandes de RDV** (accepter/refuser → agenda) — `phase-08-agenda-rdv.md`
 - [ ] **P9 — Boîte de réception unique** (Mails + Messages) — `phase-09-inbox.md`
@@ -29,9 +28,10 @@
 - [x] **P3 — Projets** — liste DataTable (recherche/filtre/pagination/suppression confirmée) + éditeur entête avec aperçu live (composant `live-preview` réutilisable) + blocs préservés.
 - [x] **P4 — Articles** — liste DataTable + éditeur markdown (aperçu live réutilisé) + programmation (SCHEDULED/scheduledAt) + tags/SEO + renderer markdown sûr admin.
 - [x] **P5 — Profil / Home / CV** — form « Me concernant » v2 + aperçu live « À propos », sections home reskin, éditeur CV HTML isolé (iframe sandbox).
+- [x] **P6 — Médias** — dropzone (pipeline webp/MinIO inchangé) + grille v2 + panneau détails (dimensions/poids/format/durée), support VIDEO/EMBED.
 
 ## En cours
-- **P6 — Médias**.
+- **P7 — Témoignages (modération)**.
 
 ## Bloqué / à arbitrer
 - _(rien)_
