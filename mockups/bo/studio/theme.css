@@ -1,0 +1,17 @@
+/* Direction STUDIO — sombre ardoise (slate), neutre, focus édition */
+:root {
+  --bg: #0f1116;
+  --surface: #161922;
+  --surface-2: #1c2029;
+  --elevated: #222733;
+  --border: #262b35;
+  --border-2: #313742;
+  --text-2: #aab2c0;
+  --text-muted: #767f8e;
+  --hover: #1b1f29;
+}
+.split { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 1040px) { .split { grid-template-columns: minmax(380px, 460px) 1fr; } }
+.split .form-col { padding-right: clamp(0px, 2vw, 26px); }
+.split .preview-col { position: sticky; top: 74px; align-self: start; padding-left: clamp(0px, 2vw, 26px); border-left: 1px solid var(--border); }
+@media (max-width: 1039px) { .split .preview-col { border-left: 0; border-top: 1px solid var(--border); margin-top: 22px; padding-top: 22px; } }

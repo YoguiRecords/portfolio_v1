@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio · Articles — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .acards { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 680px) { .acards { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 1080px) { .acards { grid-template-columns: repeat(3, 1fr); } }
+      .acard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: .18s; }
+      .acard:hover { border-color: var(--border-2); transform: translateY(-2px); box-shadow: var(--shadow); }
+      .acard .cover { aspect-ratio: 16/9; background: linear-gradient(135deg, var(--surface-2), var(--bg)); position: relative; }
+      .acard .cover::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 75% 25%, var(--accent-soft), transparent 60%); }
+      .acard .cover .st { position: absolute; top: 10px; left: 10px; }
+      .acard .cover .acts { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; opacity: 0; transition: .15s; }
+      .acard:hover .cover .acts { opacity: 1; }
+      .acard .cover .acts .act { background: rgba(0,0,0,.5); color: #fff; }
+      .acard .b { padding: 14px 15px 15px; }
+      .acard h3 { font-size: 15px; font-weight: 700; margin-bottom: 7px; line-height: 1.3; }
+      .acard .meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 12px; color: var(--text-muted); }
+    </style>
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="brand"><span class="mark">Y</span><span class="name">Yohan<span>.</span>BO</span></div>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <a class="nav-item" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item is-active" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <a class="nav-item" href="#"><span class="ico">⊞</span> CV</a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Système</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Administrateur</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher un article…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div>
+              <div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Articles</div>
+              <h1 class="page-title">Articles &amp; news</h1>
+              <p class="page-sub">12 articles · 10 publiés · 2 brouillons</p>
+            </div>
+            <div class="page-actions"><a class="btn btn-primary" href="#">+ Nouvel article</a></div>
+          </div>
+
+          <div class="toolbar">
+            <div class="segmented">
+              <button class="seg is-active">Tous <span class="count">12</span></button>
+              <button class="seg">Publiés <span class="count">10</span></button>
+              <button class="seg">En revue <span class="count">1</span></button>
+              <button class="seg">Brouillons <span class="count">2</span></button>
+            </div>
+            <span class="spacer"></span>
+            <span class="search" style="max-width:240px">⌕ Filtrer…</span>
+          </div>
+
+          <div class="acards">
+            <div class="acard"><div class="cover"><span class="st status is-published">Publié</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">Cybersécurité</span><h3 style="margin-top:8px">Sécurité by design : 5 réflexes</h3><div class="meta"><span>610 vues</span><span>il y a 3 j</span></div></div></div>
+            <div class="acard"><div class="cover"><span class="st status is-published">Publié</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">DevOps</span><h3 style="margin-top:8px">Pourquoi je conteneurise tout</h3><div class="meta"><span>320 vues</span><span>il y a 8 j</span></div></div></div>
+            <div class="acard"><div class="cover"><span class="st status is-review">En revue</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">Projet</span><h3 style="margin-top:8px">Retour sur Domestic Revolt</h3><div class="meta"><span class="muted">Relecture</span><span>hier</span></div></div></div>
+            <div class="acard"><div class="cover"><span class="st status is-draft">Brouillon</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">Carrière</span><h3 style="margin-top:8px">Du dev au management</h3><div class="meta"><span class="muted">60 % rédigé</span><span>il y a 1 h</span></div></div></div>
+            <div class="acard"><div class="cover"><span class="st status is-published">Publié</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">Architecture</span><h3 style="margin-top:8px">Architecture d'un monorepo Next.js</h3><div class="meta"><span>204 vues</span><span>il y a 12 j</span></div></div></div>
+            <div class="acard"><div class="cover"><span class="st status is-published">Publié</span><div class="acts"><span class="act">✎</span><span class="act del">🗑</span></div></div><div class="b"><span class="tag">Écosystème</span><h3 style="margin-top:8px">Lille, terre de talents tech</h3><div class="meta"><span>142 vues</span><span>il y a 20 j</span></div></div></div>
+          </div>
+          <div class="pagination">
+            <span class="info">1–6 sur 12</span>
+            <div class="pages"><span class="pg">‹</span><span class="pg is-active">1</span><span class="pg">2</span><span class="pg">›</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

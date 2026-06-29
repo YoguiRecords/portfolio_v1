@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rail · Articles — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body>
+    <div class="app app--rail">
+      <nav class="rail">
+        <div class="rail-logo">Y</div>
+        <a class="rail-item" href="./dashboard.html">▦<span class="tip">Dashboard</span></a>
+        <a class="rail-item" href="./projets.html">◆<span class="tip">Projets</span></a>
+        <a class="rail-item is-active" href="./articles.html">✎<span class="tip">Articles</span></a>
+        <a class="rail-item" href="./profil.html">☺<span class="tip">Me concernant</span></a>
+        <a class="rail-item" href="#">▣<span class="tip">Médias</span></a>
+        <div style="height:14px"></div>
+        <a class="rail-item" href="#">✉<span class="dot"></span><span class="tip">Boîte mail · 4</span></a>
+        <a class="rail-item" href="#">⚇<span class="tip">CRM · Contacts</span></a>
+        <a class="rail-item" href="#">◔<span class="tip">Statistiques</span></a>
+        <span class="rail-sp"></span>
+        <a class="rail-item" href="#">⚙<span class="tip">Réglages</span></a>
+        <img class="rail-avatar" src="../../profile.jpg" alt="" />
+      </nav>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher un article…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div>
+              <div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Articles</div>
+              <h1 class="page-title">Articles &amp; news</h1>
+              <p class="page-sub">12 articles · 10 publiés · 2 brouillons</p>
+            </div>
+            <div class="page-actions"><a class="btn btn-primary" href="#">+ Nouvel article</a></div>
+          </div>
+
+          <div class="toolbar">
+            <div class="segmented">
+              <button class="seg is-active">Tous <span class="count">12</span></button>
+              <button class="seg">Publiés <span class="count">10</span></button>
+              <button class="seg">En revue <span class="count">1</span></button>
+              <button class="seg">Brouillons <span class="count">2</span></button>
+            </div>
+            <span class="spacer"></span>
+            <span class="search" style="max-width:240px">⌕ Filtrer…</span>
+            <a class="btn btn-ghost btn-sm" href="#">⇅ Trier</a>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:34px"><span class="checkbox"></span></th>
+                  <th>Article</th><th>Catégorie</th><th>Statut</th><th class="num">Vues</th><th>Modifié</th><th style="width:110px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Sécurité by design : 5 réflexes</b><small>/articles/securite-by-design</small></div></div></td><td><span class="tag">Cybersécurité</span></td><td><span class="status is-published">Publié</span></td><td class="num">610</td><td>il y a 3 j</td><td><div class="row-actions"><span class="act" title="Éditer">✎</span><span class="act" title="Aperçu">↗</span><span class="act del" title="Supprimer">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Pourquoi je conteneurise tout</b><small>/articles/conteneurisation</small></div></div></td><td><span class="tag">DevOps</span></td><td><span class="status is-published">Publié</span></td><td class="num">320</td><td>il y a 8 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Retour sur Domestic Revolt</b><small>relecture en cours</small></div></div></td><td><span class="tag">Projet</span></td><td><span class="status is-review">En revue</span></td><td class="num muted">—</td><td>hier</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Du dev au management</b><small>brouillon · 60 %</small></div></div></td><td><span class="tag">Carrière</span></td><td><span class="status is-draft">Brouillon</span></td><td class="num muted">—</td><td>il y a 1 h</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Architecture d'un monorepo Next.js</b><small>/articles/monorepo-nextjs</small></div></div></td><td><span class="tag">Architecture</span></td><td><span class="status is-published">Publié</span></td><td class="num">204</td><td>il y a 12 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Lille, terre de talents tech</b><small>/articles/lille-tech</small></div></div></td><td><span class="tag">Écosystème</span></td><td><span class="status is-published">Publié</span></td><td class="num">142</td><td>il y a 20 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="info">1–6 sur 12</span>
+            <div class="pages"><span class="pg">‹</span><span class="pg is-active">1</span><span class="pg">2</span><span class="pg">›</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

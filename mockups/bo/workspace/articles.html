@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workspace · Articles — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body class="t-light">
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="ws-top"><img src="../../profile.jpg" alt="" /><b>Yohan Debusscher</b><span class="chev">⌄</span></div>
+        <nav class="tree">
+          <a href="./dashboard.html"><span class="em">🏠</span> Accueil</a>
+          <a href="#"><span class="em">✉️</span> Boîte mail <span style="margin-left:auto;font-size:11px;color:var(--accent-strong)">4</span></a>
+          <a href="#"><span class="em">👥</span> CRM · Contacts</a>
+          <div class="lbl">Contenu <span class="add">＋</span></div>
+          <a href="./projets.html"><span class="tw">▸</span><span class="em">📁</span> Projets</a>
+          <a class="on" href="./articles.html"><span class="tw">▾</span><span class="em">✍️</span> Articles</a>
+          <div class="child">
+            <a href="./articles.html"><span class="em">✎</span> Sécurité by design</a>
+            <a href="./articles.html"><span class="em">✎</span> Du dev au management</a>
+          </div>
+          <a href="./profil.html"><span class="em">🙂</span> Me concernant</a>
+          <a href="#"><span class="em">🖼️</span> Médias</a>
+          <a href="#"><span class="em">📄</span> CV</a>
+          <div class="lbl">Mesure</div>
+          <a href="#"><span class="em">📊</span> Statistiques</a>
+          <a href="#"><span class="em">⚙️</span> Réglages</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <div class="breadcrumb" style="margin:0"><a href="./dashboard.html">🏠 Accueil</a><span class="sep">/</span> ✍️ Articles</div>
+          <div class="topbar-actions"><a class="btn btn-ghost btn-sm" href="#">Partager</a><span class="icon-btn">⋯</span></div>
+        </header>
+
+        <div class="page" style="max-width:980px;margin:0 auto">
+          <h1 class="page-title" style="font-size:32px;margin-bottom:4px">✍️ Articles &amp; news</h1>
+          <p class="page-sub" style="margin-bottom:18px">Base de données · 12 entrées · 10 publiées</p>
+
+          <div class="viewtabs">
+            <a class="on" href="#">▤ Table</a>
+            <a href="#">▥ Kanban (statut)</a>
+            <a href="#">📅 Calendrier</a>
+            <a href="#" style="margin-left:auto;color:var(--accent-strong)">＋ Vue</a>
+          </div>
+
+          <div class="toolbar" style="margin-bottom:10px">
+            <a class="btn btn-subtle btn-sm" href="#">⚟ Catégorie : toutes</a>
+            <a class="btn btn-subtle btn-sm" href="#">⇅ Récent</a>
+            <span class="spacer"></span>
+            <span class="search" style="max-width:180px">⌕ Rechercher</span>
+            <a class="btn btn-primary btn-sm" href="#">＋ Nouveau</a>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Aa Titre</th><th>◦ Catégorie</th><th>● Statut</th><th class="num"># Vues</th><th>🕓 Modifié</th></tr></thead>
+              <tbody>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Sécurité by design : 5 réflexes</b></div></td><td><span class="tag">Cybersécurité</span></td><td><span class="status is-published">Publié</span></td><td class="num">610</td><td>il y a 3 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Pourquoi je conteneurise tout</b></div></td><td><span class="tag">DevOps</span></td><td><span class="status is-published">Publié</span></td><td class="num">320</td><td>il y a 8 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Retour sur Domestic Revolt</b></div></td><td><span class="tag">Projet</span></td><td><span class="status is-review">En revue</span></td><td class="num muted">—</td><td>hier</td></tr>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Du dev au management</b></div></td><td><span class="tag">Carrière</span></td><td><span class="status is-draft">Brouillon</span></td><td class="num muted">—</td><td>il y a 1 h</td></tr>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Architecture d'un monorepo Next.js</b></div></td><td><span class="tag">Architecture</span></td><td><span class="status is-published">Publié</span></td><td class="num">204</td><td>il y a 12 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">✎</span><b>Lille, terre de talents tech</b></div></td><td><span class="tag">Écosystème</span></td><td><span class="status is-published">Publié</span></td><td class="num">142</td><td>il y a 20 j</td></tr>
+                <tr><td colspan="5"><a href="#" class="muted" style="font-size:13px">＋ Nouvelle entrée</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

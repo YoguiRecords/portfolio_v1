@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assemblage · Édition projet — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      /* preview compacte */
+      .browser.mini { box-shadow: var(--shadow); }
+      .browser.mini .url { font-size: 10.5px; }
+      .render { color: #1a1a1a; }
+      .render .hero { aspect-ratio: 16/7; background: linear-gradient(135deg, #1c1c1c, #0d0d0d); position: relative; overflow: hidden; }
+      .render .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 72% 22%, rgba(240,168,0,.32), transparent 55%); }
+      .render .inner { padding: 18px 18px 22px; }
+      .render .cat { font-size: 9.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-strong); }
+      .render h1 { font-size: 21px; font-weight: 900; letter-spacing: -.02em; color: #18130a; margin: 5px 0 5px; line-height: 1.08; }
+      .render .sub { font-size: 13px; color: #5a564d; margin-bottom: 12px; }
+      .render p { font-size: 12px; line-height: 1.6; color: #2e2b25; margin-bottom: 12px; }
+      .render .ptag { display: inline-block; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 4px; background: rgba(240,168,0,.1); color: var(--accent-strong); margin: 0 5px 5px 0; }
+      .reopen { display: none; }
+      .editor:not(.with-preview) ~ * .reopen, .editor:not(.with-preview) .reopen { display: inline-flex; }
+    </style>
+  </head>
+  <body>
+    <div class="app app--rail">
+      <nav class="rail">
+        <div class="rail-logo">Y</div>
+        <a class="rail-item" href="./dashboard.html">▦<span class="tip">Dashboard</span></a>
+        <a class="rail-item" href="./mission-control.html">◉<span class="dot"></span><span class="tip">Mission control</span></a>
+        <div style="height:12px"></div>
+        <a class="rail-item is-active" href="./projets.html">◆<span class="tip">Projets</span></a>
+        <a class="rail-item" href="./articles.html">✎<span class="tip">Articles</span></a>
+        <a class="rail-item" href="./profil.html">☺<span class="tip">Me concernant</span></a>
+        <a class="rail-item" href="#">▣<span class="tip">Médias</span></a>
+        <div style="height:12px"></div>
+        <a class="rail-item" href="#">✉<span class="dot"></span><span class="tip">Boîte mail · 4</span></a>
+        <a class="rail-item" href="#">⚇<span class="tip">Contacts (CRM)</span></a>
+        <a class="rail-item" href="#">◔<span class="tip">Statistiques</span></a>
+        <span class="rail-sp"></span>
+        <a class="rail-item" href="#">⚙<span class="tip">Réglages</span></a>
+        <img class="rail-avatar" src="../../profile.jpg" alt="" />
+      </nav>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <a class="btn btn-subtle btn-sm" href="./projets.html">← Projets</a>
+          <span class="muted" style="font-size:13px">Domestic Revolt · <span class="status is-published" style="vertical-align:middle">Publié</span></span>
+          <div class="topbar-actions">
+            <button class="btn btn-ghost btn-sm preview-toggle" id="togglePreview">👁 Aperçu</button>
+            <span class="status-text" style="font-size:12.5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px"></span>Enregistré</span>
+            <a class="btn btn-primary btn-sm" href="#">Publier</a>
+          </div>
+        </header>
+
+        <div class="page">
+          <div class="editor with-preview" id="editor">
+            <!-- FORM -->
+            <div class="formcol">
+              <div class="page-header" style="margin-bottom:16px">
+                <div><h1 class="page-title" style="font-size:20px">Édition du projet</h1><p class="page-sub">L'aperçu à droite se met à jour <b style="color:var(--accent)">à la frappe</b>. Essaie 👉</p></div>
+              </div>
+              <div class="form-grid">
+                <div class="form-grid cols-2" style="gap:18px">
+                  <div class="field"><label>Catégorie</label><select class="select" id="f-cat"><option>Projet phare</option><option>Plateforme</option><option>Site web</option><option>Analyse business</option></select></div>
+                  <div class="field"><label>Statut</label><select class="select"><option>Publié</option><option>En revue</option><option>Brouillon</option></select></div>
+                </div>
+                <div class="field"><label>Titre</label><input class="input" id="f-title" value="Domestic Revolt" /></div>
+                <div class="field"><label>Sous-titre</label><input class="input" id="f-sub" value="Du concept au déploiement, en solo." /></div>
+                <div class="field"><label>Résumé</label><textarea class="textarea" id="f-summary">Plateforme conçue de A à Z : game design, architecture, sécurité by design, CI/CD et mise en production. Un projet qui condense vision produit et exécution technique.</textarea></div>
+                <div class="field"><label>Technologies</label><div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="chip add">+ ajouter</span></div></div>
+                <div class="field"><label>Image de couverture</label><div class="dropzone">Glisser une image · ou <a href="#" style="color:var(--accent)">parcourir</a><div class="pipe">→ webp + strip EXIF + MinIO</div></div></div>
+                <div class="toggle-row"><div class="tl"><b>Mettre en avant sur l'accueil</b><small>Section « projets phares »</small></div><span class="switch on"></span></div>
+              </div>
+              <div class="savebar"><span class="status-text"><span class="d"></span> Enregistré · 14:09</span><span class="spacer"></span><a class="btn btn-ghost btn-sm" href="./projets.html">Annuler</a><a class="btn btn-primary btn-sm" href="#">Enregistrer</a></div>
+            </div>
+
+            <!-- PREVIEW (compacte, fermable) -->
+            <div class="previewcol">
+              <div class="preview-tab">Aperçu en direct<span class="close" id="closePreview" title="Fermer l'aperçu">✕</span></div>
+              <div class="browser mini">
+                <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">…/projets/domestic-revolt</span></div>
+                <div class="render">
+                  <div class="hero"></div>
+                  <div class="inner">
+                    <div class="cat" id="p-cat">Projet phare</div>
+                    <h1 id="p-title">Domestic Revolt</h1>
+                    <div class="sub" id="p-sub">Du concept au déploiement, en solo.</div>
+                    <p id="p-summary">Plateforme conçue de A à Z : game design, architecture, sécurité by design, CI/CD et mise en production.</p>
+                    <div><span class="ptag">Next.js</span><span class="ptag">TypeScript</span><span class="ptag">PostgreSQL</span><span class="ptag">Docker</span></div>
+                  </div>
+                </div>
+              </div>
+              <p class="muted" style="font-size:11.5px;margin-top:10px;text-align:center">Aperçu réduit · fermable via ✕</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Aperçu live : on reflète les champs dans la preview à la frappe
+      const bind = (inputId, outId) => {
+        const i = document.getElementById(inputId), o = document.getElementById(outId);
+        if (i && o) i.addEventListener('input', () => { o.textContent = i.value || '…'; });
+      };
+      bind('f-title', 'p-title');
+      bind('f-sub', 'p-sub');
+      bind('f-summary', 'p-summary');
+      const cat = document.getElementById('f-cat');
+      cat && cat.addEventListener('change', () => document.getElementById('p-cat').textContent = cat.value);
+
+      // Onglet aperçu fermable / ré-ouvrable
+      const editor = document.getElementById('editor');
+      const toggle = document.getElementById('togglePreview');
+      const close = document.getElementById('closePreview');
+      const setOpen = (open) => {
+        editor.classList.toggle('with-preview', open);
+        toggle.innerHTML = open ? '👁 Masquer l’aperçu' : '👁 Aperçu';
+      };
+      toggle && toggle.addEventListener('click', () => setOpen(!editor.classList.contains('with-preview')));
+      close && close.addEventListener('click', () => setOpen(false));
+    </script>
+  </body>
+</html>

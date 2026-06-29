@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear · Dashboard — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="workspace"><span class="mark">Y</span><span class="nm">Yohan Debusscher<small>Back office</small></span><span class="chev">⌄</span></div>
+        <a class="nav-item is-active" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">❝</span> Témoignages <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="count">4</span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Mesure</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Admin · 2FA ✓</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Aller à… ou exécuter une action<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><span class="icon-btn">🔔</span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div><h1 class="page-title">Dashboard</h1><p class="page-sub">Lundi 29 juin · tout est opérationnel.</p></div>
+            <div class="page-actions"><a class="btn btn-ghost btn-sm" href="#">7 jours ⌄</a><a class="btn btn-ghost btn-sm" href="#">Voir le site ↗</a></div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="label">Visiteurs · 30 j</div><div class="value num">2 480</div><div class="delta up">▲ 14 %</div></div>
+            <div class="kpi"><div class="label">Mails non lus</div><div class="value num">4</div><div class="delta flat">2 prospects</div></div>
+            <div class="kpi"><div class="label">Contacts CRM</div><div class="value num">38</div><div class="delta up">▲ 3</div></div>
+            <div class="kpi"><div class="label">À traiter</div><div class="value num">5</div><div class="delta down">tâches en attente</div></div>
+          </div>
+
+          <div class="grid-2">
+            <!-- À traiter (table dense) -->
+            <div class="panel">
+              <div class="panel-head"><h3>À traiter</h3><a class="panel-link" href="#">Tout voir →</a></div>
+              <table class="table">
+                <tbody>
+                  <tr><td style="width:30px"><span class="status is-review" style="padding:0;width:8px;height:8px"></span></td><td><b style="color:var(--text)">Valider le témoignage de Sophie Lemaire</b><br /><small class="muted">Modération · Nordsoft</small></td><td style="text-align:right"><a class="btn btn-subtle btn-sm" href="#">Ouvrir</a></td></tr>
+                  <tr><td><span class="status is-review" style="padding:0;width:8px;height:8px"></span></td><td><b style="color:var(--text)">Relire « Refonte e-commerce »</b><br /><small class="muted">Projet · avant publication</small></td><td style="text-align:right"><a class="btn btn-subtle btn-sm" href="#">Ouvrir</a></td></tr>
+                  <tr><td><span class="status is-draft" style="padding:0;width:8px;height:8px"></span></td><td><b style="color:var(--text)">Finaliser « Du dev au management »</b><br /><small class="muted">Article · 60 %</small></td><td style="text-align:right"><a class="btn btn-subtle btn-sm" href="#">Ouvrir</a></td></tr>
+                  <tr><td><span class="status is-archived" style="padding:0;width:8px;height:8px"></span></td><td><b style="color:var(--text)">Répondre à Marc Dubois</b><br /><small class="muted">Mail · OXO v2</small></td><td style="text-align:right"><a class="btn btn-subtle btn-sm" href="#">Ouvrir</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Inbox -->
+            <div class="panel">
+              <div class="panel-head"><span class="ico">✉</span><h3>Boîte de réception</h3><a class="panel-link" href="#">Ouvrir →</a></div>
+              <div class="panel-body" style="padding:0">
+                <div class="mail-item unread"><div class="ava">SL</div><div class="mbody"><div class="mfrom">Sophie Lemaire</div><div class="msub">Proposition de collaboration</div></div><div class="mtime">14:02</div></div>
+                <div class="mail-item unread"><div class="ava b">MD</div><div class="mbody"><div class="mfrom">Marc Dubois</div><div class="msub">Re: Refonte OXO v2</div></div><div class="mtime">11:20</div></div>
+                <div class="mail-item"><div class="ava c">JB</div><div class="mbody"><div class="mfrom">Julie Bernard</div><div class="msub">Merci pour l'étude</div></div><div class="mtime">Hier</div></div>
+                <div class="mail-item"><div class="ava" style="background:var(--surface-2);color:var(--text-2)">RP</div><div class="mbody"><div class="mfrom">Recrutement Partner</div><div class="msub">Opportunité CTO</div></div><div class="mtime">2 j</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="panel">
+            <div class="panel-head"><span class="ico">⚇</span><h3>Pipeline CRM</h3><a class="panel-link" href="#">Gérer →</a></div>
+            <div class="panel-body">
+              <div class="pipeline">
+                <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--info)"></span> Prospect <span class="n">2</span></div><div class="pipe-card"><b>R. Partner</b><small>CTO scale-up</small></div><div class="pipe-card"><b>Agence Lille</b><small>Refonte</small></div></div>
+                <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--accent)"></span> Contact <span class="n">1</span></div><div class="pipe-card"><b>Sophie Lemaire</b><small>Nordsoft</small></div></div>
+                <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--warn)"></span> Propale <span class="n">1</span></div><div class="pipe-card"><b>Marc Dubois</b><small>OXO v2</small></div></div>
+                <div class="pipe-col"><div class="ph"><span class="dot" style="background:var(--ok)"></span> Client <span class="n">1</span></div><div class="pipe-card"><b>Saveurs du Nord</b><small>Livré ✓</small></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

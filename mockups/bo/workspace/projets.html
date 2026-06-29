@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workspace · Projets — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body class="t-light">
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="ws-top"><img src="../../profile.jpg" alt="" /><b>Yohan Debusscher</b><span class="chev">⌄</span></div>
+        <nav class="tree">
+          <a href="./dashboard.html"><span class="em">🏠</span> Accueil</a>
+          <a href="#"><span class="em">✉️</span> Boîte mail <span style="margin-left:auto;font-size:11px;color:var(--accent-strong)">4</span></a>
+          <a href="#"><span class="em">👥</span> CRM · Contacts</a>
+          <div class="lbl">Contenu <span class="add">＋</span></div>
+          <a class="on" href="./projets.html"><span class="tw">▾</span><span class="em">📁</span> Projets</a>
+          <div class="child">
+            <a href="./projets.html"><span class="em">◆</span> Domestic Revolt</a>
+            <a href="./projets.html"><span class="em">◆</span> OXO</a>
+            <a href="./projets.html"><span class="em">◆</span> Étude PME</a>
+          </div>
+          <a href="./articles.html"><span class="tw">▸</span><span class="em">✍️</span> Articles</a>
+          <a href="./profil.html"><span class="em">🙂</span> Me concernant</a>
+          <a href="#"><span class="em">🖼️</span> Médias</a>
+          <a href="#"><span class="em">📄</span> CV</a>
+          <div class="lbl">Mesure</div>
+          <a href="#"><span class="em">📊</span> Statistiques</a>
+          <a href="#"><span class="em">⚙️</span> Réglages</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <div class="breadcrumb" style="margin:0"><a href="./dashboard.html">🏠 Accueil</a><span class="sep">/</span> 📁 Projets</div>
+          <div class="topbar-actions"><a class="btn btn-ghost btn-sm" href="#">Partager</a><span class="icon-btn">⋯</span></div>
+        </header>
+
+        <div class="page" style="max-width:980px;margin:0 auto">
+          <h1 class="page-title" style="font-size:32px;margin-bottom:4px">📁 Projets</h1>
+          <p class="page-sub" style="margin-bottom:18px">Base de données · 6 entrées</p>
+
+          <div class="viewtabs">
+            <a class="on" href="#">▤ Table</a>
+            <a href="#">▥ Kanban</a>
+            <a href="#">▦ Galerie</a>
+            <a href="#" style="margin-left:auto;color:var(--accent-strong)">＋ Vue</a>
+          </div>
+
+          <div class="toolbar" style="margin-bottom:10px">
+            <a class="btn btn-subtle btn-sm" href="#">⚟ Filtre</a>
+            <a class="btn btn-subtle btn-sm" href="#">⇅ Trier</a>
+            <span class="spacer"></span>
+            <span class="search" style="max-width:180px">⌕ Rechercher</span>
+            <a class="btn btn-primary btn-sm" href="#">＋ Nouveau</a>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>Aa Nom</th><th>◦ Type</th><th>● Statut</th><th>★ En avant</th><th class="num"># Vues</th><th>🕓 Modifié</th></tr></thead>
+              <tbody>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>Domestic Revolt</b></div></td><td><span class="tag">Projet phare</span></td><td><span class="status is-published">Publié</span></td><td>★</td><td class="num">1 240</td><td>il y a 2 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>OXO</b></div></td><td><span class="tag">Plateforme</span></td><td><span class="status is-published">Publié</span></td><td class="muted">—</td><td class="num">430</td><td>il y a 5 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>Étude PME — Saveurs du Nord</b></div></td><td><span class="tag">Business</span></td><td><span class="status is-published">Publié</span></td><td class="muted">—</td><td class="num">280</td><td>il y a 6 j</td></tr>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>Refonte e-commerce</b></div></td><td><span class="tag">Site web</span></td><td><span class="status is-review">En revue</span></td><td class="muted">—</td><td class="num muted">—</td><td>hier</td></tr>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>Portfolio v1</b></div></td><td><span class="tag">Site web</span></td><td><span class="status is-draft">Brouillon</span></td><td class="muted">—</td><td class="num muted">—</td><td>il y a 1 h</td></tr>
+                <tr><td><div class="cell-title"><span class="em">◆</span><b>YoguiRecords</b></div></td><td><span class="tag">Side-project</span></td><td><span class="status is-draft">Brouillon</span></td><td class="muted">—</td><td class="num muted">—</td><td>il y a 3 sem</td></tr>
+                <tr><td colspan="6"><a href="#" class="muted" style="font-size:13px">＋ Nouvelle entrée</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="font-size:12px;margin-top:10px">6 entrées · Calcul : 1 950 vues cumulées</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

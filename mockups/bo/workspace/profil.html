@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workspace · Me concernant — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .cover { height: 120px; border-radius: 10px; background: linear-gradient(120deg, #2a2a2a, #111); position: relative; overflow: hidden; margin-bottom: -34px; }
+      .cover::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 80% 30%, rgba(240,168,0,.35), transparent 55%); }
+      .docav { width: 70px; height: 70px; border-radius: 14px; border: 3px solid var(--surface); object-fit: cover; position: relative; margin-left: 8px; }
+      .props { margin: 18px 0; }
+      .prow { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; padding: 5px 0; font-size: 13.5px; }
+      .prow .pk { color: var(--text-muted); display: flex; align-items: center; gap: 7px; }
+      .prow .pv input, .prow .pv { color: var(--text); }
+      .prow .pv input { border: 0; background: none; font: inherit; color: var(--text); width: 100%; padding: 4px 6px; border-radius: 4px; }
+      .prow .pv input:hover, .prow .pv input:focus { background: var(--hover); outline: 0; }
+      .doc h2 { font-size: 19px; font-weight: 700; margin: 22px 0 8px; }
+      .doc p[contenteditable], .doc .editable { font-size: 15px; line-height: 1.75; color: var(--text-2); padding: 6px 8px; border-radius: 5px; margin: 0 -8px; }
+      .doc .editable:hover { background: var(--hover); }
+      .doc .ph::before { content: "Texte…"; color: var(--text-muted); }
+    </style>
+  </head>
+  <body class="t-light">
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="ws-top"><img src="../../profile.jpg" alt="" /><b>Yohan Debusscher</b><span class="chev">⌄</span></div>
+        <nav class="tree">
+          <a href="./dashboard.html"><span class="em">🏠</span> Accueil</a>
+          <a href="#"><span class="em">✉️</span> Boîte mail <span style="margin-left:auto;font-size:11px;color:var(--accent-strong)">4</span></a>
+          <a href="#"><span class="em">👥</span> CRM · Contacts</a>
+          <div class="lbl">Contenu <span class="add">＋</span></div>
+          <a href="./projets.html"><span class="tw">▸</span><span class="em">📁</span> Projets</a>
+          <a href="./articles.html"><span class="tw">▸</span><span class="em">✍️</span> Articles</a>
+          <a class="on" href="./profil.html"><span class="em">🙂</span> Me concernant</a>
+          <a href="#"><span class="em">🖼️</span> Médias</a>
+          <a href="#"><span class="em">📄</span> CV</a>
+          <div class="lbl">Mesure</div>
+          <a href="#"><span class="em">📊</span> Statistiques</a>
+          <a href="#"><span class="em">⚙️</span> Réglages</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <div class="breadcrumb" style="margin:0"><a href="./dashboard.html">🏠 Accueil</a><span class="sep">/</span> 🙂 Me concernant</div>
+          <div class="topbar-actions"><span class="muted" style="font-size:12px">Édité à l'instant</span><a class="btn btn-primary btn-sm" href="#">Publier</a></div>
+        </header>
+
+        <div class="page" style="max-width:760px;margin:0 auto">
+          <div class="cover"></div>
+          <img class="docav" src="../../profile.jpg" alt="" />
+          <h1 class="page-title" style="font-size:36px;margin:14px 0 4px">Yohan Debusscher</h1>
+          <p class="muted" style="font-size:14px">Section « À propos » du site public · alimentée par cette page.</p>
+
+          <div class="props">
+            <div class="prow"><span class="pk">🏷️ Titre / accroche</span><span class="pv"><input value="Concepteur-développeur & manager — de la stratégie au déploiement" /></span></div>
+            <div class="prow"><span class="pk">📍 Localisation</span><span class="pv"><input value="Lille, France" /></span></div>
+            <div class="prow"><span class="pk">🎯 Casquettes</span><span class="pv"><span class="tags"><span class="chip is-active">Vision (CEO)</span><span class="chip is-active">Tech (CTO)</span><span class="chip is-active">Gestion de projet</span><span class="chip add">＋</span></span></span></div>
+            <div class="prow"><span class="pk">🟢 Disponibilité</span><span class="pv"><span class="status is-published">Ouvert aux opportunités</span></span></div>
+            <div class="prow"><span class="pk">✉️ Email public</span><span class="pv"><input value="contact@yohan-debusscher.com" /></span></div>
+            <div class="prow"><span class="pk">🔗 LinkedIn</span><span class="pv"><input value="linkedin.com/in/yohan-debusscher" /></span></div>
+            <div class="prow"><span class="pk">🐙 GitHub</span><span class="pv"><input value="github.com/yohan-d" /></span></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="doc">
+            <h2>Bio courte (hero)</h2>
+            <p class="editable">Je pilote un produit de la stratégie jusqu'au déploiement : décision, architecture, exécution. Le profil qui parle aux équipes comme aux machines.</p>
+            <h2>À propos</h2>
+            <p class="editable">Après des années à concevoir et développer, j'ai pris la responsabilité d'équipes puis la direction de projets — sans jamais lâcher la technique. J'ai managé, recruté, arbitré, tout en restant capable de livrer moi-même.</p>
+            <p class="editable">Aujourd'hui, je cherche les rôles où vision et exécution se rejoignent : direction technique, fondateur, ou pilotage de produit de bout en bout.</p>
+            <p class="muted" style="font-size:13px;padding:6px 8px">＋ Ajouter un bloc</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

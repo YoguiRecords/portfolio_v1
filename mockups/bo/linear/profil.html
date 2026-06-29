@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear · Me concernant — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .cfg { display: grid; grid-template-columns: 1fr; gap: 22px; }
+      @media (min-width: 900px) { .cfg { grid-template-columns: 180px 1fr; align-items: start; } }
+      .secnav { position: sticky; top: 74px; display: flex; flex-direction: column; gap: 2px; }
+      .secnav a { padding: 8px 11px; border-radius: 7px; font-size: 13px; color: var(--text-2); }
+      .secnav a.on { background: var(--surface-2); color: var(--text); font-weight: 600; }
+      .secnav a:hover { background: var(--hover); }
+    </style>
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="workspace"><span class="mark">Y</span><span class="nm">Yohan Debusscher<small>Back office</small></span><span class="chev">⌄</span></div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item is-active" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">❝</span> Témoignages <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="count">4</span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Mesure</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Admin · 2FA ✓</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page" style="max-width:1000px">
+          <div class="page-header">
+            <div><div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Me concernant</div><h1 class="page-title">Me concernant</h1><p class="page-sub">Alimente la section « À propos » du site public.</p></div>
+            <div class="page-actions"><a class="btn btn-ghost btn-sm" href="#">Aperçu ↗</a></div>
+          </div>
+
+          <div class="cfg">
+            <nav class="secnav">
+              <a class="on" href="#id">Identité</a>
+              <a href="#pos">Positionnement</a>
+              <a href="#about">À propos</a>
+              <a href="#links">Liens &amp; réseaux</a>
+            </nav>
+
+            <div>
+              <div class="panel" id="id" style="margin-bottom:16px">
+                <div class="panel-head"><h3>Identité</h3></div>
+                <div class="panel-body">
+                  <div class="avatar-edit" style="margin-bottom:18px"><img src="../../profile.jpg" alt="" /><div><b style="display:block;margin-bottom:6px">Photo de profil</b><div style="display:flex;gap:8px"><a class="btn btn-subtle btn-sm" href="#">Changer</a><a class="btn btn-ghost btn-sm" href="#">Retirer</a></div></div></div>
+                  <div class="form-grid cols-2">
+                    <div class="field"><label>Prénom</label><input class="input" value="Yohan" /></div>
+                    <div class="field"><label>Nom</label><input class="input" value="Debusscher" /></div>
+                    <div class="field field-full"><label>Titre / accroche</label><input class="input" value="Concepteur-développeur &amp; manager — de la stratégie au déploiement" /></div>
+                    <div class="field"><label>Localisation</label><input class="input" value="Lille, France" /></div>
+                    <div class="field"><label>Disponibilité</label><select class="select"><option>Ouvert aux opportunités</option><option>En poste</option></select></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel" id="pos" style="margin-bottom:16px">
+                <div class="panel-head"><h3>Positionnement</h3></div>
+                <div class="panel-body">
+                  <div class="field" style="margin-bottom:14px"><label>Casquettes</label><div class="tags"><span class="chip is-active">Vision (CEO)</span><span class="chip is-active">Tech (CTO)</span><span class="chip is-active">Gestion de projet</span><span class="chip">Architecture</span><span class="chip add">+ ajouter</span></div></div>
+                  <div class="field"><label>Bio courte (hero)</label><textarea class="textarea" style="min-height:70px">Je pilote un produit de la stratégie jusqu'au déploiement : décision, architecture, exécution.</textarea></div>
+                </div>
+              </div>
+
+              <div class="panel" id="about" style="margin-bottom:16px">
+                <div class="panel-head"><h3>À propos (texte long)</h3></div>
+                <div class="panel-body"><div class="field"><textarea class="textarea" style="min-height:140px">Après des années à concevoir et développer, j'ai pris la responsabilité d'équipes puis la direction de projets — sans jamais lâcher la technique. J'ai managé, recruté, arbitré, tout en restant capable de livrer moi-même.</textarea></div></div>
+              </div>
+
+              <div class="panel" id="links">
+                <div class="panel-head"><h3>Liens &amp; réseaux</h3></div>
+                <div class="panel-body"><div class="form-grid cols-2">
+                  <div class="field"><label>Email public</label><input class="input" value="contact@yohan-debusscher.com" /></div>
+                  <div class="field"><label>LinkedIn</label><input class="input" value="linkedin.com/in/yohan-debusscher" /></div>
+                  <div class="field"><label>GitHub</label><input class="input" value="github.com/yohan-d" /></div>
+                  <div class="field"><label>CV (HTML)</label><div style="display:flex;gap:8px;align-items:center"><a class="btn btn-subtle btn-sm" href="#">Éditer le CV</a><span class="status is-published">À jour</span></div></div>
+                </div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="savebar"><span class="status-text"><span class="d"></span> Enregistré automatiquement</span><span class="spacer"></span><a class="btn btn-ghost btn-sm" href="#">Annuler</a><a class="btn btn-primary" href="#">Enregistrer &amp; publier</a></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+/* Direction CRM — cockpit bleu-nuit, accent or + secondaire teal */
+:root {
+  --bg: #0b0e13;
+  --surface: #11151c;
+  --surface-2: #161b24;
+  --elevated: #1c222d;
+  --border: #1e2530;
+  --border-2: #2a323f;
+  --text: #eef1f5;
+  --text-2: #a7b0bd;
+  --text-muted: #6d7785;
+  --hover: #161b24;
+  --accent2: #38bda8;
+  --info: #5b9bd5;
+}
+.brand .mark { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.kpi.crm-accent2 .value { color: var(--accent2); }
+.kpi.crm-accent2 .label .ico { color: var(--accent2); }
+.subgrid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 1040px) { .subgrid { grid-template-columns: 1fr 360px; align-items: start; } }
+.compose { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--border); }
+.compose .ci { flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text-muted); font-size: 13px; }

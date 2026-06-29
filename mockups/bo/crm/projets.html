@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM · Projets — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="brand"><span class="mark">Y</span><span class="name">Yohan<span>.</span>BO</span></div>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">◉</span> Mission control</a>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="count">4</span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts <span class="count">38</span></a>
+        <a class="nav-item" href="#"><span class="ico">⛢</span> Pipeline</a>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item is-active" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias</a>
+        <div class="nav-section">Mesure</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Administrateur</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div><div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Projets</div><h1 class="page-title">Projets</h1><p class="page-sub">6 projets · 3 publiés · 1 en revue · 2 brouillons</p></div>
+            <div class="page-actions"><a class="btn btn-primary" href="#">+ Nouveau projet</a></div>
+          </div>
+
+          <div class="toolbar">
+            <div class="segmented"><button class="seg is-active">Tous <span class="count">6</span></button><button class="seg">Publiés <span class="count">3</span></button><button class="seg">En revue <span class="count">1</span></button><button class="seg">Brouillons <span class="count">2</span></button></div>
+            <span class="spacer"></span><span class="search" style="max-width:220px">⌕ Filtrer…</span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th style="width:34px"><span class="checkbox"></span></th><th>Projet</th><th>Type</th><th>Statut</th><th>Lié à</th><th class="num">Vues</th><th style="width:110px"></th></tr></thead>
+              <tbody>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Domestic Revolt</b><small>/projets/domestic-revolt</small></div></div></td><td>Projet phare</td><td><span class="status is-published">Publié</span></td><td class="muted">—</td><td class="num">1 240</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>OXO</b><small>/projets/oxo</small></div></div></td><td>Plateforme</td><td><span class="status is-published">Publié</span></td><td><span class="tag" style="background:var(--info-soft);color:var(--info);border-color:transparent">Marc Dubois</span></td><td class="num">430</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Étude PME — Saveurs du Nord</b><small>/projets/etude-pme</small></div></div></td><td>Business</td><td><span class="status is-published">Publié</span></td><td><span class="tag" style="background:var(--ok-soft);color:var(--ok);border-color:transparent">Julie Bernard</span></td><td class="num">280</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Refonte e-commerce</b><small>/projets/refonte-ecommerce</small></div></div></td><td>Site web</td><td><span class="status is-review">En revue</span></td><td class="muted">—</td><td class="num muted">—</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Portfolio v1</b><small>brouillon</small></div></div></td><td>Site web</td><td><span class="status is-draft">Brouillon</span></td><td class="muted">—</td><td class="num muted">—</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>YoguiRecords</b><small>brouillon</small></div></div></td><td>Side-project</td><td><span class="status is-draft">Brouillon</span></td><td class="muted">—</td><td class="num muted">—</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span class="info">6 projets · colonne « Lié à » = contact CRM associé</span><div class="pages"><span class="pg is-active">1</span></div></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

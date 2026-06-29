@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linear · Articles — BO Yohan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/bo.css" />
+    <link rel="stylesheet" href="./theme.css" />
+    <style>
+      .bulkbar { display: flex; align-items: center; gap: 10px; padding: 9px 14px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 9px; margin-bottom: 12px; font-size: 13px; }
+      .bulkbar b { color: var(--accent); } .bulkbar .spacer { flex: 1; }
+    </style>
+  </head>
+  <body>
+    <div class="app app--side">
+      <aside class="sidebar">
+        <div class="workspace"><span class="mark">Y</span><span class="nm">Yohan Debusscher<small>Back office</small></span><span class="chev">⌄</span></div>
+        <a class="nav-item" href="./dashboard.html"><span class="ico">▦</span> Dashboard</a>
+        <div class="nav-section">Contenu</div>
+        <a class="nav-item" href="./projets.html"><span class="ico">◆</span> Projets <span class="count">6</span></a>
+        <a class="nav-item is-active" href="./articles.html"><span class="ico">✎</span> Articles <span class="count">12</span></a>
+        <a class="nav-item" href="./profil.html"><span class="ico">☺</span> Me concernant</a>
+        <a class="nav-item" href="#"><span class="ico">❝</span> Témoignages <span class="pip"></span></a>
+        <a class="nav-item" href="#"><span class="ico">▣</span> Médias <span class="count">47</span></a>
+        <div class="nav-section">Relation client</div>
+        <a class="nav-item" href="#"><span class="ico">✉</span> Boîte mail <span class="count">4</span></a>
+        <a class="nav-item" href="#"><span class="ico">⚇</span> Contacts (CRM) <span class="count">38</span></a>
+        <div class="nav-section">Mesure</div>
+        <a class="nav-item" href="#"><span class="ico">◔</span> Statistiques</a>
+        <a class="nav-item" href="#"><span class="ico">⚙</span> Réglages</a>
+        <div class="sidebar-foot"><img src="../../profile.jpg" alt="" /><div><b>Yohan D.</b><small>Admin · 2FA ✓</small></div><span class="gear">⚙</span></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span class="mobile-burger">☰</span>
+          <span class="search">⌕ Rechercher…<span class="kbd">⌘K</span></span>
+          <div class="topbar-actions"><span class="icon-btn">✉<span class="dot"></span></span><a class="btn btn-primary btn-sm" href="#">+ Créer</a></div>
+        </header>
+
+        <div class="page">
+          <div class="page-header">
+            <div><div class="breadcrumb"><a href="./dashboard.html">BO</a><span class="sep">/</span> Articles</div><h1 class="page-title">Articles</h1></div>
+            <div class="page-actions"><a class="btn btn-primary" href="#">+ Nouvel article</a></div>
+          </div>
+
+          <div class="bulkbar"><span class="checkbox on"></span><b>2 sélectionnés</b><span class="spacer"></span><a class="btn btn-subtle btn-sm" href="#">Publier</a><a class="btn btn-subtle btn-sm" href="#">Changer la catégorie</a><a class="btn btn-danger btn-sm" href="#">Supprimer</a></div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th style="width:34px"><span class="checkbox on"></span></th><th>Article</th><th>Catégorie</th><th>Statut</th><th class="num">Vues</th><th>Modifié</th><th style="width:110px"></th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="checkbox on"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Sécurité by design : 5 réflexes</b><small>/articles/securite-by-design</small></div></div></td><td><span class="tag">Cybersécurité</span></td><td><span class="status is-published">Publié</span></td><td class="num">610</td><td>il y a 3 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox on"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Pourquoi je conteneurise tout</b><small>/articles/conteneurisation</small></div></div></td><td><span class="tag">DevOps</span></td><td><span class="status is-published">Publié</span></td><td class="num">320</td><td>il y a 8 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Retour sur Domestic Revolt</b><small>relecture</small></div></div></td><td><span class="tag">Projet</span></td><td><span class="status is-review">En revue</span></td><td class="num muted">—</td><td>hier</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Du dev au management</b><small>brouillon · 60 %</small></div></div></td><td><span class="tag">Carrière</span></td><td><span class="status is-draft">Brouillon</span></td><td class="num muted">—</td><td>il y a 1 h</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Architecture d'un monorepo Next.js</b><small>/articles/monorepo-nextjs</small></div></div></td><td><span class="tag">Architecture</span></td><td><span class="status is-published">Publié</span></td><td class="num">204</td><td>il y a 12 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+                <tr><td><span class="checkbox"></span></td><td><div class="cell-title"><span class="thumb"></span><div><b>Lille, terre de talents tech</b><small>/articles/lille-tech</small></div></div></td><td><span class="tag">Écosystème</span></td><td><span class="status is-published">Publié</span></td><td class="num">142</td><td>il y a 20 j</td><td><div class="row-actions"><span class="act">✎</span><span class="act">↗</span><span class="act del">🗑</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span class="info">1–6 sur 12</span><div class="pages"><span class="pg">‹</span><span class="pg is-active">1</span><span class="pg">2</span><span class="pg">›</span></div></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
