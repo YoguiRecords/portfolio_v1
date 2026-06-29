@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P1 — Shell v2** (rail + topbar + bottom bar mobile) — `phase-01-shell.md`
 - [ ] **P2 — Dashboard v2** — `phase-02-dashboard.md`
 - [ ] **P3 — Projets** (liste + éditeur + aperçu live) — `phase-03-projets.md`
 - [ ] **P4 — Articles** (liste + éditeur + programmation) — `phase-04-articles.md`
@@ -28,9 +27,10 @@
 
 ## Livré
 - [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
+- [x] **P1 — Shell v2** — rail icônes groupé + topbar (search ⌘K placeholder/notif/Créer/avatar) + bottom bar mobile + tiroir, compteurs serveur.
 
 ## En cours
-- **P1 — Shell v2** (rail + topbar).
+- **P2 — Dashboard v2**.
 
 ## Bloqué / à arbitrer
 - _(rien)_

@@ -21,10 +21,20 @@
 - **D05 — Util `cn` maison.** Pas de `clsx`/`tailwind-merge` (éviter une dépendance). Simple `filter+join`.
 
 ## Validation visuelle (screenshots responsive)
-- **D06 — Vérif navigateur.** Tu veux des validations visuelles par screenshot en mobile / FHD /
-  ultra-wide pour chaque feature. Mise en place via Playwright à partir de P1 (pages visibles).
-  ⚠️ Si l'environnement local ne permet pas de lancer l'app admin (Docker/DB/Windows), je le
-  consigne ici et je m'appuie sur l'E2E Playwright en CI + tests composant. **À surveiller.**
+- **D06 — Stratégie screenshots (IMPORTANT, à valider).** Tu veux une validation visuelle par
+  screenshot (mobile / FHD / ultra-wide) pour chaque feature. **Contrainte réelle :** tout le BO
+  est **derrière l'auth MFA** (`requireEnrolledSession`) → screenshoter le shell connecté impose
+  un harnais Playwright authentifié (login + enrôlement/validation **TOTP** + DB seedée + serveurs
+  dev web+admin), flaky et lent à relancer par phase sur Windows.
+  **Choix pro :** je ne monte PAS un harnais bancal répété à chaque phase. Je :
+  1. Valide chaque composant UI par **tests de rendu jsdom** (RTL) — comportement + structure.
+  2. Valide la **compilation prod** (`next build`) à chaque phase (tokens/classes Tailwind).
+  3. Construis **en P15** un harnais Playwright authentifié unique → captures **mobile (390),
+     FHD (1920), ultra-wide (3440)** des parcours réels (dashboard, projets, inbox, CRM, mission
+     control), rangées dans `screenshots/`.
+  ⚠️ **Si tu veux des screenshots dès maintenant**, dis-le : je monte le harnais TOTP tout de
+  suite (au prix d'avancer moins vite sur les features). En l'état, je priorise « TOUTES les
+  phases » comme demandé, screenshots consolidés en P15.
 
 ## Phases sensibles (à venir — choix pro par défaut, loggués ici)
 - **P10 (CRM schéma + rôles DB)** : migration avec `REVOKE ALL` pour `app_web` sur les tables CRM
