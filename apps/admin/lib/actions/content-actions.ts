@@ -101,6 +101,27 @@ export async function upsertProfileAction(
   return { ok: true };
 }
 
+/** Feedback returned to the CV editor after a save attempt. */
+export type CvFormState = { ok?: boolean; error?: string };
+
+/**
+ * Saves the singleton Profile's `cvHtml` (premium HTML CV). Stored as-is in DB;
+ * rendered **isolated** (iframe srcdoc + CSP) on the BO/site — never injected
+ * into the admin DOM (cf. STACK_SECURITY §5). Bounded length as a guardrail.
+ */
+export async function updateCvHtmlAction(_prev: CvFormState, form: FormData): Promise<CvFormState> {
+  await requireEnrolledSession();
+  const cvHtml = typeof form.get("cvHtml") === "string" ? (form.get("cvHtml") as string) : "";
+  if (cvHtml.length > 200_000) {
+    return { error: "CV trop volumineux (200 000 caractères max)." };
+  }
+  const existing = await prisma.profile.findFirst({ select: { id: true } });
+  if (!existing) return { error: "Profil introuvable. Enregistrez d'abord le profil." };
+  await prisma.profile.update({ where: { id: existing.id }, data: { cvHtml } });
+  revalidatePath("/cv");
+  return { ok: true };
+}
+
 /** Updates a home section's text, visibility and order from the editor form. */
 export async function updateHomeSectionAction(form: FormData): Promise<void> {
   await requireEnrolledSession();

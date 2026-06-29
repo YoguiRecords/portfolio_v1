@@ -32,6 +32,7 @@ export const NAV_GROUPS: NavGroup[] = ["Contenu", "Relation client", "Mesure"];
 export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/", label: "Tableau de bord", icon: "dashboard" },
   { href: "/profile", label: "Profil", icon: "user", group: "Contenu" },
+  { href: "/cv", label: "CV", icon: "article", group: "Contenu" },
   { href: "/content", label: "Contenu home", icon: "home", group: "Contenu" },
   { href: "/competences", label: "Compétences", icon: "skills", group: "Contenu" },
   { href: "/parcours", label: "Parcours", icon: "path", group: "Contenu" },
