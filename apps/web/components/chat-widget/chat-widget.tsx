@@ -13,10 +13,12 @@ interface Turn {
  * the chat is disabled (404) it shows a graceful notice. Guardrails live
  * server-side.
  */
-export function ChatWidget() {
+export function ChatWidget({ enabled = true }: { enabled?: boolean }) {
   const [open, setOpen] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [pending, setPending] = useState(false);
+
+  if (!enabled) return null;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

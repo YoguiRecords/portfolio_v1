@@ -30,11 +30,12 @@ export function buildContext(input: ChatContextInput): string {
     lines.push(`Actualités : ${input.articles.map((a) => a.title).join(" · ")}`);
   }
   if (input.events?.length) {
-    lines.push(
-      `Agenda : ${input.events
-        .map((e) => `${e.title} (${e.startAt.toISOString().slice(0, 10)})`)
-        .join(" · ")}`,
-    );
+    const fmt = (d: Date) => d.toISOString().slice(0, 16).replace("T", " ");
+    const [next, ...rest] = input.events;
+    lines.push(`Prochain évènement : ${next.title} le ${fmt(next.startAt)} (UTC).`);
+    if (rest.length) {
+      lines.push(`Autres dates à venir : ${rest.map((e) => `${e.title} (${fmt(e.startAt)})`).join(" · ")}`);
+    }
   }
   return lines.join("\n");
 }

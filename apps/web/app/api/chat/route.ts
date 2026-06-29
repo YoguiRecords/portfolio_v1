@@ -62,7 +62,9 @@ export async function POST(request: Request): Promise<Response> {
     prisma.skill.findMany({ select: { name: true } }),
     prisma.article.findMany({ where: { status: "PUBLISHED" }, select: { title: true } }),
     prisma.event.findMany({
-      where: { status: "PUBLISHED", visibility: "PUBLIC" },
+      where: { status: "PUBLISHED", visibility: "PUBLIC", startAt: { gte: new Date() } },
+      orderBy: { startAt: "asc" },
+      take: 5,
       select: { title: true, startAt: true },
     }),
   ]);
