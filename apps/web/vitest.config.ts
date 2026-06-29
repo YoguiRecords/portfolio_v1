@@ -14,8 +14,12 @@ export default mergeConfig(
       setupFiles: ["../../vitest.setup.ts"],
       // DB-backed tests share one Postgres schema → forks pool + no file
       // parallelism runs them sequentially, isolating cross-file state.
+      // DB-backed tests share one Postgres schema → a single fork, serialized,
+      // avoids cross-file races and stale-data collisions on the shared schema.
       fileParallelism: false,
       pool: "forks",
+      maxWorkers: 1,
+      minWorkers: 1,
     },
   }),
 );

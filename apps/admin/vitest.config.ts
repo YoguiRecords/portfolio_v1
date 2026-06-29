@@ -11,6 +11,8 @@ export default mergeConfig(
     test: {
       fileParallelism: false,
       pool: "forks",
+      maxWorkers: 1,
+      minWorkers: 1,
     },
   }),
 );
