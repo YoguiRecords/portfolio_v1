@@ -109,6 +109,32 @@ export const ArticleInput = z
     path: ["scheduledAt"],
   });
 
+/** Agenda event with optional scheduled publishing. */
+export const EventInput = z
+  .object({
+    title: z.string().min(1).max(160),
+    slug: z
+      .string()
+      .min(1)
+      .max(120)
+      .regex(/^[a-z0-9-]+$/, "slug: minuscules, chiffres et tirets uniquement"),
+    description: z.string().max(8000).optional(),
+    startAt: z.coerce.date(),
+    endAt: z.coerce.date().optional(),
+    locationName: z.string().max(160).optional(),
+    city: z.string().max(120).optional(),
+    isOnline: z.boolean().default(false),
+    onlineUrl: z.string().url().max(300).optional(),
+    registrationUrl: z.string().url().max(300).optional(),
+    visibility: z.enum(["PUBLIC", "PRIVATE"]).default("PUBLIC"),
+    status: z.enum(["DRAFT", "SCHEDULED", "PUBLISHED"]).default("DRAFT"),
+    scheduledAt: z.coerce.date().optional(),
+  })
+  .refine((v) => v.status !== "SCHEDULED" || v.scheduledAt != null, {
+    message: "Un évènement programmé exige une date (scheduledAt).",
+    path: ["scheduledAt"],
+  });
+
 /** A new order assignment for a single row (used by reorder actions). */
 export const ReorderItem = z.object({ id: z.string().min(1), order: z.number().int().min(0) });
 
@@ -119,4 +145,5 @@ export type HomeSectionInput = z.infer<typeof HomeSectionInput>;
 export type ProfileInput = z.infer<typeof ProfileInput>;
 export type ProjectInput = z.infer<typeof ProjectInput>;
 export type ArticleInput = z.infer<typeof ArticleInput>;
+export type EventInput = z.infer<typeof EventInput>;
 export type ReorderItem = z.infer<typeof ReorderItem>;

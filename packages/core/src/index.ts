@@ -37,6 +37,7 @@ export {
   ProfileInput,
   ProjectInput,
   ArticleInput,
+  EventInput,
   ReorderItem,
 } from "./admin/content-schemas";
 
