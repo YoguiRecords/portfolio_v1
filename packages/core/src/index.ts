@@ -13,6 +13,18 @@ export type AppName = "web" | "admin";
 
 // Auth (back office)
 export { hashPassword, verifyPassword } from "./auth/password";
+export {
+  BO_MODULES,
+  ROLE_PRESETS,
+  effectivePermissions,
+  can,
+  presetFor,
+  isReadOnly,
+  type BoModule,
+  type AdminRole,
+  type PermissionUser,
+} from "./auth/permissions";
+export { checkPasswordStrength, type PasswordCheck } from "./auth/password-policy";
 export { generateSessionToken, hashToken } from "./auth/token";
 export { generateTotpSecret, buildTotpKeyUri, verifyTotp } from "./auth/totp";
 
