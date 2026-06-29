@@ -16,6 +16,9 @@ import { prisma } from "../src/index";
 async function main(): Promise<void> {
   // 1. Reset du contenu éditorial (les FK enfants tombent en cascade)
   await prisma.translation.deleteMany();
+  // Profil = singleton : on repart d'une fiche propre (évite les doublons → le
+  // loader public faisait un findFirst non déterministe sur la mauvaise).
+  await prisma.profile.deleteMany();
   await prisma.appointmentRequest.deleteMany();
   await prisma.contactMessage.deleteMany();
   await prisma.event.deleteMany();
@@ -118,21 +121,68 @@ async function main(): Promise<void> {
     ],
   });
 
-  // 4b. Overlay EN (démo i18n) : traduction du titre de la section « profil ».
-  const profilSection = await prisma.homeSection.findUnique({ where: { key: "profil" } });
-  if (profilSection) {
-    const frTitle = "Le profil, en clair.";
+  // 4b. Overlay EN de la home (profil + sections) — pour un vrai rendu bilingue.
+  // En prod, ces traductions sont (re)générées par l'IA à l'enregistrement du FR.
+  const sectionRows = await prisma.homeSection.findMany();
+  const profileRow = await prisma.profile.findFirst();
+
+  /** Crée une traduction EN d'un champ (sourceHash = hash du FR source). */
+  async function en(model: string, recordId: string, field: string, fr: string, value: string) {
     await prisma.translation.create({
-      data: {
-        model: "HomeSection",
-        recordId: profilSection.id,
-        field: "title",
-        locale: "en",
-        value: "The profile, in clear.",
-        isAuto: true,
-        sourceHash: hashSource(frTitle),
-      },
+      data: { model, recordId, field, locale: "en", value, isAuto: true, sourceHash: hashSource(fr) },
     });
+  }
+
+  const sectionEn: Record<string, { navLabel?: [string, string]; eyebrow?: [string, string]; title?: [string, string]; intro?: [string, string] }> = {
+    hero: { navLabel: ["Accueil", "Home"], eyebrow: ["Un portfolio de Yohan Debusscher", "A portfolio by Yohan Debusscher"] },
+    profil: {
+      navLabel: ["Profil", "Profile"],
+      eyebrow: ["Chapitre 01 — Qui je suis", "Chapter 01 — Who I am"],
+      title: ["Le profil, en clair.", "The profile, in clear."],
+      intro: ["Un même cerveau qui parle aux marchés et aux machines.", "One mind that speaks to both markets and machines."],
+    },
+    ecosysteme: {
+      navLabel: ["Écosystème", "Ecosystem"],
+      eyebrow: ["Chapitre 02 — Écosystème", "Chapter 02 — Ecosystem"],
+      title: ["Ce que je maîtrise.", "What I master."],
+      intro: ["Au centre, moi. Autour, mes compétences et projets.", "At the center, me. Around it, my skills and projects."],
+    },
+    parcours: {
+      navLabel: ["Parcours", "Path"],
+      eyebrow: ["Chapitre 03 — La trajectoire", "Chapter 03 — The trajectory"],
+      title: ["Quatre voies, étalées dans le temps.", "Four paths, spread over time."],
+      intro: ["Dev, pédagogie, management et business — chacun sa voie, convergeant aujourd'hui.", "Dev, teaching, management and business — each its own path, all converging today."],
+    },
+    cap: {
+      navLabel: ["Cap", "Heading"],
+      eyebrow: ["Chapitre 04 — Le cap", "Chapter 04 — The heading"],
+      title: ["Où je suis, où je vais.", "Where I am, where I'm headed."],
+      intro: ["Une trajectoire assumée vers la direction technique et générale.", "A deliberate path toward technical and general leadership."],
+    },
+    projets: {
+      navLabel: ["Projets", "Projects"],
+      eyebrow: ["Chapitre 05 — Les preuves", "Chapter 05 — The proof"],
+      title: ["Ce que j'ai livré.", "What I've shipped."],
+      intro: ["Chaque projet est une scène : un problème, une démarche, un résultat.", "Each project is a scene: a problem, an approach, a result."],
+    },
+    footer: { title: ["La suite s'écrit ensemble.", "The rest is written together."] },
+  };
+
+  for (const s of sectionRows) {
+    const t = sectionEn[s.key];
+    if (!t) continue;
+    if (t.navLabel) await en("HomeSection", s.id, "navLabel", t.navLabel[0], t.navLabel[1]);
+    if (t.eyebrow) await en("HomeSection", s.id, "eyebrow", t.eyebrow[0], t.eyebrow[1]);
+    if (t.title) await en("HomeSection", s.id, "title", t.title[0], t.title[1]);
+    if (t.intro) await en("HomeSection", s.id, "intro", t.intro[0], t.intro[1]);
+  }
+
+  if (profileRow) {
+    await en("Profile", profileRow.id, "headline", profileRow.headline, "Product engineer & entrepreneur");
+    await en("Profile", profileRow.id, "bio", profileRow.bio, "I carry a product vision, lead teams and keep my hands in the code — from strategy all the way to production.");
+    await en("Profile", profileRow.id, "currentRole", profileRow.currentRole ?? "", "Independent · founder");
+    await en("Profile", profileRow.id, "availabilityLabel", profileRow.availabilityLabel ?? "", "Available · open to projects");
+    await en("Profile", profileRow.id, "aiSummary", profileRow.aiSummary ?? "", "Yohan Debusscher is a product engineer and entrepreneur. A hybrid profile (tech, teaching, management, business) who designs, leads and ships products end to end. Career heading: manager, then CTO, then CEO.");
   }
 
   // 5. KPI

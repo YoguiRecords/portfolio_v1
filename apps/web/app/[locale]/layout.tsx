@@ -64,9 +64,18 @@ export default async function LocaleLayout({
 
   const { profile, sections, settings } = await getHome(locale);
 
-  const links: NavLink[] = sections
-    .filter((s) => SECTION_ANCHORS[s.key])
-    .map((s) => ({ href: `#${SECTION_ANCHORS[s.key]}`, label: s.navLabel ?? s.key }));
+  const prefix = locale === "fr" ? "" : "/en";
+  const isEn = locale === "en";
+  const links: NavLink[] = [
+    ...sections
+      .filter((s) => SECTION_ANCHORS[s.key])
+      .map((s) => ({ href: `${prefix}/#${SECTION_ANCHORS[s.key]}`, label: s.navLabel ?? s.key })),
+    // Pages autonomes (sinon introuvables : actus, agenda, avis, contact).
+    { href: `${prefix}/actus`, label: isEn ? "News" : "Actus" },
+    { href: `${prefix}/agenda`, label: isEn ? "Agenda" : "Agenda" },
+    { href: `${prefix}/temoignages`, label: isEn ? "Reviews" : "Avis" },
+    { href: `${prefix}/contact`, label: isEn ? "Contact" : "Contact" },
+  ];
 
   const socials: FooterSocial[] = (profile?.socials ?? []).map((s) => ({
     label: s.label,
