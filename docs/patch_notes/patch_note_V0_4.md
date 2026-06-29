@@ -1,5 +1,12 @@
 # Patch notes — v0.4.x
 
+## v0.4.1 — Contact & demande de RDV (2026-06-29)
+
+- Page `/contact` : formulaire de **contact** (→ `ContactMessage`) et de **demande de RDV**
+  (→ `AppointmentRequest`, `source=CONTACT`, statut `PENDING`). Endpoints `POST /api/contact` et
+  `/api/appointments` : **insert-only** (`app_web`), validation **Zod** + **honeypot** + **rate-limit**
+  (5/h/IP). Aucune lecture de PII côté web (inbox réservée au BO). Modules clients réutilisables, E2E.
+
 ## v0.4.0 — Site bilingue FR/EN + timeline animée restaurée (2026-06-29)
 
 ### Internationalisation (Pi18n)

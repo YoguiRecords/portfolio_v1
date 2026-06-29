@@ -8,7 +8,7 @@
 - [x] **Pi18n** — Bilingue (FR/EN), routes `[locale]`, overlay `Translation` + traduction IA, `LocalizedField`. ✅
       (Reste : câbler `localize()` dans les loaders projet/news/agenda/témoignages — mécanique.)
 - [x] **P5** — Web : Témoignages (affichage approuvés + formulaire de soumission modérée). ✅
-- [ ] **P6** — Web : Formulaire de contact (Route Handler, Zod, rate-limit, honeypot).
+- [x] **P6** — Web : Contact + demande de RDV (endpoints insert-only, Zod, rate-limit, honeypot) + page. ✅
 - [ ] **P7** — Web : SEO/AEO (metadata, sitemap, robots, llms.txt, JSON-LD, FAQPage, OG).
 - [ ] **P8** — Admin : garde des routes + shell BO (nav, layout).
 - [ ] **P9** — Admin : CRUD contenu home (Profile, SiteSettings, HomeSection, KPI, Skill, Career*, Analysis, Goal).
