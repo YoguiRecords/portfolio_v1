@@ -8,6 +8,10 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
+  // Generous assertion timeout so the dev server's first lazy compile of a route
+  // doesn't flake the suite (notably in CI where the server starts cold).
+  expect: { timeout: 15_000 },
+  retries: process.env.CI ? 1 : 0,
   use: { baseURL: "http://localhost:3100", trace: "on-first-retry" },
   webServer: {
     command: "pnpm --filter web dev",
