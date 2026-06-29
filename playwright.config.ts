@@ -13,13 +13,23 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   retries: process.env.CI ? 1 : 0,
   use: { baseURL: "http://localhost:3100", trace: "on-first-retry" },
-  webServer: {
-    command: "pnpm --filter web dev",
-    url: "http://localhost:3100",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-    // Thread the DB URL through to the dev server so the public pages can read
-    // content (set by the shell locally, by the CI job env in CI).
-    env: { DATABASE_URL: process.env.DATABASE_URL ?? "" },
-  },
+  webServer: [
+    {
+      command: "pnpm --filter web dev",
+      url: "http://localhost:3100",
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+      // Thread the DB URL through to the dev server so the public pages can read
+      // content (set by the shell locally, by the CI job env in CI).
+      env: { DATABASE_URL: process.env.DATABASE_URL ?? "" },
+    },
+    {
+      // Back office (port 3101) — used by the admin guard E2E.
+      command: "pnpm --filter admin dev",
+      url: "http://localhost:3101/login",
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+      env: { DATABASE_URL: process.env.DATABASE_URL ?? "" },
+    },
+  ],
 });
