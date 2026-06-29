@@ -147,3 +147,71 @@ export type ProjectInput = z.infer<typeof ProjectInput>;
 export type ArticleInput = z.infer<typeof ArticleInput>;
 export type EventInput = z.infer<typeof EventInput>;
 export type ReorderItem = z.infer<typeof ReorderItem>;
+
+/** Site-wide settings (branding, SEO defaults, footer, contact, AI crawlers). */
+export const SiteSettingsInput = z.object({
+  brandName: z.string().max(60).optional(),
+  siteName: z.string().max(120).optional(),
+  defaultSeoTitle: z.string().max(160).optional(),
+  defaultSeoDescription: z.string().max(320).optional(),
+  footerHeadline: z.string().max(160).optional(),
+  footerSignature: z.string().max(160).optional(),
+  contactEmail: z.string().email().max(160).optional(),
+  availabilityBanner: z.string().max(200).optional(),
+  isContactFormEnabled: z.boolean().default(true),
+  allowAiCrawlers: z.boolean().default(true),
+  llmsTxt: z.string().max(8000).optional(),
+  robotsExtra: z.string().max(2000).optional(),
+});
+export type SiteSettingsInput = z.infer<typeof SiteSettingsInput>;
+
+/** A FAQ entry (global, home, or scoped to a project/article). */
+export const FaqInput = z.object({
+  question: z.string().min(1).max(300),
+  answer: z.string().min(1).max(2000),
+  scope: z.enum(["GLOBAL", "HOME", "PROJECT", "ARTICLE"]).default("GLOBAL"),
+  order: z.number().int().min(0).default(0),
+  isVisible: z.boolean().default(true),
+});
+export type FaqInput = z.infer<typeof FaqInput>;
+
+/** A career track (lane in the parcours timeline). */
+export const CareerTrackInput = z.object({
+  name: z.string().min(1).max(60),
+  slug: z.string().min(1).max(60),
+  colorHex: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/, "Couleur hex attendue (#RRGGBB)")
+    .default("#f0a800"),
+  order: z.number().int().min(0).default(0),
+});
+export type CareerTrackInput = z.infer<typeof CareerTrackInput>;
+
+/** A milestone within a career track. */
+export const CareerMilestoneInput = z.object({
+  trackId: z.string().min(1),
+  dateLabel: z.string().min(1).max(40),
+  sortYear: z.number().int(),
+  role: z.string().min(1).max(120),
+  description: z.string().max(400).optional(),
+  order: z.number().int().min(0).default(0),
+});
+export type CareerMilestoneInput = z.infer<typeof CareerMilestoneInput>;
+
+/** A strategic analysis block (SWOT / PESTEL / PORTER). */
+export const AnalysisInput = z.object({
+  type: z.enum(["SWOT", "PESTEL", "PORTER"]),
+  title: z.string().max(120).optional(),
+  order: z.number().int().min(0).default(0),
+});
+export type AnalysisInput = z.infer<typeof AnalysisInput>;
+
+/** An item inside an analysis (bullet for SWOT, reading for PESTEL/PORTER). */
+export const AnalysisItemInput = z.object({
+  analysisId: z.string().min(1),
+  groupLabel: z.string().min(1).max(80),
+  text: z.string().max(400).optional(),
+  verdict: z.string().max(400).optional(),
+  order: z.number().int().min(0).default(0),
+});
+export type AnalysisItemInput = z.infer<typeof AnalysisItemInput>;

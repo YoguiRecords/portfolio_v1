@@ -14,6 +14,10 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/", label: "Tableau de bord" },
   { href: "/profile", label: "Profil" },
   { href: "/content", label: "Contenu home" },
+  { href: "/competences", label: "Compétences" },
+  { href: "/parcours", label: "Parcours" },
+  { href: "/analyses", label: "Analyses" },
+  { href: "/faq", label: "FAQ" },
   { href: "/projets", label: "Projets" },
   { href: "/articles", label: "Articles" },
   { href: "/media", label: "Médias" },
@@ -24,6 +28,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/mails", label: "Mails" },
   { href: "/calendrier", label: "Calendrier" },
   { href: "/ai", label: "Assistant IA" },
+  { href: "/reglages", label: "Réglages" },
 ];
 
 /** Sidebar navigation with the active item highlighted. */
