@@ -94,7 +94,7 @@
 **Files:** Create `lib/auth/invite.ts` (+ test), `lib/auth/password-policy.ts` (+ test), `app/invitation/[token]/page.tsx` + form, `lib/email/invite-email.ts` ; Modify `lib/auth/actions.ts`
 - **Envoi d'invitation** : génère un token aléatoire (256 bits), stocke **son hash** (`AdminInvite`), envoie un **email via Microsoft Graph** (réutilise `getMailbox().sendMessage`) avec le lien `…/invitation/<token>`. **Fallback** si Graph non configuré : afficher le lien **copiable** à l'OWNER (dev/avant branchement boîte).
 - **Page `/invitation/[token]`** (publique mais **inutile sans token valide** → ce n'est PAS une inscription) : vérifie le token (non expiré, non utilisé) → l'invité **crée son mot de passe** (politique forte) → `passwordHash` (argon2id) posé, `isActive=true`, `usedAt` daté, token consommé → redirigé vers `/security/totp` (**enrôlement TOTP obligatoire**).
-- **Politique de mot de passe (recommandations actuelles, NIST 800-63B)** : **≥ 12 caractères**, **rejet des mots de passe courants/compromis** (liste embarquée légère, pas de nouvelle dépendance ; option `zxcvbn` **à valider** si on veut un score d'entropie), **autoriser le collage et les passphrases**, **pas** de règles de composition arbitraires ni de rotation forcée. Confirmation (saisir 2×). Validée **Zod + check** côté serveur.
+- **Politique de mot de passe (recommandations actuelles, NIST 800-63B)** : **≥ 12 caractères** **+ score `zxcvbn` ≥ 3** (rejette suites clavier, substitutions évidentes, dates, prénoms, répétitions). **Autoriser le collage et les passphrases**, **pas** de règles de composition arbitraires ni de rotation forcée. Confirmation (saisir 2×). Validation **côté serveur** (Zod + `zxcvbn`) — la validation client n'est qu'indicative. **Dépendance `zxcvbn` : approuvée par l'OWNER.**
 - Login : rejeter un compte **inactif** ou **sans mot de passe** (message **générique**, pas d'énumération) ; lockout/rate-limit par compte conservés. `dev-login` reste **dev + OWNER** uniquement.
 - **TDD** : token expiré/déjà utilisé → refusé ; mot de passe trop court/commun → rejeté ; invitation honorée → compte actif + TOTP requis ; compte inactif → login refusé (générique). Commit `feat(admin): invitation onboarding + strong password policy`.
 
@@ -117,9 +117,10 @@
 - Journal d'audit **consultable** dans le BO (la table `AdminAudit` peut être posée en Task 2).
 - L'invitation par email **suppose la boîte Microsoft Graph branchée** ; sinon **fallback lien copiable**.
 
-## Points à valider avant exécution
-1. ~~Liste des données perso à masquer~~ → **défaut figé** en Task 5b (affinable plus tard). ✅
-2. **`zxcvbn`** (petite dépendance, score de robustesse) **ou** liste embarquée seule ? → **en attente**.
-3. ~~Quand démarrer~~ → **on ne lance rien pour l'instant** (plan seulement). ✅
+## Décisions actées
+1. Masquage PII : **défaut figé** en Task 5b (affinable plus tard). ✅
+2. Robustesse mot de passe : **`zxcvbn` (score ≥ 3)** — dépendance **approuvée**. ✅
+3. Onboarding : **email d'invitation** + mot de passe créé par l'invité (fallback lien copiable). ✅
+4. Rôles : OWNER / EDITOR / SECRETARY / **VIEWER** (read-only + PII masquée). ✅
 
-> **Statut : plan validé sur le fond, NON démarré.** Reste à trancher le point 2 (zxcvbn) avant exécution.
+> **Statut : plan COMPLET et VALIDÉ — NON démarré.** À lancer sur ton feu vert (idéalement après le merge de la PR #8).
