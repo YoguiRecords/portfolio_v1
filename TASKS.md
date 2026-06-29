@@ -10,7 +10,7 @@
 ## Backlog (ordre conseillé)
 
 - [~] **P16 — Multi-users BO + RBAC** — **socle livré** (schéma+migration, moteur permissions core, politique mdp, gardes `requirePermission`/`assertCanWrite`, /403, masquage PII). **Reste (DT8)** : enforcement par page/action, filtre nav, UI gestion comptes, onboarding invitation, login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
-- [ ] **P17 — Chatbot public IA** (rendre fonctionnel : prochain évènement + contenu site + garde-fous + RDV) — `2026-06-30-phase-17-public-chatbot.md`
+- [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
 ## Livré
 - [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
@@ -31,7 +31,7 @@
 - [x] **P15 — Finitions** — docs finales (`ARCHITECTURE`/`API_REFERENCE`) + patch note **v0.5.0** + E2E guard des routes BO ; états vides/confirmations en place. _Reste : audit a11y complet + screenshots responsive authentifiés + E2E parcours connecté (DT7)._
 
 ## En cours
-- **P17 — Chatbot public IA (rendre fonctionnel)**.
+- _(toutes les phases P0→P17 passées ; reste le câblage RBAC **DT8** + dettes mineures listées dans `resume.md`)._
 
 ## Bloqué / à arbitrer
 - _(rien)_

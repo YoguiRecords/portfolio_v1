@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P16 — RBAC (socle)** : moteur permissions + schéma + gardes serveur + PII (suite DT8).
+- **Dernier jalon livré :** **P17 — Chatbot public fonctionnel** (prochain évènement + contenu public). Toutes les phases P0→P17 passées (P16 = socle ; câblage = DT8).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -22,9 +22,12 @@
 3. **CRM complet** (Contacts + Sociétés + Deals/pipeline + activités/relances).
 4. **Tout le BO** mis en conformité, **par phases**.
 
-## Prochaine action
-- Exécuter **Phase 17 — Chatbot public IA** (`docs/plans/2026-06-30-phase-17-public-chatbot.md`) : rendre fonctionnel le chatbot existant (activation, contexte events à venir, adaptateur OpenRouter fusion, widget monté).
-- **Puis** : finir P16 (DT8 — câblage RBAC : enforcement par page/action, nav, UI gestion comptes, invitations, zxcvbn). Détails dans `resume.md`.
+## Prochaine action (suite — câblage & dettes, plans prêts)
+- **P16 DT8** : câbler le RBAC (le moteur est livré+testé) — `requirePermission` sur chaque page/action,
+  filtre nav, UI gestion comptes (`/utilisateurs`), onboarding invitation, login `isActive`, zxcvbn.
+- **Chatbot** : toggle d'activation au BO + câblage outil RDV.
+- Dettes mineures (DT1–DT7) listées dans `resume.md`.
+- **Quand prêt :** revue humaine + merge de la PR `llm → dev`.
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
@@ -46,7 +49,8 @@
 - **P14** — `components/command-palette/command-palette.tsx` (⌘K global, monté dans le layout, ouvert par la topbar), reskin `settings-form.tsx` + `faq/page.tsx`.
 - **P15** — Docs finales (`ARCHITECTURE`/`API_REFERENCE` + section BO v2/CRM), patch note `docs/patch_notes/patch_note_V0_5.md`, E2E `e2e/bo-v2.spec.ts` (guard des routes BO).
 - **P16 (socle)** — Migration `20260630130000_rbac` (AdminUser RBAC + AdminInvite, REVOKE app_web). Core `auth/{permissions,password-policy}` (+ tests). Gardes `requirePermission`/`requireOwner`/`assertCanWrite` (guards.ts) + `/403` + `lib/privacy/mask.ts`. **Suite = DT8** (voir resume.md).
-- Gate vert : 150 tests admin + 57 core, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P17** — Chatbot public fonctionnel : `route.ts` (events à venir), `chat-context.ts` (prochain évènement), `chat-widget.tsx` (prop `enabled`), `[locale]/layout.tsx` (lit `isPublicChatEnabled`). Modèle `openrouter/fusion`.
+- Gate vert : 150 admin + 59 core + 49 web tests, `tsc` OK (admin/core/web), lint 0 erreur, `next build` (admin+web) OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
