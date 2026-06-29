@@ -10,9 +10,10 @@
   Merge unique à la fin, une fois verte. → Réversible (on peut découper en plusieurs PR si tu veux).
 - **D02 — Règle de merge Git modifiée (sur ta demande).** `STACK_GIT.md` autorise désormais l'IA à
   merger une PR `llm → dev` **verte** (auto si pas de conflit ; sinon demande). `main` reste à toi.
-- **D03 — Pauses « régénération tokens » non appliquées.** Tu avais demandé 30 min après P0 et P2 ;
-  ta consigne ultérieure « interdiction formelle de t'arrêter » prime → je n'introduis pas de pause
-  bloquante (elle m'arrêterait). Dis-moi si tu veux réellement les pauses planifiées.
+- **D03 — Pauses « régénération tokens ».** Tu as demandé 30 min après P0 et P2 (exception explicite
+  à « ne pas s'arrêter »). La pause **après P0 n'a pas pu être prise** (l'instruction est arrivée
+  pendant P1, P0 déjà clôturée). La pause **après P2 est honorée** : reprise automatique programmée
+  (~30 min) pour enchaîner sur P3 — ce n'est pas un abandon, le marathon reprend seul.
 
 ## Choix techniques
 - **D04 — Bouton primary : couleur de texte.** Le plan P0 écrivait `text-[#1a1400]` (couleur en dur),
