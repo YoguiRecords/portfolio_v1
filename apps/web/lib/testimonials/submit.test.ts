@@ -21,3 +21,21 @@ test("persistTestimonial crée un témoignage PENDING (jamais auto-validé)", as
   expect(rows[0].submittedContent).toBe("Un retour détaillé et positif.");
   expect(rows[0].content).toBe("Un retour détaillé et positif.");
 });
+
+test("persistTestimonial enregistre entreprise et relation hiérarchique", async () => {
+  await persistTestimonial(
+    prisma,
+    {
+      authorName: "Jean Dupont",
+      authorRole: "CTO",
+      authorCompany: "Acme",
+      authorRelationship: "MANAGER",
+      content: "Un manager exigeant et inspirant au quotidien.",
+    },
+    { ip: null, userAgent: null },
+  );
+
+  const row = await prisma.testimonial.findFirstOrThrow();
+  expect(row.authorCompany).toBe("Acme");
+  expect(row.authorRelationship).toBe("MANAGER");
+});

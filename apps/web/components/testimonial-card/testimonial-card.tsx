@@ -1,5 +1,12 @@
+import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
 import type { ApprovedTestimonial } from "../../lib/data/testimonials";
 import styles from "./testimonial-card.module.css";
+
+/** Composes the "role · company" subtitle from the available fields. */
+function subtitle(role: string | null, company: string | null): string | null {
+  if (role && company) return `${role} · ${company}`;
+  return role ?? company ?? null;
+}
 
 /** Renders the star rating (1–5) or nothing when absent. */
 function Stars({ rating }: { rating: number | null }) {
@@ -26,8 +33,13 @@ export function TestimonialCard({ testimonial }: { testimonial: ApprovedTestimon
         ) : null}
         <span>
           <span className={styles.name}>{testimonial.authorName}</span>
-          {testimonial.authorRole ? (
-            <span className={styles.role}> · {testimonial.authorRole}</span>
+          {subtitle(testimonial.authorRole, testimonial.authorCompany) ? (
+            <span className={styles.role}> · {subtitle(testimonial.authorRole, testimonial.authorCompany)}</span>
+          ) : null}
+          {testimonial.authorRelationship ? (
+            <span className={styles.relationship}>
+              {TESTIMONIAL_RELATIONSHIPS[testimonial.authorRelationship]}
+            </span>
           ) : null}
         </span>
       </figcaption>

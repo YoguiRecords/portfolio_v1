@@ -18,6 +18,8 @@ export async function listApprovedTestimonials(prisma: PrismaClient) {
       id: true,
       authorName: true,
       authorRole: true,
+      authorCompany: true,
+      authorRelationship: true,
       content: true,
       rating: true,
       isFeatured: true,

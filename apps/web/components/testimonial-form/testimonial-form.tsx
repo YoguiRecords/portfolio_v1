@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
 import styles from "./testimonial-form.module.css";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
 /**
  * Public testimonial submission form (client island). Posts to the API, which
- * stores the entry as PENDING for moderation. Includes a hidden honeypot field
- * to deter bots; on success it shows a "pending validation" message.
+ * stores the entry as PENDING for moderation. Collects first/last name, role,
+ * company and hierarchical relationship. Includes a hidden honeypot field.
  */
 export function TestimonialForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -17,9 +18,13 @@ export function TestimonialForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const firstName = String(data.get("firstName") ?? "").trim();
+    const lastName = String(data.get("lastName") ?? "").trim();
     const payload = {
-      authorName: String(data.get("authorName") ?? ""),
+      authorName: `${firstName} ${lastName}`.trim(),
       authorRole: String(data.get("authorRole") ?? "") || undefined,
+      authorCompany: String(data.get("authorCompany") ?? "") || undefined,
+      authorRelationship: String(data.get("authorRelationship") ?? "") || undefined,
       authorEmail: String(data.get("authorEmail") ?? "") || undefined,
       content: String(data.get("content") ?? ""),
       website: String(data.get("website") ?? ""), // honeypot
@@ -51,18 +56,43 @@ export function TestimonialForm() {
     <form className={styles.form} onSubmit={onSubmit} noValidate>
       <div className={styles.row}>
         <div className={styles.field}>
-          <label htmlFor="authorName">Votre nom</label>
-          <input id="authorName" name="authorName" required maxLength={80} />
+          <label htmlFor="firstName">Prénom</label>
+          <input id="firstName" name="firstName" required maxLength={40} />
         </div>
         <div className={styles.field}>
-          <label htmlFor="authorRole">Votre rôle (optionnel)</label>
-          <input id="authorRole" name="authorRole" maxLength={80} />
+          <label htmlFor="lastName">Nom</label>
+          <input id="lastName" name="lastName" required maxLength={40} />
         </div>
       </div>
+
+      <div className={styles.row}>
+        <div className={styles.field}>
+          <label htmlFor="authorRole">Rôle / fonction (optionnel)</label>
+          <input id="authorRole" name="authorRole" maxLength={80} placeholder="CTO, Lead Dev…" />
+        </div>
+        <div className={styles.field}>
+          <label htmlFor="authorCompany">Entreprise (optionnel)</label>
+          <input id="authorCompany" name="authorCompany" maxLength={120} />
+        </div>
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="authorRelationship">Votre lien avec Yohan (optionnel)</label>
+        <select id="authorRelationship" name="authorRelationship" defaultValue="">
+          <option value="">— Sélectionner —</option>
+          {Object.entries(TESTIMONIAL_RELATIONSHIPS).map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className={styles.field}>
         <label htmlFor="authorEmail">Email (optionnel, non publié)</label>
         <input id="authorEmail" name="authorEmail" type="email" maxLength={120} />
       </div>
+
       <div className={styles.field}>
         <label htmlFor="content">Votre témoignage</label>
         <textarea id="content" name="content" required minLength={10} maxLength={1000} />

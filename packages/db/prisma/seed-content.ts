@@ -384,13 +384,15 @@ async function main(): Promise<void> {
   await prisma.testimonial.createMany({
     data: [
       {
-        authorName: "Une cliente PME", authorRole: "Dirigeante",
+        authorName: "Claire Moreau", authorRole: "Dirigeante", authorCompany: "Atelier Nord",
+        authorRelationship: "CLIENT",
         content: "Yohan a transformé notre idée en produit livré, du cadrage à la prod. Rare et précieux.",
         submittedContent: "Yohan a transformé notre idée en produit livré, du cadrage à la prod. Rare et précieux.",
         rating: 5, status: "APPROVED", isFeatured: true, order: 0, approvedAt: new Date(),
       },
       {
-        authorName: "Ancien collègue", authorRole: "Lead Dev",
+        authorName: "Thomas Leroy", authorRole: "Lead Dev", authorCompany: "OXO",
+        authorRelationship: "PEER",
         content: "Vision produit + exécution technique, le tout en pilotant l'équipe. Bluffant.",
         submittedContent: "Vision produit + exécution technique, le tout en pilotant l'équipe. Bluffant.",
         status: "PENDING", order: 1,

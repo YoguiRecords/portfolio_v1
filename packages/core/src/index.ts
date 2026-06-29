@@ -23,7 +23,8 @@ export { frChanged, type SourceHashed } from "./i18n/changed";
 export { hashSource } from "./i18n/hash";
 
 // Testimonials (public submission schema)
-export { TestimonialInput } from "./testimonials/schema";
+export { TestimonialInput, TESTIMONIAL_RELATIONSHIPS } from "./testimonials/schema";
+export type { TestimonialRelationship } from "./testimonials/schema";
 
 // Contact & appointment (public submission schemas)
 export { ContactInput, AppointmentInput } from "./contact/schema";

@@ -466,19 +466,33 @@ model ContactMessage {
 /// témoignage mais ne peut LIRE que les colonnes d'affichage des entrées — ni
 /// e-mail, ni IP, ni texte original — et ne peut PAS définir `status`
 /// (→ toujours PENDING, pas d'auto-validation).
+/// Lien hiérarchique de l'auteur d'un témoignage avec Yohan.
+enum TestimonialRelationship {
+  MANAGER // a été mon manager / supérieur
+  PEER // collègue / pair
+  REPORT // a été sous ma responsabilité
+  CLIENT // client
+  PARTNER // partenaire / prestataire
+  TEACHER // professeur / formateur
+  STUDENT // élève / apprenant
+  OTHER
+}
+
 model Testimonial {
-  id               String            @id @default(cuid())
-  authorName       String
-  authorRole       String? // « CTO @ Société », « ancien collègue »…
-  authorEmail      String? // non public — vérification / reprise de contact
-  content          String // version affichée (éditable au BO)
-  submittedContent String // texte original soumis (audit)
-  rating           Int? // note optionnelle (1–5)
-  status           TestimonialStatus @default(PENDING)
-  isFeatured       Boolean           @default(false)
-  order            Int               @default(0)
-  ip               String?
-  userAgent        String?
+  id                 String                   @id @default(cuid())
+  authorName         String
+  authorRole         String? // « CTO », « Lead Dev »…
+  authorCompany      String? // entreprise / organisation
+  authorRelationship TestimonialRelationship? // lien hiérarchique avec Yohan
+  authorEmail        String? // non public — vérification / reprise de contact
+  content            String // version affichée (éditable au BO)
+  submittedContent   String // texte original soumis (audit)
+  rating             Int? // note optionnelle (1–5)
+  status             TestimonialStatus        @default(PENDING)
+  isFeatured         Boolean                  @default(false)
+  order              Int                      @default(0)
+  ip                 String?
+  userAgent          String?
 
   avatarId String?
   avatar   MediaAsset? @relation("TestimonialAvatar", fields: [avatarId], references: [id], onDelete: SetNull)

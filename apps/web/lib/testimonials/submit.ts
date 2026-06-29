@@ -27,6 +27,8 @@ export async function persistTestimonial(
     data: {
       authorName: input.authorName,
       authorRole: input.authorRole,
+      authorCompany: input.authorCompany,
+      authorRelationship: input.authorRelationship,
       authorEmail: input.authorEmail,
       content: input.content,
       submittedContent: input.content,

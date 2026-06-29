@@ -17,7 +17,8 @@
   color: var(--accent);
 }
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   background: var(--dark-800);
   border: 1px solid var(--border-dark);
   border-radius: 6px;
@@ -26,7 +27,8 @@
   font: inherit;
 }
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }

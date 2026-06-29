@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
 import { listTestimonials } from "@/lib/content/moderation";
 import {
   approveTestimonialAction,
@@ -26,6 +27,12 @@ export default async function ModerationPage() {
               <span className="text-sm font-semibold text-zinc-100">
                 {t.authorName}
                 {t.authorRole ? ` · ${t.authorRole}` : ""}
+                {t.authorCompany ? ` · ${t.authorCompany}` : ""}
+                {t.authorRelationship ? (
+                  <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-300">
+                    {TESTIMONIAL_RELATIONSHIPS[t.authorRelationship]}
+                  </span>
+                ) : null}
               </span>
               <span className="text-xs uppercase tracking-wide text-amber-400">{t.status}</span>
             </div>
