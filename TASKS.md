@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P0 — Design system & tokens** — `phase-00-design-system.md`
 - [ ] **P1 — Shell v2** (rail + topbar + bottom bar mobile) — `phase-01-shell.md`
 - [ ] **P2 — Dashboard v2** — `phase-02-dashboard.md`
 - [ ] **P3 — Projets** (liste + éditeur + aperçu live) — `phase-03-projets.md`
@@ -25,9 +24,13 @@
 - [ ] **P13 — Assistant IA + Calendrier** (reskin) — `phase-13-ia-calendrier.md`
 - [ ] **P14 — Réglages + SEO/FAQ + recherche ⌘K** — `phase-14-reglages-recherche.md`
 - [ ] **P15 — Finitions transverses** (états vides/erreur, a11y, responsive, E2E, docs) — `phase-15-finitions.md`
+- [ ] **P16 — Multi-users BO + RBAC** (rôles + permissions, VIEWER read-only + masquage PII, invitations) — `phase-16-bo-users-rbac.md`
+
+## Livré
+- [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
 
 ## En cours
-- _(rien — implémentation non démarrée)_
+- **P1 — Shell v2** (rail + topbar).
 
 ## Bloqué / à arbitrer
 - _(rien)_

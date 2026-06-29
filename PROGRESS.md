@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** planification complète (aucune implémentation BO v2 encore).
+- **Dernier jalon livré :** **P0 — Design system** (tokens `@theme` + 18 primitives UI testées).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,7 +23,13 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 0 — Design system** (`docs/plans/2026-06-29-phase-00-design-system.md`).
+- Exécuter **Phase 1 — Shell v2** (`docs/plans/2026-06-29-phase-01-shell.md`) : rail + topbar + bottom bar mobile, branchés sur les primitives `@/components/ui`.
+- **Vérif navigateur** à partir de P1 (pages visibles) : lancer l'admin, captures d'écran ; Playwright E2E consolidé en P15.
+
+## P0 livré (résumé)
+- Tokens `@theme` (graphite + or + statuts + rayons) dans `apps/admin/app/globals.css`.
+- 18 primitives UI testées dans `apps/admin/components/ui/` (barrel `@/components/ui`) : Status, Button, KpiCard, DataTable, Switch, Segmented, Pagination, Panel, Field, Input, Select, Textarea, Tag, Avatar, Toolbar, SaveBar, EmptyState, Drawer.
+- Gate vert : 90 tests, `tsc --noEmit` OK, lint 0 erreur.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
