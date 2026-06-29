@@ -10,6 +10,7 @@ import { SiteNav, type NavLink } from "../../components/site-nav";
 import { SiteFooter, type FooterSocial } from "../../components/site-footer";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { LanguageSwitch } from "../../components/language-switch/language-switch";
+import { ChatWidget } from "../../components/chat-widget/chat-widget";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
             socials={socials}
             legalName={profile?.fullName ?? "Yohan Debusscher"}
           />
+          <ChatWidget />
         </NextIntlClientProvider>
       </body>
     </html>
