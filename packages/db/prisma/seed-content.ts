@@ -293,7 +293,7 @@ async function main(): Promise<void> {
   });
 
   // 10. Un projet « étude de cas » (jeu) avec blocs modulaires
-  await prisma.project.create({
+  const project = await prisma.project.create({
     data: {
       title: "Domestic Revolt", slug: "domestic-revolt",
       summary: "Conçu, piloté et déployé. Du problème à la mise en production.",
@@ -365,7 +365,7 @@ async function main(): Promise<void> {
       eventId: event.id,
     },
   });
-  await prisma.article.create({
+  const buildSolo = await prisma.article.create({
     data: {
       title: "Construire un produit de bout en bout, en solo",
       slug: "build-solo",
@@ -399,6 +399,23 @@ async function main(): Promise<void> {
       },
     ],
   });
+
+  // 11b. Overlay EN des sous-pages (projet, actu, évènement, témoignage).
+  await en("Project", project.id, "summary", project.summary, "Designed, led and shipped — from the problem to production.");
+  await en("Project", project.id, "tagline", project.tagline ?? "", "From game design to a secured production release.");
+  await en("Article", buildSolo.id, "title", buildSolo.title, "Building a product end to end, solo");
+  await en("Article", buildSolo.id, "excerpt", buildSolo.excerpt ?? "", "Field notes: from product vision to a secured production release.");
+  await en("Event", event.id, "description", event.description ?? "", "A talk on shipping a product solo, end to end.");
+  const featuredTestimonial = await prisma.testimonial.findFirst({ where: { status: "APPROVED" } });
+  if (featuredTestimonial) {
+    await en(
+      "Testimonial",
+      featuredTestimonial.id,
+      "content",
+      featuredTestimonial.content,
+      "Yohan turned our idea into a shipped product, from framing to production. Rare and precious.",
+    );
+  }
 
   // Comptes de contrôle
   const [sec, hs, kpi, tr, goals, ana, proj, testi] = await Promise.all([

@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   description: "Les prochains évènements, meetups et conférences.",
 };
 
-export default async function AgendaPage() {
-  const events = await getEvents();
+export default async function AgendaPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const events = await getEvents(locale);
   return (
     <main className="chapter">
       <div className="wrap">

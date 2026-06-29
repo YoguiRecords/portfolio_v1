@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   description: "Les dernières actualités et publications.",
 };
 
-export default async function NewsPage() {
-  const articles = await getArticles();
+export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const articles = await getArticles(locale);
   return (
     <main className="chapter">
       <div className="wrap">

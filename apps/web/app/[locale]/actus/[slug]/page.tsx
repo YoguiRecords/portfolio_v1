@@ -13,8 +13,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getArticle(slug);
+  const { slug, locale } = await params;
+  const article = await getArticle(slug, locale);
   if (!article) return { title: "Article introuvable" };
   return {
     title: article.seoTitle ?? article.title,
@@ -27,8 +27,8 @@ export default async function ArticlePage({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const article = await getArticle(slug);
+  const { slug, locale } = await params;
+  const article = await getArticle(slug, locale);
   if (!article) notFound();
 
   const media: MediaItem[] = article.media.map((m) => ({

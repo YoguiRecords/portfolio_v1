@@ -13,8 +13,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const event = await getEvent(slug);
+  const { slug, locale } = await params;
+  const event = await getEvent(slug, locale);
   if (!event) return { title: "Évènement introuvable" };
   return { title: event.title, description: event.description ?? undefined };
 }
@@ -24,8 +24,8 @@ export default async function EventPage({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const event = await getEvent(slug);
+  const { slug, locale } = await params;
+  const event = await getEvent(slug, locale);
   if (!event) notFound();
 
   const media: MediaItem[] = event.media.map((m) => ({

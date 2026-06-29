@@ -11,8 +11,9 @@ export const metadata: Metadata = {
   description: "Ce qu'ils disent du travail livré — et votre retour.",
 };
 
-export default async function TestimonialsPage() {
-  const testimonials = await getApprovedTestimonials();
+export default async function TestimonialsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const testimonials = await getApprovedTestimonials(locale);
   return (
     <main className="chapter">
       <div className="wrap">
