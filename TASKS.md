@@ -9,7 +9,6 @@
 
 ## Backlog (ordre conseillé)
 
-- [ ] **P2 — Dashboard v2** — `phase-02-dashboard.md`
 - [ ] **P3 — Projets** (liste + éditeur + aperçu live) — `phase-03-projets.md`
 - [ ] **P4 — Articles** (liste + éditeur + programmation) — `phase-04-articles.md`
 - [ ] **P5 — Me concernant + Contenu home + CV** — `phase-05-profil-home-cv.md`
@@ -28,9 +27,10 @@
 ## Livré
 - [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
 - [x] **P1 — Shell v2** — rail icônes groupé + topbar (search ⌘K placeholder/notif/Créer/avatar) + bottom bar mobile + tiroir, compteurs serveur.
+- [x] **P2 — Dashboard v2** — KPIs + trafic Umami (fallback) + « à traiter » + top contenus, sur primitives P0.
 
 ## En cours
-- **P2 — Dashboard v2**.
+- **P3 — Projets** (liste + éditeur + aperçu live).
 
 ## Bloqué / à arbitrer
 - _(rien)_

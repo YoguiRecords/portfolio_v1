@@ -5,7 +5,7 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P1 — Shell v2** (rail icônes + topbar + bottom bar mobile, compteurs serveur).
+- **Dernier jalon livré :** **P2 — Dashboard v2** (KPIs + trafic Umami fallback + à-traiter + top contenus).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
@@ -23,13 +23,14 @@
 4. **Tout le BO** mis en conformité, **par phases**.
 
 ## Prochaine action
-- Exécuter **Phase 2 — Dashboard v2** (`docs/plans/2026-06-29-phase-02-dashboard.md`) : greeting + KPIs (Umami/projets/articles/témoignages) + mini-graphe trafic + contenu à traiter + top contenus, sur les primitives `@/components/ui`.
+- Exécuter **Phase 3 — Projets** (`docs/plans/2026-06-29-phase-03-projets.md`) : liste DataTable CRUD + éditeur blocs + composant `live-preview` partagé (toggle/fermable).
 - **Validation visuelle** : stratégie consignée dans `resume.md` (D06) — harnais screenshots authentifié consolidé en P15.
 
 ## Livré (résumé)
 - **P0** — Tokens `@theme` (graphite + or + statuts + rayons) + 18 primitives UI testées dans `apps/admin/components/ui/` (barrel `@/components/ui`).
 - **P1** — Shell v2 : `components/admin-layout/{rail,topbar,mobile-bar,icons}.tsx`, modèle nav groupé `components/admin-nav/admin-nav.tsx`, compteurs `lib/data/nav-badges.ts`. Rail desktop (icônes + tooltips + groupes Contenu/Relation client/Mesure), topbar (search ⌘K placeholder, notif, Créer, avatar), bottom bar mobile + tiroir nav complet.
-- Gate vert : 96 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
+- **P2** — Dashboard v2 : `lib/data/dashboard.ts` (agrégation) + `lib/data/traffic.ts` (Umami, fallback si non configuré), `components/dashboard/{traffic,content-to-treat,top-content}-panel.tsx`, page `app/(dashboard)/page.tsx`. KPIs + trafic + à-traiter + top contenus. (Ancien `dashboard-stats` supprimé.)
+- Gate vert : 106 tests, `tsc --noEmit` OK, lint 0 erreur, `next build` OK.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.
