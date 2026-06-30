@@ -13,9 +13,11 @@ le back office (relances CRM, contenu, facturation, divers), pilotée en kanban.
   contact/deal → catégorie `CRM`.
 
 ### Back office
-- **Page `/taches`** (groupe « Relation client ») : **kanban 4 colonnes** par statut (déplacement
-  par `<select>`, pas de nouvelle dépendance), filtres par catégorie + onglet « Du jour », drawer
-  création/édition (titre, description, catégorie, statut, priorité, échéance, contact optionnel).
+- **Page `/taches`** (groupe « Relation client ») : **kanban 4 colonnes** par statut avec
+  **drag & drop** (`@dnd-kit` — souris, tactile, clavier ; mise à jour optimiste + persistance via
+  Server Action), filtres par catégorie + onglet « Du jour », drawer création/édition (titre,
+  description, catégorie, statut, priorité, échéance, contact optionnel). Board chargé client-only
+  (`next/dynamic ssr:false`) → pas de mismatch d'hydratation.
 - **Mission Control** : le panneau tâches n'affiche plus que les **tâches du jour** (échéance =
   aujourd'hui, `status != DONE`) + lien « Tout voir » → `/taches`.
 - **Fiche contact** : la coche tâche utilise désormais le workflow `status` ; les tâches créées
