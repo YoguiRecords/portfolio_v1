@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { PageContainer } from "@/components/ui";
 import { getSettings } from "@/lib/content/site-settings";
 import { SettingsForm } from "@/components/settings-form";
 
@@ -9,9 +10,9 @@ export default async function SettingsPage() {
   const settings = await getSettings(prisma);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
+    <PageContainer width="editor">
       <h1 className="text-2xl font-semibold text-ink">Réglages du site</h1>
       <SettingsForm settings={settings} />
-    </div>
+    </PageContainer>
   );
 }

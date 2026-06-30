@@ -1,6 +1,7 @@
 import { prisma } from "@portfolio/db";
 import { listAppointments } from "@/lib/content/moderation";
 import { confirmAppointmentAction, declineAppointmentAction } from "@/lib/actions/moderation-actions";
+import { PageContainer } from "@/components/ui";
 import { RdvList, type RdvRow } from "@/components/rdv/rdv-list";
 
 export const dynamic = "force-dynamic";
@@ -21,9 +22,9 @@ export default async function AppointmentsPage() {
   }));
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
+    <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">Demandes de rendez-vous</h1>
       <RdvList requests={rows} actions={{ confirm: confirmAppointmentAction, decline: declineAppointmentAction }} />
-    </div>
+    </PageContainer>
   );
 }

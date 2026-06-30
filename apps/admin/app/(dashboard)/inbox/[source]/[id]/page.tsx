@@ -9,8 +9,8 @@ export const dynamic = "force-dynamic";
 
 function ItemView({ from, subject, body, to }: { from: string; subject: string; body: string; to: string }) {
   return (
-    <div className="flex max-w-3xl flex-col gap-4">
-      <Link href="/inbox" className="font-mono text-xs text-muted hover:text-accent">
+    <div className="flex flex-col gap-4">
+      <Link href="/inbox" className="font-mono text-xs text-muted hover:text-accent lg:hidden">
         ← Boîte de réception
       </Link>
       <div className="rounded-card border border-border bg-surface p-4">

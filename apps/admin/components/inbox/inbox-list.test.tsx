@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
+
+vi.mock("next/navigation", () => ({ usePathname: () => "/inbox" }));
+
 import { InboxList } from "./inbox-list";
 import type { InboxItem } from "@/lib/inbox/aggregate";
 

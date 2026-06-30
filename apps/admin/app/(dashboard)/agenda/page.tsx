@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button, ConfirmSubmitButton, Status } from "@/components/ui";
+import { Button, ConfirmSubmitButton, PageContainer, Status } from "@/components/ui";
 import { listEvents } from "@/lib/content/event";
 import { createEventAction, deleteEventAction, generateNewsAction } from "@/lib/actions/event-actions";
 
@@ -15,9 +15,10 @@ export default async function AdminAgendaPage() {
   const events = await listEvents(prisma);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-8">
+    <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">Agenda</h1>
 
+      <div className="grid items-start gap-6 xl:grid-cols-[2fr_1fr]">
       <ul className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface">
         {events.length === 0 ? (
           <li className="p-4 text-sm text-muted">Aucun évènement.</li>
@@ -50,7 +51,7 @@ export default async function AdminAgendaPage() {
         )}
       </ul>
 
-      <form action={createEventAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4">
+      <form action={createEventAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4 xl:sticky xl:top-6">
         <h2 className="text-sm font-semibold text-ink-2">Nouvel évènement</h2>
         <input className={inputCls} name="title" placeholder="Titre" required />
         <input className={inputCls} name="slug" placeholder="slug-evenement" required />
@@ -69,6 +70,7 @@ export default async function AdminAgendaPage() {
           Créer
         </Button>
       </form>
-    </div>
+      </div>
+    </PageContainer>
   );
 }

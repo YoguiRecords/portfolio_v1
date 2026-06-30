@@ -1,5 +1,6 @@
 import { prisma } from "@portfolio/db";
 import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
+import { PageContainer } from "@/components/ui";
 import { listTestimonials } from "@/lib/content/moderation";
 import {
   approveTestimonialAction,
@@ -27,7 +28,7 @@ export default async function ModerationPage() {
   }));
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
+    <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">Modération des témoignages</h1>
       <TestimonialsList
         items={rows}
@@ -38,6 +39,6 @@ export default async function ModerationPage() {
           feature: featureTestimonialAction,
         }}
       />
-    </div>
+    </PageContainer>
   );
 }

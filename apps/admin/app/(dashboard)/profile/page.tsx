@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { PageContainer } from "@/components/ui";
 import { ProfileForm } from "./profile-form";
 import { ProfileSocials } from "./profile-socials";
 import { ProfileAvatar } from "./profile-avatar";
@@ -12,7 +13,7 @@ export default async function ProfilePage() {
   });
 
   return (
-    <div className="flex max-w-2xl flex-col gap-10">
+    <PageContainer width="editor" gap={10}>
       <ProfileForm
         profile={{
           fullName: profile?.fullName ?? "",
@@ -29,9 +30,10 @@ export default async function ProfilePage() {
         }}
       />
 
-      <ProfileAvatar currentUrl={profile?.avatar?.url ?? null} />
-
-      <ProfileSocials socials={profile?.socials ?? []} />
-    </div>
+      <div className="grid items-start gap-6 lg:grid-cols-2">
+        <ProfileAvatar currentUrl={profile?.avatar?.url ?? null} />
+        <ProfileSocials socials={profile?.socials ?? []} />
+      </div>
+    </PageContainer>
   );
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
-import { ConfirmSubmitButton } from "@/components/ui";
+import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { addBlockAction, deleteBlockAction } from "@/lib/actions/block-actions";
 import { updateProjectAction } from "@/lib/actions/project-actions";
 import { ProjectEditor, type ProjectEditorData } from "@/components/projects/project-editor";
@@ -68,7 +68,7 @@ export default async function ProjectEditPage({ params }: { params: Promise<{ id
   };
 
   return (
-    <div className="flex max-w-5xl flex-col gap-8">
+    <PageContainer width="editor" gap={8}>
       <div>
         <Link href="/projets" className="font-mono text-xs text-muted hover:text-accent">
           ← Projets
@@ -109,6 +109,6 @@ export default async function ProjectEditPage({ params }: { params: Promise<{ id
           </div>
         </div>
       </section>
-    </div>
+    </PageContainer>
   );
 }

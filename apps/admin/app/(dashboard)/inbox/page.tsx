@@ -1,26 +1,11 @@
-import { prisma } from "@portfolio/db";
-import { getMailbox } from "@/lib/integrations/factory";
-import { aggregateInbox } from "@/lib/inbox/aggregate";
-import { InboxList } from "@/components/inbox/inbox-list";
-
 export const dynamic = "force-dynamic";
 
-/** Unified inbox: Mails (Graph) + contact Messages in one view (RDV excluded). */
-export default async function InboxPage() {
-  const items = await aggregateInbox(
-    {
-      mailbox: getMailbox(),
-      listContactMessages: () =>
-        prisma.contactMessage.findMany({ where: { isSpam: false }, orderBy: { createdAt: "desc" } }),
-    },
-    "ALL",
-  );
-
+/** Panneau droit par défaut (desktop) : invite à sélectionner un message. La liste
+ *  vit dans le layout de section ; en mobile elle occupe seule l'écran. */
+export default function InboxIndexPage() {
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
-      <h1 className="text-2xl font-bold text-ink">Boîte de réception</h1>
-      <p className="text-sm text-muted">Mails et messages de contact réunis. Les demandes de RDV sont traitées à part.</p>
-      <InboxList items={items} />
+    <div className="hidden h-full min-h-64 place-items-center rounded-lg border border-dashed border-border lg:grid">
+      <p className="text-sm text-muted">Sélectionnez un message pour le lire.</p>
     </div>
   );
 }
