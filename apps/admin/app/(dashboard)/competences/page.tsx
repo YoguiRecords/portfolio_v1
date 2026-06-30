@@ -5,7 +5,7 @@ import { createSkillAction, deleteSkillAction } from "@/lib/actions/content-acti
 export const dynamic = "force-dynamic";
 
 const inputCls =
-  "rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:outline focus:outline-2 focus:outline-amber-500";
+  "rounded-md border border-border-strong bg-surface px-3 py-2 text-sm text-ink focus:outline focus:outline-2 focus:outline-accent";
 
 /** Skills editor (orbit nodes on the home ecosystem). */
 export default async function SkillsPage() {
@@ -13,21 +13,21 @@ export default async function SkillsPage() {
 
   return (
     <div className="flex max-w-2xl flex-col gap-8">
-      <h1 className="text-2xl font-semibold text-zinc-50">Compétences</h1>
+      <h1 className="text-2xl font-semibold text-ink">Compétences</h1>
 
-      <ul className="flex flex-col divide-y divide-zinc-800 rounded-lg border border-zinc-800">
+      <ul className="flex flex-col divide-y divide-border rounded-lg border border-border">
         {skills.length === 0 ? (
-          <li className="p-4 text-sm text-zinc-500">Aucune compétence.</li>
+          <li className="p-4 text-sm text-muted">Aucune compétence.</li>
         ) : (
           skills.map((s) => (
             <li key={s.id} className="flex items-center justify-between gap-4 p-4">
               <div>
-                <span className="text-sm font-semibold text-zinc-100">{s.name}</span>
-                {s.category ? <span className="ml-2 text-xs text-zinc-500">{s.category}</span> : null}
+                <span className="text-sm font-semibold text-ink">{s.name}</span>
+                {s.category ? <span className="ml-2 text-xs text-muted">{s.category}</span> : null}
               </div>
               <form action={deleteSkillAction}>
                 <input type="hidden" name="id" value={s.id} />
-                <button type="submit" className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+                <button type="submit" className="rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
                   Supprimer
                 </button>
               </form>
@@ -36,12 +36,12 @@ export default async function SkillsPage() {
         )}
       </ul>
 
-      <form action={createSkillAction} className="flex flex-col gap-3 rounded-lg border border-zinc-800 p-4">
-        <h2 className="text-sm font-semibold text-zinc-200">Ajouter une compétence</h2>
+      <form action={createSkillAction} className="flex flex-col gap-3 rounded-lg border border-border p-4">
+        <h2 className="text-sm font-semibold text-ink-2">Ajouter une compétence</h2>
         <input className={inputCls} name="name" placeholder="Nom (ex. Full-stack)" required />
         <input className={inputCls} name="category" placeholder="Catégorie (optionnel)" />
         <input className={inputCls} name="order" type="number" defaultValue={skills.length} placeholder="Ordre" />
-        <button type="submit" className="self-start rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-amber-950 hover:bg-amber-600">
+        <button type="submit" className="self-start rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg hover:bg-accent-strong">
           Ajouter
         </button>
       </form>

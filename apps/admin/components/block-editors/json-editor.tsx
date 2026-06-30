@@ -37,20 +37,20 @@ export function JsonEditor({
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-xs text-zinc-500">Éditeur JSON (validé à l&apos;enregistrement). Un éditeur visuel dédié pourra le remplacer.</p>
+      <p className="text-xs text-muted">Éditeur JSON (validé à l&apos;enregistrement). Un éditeur visuel dédié pourra le remplacer.</p>
       <textarea
-        className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 font-mono text-xs text-zinc-100"
+        className="rounded-md border border-border-strong bg-bg px-3 py-2 font-mono text-xs text-ink"
         rows={10}
         value={text}
         onChange={(e) => setText(e.target.value)}
         spellCheck={false}
       />
       <div className="flex items-center gap-3">
-        <button type="button" onClick={save} className="self-start rounded-md bg-amber-500 px-4 py-1.5 text-sm font-semibold text-amber-950 hover:bg-amber-600">
+        <button type="button" onClick={save} className="self-start rounded-md bg-accent px-4 py-1.5 text-sm font-semibold text-bg hover:bg-accent-strong">
           Enregistrer
         </button>
-        {status === "ok" ? <span className="text-sm text-emerald-400">Enregistré ✓</span> : null}
-        {status === "err" ? <span className="text-sm text-red-400">Erreur : {error}</span> : null}
+        {status === "ok" ? <span className="text-sm text-ok">Enregistré ✓</span> : null}
+        {status === "err" ? <span className="text-sm text-danger">Erreur : {error}</span> : null}
       </div>
     </div>
   );

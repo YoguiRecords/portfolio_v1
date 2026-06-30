@@ -19,7 +19,7 @@ export function TotpEnrolForm({ secret }: TotpEnrolFormProps) {
       <input type="hidden" name="secret" value={secret} />
 
       <div className="space-y-2">
-        <label htmlFor="code" className="block text-sm text-zinc-400">
+        <label htmlFor="code" className="block text-sm text-muted">
           Code de confirmation
         </label>
         <input
@@ -30,12 +30,12 @@ export function TotpEnrolForm({ secret }: TotpEnrolFormProps) {
           pattern="\d{6}"
           maxLength={6}
           required
-          className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 tracking-[0.4em] text-zinc-50 outline-none focus:border-zinc-500"
+          className="w-full rounded-md border border-border-strong bg-bg px-3 py-2 tracking-[0.4em] text-ink outline-none focus:border-accent"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" className="text-sm text-red-400">
+        <p role="alert" className="text-sm text-danger">
           {state.error}
         </p>
       ) : null}
@@ -43,7 +43,7 @@ export function TotpEnrolForm({ secret }: TotpEnrolFormProps) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-zinc-50 px-3 py-2 font-medium text-zinc-950 transition-colors hover:bg-zinc-200 disabled:opacity-60"
+        className="w-full rounded-md bg-accent px-3 py-2 font-medium text-bg transition-colors hover:bg-accent-strong disabled:opacity-60"
       >
         {pending ? "Activation…" : "Activer la double authentification"}
       </button>

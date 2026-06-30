@@ -4,7 +4,7 @@ import { markMessageReadAction, markMessageSpamAction } from "@/lib/actions/mode
 
 export const dynamic = "force-dynamic";
 
-const btn = "rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800";
+const btn = "rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2";
 
 /** Contact inbox: messages (unread first), mark read / spam. */
 export default async function MessagesPage() {
@@ -12,25 +12,25 @@ export default async function MessagesPage() {
 
   return (
     <div className="flex max-w-3xl flex-col gap-4">
-      <h1 className="text-2xl font-semibold text-zinc-50">Messages de contact</h1>
+      <h1 className="text-2xl font-semibold text-ink">Messages de contact</h1>
       {messages.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun message.</p>
+        <p className="text-sm text-muted">Aucun message.</p>
       ) : (
         messages.map((m) => (
           <div
             key={m.id}
             className={`flex flex-col gap-2 rounded-lg border p-4 ${
-              m.isRead ? "border-zinc-800 bg-zinc-900" : "border-amber-500/40 bg-amber-500/5"
+              m.isRead ? "border-border bg-surface" : "border-accent/40 bg-accent-soft"
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-zinc-100">
+              <span className="text-sm font-semibold text-ink">
                 {m.name} · {m.email}
               </span>
-              <span className="text-xs text-zinc-500">{m.createdAt.toISOString().slice(0, 16)}</span>
+              <span className="text-xs text-muted">{m.createdAt.toISOString().slice(0, 16)}</span>
             </div>
-            {m.subject ? <div className="text-sm text-zinc-300">{m.subject}</div> : null}
-            <p className="text-sm text-zinc-400">{m.message}</p>
+            {m.subject ? <div className="text-sm text-ink-2">{m.subject}</div> : null}
+            <p className="text-sm text-muted">{m.message}</p>
             <div className="flex gap-2">
               {!m.isRead ? (
                 <form action={markMessageReadAction}>

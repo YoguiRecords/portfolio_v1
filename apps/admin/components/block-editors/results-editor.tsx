@@ -8,7 +8,7 @@ interface Stat {
   label: string;
 }
 
-const input = "rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100";
+const input = "rounded-md border border-border-strong bg-surface px-3 py-1.5 text-sm text-ink";
 
 /** RESULTS block editor: a list of {value, label} stat cards. */
 export function ResultsEditor({
@@ -38,20 +38,20 @@ export function ResultsEditor({
         <div key={i} className="flex items-center gap-2">
           <input className={`${input} w-32`} value={s.value} placeholder="100%" onChange={(e) => patch(i, { value: e.target.value })} />
           <input className={`${input} flex-1`} value={s.label} placeholder="livré & en production" onChange={(e) => patch(i, { label: e.target.value })} />
-          <button type="button" onClick={() => setStats((prev) => prev.filter((_, j) => j !== i))} className="rounded-md border border-zinc-700 px-2 py-1.5 text-sm text-zinc-400 hover:bg-zinc-800">
+          <button type="button" onClick={() => setStats((prev) => prev.filter((_, j) => j !== i))} className="rounded-md border border-border-strong px-2 py-1.5 text-sm text-muted hover:bg-surface-2">
             ✕
           </button>
         </div>
       ))}
       <div className="flex items-center gap-3">
-        <button type="button" onClick={() => setStats((prev) => [...prev, { value: "", label: "" }])} className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+        <button type="button" onClick={() => setStats((prev) => [...prev, { value: "", label: "" }])} className="rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
           + Stat
         </button>
-        <button type="button" onClick={save} className="rounded-md bg-amber-500 px-4 py-1.5 text-sm font-semibold text-amber-950 hover:bg-amber-600">
+        <button type="button" onClick={save} className="rounded-md bg-accent px-4 py-1.5 text-sm font-semibold text-bg hover:bg-accent-strong">
           Enregistrer
         </button>
-        {status === "ok" ? <span className="text-sm text-emerald-400">Enregistré ✓</span> : null}
-        {status === "err" ? <span className="text-sm text-red-400">Erreur : {error}</span> : null}
+        {status === "ok" ? <span className="text-sm text-ok">Enregistré ✓</span> : null}
+        {status === "err" ? <span className="text-sm text-danger">Erreur : {error}</span> : null}
       </div>
     </div>
   );
