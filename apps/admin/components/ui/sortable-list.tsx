@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition, type ReactNode } from "react";
+import { useState, useTransition, type ReactNode } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -60,9 +60,19 @@ export function SortableList({
   items: SortableRow[];
   reorderAction: (form: FormData) => Promise<void>;
 }) {
-  const [order, setOrder] = useState<SortableRow[]>(items);
-  // Re-sync when the server sends a new ordering (after revalidation).
-  useEffect(() => setOrder(items), [items]);
+  // Only the id ORDER is local state (for optimistic drag). Content is always
+  // read fresh from `items`, so inline edits never show stale data.
+  const serverIds = items.map((i) => i.id);
+  const [orderIds, setOrderIds] = useState<string[]>(serverIds);
+  // Re-sync when the server sends a new set/ordering of ids (after revalidation).
+  // Adjusting state during render (keyed on ids) is the React-recommended pattern
+  // for "reset state when a prop changes" — no effect needed.
+  const idsKey = serverIds.join(",");
+  const [prevIdsKey, setPrevIdsKey] = useState(idsKey);
+  if (idsKey !== prevIdsKey) {
+    setPrevIdsKey(idsKey);
+    setOrderIds(serverIds);
+  }
   const [pending, startTransition] = useTransition();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -72,36 +82,38 @@ export function SortableList({
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const oldIndex = order.findIndex((i) => i.id === active.id);
-    const newIndex = order.findIndex((i) => i.id === over.id);
+    const oldIndex = orderIds.indexOf(String(active.id));
+    const newIndex = orderIds.indexOf(String(over.id));
     if (oldIndex < 0 || newIndex < 0) return;
-    const next = arrayMove(order, oldIndex, newIndex);
-    setOrder(next);
+    const next = arrayMove(orderIds, oldIndex, newIndex);
+    setOrderIds(next);
     const fd = new FormData();
-    fd.set("ids", next.map((i) => i.id).join(","));
+    fd.set("ids", next.join(","));
     startTransition(() => {
       void reorderAction(fd);
     });
   }
 
-  if (order.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="rounded-lg border border-border p-4 text-sm text-muted">Aucun élément.</div>
     );
   }
 
+  const byId = new Map(items.map((i) => [i.id, i.content]));
+
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-      <SortableContext items={order.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext items={orderIds} strategy={verticalListSortingStrategy}>
         <ul
           className={cn(
             "flex flex-col divide-y divide-border rounded-lg border border-border transition-opacity",
             pending && "opacity-70",
           )}
         >
-          {order.map((i) => (
-            <Row key={i.id} id={i.id}>
-              {i.content}
+          {orderIds.map((id) => (
+            <Row key={id} id={id}>
+              {byId.get(id)}
             </Row>
           ))}
         </ul>
