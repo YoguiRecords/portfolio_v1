@@ -4,6 +4,8 @@
    Portfolio Yohan — DA « éditorial sombre + or » (mobile-first)
    Tokens & primitives portés de mockups/shared.css + site-v3.html.
    Aucune couleur en dur dans les composants : tout vient d'ici.
+   L'or (accent) est la couleur de marque canonique de `@portfolio/ui`
+   (BRAND, brand.ts) ; un test du package garde web et admin synchronisés.
    ============================================================ */
 
 :root {
