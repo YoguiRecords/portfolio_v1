@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../../i18n/navigation";
 import { Typewriter } from "../typewriter";
 import type { HomeData } from "../../lib/data/home";
 
