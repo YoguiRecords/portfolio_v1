@@ -29,6 +29,10 @@ async function main(): Promise<void> {
   await prisma.careerGoal.deleteMany();
   await prisma.kpi.deleteMany();
   await prisma.skill.deleteMany();
+  await prisma.experience.deleteMany();
+  await prisma.education.deleteMany();
+  await prisma.language.deleteMany();
+  await prisma.interest.deleteMany();
   await prisma.homeSection.deleteMany();
   await prisma.faqEntry.deleteMany();
   await prisma.testimonial.deleteMany();
@@ -188,21 +192,110 @@ async function main(): Promise<void> {
   // 5. KPI
   await prisma.kpi.createMany({
     data: [
-      { label: "Expérience", value: "4 ans", note: "en hausse", trend: "UP", order: 0 },
-      { label: "Périmètre", value: "Tech + Business", note: "vision × exécution", order: 1 },
-      { label: "Management", value: "Équipes pilotées", note: "leadership", trend: "UP", order: 2 },
+      { label: "Expérience", value: "4 ans", note: "en hausse", trend: "UP", order: 0, showOnCv: true },
+      { label: "Périmètre", value: "Tech + Business", note: "vision × exécution", order: 1, showOnCv: true },
+      { label: "Management", value: "Équipes pilotées", note: "leadership", trend: "UP", order: 2, showOnCv: true },
       { label: "Recommandation", value: "Strong hire", note: "disponible", trend: "UP", order: 3 },
     ],
   });
 
-  // 6. Compétences (écosystème)
+  // 6. Compétences (écosystème) — TECH (5 catégories CV) + SOFT (soft skills CV)
   await prisma.skill.createMany({
     data: [
-      { name: "Full-stack", category: "Compétence", order: 0 },
-      { name: "Architecture", category: "Compétence", order: 1 },
-      { name: "Management", category: "Compétence", order: 2 },
-      { name: "Sécurité", category: "Compétence", order: 3 },
-      { name: "Business", category: "Compétence", order: 4 },
+      { name: "Full-stack", kind: "TECH", category: "Développement", showOnCv: true, order: 0 },
+      { name: "Architecture", kind: "TECH", category: "Développement", showOnCv: true, order: 1 },
+      { name: "Gestion de projet", kind: "TECH", category: "Gestion de projet", showOnCv: true, order: 2 },
+      { name: "Management d'équipe", kind: "TECH", category: "Management", showOnCv: true, order: 3 },
+      { name: "Sécurité", kind: "TECH", category: "Développement", showOnCv: true, order: 4 },
+      { name: "IA & orchestration", kind: "TECH", category: "IA & Orchestration", showOnCv: true, order: 5 },
+      { name: "Communication", kind: "TECH", category: "Communication", showOnCv: true, order: 6 },
+      { name: "Leadership", kind: "SOFT", showOnCv: true, order: 7 },
+      { name: "Rigueur", kind: "SOFT", showOnCv: true, order: 8 },
+      { name: "Pédagogie", kind: "SOFT", showOnCv: true, order: 9 },
+    ],
+  });
+
+  // 6b. Corpus CV — expériences (3 tiers), formations, langues, intérêts
+  await prisma.experience.createMany({
+    data: [
+      {
+        title: "Directeur adjoint & fondateur",
+        company: "Indépendant",
+        location: "Hauts-de-France",
+        startDate: new Date("2024-01-01"),
+        endDate: null,
+        tier: "FEATURED",
+        badge: "EN_COURS",
+        stack: ["Next.js", "TypeScript", "Docker", "PostgreSQL"],
+        bullets: [
+          "Conception et pilotage de produits de bout en bout.",
+          "Management d'équipe et coordination pédagogique.",
+        ],
+        description:
+          "Direction d'une structure et d'une équipe, tout en concevant et livrant des produits techniques de bout en bout.",
+        order: 0,
+        showOnPdf: true,
+        showOnCvPage: true,
+        showOnSite: false,
+      },
+      {
+        title: "Gestionnaire de projet & encadrement",
+        company: "École",
+        location: "Hauts-de-France",
+        startDate: new Date("2022-01-01"),
+        endDate: new Date("2023-12-31"),
+        tier: "PREVIOUS",
+        badge: "CLE",
+        stack: ["Gestion de projet", "Management"],
+        bullets: ["Cadrage, priorisation et livraison.", "Encadrement et montée en compétence d'équipe."],
+        order: 1,
+        showOnPdf: true,
+        showOnCvPage: true,
+      },
+      {
+        title: "Développeur",
+        company: "Divers",
+        startDate: new Date("2019-01-01"),
+        endDate: new Date("2021-12-31"),
+        tier: "MINI",
+        badge: "NONE",
+        stack: ["JavaScript", "PHP"],
+        bullets: ["Premières livraisons logicielles."],
+        order: 2,
+        showOnPdf: true,
+        showOnCvPage: true,
+      },
+    ],
+  });
+  await prisma.education.createMany({
+    data: [
+      {
+        title: "Master informatique",
+        institution: "Université",
+        date: "2018 — 2020",
+        details: ["Spécialité génie logiciel"],
+        order: 0,
+      },
+      {
+        title: "Licence informatique",
+        institution: "Université",
+        date: "2015 — 2018",
+        details: [],
+        order: 1,
+      },
+    ],
+  });
+  await prisma.language.createMany({
+    data: [
+      { name: "Français", level: "Langue maternelle", order: 0 },
+      { name: "Anglais", level: "C1 — professionnel", order: 1 },
+    ],
+  });
+  await prisma.interest.createMany({
+    data: [
+      { label: "Course à pied", order: 0 },
+      { label: "Jeux vidéo & game design", order: 1 },
+      { label: "Entrepreneuriat", order: 2 },
     ],
   });
 
@@ -303,6 +396,7 @@ async function main(): Promise<void> {
       summary: "Conçu, piloté et déployé. Du problème à la mise en production.",
       content: "Étude de cas complète gérée par blocs modulaires.",
       featured: true, status: "PUBLISHED", order: 0,
+      showOnCv: true, cvBadge: "KEY",
       type: "GAME", role: "Lead & build", periodLabel: "2024 — 2025",
       statusLabel: "En production", tagline: "Du game design jusqu'à la mise en production sécurisée.",
       sigText: "conçu · piloté · livré",
@@ -422,12 +516,13 @@ async function main(): Promise<void> {
   }
 
   // Comptes de contrôle
-  const [sec, hs, kpi, tr, goals, ana, proj, testi] = await Promise.all([
+  const [sec, hs, kpi, tr, goals, ana, proj, testi, exp, edu, lang, intr] = await Promise.all([
     prisma.siteSettings.count(), prisma.homeSection.count(), prisma.kpi.count(),
     prisma.careerTrack.count(), prisma.careerGoal.count(), prisma.analysis.count(),
     prisma.project.count(), prisma.testimonial.count(),
+    prisma.experience.count(), prisma.education.count(), prisma.language.count(), prisma.interest.count(),
   ]);
-  console.log(`Seed contenu OK → settings:${sec} sections:${hs} kpi:${kpi} tracks:${tr} goals:${goals} analyses:${ana} projets:${proj} testimonials:${testi}`);
+  console.log(`Seed contenu OK → settings:${sec} sections:${hs} kpi:${kpi} tracks:${tr} goals:${goals} analyses:${ana} projets:${proj} testimonials:${testi} experiences:${exp} educations:${edu} langues:${lang} interets:${intr}`);
 }
 
 main()
