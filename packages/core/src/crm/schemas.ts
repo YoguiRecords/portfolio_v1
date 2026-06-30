@@ -48,11 +48,19 @@ export const ActivityInput = z.object({
   occurredAt: z.coerce.date().optional(),
 });
 
-/** Follow-up task input. */
-export const CrmTaskInput = z.object({
+/** Task enumerations (mirror the Prisma enums). */
+export const TASK_CATEGORIES = ["CRM", "CONTENT", "BILLING", "GENERAL"] as const;
+export const TASK_STATUSES = ["TODO", "IN_PROGRESS", "BLOCKED", "DONE"] as const;
+export const TASK_PRIORITIES = ["LOW", "NORMAL", "HIGH"] as const;
+
+/** Unified task (todo) input — CRM follow-ups and general todos share this shape. */
+export const TaskInput = z.object({
   title: z.string().min(1).max(200),
+  description: z.string().max(4000).optional(),
+  category: z.enum(TASK_CATEGORIES).default("GENERAL"),
+  status: z.enum(TASK_STATUSES).default("TODO"),
+  priority: z.enum(TASK_PRIORITIES).default("NORMAL"),
   dueAt: z.coerce.date().optional(),
-  isDone: z.boolean().default(false),
   contactId: z.string().optional(),
   dealId: z.string().optional(),
 });
@@ -61,7 +69,10 @@ export type CompanyInput = z.infer<typeof CompanyInput>;
 export type CrmContactInput = z.infer<typeof CrmContactInput>;
 export type DealInput = z.infer<typeof DealInput>;
 export type ActivityInput = z.infer<typeof ActivityInput>;
-export type CrmTaskInput = z.infer<typeof CrmTaskInput>;
+export type TaskInput = z.infer<typeof TaskInput>;
+export type TaskCategory = (typeof TASK_CATEGORIES)[number];
+export type TaskStatus = (typeof TASK_STATUSES)[number];
+export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 export type DealStage = (typeof DEAL_STAGES)[number];
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];
 export type CrmContactStatus = (typeof CRM_CONTACT_STATUSES)[number];
