@@ -70,7 +70,12 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
   (`Analysis.type` unique). Le contenu hétérogène est un payload JSON `Analysis.data` validé par
   `parseAnalysis` (@portfolio/core) à l'écriture (BO) comme au rendu (web) — même symétrie que les
   `ProjectBlock`. PESTEL/PORTER ne s'appliquent plus au profil (réservés aux fiches projet).
-- **Profil** : `upsertProfileAction`, `uploadProfileAvatarAction` (pipeline média), `createSocialAction`/`deleteSocialAction`.
+- **Profil** : `upsertProfileAction` (+ champs CV), `uploadProfileAvatarAction` (pipeline média), `createSocialAction`/`deleteSocialAction`.
+- **CV (corpus)** : `create/update/delete/reorderExperienceAction`, idem `Education`/`Language`/`Interest`
+  (`apps/admin/lib/actions/cv-actions.ts`) ; les compétences/projets/KPI portent les drapeaux CV
+  (`updateSkillAction` kind/showOnCv, `updateProjectAction` showOnCv/cvBadge, `update/createKpiAction` showOnCv).
+- **CV (PDF)** : `generateCvPdfAction` — rend FR + EN via le service interne `cv-renderer` (Chromium),
+  upload MinIO (nom randomisé), upsert `CvExport` (une ligne par locale). Garde `requireEnrolledSession`.
 - **Projets** : `createProjectAction` / `setProjectStatusAction` / `deleteProjectAction` ;
   actions de blocs (ajout/maj validée Zod par type/réordo/visibilité/suppression).
 - **Articles** : `createArticleAction` / `deleteArticleAction` (programmation `SCHEDULED`).

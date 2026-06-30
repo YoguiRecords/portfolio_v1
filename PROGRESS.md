@@ -5,11 +5,13 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 ») + features web.
-- **Dernier jalon livré :** **v0.7.0 — « Le cap » : trajectoire ascendante** (web) + **édition/réordonnancement
-  des objectifs** (BO). Détail : `docs/patch_notes/patch_note_V0_7.md`. Validé navigateur (desktop + mobile
-  sticky-pin + reduced-motion) et reflet BO → web confirmé.
-- **Jalon précédent :** **P17 — Chatbot public fonctionnel**. Toutes les phases P0→P17 passées (P16 = socle ; câblage = DT8).
-- **Prochain plan :** **Pcv** — CV dynamique (6 PRs, `docs/plans/2026-06-30-cv-dynamique.md`).
+- **Dernier jalon livré :** **v0.8.0 — CV dynamique** : corpus unique éditable au BO → 3 projections
+  (home, page `/cv` riche, **PDF A4** figé), bilingue FR/EN, génération PDF via le service durci
+  **`cv-renderer`** (8ᵉ service). **404 `/cv` tué.** 6 PRs (#18→#22). Détail : `docs/patch_notes/patch_note_V0_8.md`.
+  Validé navigateur (BO CRUD + drag-reorder, route interne FR/EN, pipeline PDF réel, page `/cv` desktop/mobile).
+- **Jalon précédent :** **v0.7.0 — « Le cap » : trajectoire ascendante** (web) + édition/réordonnancement
+  des objectifs (BO). Détail : `docs/patch_notes/patch_note_V0_7.md`.
+- **Prochain plan :** — (backlog dans `TASKS.md`).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.
