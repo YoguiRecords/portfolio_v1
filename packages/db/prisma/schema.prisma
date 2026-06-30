@@ -862,6 +862,26 @@ enum CrmContactStatus {
   ARCHIVED
 }
 
+enum TaskCategory {
+  CRM
+  CONTENT
+  BILLING
+  GENERAL
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  BLOCKED
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  NORMAL
+  HIGH
+}
+
 model Company {
   id        String    @id @default(cuid())
   name      String
@@ -896,7 +916,7 @@ model Contact {
 
   deals      Deal[]
   activities Activity[]
-  tasks      CrmTask[]
+  tasks      Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -920,7 +940,7 @@ model Deal {
   company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
 
   activities Activity[]
-  tasks      CrmTask[]
+  tasks      Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -948,11 +968,14 @@ model Activity {
   @@index([occurredAt])
 }
 
-model CrmTask {
-  id     String    @id @default(cuid())
-  title  String
-  dueAt  DateTime?
-  isDone Boolean   @default(false)
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  category    TaskCategory @default(GENERAL)
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(NORMAL)
+  dueAt       DateTime?
 
   contactId String?
   contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
@@ -962,8 +985,10 @@ model CrmTask {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@map("CrmTask")
   @@index([dueAt])
-  @@index([isDone])
+  @@index([status])
+  @@index([category])
   @@index([contactId])
   @@index([dealId])
 }
