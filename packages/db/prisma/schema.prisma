@@ -217,6 +217,34 @@ model LoginAttempt {
 // Identité du site (À propos / CV)
 // ──────────────────────────────────────────────────────────────────────────
 
+// ──────────────────────────────────────────────────────────────────────────
+// CV — enums (corpus CV dynamique projeté sur PDF / page /cv / home)
+// ──────────────────────────────────────────────────────────────────────────
+
+enum SkillKind {
+  TECH
+  SOFT
+}
+
+enum ProjectCvBadge {
+  NONE
+  KEY
+  IN_PROGRESS
+}
+
+enum ExperienceTier {
+  FEATURED
+  PREVIOUS
+  MINI
+}
+
+enum ExperienceBadge {
+  NONE
+  PERSO
+  EN_COURS
+  CLE
+}
+
 /// Profil unique du portfolio (une seule ligne, contrainte applicative).
 model Profile {
   id       String  @id @default(cuid())
@@ -238,6 +266,12 @@ model Profile {
   // Découvrabilité (SEO + moteurs IA / AEO)
   aiSummary String? // résumé court « quotable » par les IA (« Qui est Yohan ? »)
 
+  // CV (champs spécifiques au document CV / page /cv)
+  cvAccroche          String? // accroche éditoriale du CV
+  cvAvailabilityStart String? // « Prise de poste » (ex. « Immédiate »)
+  cvMobility          String? // « Mobilité » (ex. « Hauts-de-France · remote »)
+  cvContractType      String? // « Contrat » (ex. « CDI · freelance »)
+
   avatarId String?     @unique
   avatar   MediaAsset? @relation("ProfileAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
 
@@ -258,6 +292,80 @@ model SocialLink {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
+}
+
+/// Expérience professionnelle (corpus CV). Projetée sur PDF (condensé),
+/// page /cv (détaillé) et éventuellement la home, selon les drapeaux.
+model Experience {
+  id           String          @id @default(cuid())
+  title        String
+  company      String
+  location     String?
+  startDate    DateTime
+  endDate      DateTime? // null = poste en cours
+  tier         ExperienceTier  @default(MINI)
+  badge        ExperienceBadge @default(NONE)
+  stack        String[] // tags techno (CV)
+  bullets      String[] // puces de réalisations (CV condensé)
+  description  String? // texte long — page /cv uniquement
+  order        Int             @default(0)
+  showOnPdf    Boolean         @default(false)
+  showOnCvPage Boolean         @default(true)
+  showOnSite   Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([order])
+  @@index([startDate])
+}
+
+/// Formation (chapitre « Formations » du CV).
+model Education {
+  id           String   @id @default(cuid())
+  title        String
+  institution  String?
+  date         String // libellé (« 2018 — 2020 »)
+  details      String[] // sous-lignes
+  order        Int      @default(0)
+  showOnPdf    Boolean  @default(true)
+  showOnCvPage Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Langue (sidebar CV).
+model Language {
+  id        String   @id @default(cuid())
+  name      String // « Français »
+  level     String // « Langue maternelle », « C1 »
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// Centre d'intérêt (sidebar CV).
+model Interest {
+  id        String   @id @default(cuid())
+  label     String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+/// PDF du CV généré par le BO, une ligne par langue (upsert). Servi figé au public.
+model CvExport {
+  id          String   @id @default(cuid())
+  locale      String   @unique // « fr » | « en »
+  url         String // URL MinIO publique
+  sizeBytes   Int
+  generatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -285,6 +393,10 @@ model Project {
   status      ProjectStatus @default(DRAFT)
   publishedAt DateTime?
   order       Int           @default(0)
+
+  // CV — « Réalisations » (cartes, badges)
+  showOnCv Boolean        @default(false)
+  cvBadge  ProjectCvBadge @default(NONE)
 
   // Fiche « étude de cas » — entête + blocs modulaires selon le type
   type        ProjectType @default(SOFTWARE)
@@ -551,6 +663,7 @@ model Kpi {
   trend     TrendDirection?
   order     Int             @default(0)
   isVisible Boolean         @default(true)
+  showOnCv  Boolean         @default(false) // CV « En chiffres »
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
@@ -558,13 +671,17 @@ model Kpi {
 }
 
 /// Compétence affichée dans l'« écosystème » (orbit) et réutilisable ailleurs.
+/// Sert aussi le CV : `kind` distingue compétences (TECH) et soft skills (SOFT),
+/// `category` regroupe les TECH, `showOnCv` projette sur le CV.
 model Skill {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String // « Full-stack », « Management », « Sécurité »
-  category  String? // regroupement libre (« Compétence », « Outil »)
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  category  String? // regroupement libre (« Compétence », « Outil » ; catégories CV pour les TECH)
+  kind      SkillKind @default(TECH)
+  showOnCv  Boolean   @default(false)
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([order])
 }
@@ -973,10 +1090,10 @@ model Task {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("CrmTask")
   @@index([dueAt])
   @@index([status])
   @@index([category])
   @@index([contactId])
   @@index([dealId])
+  @@map("CrmTask")
 }
