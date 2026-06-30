@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { ConfirmSubmitButton } from "@/components/ui";
 import { listAnalyses } from "@/lib/content/analysis";
 import {
   createAnalysisAction,
@@ -29,9 +30,7 @@ export default async function AnalysesPage() {
             </span>
             <form action={deleteAnalysisAction}>
               <input type="hidden" name="id" value={a.id} />
-              <button type="submit" className="rounded-md border border-border-strong px-2 py-1 text-xs text-muted hover:bg-surface-2">
-                Supprimer
-              </button>
+              <ConfirmSubmitButton label="Supprimer" />
             </form>
           </div>
 
@@ -44,9 +43,7 @@ export default async function AnalysesPage() {
                 </span>
                 <form action={deleteAnalysisItemAction}>
                   <input type="hidden" name="id" value={it.id} />
-                  <button type="submit" className="text-xs text-muted hover:text-danger">
-                    ✕
-                  </button>
+                  <ConfirmSubmitButton label="✕" />
                 </form>
               </li>
             ))}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
+import { ConfirmSubmitButton } from "@/components/ui";
 import { addBlockAction, deleteBlockAction } from "@/lib/actions/block-actions";
 import { updateProjectAction } from "@/lib/actions/project-actions";
 import { ProjectEditor, type ProjectEditorData } from "@/components/projects/project-editor";
@@ -87,9 +88,7 @@ export default async function ProjectEditPage({ params }: { params: Promise<{ id
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs uppercase tracking-wide text-accent">{block.type}</span>
                 <form action={deleteBlockAction.bind(null, block.id, project.id)}>
-                  <button type="submit" className="rounded-control border border-border px-3 py-1 text-sm text-muted hover:bg-surface-2">
-                    Supprimer le bloc
-                  </button>
+                  <ConfirmSubmitButton label="Supprimer le bloc" />
                 </form>
               </div>
               <BlockEditor block={block} projectId={project.id} />

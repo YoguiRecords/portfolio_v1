@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button } from "@/components/ui";
+import { Button, ConfirmSubmitButton } from "@/components/ui";
 import { listFaqs } from "@/lib/content/faq";
 import { createFaqAction, deleteFaqAction } from "@/lib/actions/content-actions";
 
@@ -30,9 +30,7 @@ export default async function FaqPage() {
                   <span className="font-mono text-[11px] uppercase text-accent">{f.scope}</span>
                   <form action={deleteFaqAction}>
                     <input type="hidden" name="id" value={f.id} />
-                    <Button variant="subtle" size="sm" type="submit">
-                      ✕
-                    </Button>
+                    <ConfirmSubmitButton label="✕" />
                   </form>
                 </div>
               </div>

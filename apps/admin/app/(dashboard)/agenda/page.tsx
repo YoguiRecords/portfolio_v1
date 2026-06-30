@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button, Status } from "@/components/ui";
+import { Button, ConfirmSubmitButton, Status } from "@/components/ui";
 import { listEvents } from "@/lib/content/event";
 import { createEventAction, deleteEventAction, generateNewsAction } from "@/lib/actions/event-actions";
 
@@ -42,9 +42,7 @@ export default async function AdminAgendaPage() {
                 </form>
                 <form action={deleteEventAction}>
                   <input type="hidden" name="id" value={e.id} />
-                  <Button variant="subtle" size="sm" type="submit">
-                    Supprimer
-                  </Button>
+                  <ConfirmSubmitButton label="Supprimer" />
                 </form>
               </div>
             </li>

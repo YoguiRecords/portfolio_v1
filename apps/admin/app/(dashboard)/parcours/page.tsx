@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { ConfirmSubmitButton } from "@/components/ui";
 import { listTracks, listGoals } from "@/lib/content/career";
 import {
   createTrackAction,
@@ -34,9 +35,7 @@ export default async function CareerPage() {
               </span>
               <form action={deleteTrackAction}>
                 <input type="hidden" name="id" value={t.id} />
-                <button type="submit" className="rounded-md border border-border-strong px-2 py-1 text-xs text-muted hover:bg-surface-2">
-                  Supprimer la voie
-                </button>
+                <ConfirmSubmitButton label="Supprimer la voie" />
               </form>
             </div>
 
@@ -48,9 +47,7 @@ export default async function CareerPage() {
                   </span>
                   <form action={deleteMilestoneAction}>
                     <input type="hidden" name="id" value={m.id} />
-                    <button type="submit" className="text-xs text-muted hover:text-danger">
-                      ✕
-                    </button>
+                    <ConfirmSubmitButton label="✕" />
                   </form>
                 </li>
               ))}
@@ -88,9 +85,7 @@ export default async function CareerPage() {
               </span>
               <form action={deleteGoalAction}>
                 <input type="hidden" name="id" value={g.id} />
-                <button type="submit" className="text-xs text-muted hover:text-danger">
-                  ✕
-                </button>
+                <ConfirmSubmitButton label="✕" />
               </form>
             </li>
           ))}
