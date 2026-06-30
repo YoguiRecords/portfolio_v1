@@ -98,6 +98,30 @@ services:
       timeout: 5s
       retries: 5
 
+  # Rendu PDF du CV (Chromium headless via Playwright). Interne uniquement, port
+  # 5051 jamais publié, sans accès Internet. Visite la route interne durcie de
+  # `admin` (token CV_RENDER_TOKEN) et imprime le CvDocument en PDF.
+  cv-renderer:
+    build:
+      context: ./services/cv-renderer
+    restart: unless-stopped
+    environment:
+      PORT: "5051"
+      ADMIN_INTERNAL_URL: http://admin:3101
+      CV_RENDER_TOKEN: ${CV_RENDER_TOKEN:-dev-cv-token}
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    networks: [internal] # interne uniquement — appelé par le back office, jamais exposé
+    healthcheck:
+      test:
+        ["CMD", "node", "-e", "fetch('http://localhost:5051/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   umami:
     image: ghcr.io/umami-software/umami:postgresql-latest
     restart: unless-stopped
@@ -139,12 +163,21 @@ services:
       HOSTNAME: 0.0.0.0
       # Back office → rôle lecture/écriture.
       DATABASE_URL: postgresql://app_admin:${ADMIN_DB_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      # Écriture MinIO (médias + PDF du CV) et lecture publique.
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-http://localhost:9100/media}
+      # Génération du PDF du CV (service interne cv-renderer + route interne durcie).
+      CV_RENDERER_URL: http://cv-renderer:5051
+      CV_RENDER_TOKEN: ${CV_RENDER_TOKEN:-dev-cv-token}
     depends_on:
       db:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
       image-processor:
+        condition: service_healthy
+      cv-renderer:
         condition: service_healthy
     networks: [internal, edge]
 

@@ -9,8 +9,13 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 
-/** Paths reachable without a session. */
-const PUBLIC_PATHS = ["/login"];
+/**
+ * Paths reachable without a session. `/internal/*` is the renderer-only surface
+ * (e.g. the CV document printed by `cv-renderer`): it has no BO session, so the
+ * session gate must skip it — it is protected instead by its own token guard
+ * (`CV_RENDER_TOKEN`) and is never routed by Caddy.
+ */
+const PUBLIC_PATHS = ["/login", "/internal"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
