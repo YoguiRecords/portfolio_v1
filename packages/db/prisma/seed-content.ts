@@ -79,6 +79,11 @@ async function main(): Promise<void> {
     currentRole: "Indépendant · fondateur",
     aiSummary:
       "Yohan Debusscher est concepteur-développeur et entrepreneur. Profil hybride (tech, pédagogie, management, business) qui conçoit, pilote et livre des produits de bout en bout. Cap de carrière : manager, CTO puis CEO.",
+    cvAccroche:
+      "Concepteur-développeur et entrepreneur. Profil hybride (tech, pédagogie, management, business) qui conçoit, pilote et livre des produits de bout en bout — de la stratégie à la production.",
+    cvAvailabilityStart: "Immédiate",
+    cvMobility: "Hauts-de-France · remote",
+    cvContractType: "CDI · freelance",
   };
   if (profile) {
     await prisma.profile.update({ where: { id: profile.id }, data: profileData });

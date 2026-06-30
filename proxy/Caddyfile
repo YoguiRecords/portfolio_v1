@@ -31,7 +31,15 @@
 # Back office
 {$ADMIN_SITE:http://bo.yohan-debusscher.com} {
 	import security_headers
-	reverse_proxy admin:3101
+	# Route interne de rendu du CV (visitée par cv-renderer sur le réseau interne
+	# uniquement) — jamais exposée publiquement. Défense en profondeur : Caddy la
+	# bloque, et l'app exige le token CV_RENDER_TOKEN.
+	handle /internal/* {
+		respond 404
+	}
+	handle {
+		reverse_proxy admin:3101
+	}
 }
 
 # Statistiques (Umami : collecte publique + dashboard derrière son auth)
