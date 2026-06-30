@@ -1,5 +1,35 @@
 # Patch notes — v0.5.x
 
+## v0.5.1 — Application réelle de la DA v2 + mutualisation + anti-drift DB (2026-06-30)
+
+Correctifs et durcissement de la livraison BO v2 : le thème validé n'était pas réellement appliqué
+au runtime, plus mutualisation du markdown et automatisation des migrations.
+
+### Design (correctif)
+- **DA v2 enfin appliquée** : `globals.css` + `layout.tsx` adoptent la base **graphite sombre + or +
+  Inter**. Le boilerplate Next par défaut (fond blanc, police Geist/Arial) écrasait les tokens → le BO
+  s'affichait **en blanc**. Corrigé : `body` sur `--color-bg`/`--color-ink`, police **Inter**.
+- **Purge des couleurs en dur** : 18 fichiers, ~230 classes `zinc-*`/`amber-*`/`emerald-*` remplacées
+  par les tokens de la DA (DoD « zéro couleur en dur » respectée ; 2 `bg-white` légitimes conservés :
+  QR TOTP scannable, iframe « papier » du CV).
+
+### Mutualisation — `@portfolio/ui`
+- Nouveau package partagé : **parser markdown sûr** (`parseMarkdown`) commun à `web` et `admin`
+  (fin de la duplication du renderer sécurité-critique). Habillage propre à chaque app conservé.
+- **`BRAND`** = source canonique de l'or, avec **test de drift** garantissant que `web` et `admin`
+  déclarent la même valeur (anti-divergence). Primitives `ui/` laissées dans `admin` (non partagées).
+
+### Docker / DB (correctifs + anti-drift)
+- **Build images corrigé** : `prisma generate` exécuté avant `next build` dans les Dockerfiles
+  `web` et `admin` (le rebuild échouait sur le client Prisma non généré).
+- **Service one-shot `migrate`** : applique `prisma migrate deploy` à chaque `docker compose up`,
+  **avant** `web`/`admin` (rôle propriétaire, réseau interne, idempotent) → le schéma et la DB ne
+  peuvent plus diverger. Migrations `crm` + `rbac` appliquées (colonne `AdminUser.role` manquante).
+
+### Tests
+- **266 tests** Vitest verts (dont `@portfolio/ui` : 5 markdown + 2 drift) ; `next build` web+admin,
+  `tsc`, lint verts.
+
 ## v0.5.0 — Refonte back office « BO v2 » + CRM + chatbot (2026-06-30)
 
 Refonte complète du back office (`apps/admin`) sur un design-system unifié (graphite + or), ajout

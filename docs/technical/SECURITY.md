@@ -14,7 +14,9 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
   tables ni définir un `status` (témoignage toujours `PENDING` → pas d'auto-validation) — toute la
   PII (email, IP, texte original) reste invisible côté public.
 - `app_admin` : rôle **lecture/écriture** utilisé par le back office.
-- Le rôle propriétaire est réservé aux migrations.
+- Le **rôle propriétaire** (DDL) est réservé aux migrations : il n'est utilisé que par le service
+  one-shot `migrate` (conteneur isolé, réseau interne, s'arrête après exécution), jamais par `web`
+  ni `admin`. Garder le DDL hors des rôles applicatifs préserve le moindre privilège au runtime.
 
 ## Stockage des médias
 - Bucket `media` en **lecture publique** uniquement (images destinées à être publiques).
