@@ -1,5 +1,10 @@
 import type { PrismaClient } from "@portfolio/db";
-import { CareerTrackInput, CareerMilestoneInput, CareerGoalInput } from "@portfolio/core";
+import {
+  CareerTrackInput,
+  CareerMilestoneInput,
+  CareerGoalInput,
+  CareerGoalUpdate,
+} from "@portfolio/core";
 
 /**
  * Career persistence (write side, `app_admin`): tracks (timeline lanes) with their
@@ -50,4 +55,23 @@ export async function createGoal(prisma: PrismaClient, raw: unknown) {
 /** Deletes a career goal by id. */
 export async function deleteGoal(prisma: PrismaClient, id: string) {
   await prisma.careerGoal.delete({ where: { id } });
+}
+
+/** Updates a goal's role/status/order from validated input. */
+export async function updateGoal(prisma: PrismaClient, raw: unknown) {
+  const { id, ...data } = CareerGoalUpdate.parse(raw);
+  return prisma.careerGoal.update({ where: { id }, data });
+}
+
+/** Moves a goal up/down by swapping its `order` with the adjacent goal. */
+export async function moveGoal(prisma: PrismaClient, id: string, dir: "up" | "down") {
+  const goals = await prisma.careerGoal.findMany({ orderBy: { order: "asc" } });
+  const i = goals.findIndex((g) => g.id === id);
+  if (i < 0) return;
+  const j = dir === "up" ? i - 1 : i + 1;
+  if (j < 0 || j >= goals.length) return;
+  await prisma.$transaction([
+    prisma.careerGoal.update({ where: { id: goals[i].id }, data: { order: goals[j].order } }),
+    prisma.careerGoal.update({ where: { id: goals[j].id }, data: { order: goals[i].order } }),
+  ]);
 }

@@ -9,13 +9,13 @@ const section = {
   title: "Le cap",
 } as unknown as HomeData["sections"][number];
 
-test("Cap marque un objectif ACHIEVED comme acquis et compte les atteints", () => {
+test("Cap affiche le compteur d'atteints et la trajectoire", () => {
   const goals = [
     { id: "g1", role: "Développeur", status: "ACHIEVED" },
     { id: "g2", role: "CTO", status: "TARGET" },
   ] as unknown as HomeData["goals"];
 
   render(<Cap section={section} goals={goals} />);
-  expect(screen.getByText("Acquis")).toBeInTheDocument();
   expect(screen.getByText("01 / 02 atteints")).toBeInTheDocument();
+  expect(screen.getAllByText("Développeur").length).toBeGreaterThan(0);
 });

@@ -4,8 +4,12 @@
 > Historique versionné → `docs/patch_notes/`.
 
 ## Version
-- **Cycle en cours :** refonte UI du back office (« BO v2 »).
-- **Dernier jalon livré :** **P17 — Chatbot public fonctionnel** (prochain évènement + contenu public). Toutes les phases P0→P17 passées (P16 = socle ; câblage = DT8).
+- **Cycle en cours :** refonte UI du back office (« BO v2 ») + features web.
+- **Dernier jalon livré :** **v0.7.0 — « Le cap » : trajectoire ascendante** (web) + **édition/réordonnancement
+  des objectifs** (BO). Détail : `docs/patch_notes/patch_note_V0_7.md`. Validé navigateur (desktop + mobile
+  sticky-pin + reduced-motion) et reflet BO → web confirmé.
+- **Jalon précédent :** **P17 — Chatbot public fonctionnel**. Toutes les phases P0→P17 passées (P16 = socle ; câblage = DT8).
+- **Prochain plan :** **Pcv** — CV dynamique (6 PRs, `docs/plans/2026-06-30-cv-dynamique.md`).
 
 ## Où on en est
 - **Direction visuelle BO validée :** `v2` — menu **rail** à icônes, palette **noir/gris graphite + or**, **Dashboard** (portfolio/audience) distinct de **Mission Control** (relation client/à-faire), éditeurs avec **aperçu live réduit & fermable**.

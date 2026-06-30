@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 2 — Trajectoire ascendante (cosmique + reveal)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#f0a800; --accent-strong:#c07800;
+    --dark-900:#111111; --dark-800:#1c1c1c; --dark-700:#232323; --border-dark:#272727;
+    --on-dark:#fff; --on-dark-2:#dddddd; --on-dark-muted:#999999;
+    --maxw:1180px; --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",system-ui,sans-serif;color:var(--on-dark);background:#060606;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 40px}
+  .concept{padding:96px 0;border-top:1px solid var(--border-dark)}
+  .clabel{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--on-dark-muted);border:1px solid var(--border-dark);border-radius:20px;padding:7px 16px;margin-bottom:40px}
+  .marker{font:700 12px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+  h2.title{font-size:clamp(30px,7.5vw,64px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:20px}
+  .txt{max-width:58ch;font-size:clamp(15px,4vw,19px);font-weight:300;color:var(--on-dark-2);line-height:1.7}
+
+  /* ===== Charts (commun desktop + mobile) ===== */
+  .chart,.mchart{position:relative;margin-top:54px;border-radius:14px}
+  .chart{height:480px}
+  .mchart{height:680px;display:none}
+  .chart svg,.mchart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1}
+  .stars{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .stars span{position:absolute;border-radius:50%;background:#fff;animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:var(--o,.4)}50%{opacity:calc(var(--o,.4)*.3)}}
+
+  .gnode{position:absolute;transform:translate(-50%,-50%);z-index:3}
+  .gdot{width:14px;height:14px;border-radius:50%;background:#0a0a0a;border:2px solid #3a3e42;
+    position:relative;transition:.2s;display:flex;align-items:center;justify-content:center}
+  .gnode.done .gdot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 14px rgba(240,168,0,.6)}
+  .gcheck{width:9px;height:9px;display:none}
+  .gnode.done .gcheck{display:block}
+  .gcheck path{stroke:#1c1c1c;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .gnode.now .gdot{width:30px;height:30px;border:none;
+    background:radial-gradient(circle at 38% 32%,#fff3d6,var(--accent) 48%,var(--accent-strong) 82%);
+    box-shadow:0 0 50px rgba(240,168,0,.55),0 0 120px rgba(240,168,0,.28);animation:sun 2.6s ease-in-out infinite}
+  @keyframes sun{0%,100%{box-shadow:0 0 50px rgba(240,168,0,.55),0 0 120px rgba(240,168,0,.28)}
+    50%{box-shadow:0 0 64px rgba(240,168,0,.7),0 0 150px rgba(240,168,0,.34)}}
+  .gnode.now .ping{position:absolute;top:50%;left:50%;width:30px;height:30px;border-radius:50%;
+    border:1.5px solid rgba(240,168,0,.5);transform:translate(-50%,-50%);animation:ping 3.2s ease-out infinite}
+  .gnode.now .ping.p2{animation-delay:1.6s}
+  @keyframes ping{0%{width:30px;height:30px;opacity:.7}100%{width:120px;height:120px;opacity:0}}
+  .gnode.next .gdot,.gnode.far .gdot{background:#d8dadf;border:none;width:10px;height:10px;box-shadow:0 0 8px rgba(216,218,223,.25)}
+  .beacon{display:none;position:absolute;top:50%;left:50%;width:10px;height:10px;border-radius:50%;
+    border:1.5px solid rgba(240,168,0,.55);transform:translate(-50%,-50%)}
+  .gnode.dest .gdot{width:16px;height:16px;background:radial-gradient(circle,#fff,var(--accent) 70%);
+    box-shadow:0 0 22px rgba(240,168,0,.8);border:none}
+  .gnode.dest .ring{position:absolute;top:50%;left:50%;width:16px;height:16px;border-radius:50%;
+    border:1px solid rgba(240,168,0,.45);transform:translate(-50%,-50%);animation:ping 3.6s ease-out infinite}
+  .gnode.dest .ring.r2{animation-delay:1.8s}
+  .gnode.dest .spark{position:absolute;top:50%;left:50%;width:46px;height:46px;transform:translate(-50%,-50%);
+    background:linear-gradient(transparent 47%,rgba(240,168,0,.45) 50%,transparent 53%),
+      linear-gradient(90deg,transparent 47%,rgba(240,168,0,.45) 50%,transparent 53%);animation:spark 6s linear infinite}
+  @keyframes spark{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+  /* labels : desktop = dessous ; mobile = à droite */
+  .glabel{position:absolute;top:20px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap}
+  .gnode.now .glabel{top:30px}
+  .gnode.dest .glabel{top:22px}
+  .gname{display:inline-block;font-size:13px;font-weight:600;color:#e8eaec;
+    background:rgba(8,8,8,.72);border:1px solid var(--border-dark);padding:5px 11px;border-radius:20px}
+  .gnode.now .gname{color:#fff;font-weight:700;border-color:rgba(240,168,0,.4)}
+  .gnode.next .gname,.gnode.far .gname{color:#999b9e}
+  .gtag{font:600 9px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#7a7d80;margin-top:7px}
+  .gnode.now .gtag{color:var(--accent)}
+  .here{position:absolute;left:50%;transform:translateX(-50%);bottom:34px;
+    font:700 8.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+
+  .mchart .glabel{top:50%;left:24px;transform:translateY(-50%);text-align:left}
+  .mchart .gnode.now .glabel{left:34px;top:50%}
+  .mchart .gnode.dest .glabel{left:26px;top:50%}
+  .mchart .gtag{margin-top:4px}
+  .mchart .here{display:none}
+
+  .axis{display:flex;justify-content:space-between;margin-top:16px;
+    font:600 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#5a5e62}
+  .foot{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:30px;flex-wrap:wrap}
+  .note{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted);text-align:center}
+  .replay{font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    background:transparent;border:1px solid rgba(240,168,0,.4);border-radius:6px;padding:8px 14px;cursor:pointer}
+  .replay:hover{background:rgba(240,168,0,.08)}
+
+  /* ===== Reveal séquentiel — balayage clip-path + lit par nœud ===== */
+  @keyframes beaconPulse{0%{opacity:.7;width:10px;height:10px}100%{opacity:0;width:54px;height:54px}}
+  .chart.reveal svg{clip-path:inset(0 100% 0 0)}
+  .chart.reveal.play svg{clip-path:inset(0 0 0 0);transition:clip-path 2.2s linear}
+  .mchart.reveal svg{clip-path:inset(100% 0 0 0)}              /* mobile : se trace du bas vers le haut */
+  .mchart.reveal.play svg{clip-path:inset(0 0 0 0);transition:clip-path 2.2s linear}
+  .reveal .gnode{opacity:0;transform:translate(-50%,-50%) scale(.5);
+    transition:opacity .45s ease, transform .5s cubic-bezier(.2,.7,.3,1.3)}
+  .reveal .gnode.lit{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .reveal .here{opacity:0;transition:opacity .5s ease}
+  .reveal .gnode.now.lit .here{opacity:1}
+  .reveal .gnode.done .gcheck path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .42s .12s ease}
+  .reveal .gnode.done.lit .gcheck path{stroke-dashoffset:0}
+  .reveal .gnode.lit.next .beacon,.reveal .gnode.lit.far .beacon{display:block;animation:beaconPulse 2.4s ease-out infinite}
+
+  /* Mobile : bloc épinglé le temps de l'anim, puis on relâche pour continuer */
+  .scrollytrack{display:none}
+  @media(max-width:680px){
+    .wrap{padding:0 20px}
+    .chart,.axis{display:none}
+    .mchart{display:block}
+    .scrollytrack{display:block;position:relative;height:170vh}  /* hauteur = durée du pin ; après → scroll normal */
+    .pin{position:sticky;top:0;height:100vh;display:flex;align-items:center}
+    .pin .mchart{margin-top:0;width:100%;height:74vh}            /* width:100% sinon le flex item s'écrase à 0 → ligne invisible */
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    .reveal svg{clip-path:none!important}
+    .reveal .gnode,.reveal .here{opacity:1!important;transform:translate(-50%,-50%)!important;transition:none!important}
+    .reveal .gnode.done .gcheck path{stroke-dashoffset:0!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<section class="concept">
+  <div class="wrap">
+    <span class="clabel">Variante A · Épuré+ (halo discret)</span>
+    <div class="marker">Chapitre 04 — Le cap</div>
+    <h2 class="title">Où je suis, où je vais.</h2>
+    <p class="txt">Une trajectoire assumée vers la direction technique et générale.</p>
+    <div class="chart" id="chartA"></div>
+    <div class="mchart" id="mA"></div>
+    <div class="axis"><span>Départ</span><span>Le cap →</span></div>
+    <div class="foot"><span class="note">04 / 08 jalons atteints — cap maintenu vers la direction générale</span></div>
+  </div>
+</section>
+
+<section class="concept">
+  <div class="wrap">
+    <span class="clabel">Variante B · Cosmos (starfield + soleil + étoile-cap)</span>
+    <div class="marker">Chapitre 04 — Le cap</div>
+    <h2 class="title">Où je suis, où je vais.</h2>
+    <p class="txt">Une trajectoire assumée vers la direction technique et générale.</p>
+    <div class="chart cosmic" id="chartB"></div>
+    <div class="mchart cosmic" id="mB"></div>
+    <div class="axis"><span>Départ</span><span>Le cap →</span></div>
+    <div class="foot"><span class="note">04 / 08 jalons atteints — cap maintenu vers la direction générale</span></div>
+  </div>
+</section>
+
+<section class="concept">
+  <div class="wrap">
+    <span class="clabel">Variante C · Reveal séquentiel (coche au fil + balises cibles)</span>
+    <div class="marker">Chapitre 04 — Le cap</div>
+    <h2 class="title">Où je suis, où je vais.</h2>
+    <p class="txt">Une trajectoire assumée vers la direction technique et générale.</p>
+    <div class="chart cosmic reveal" id="chartC"></div>
+    <div class="scrollytrack" id="trackC">
+      <div class="pin">
+        <div class="mchart cosmic reveal" id="mC"></div>
+      </div>
+    </div>
+    <div class="axis"><span>Départ</span><span>Le cap →</span></div>
+    <div class="foot">
+      <span class="note">04 / 08 jalons atteints — cap maintenu vers la direction générale</span>
+      <button class="replay" onclick="replayVisible()">↻ Rejouer</button>
+    </div>
+  </div>
+</section>
+
+<script>
+const data=[
+  {l:'Développeur',t:'Acquis',s:'done'},
+  {l:'Salarié',t:'Acquis',s:'done'},
+  {l:'Ingénieur',t:'Acquis',s:'done'},
+  {l:'Gestion. projet',t:'Acquis',s:'done'},
+  {l:'Indépendant · fondateur',t:'En cours',s:'now'},
+  {l:'Manager',t:'Cible',s:'next'},
+  {l:'CTO',t:'Cible',s:'next'},
+  {l:'CEO',t:'Horizon',s:'far'},
+];
+const n=data.length, nowIdx=4;
+const delay=i=> i<=nowIdx ? (0.1+i*0.5) : (2.5+(i-nowIdx)*0.45);
+
+function smooth(p){
+  if(p.length<2)return'';let d=`M${p[0].x},${p[0].y}`;
+  for(let i=0;i<p.length-1;i++){const p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p[i+1];
+    d+=` C${p1.x+(p2.x-p0.x)/6},${p1.y+(p2.y-p0.y)/6} ${p2.x-(p3.x-p1.x)/6},${p2.y-(p3.y-p1.y)/6} ${p2.x},${p2.y}`;}
+  return d;
+}
+function stars(host,count){
+  let h='';
+  for(let i=0;i<count;i++){
+    const x=Math.random()*100,y=Math.random()*100,sz=(Math.random()*1.6+0.6).toFixed(1),
+      o=(Math.random()*0.5+0.18).toFixed(2),gold=Math.random()<0.22,del=(Math.random()*4).toFixed(2);
+    h+=`<span style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${sz}px;height:${sz}px;--o:${o};opacity:${o};animation-delay:${del}s;${gold?'background:#f0a800;':''}"></span>`;
+  }
+  const el=document.createElement('div');el.className='stars';el.innerHTML=h;host.appendChild(el);
+}
+function nodesHTML(pts,W,H,cosmic){
+  return data.map((d,i)=>{
+    const p=pts[i],isDest=i===n-1,cls=d.s+(cosmic&&isDest?' dest':'');
+    let inner=`<div class="gdot"><svg class="gcheck" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>`;
+    if(d.s==='now') inner+='<span class="ping"></span><span class="ping p2"></span>';
+    if(d.s==='next'||d.s==='far') inner+='<span class="beacon"></span>';
+    if(cosmic&&isDest) inner+='<span class="spark"></span><span class="ring"></span><span class="ring r2"></span>';
+    const extra=d.s==='now'?'<span class="here">▲ Vous êtes ici</span>':'';
+    return `<div class="gnode ${cls}" style="left:${(p.x/W*100).toFixed(2)}%;top:${(p.y/H*100).toFixed(2)}%;--d:${delay(i)}s">${inner}
+      <div class="glabel"><div class="gname">${d.l}</div><div class="gtag">${d.t}</div></div>${extra}</div>`;
+  }).join('');
+}
+
+/* ---- Desktop : trajectoire horizontale ascendante ---- */
+function buildChart(id){
+  const root=document.getElementById(id), cosmic=root.classList.contains('cosmic');
+  const W=1000,H=480,padL=66,padR=66,padT=66,padB=96,baseY=H-padB+26;
+  const pts=data.map((d,i)=>({x:padL+i*(W-padL-padR)/(n-1),y:(H-padB)-i*((H-padB)-padT)/(n-1)}));
+  const solid=pts.slice(0,nowIdx+1),dash=pts.slice(nowIdx);
+  const solidD=smooth(solid),dashD=smooth(dash);
+  const areaD=solidD+` L${solid[solid.length-1].x},${baseY} L${solid[0].x},${baseY} Z`;
+  const svg=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="ln-${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9a6000"/><stop offset="1" stop-color="#f0a800"/></linearGradient>
+      <linearGradient id="ar-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(240,168,0,.24)"/><stop offset="1" stop-color="rgba(240,168,0,0)"/></linearGradient>
+      <radialGradient id="gl-${id}" cx="${pts[nowIdx].x/W*100}%" cy="${pts[nowIdx].y/H*100}%" r="30%"><stop offset="0" stop-color="rgba(240,168,0,.20)"/><stop offset="1" stop-color="rgba(240,168,0,0)"/></radialGradient>
+    </defs>
+    <rect width="${W}" height="${H}" fill="url(#gl-${id})"/>
+    <line x1="${padL-12}" y1="${baseY}" x2="${W-padR+12}" y2="${baseY}" stroke="rgba(240,168,0,.14)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    <path d="${areaD}" fill="url(#ar-${id})"/>
+    <line x1="${pts[nowIdx].x}" y1="${pts[nowIdx].y}" x2="${pts[nowIdx].x}" y2="${baseY}" stroke="rgba(240,168,0,.4)" stroke-width="1.2" stroke-dasharray="2 5" vector-effect="non-scaling-stroke"/>
+    <path d="${dashD}" fill="none" stroke="#3a3d41" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="${solidD}" fill="none" stroke="rgba(240,168,0,.16)" stroke-width="11" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="${solidD}" fill="none" stroke="url(#ln-${id})" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>`;
+  root.innerHTML=svg+nodesHTML(pts,W,H,cosmic);
+  if(cosmic) stars(root,70);
+}
+
+/* ---- Mobile : trajectoire verticale ascendante (bas → haut) ---- */
+function buildMobile(id){
+  const root=document.getElementById(id), cosmic=root.classList.contains('cosmic');
+  const W=100,H=680,padT=54,padB=50,step=(H-padT-padB)/(n-1);
+  const pts=data.map((d,i)=>({x:15+i*1.45,y:(H-padB)-i*step}));
+  const solid=pts.slice(0,nowIdx+1),dash=pts.slice(nowIdx);
+  const solidD=smooth(solid),dashD=smooth(dash);
+  const svg=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="lnm-${id}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#9a6000"/><stop offset="1" stop-color="#f0a800"/></linearGradient>
+      <radialGradient id="glm-${id}" cx="${pts[nowIdx].x}%" cy="${pts[nowIdx].y/H*100}%" r="34%"><stop offset="0" stop-color="rgba(240,168,0,.20)"/><stop offset="1" stop-color="rgba(240,168,0,0)"/></radialGradient>
+    </defs>
+    <rect width="${W}" height="${H}" fill="url(#glm-${id})"/>
+    <path d="${dashD}" fill="none" stroke="#3a3d41" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="${solidD}" fill="none" stroke="rgba(240,168,0,.16)" stroke-width="11" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="${solidD}" fill="none" stroke="url(#lnm-${id})" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+  </svg>`;
+  root.innerHTML=svg+nodesHTML(pts,W,H,cosmic);
+  if(cosmic) stars(root,55);
+}
+
+let timers=[];
+function runReveal(el){
+  if(!el) return;
+  timers.forEach(clearTimeout); timers=[];
+  el.classList.remove('play');
+  el.querySelectorAll('.gnode').forEach(node=>node.classList.remove('lit'));
+  void el.offsetWidth;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{   // commit l'état "reset" avant de rejouer
+    el.classList.add('play');
+    el.querySelectorAll('.gnode').forEach(node=>{
+      const d=parseFloat(node.style.getPropertyValue('--d'))||0;
+      timers.push(setTimeout(()=>node.classList.add('lit'), d*1000));
+    });
+  }));
+}
+function replayVisible(){
+  ['chartC','mC'].forEach(id=>{const e=document.getElementById(id); if(e&&e.offsetParent!==null) runReveal(e);});
+}
+
+['chartA','chartB','chartC'].forEach(buildChart);
+['mA','mB','mC'].forEach(buildMobile);
+
+/* Variante C : l'anim se lance AUTOMATIQUEMENT (une fois) quand le graphe visible
+   arrive en place — desktop à l'entrée, mobile quand le bloc est épinglé (≈ plein écran).
+   La piste de scroll est finie : une fois l'anim passée, le pin se relâche → scroll normal. */
+function playOnArrival(id, ratio){
+  const el=document.getElementById(id); if(!el) return;
+  const ob=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting && e.intersectionRatio>=ratio && e.target.offsetParent!==null){
+        runReveal(e.target); ob.unobserve(e.target);
+      }
+    });
+  },{threshold:[ratio]});
+  ob.observe(el);
+}
+playOnArrival('chartC',0.35);   // desktop : à l'entrée du bloc
+playOnArrival('mC',0.85);       // mobile : quand le bloc est épinglé / quasi plein écran
+</script>
+</body>
+</html>

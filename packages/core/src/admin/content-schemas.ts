@@ -32,6 +32,9 @@ export const CareerGoalInput = z.object({
   order: z.number().int().min(0).default(0),
 });
 
+/** Career goal update (edit an existing row — requires its id). */
+export const CareerGoalUpdate = CareerGoalInput.extend({ id: z.string().min(1) });
+
 /** Home section (editorial copy + order/visibility). */
 export const HomeSectionInput = z.object({
   key: z.string().min(1).max(40),
@@ -142,6 +145,7 @@ export const ReorderItem = z.object({ id: z.string().min(1), order: z.number().i
 export type KpiInput = z.infer<typeof KpiInput>;
 export type SkillInput = z.infer<typeof SkillInput>;
 export type CareerGoalInput = z.infer<typeof CareerGoalInput>;
+export type CareerGoalUpdate = z.infer<typeof CareerGoalUpdate>;
 export type HomeSectionInput = z.infer<typeof HomeSectionInput>;
 export type ProfileInput = z.infer<typeof ProfileInput>;
 export type ProjectInput = z.infer<typeof ProjectInput>;

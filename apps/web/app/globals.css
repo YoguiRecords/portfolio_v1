@@ -1234,10 +1234,7 @@ body {
   font-weight: 600;
 }
 
-/* ====== Cap — objectifs (liste checkée) ====== */
-.obj {
-  margin-top: 38px;
-}
+/* ====== Cap — en-tête objectifs (compteur) ====== */
 .obj-head {
   display: flex;
   align-items: baseline;
@@ -1259,85 +1256,6 @@ body {
     monospace;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
-}
-.obj ul {
-  list-style: none;
-}
-.obj li {
-  display: grid;
-  grid-template-columns: 24px 1fr auto;
-  gap: 16px;
-  align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border-dark);
-}
-.box {
-  width: 17px;
-  height: 17px;
-  border-radius: 4px;
-  position: relative;
-}
-.is-done .box {
-  background: #3a3f44;
-}
-.is-done .box::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border: solid #1c1c1c;
-  border-width: 0 2px 2px 0;
-  transform: rotate(40deg);
-}
-.is-now .box {
-  border: 1.5px solid var(--accent);
-}
-.is-now .box::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  background: var(--accent);
-  border-radius: 1px;
-}
-.is-next .box,
-.is-far .box {
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-}
-.obj .role {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-.is-done .role {
-  color: #aeb1b4;
-  font-weight: 400;
-}
-.is-now .role {
-  color: #fff;
-  font-weight: 700;
-}
-.is-next .role,
-.is-far .role {
-  color: #8c9094;
-  font-weight: 400;
-}
-.stt {
-  font:
-    600 10px/1 var(--font-mono),
-    monospace;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 7px 12px;
-  border-radius: 5px;
-  border: 1px solid var(--border-dark);
-  color: #73777b;
-}
-.is-now .stt {
-  color: var(--accent);
-  border-color: rgba(240, 168, 0, 0.4);
-  background: rgba(240, 168, 0, 0.06);
 }
 
 /* ====== Projets — scènes ====== */

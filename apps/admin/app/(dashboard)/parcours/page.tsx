@@ -8,6 +8,8 @@ import {
   deleteMilestoneAction,
   createGoalAction,
   deleteGoalAction,
+  updateGoalAction,
+  moveGoalAction,
 } from "@/lib/actions/content-actions";
 
 export const dynamic = "force-dynamic";
@@ -79,11 +81,50 @@ export default async function CareerPage() {
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-ink">Cap — objectifs de carrière</h2>
         <ul className="flex flex-col divide-y divide-border rounded-lg border border-border">
-          {goals.map((g) => (
-            <li key={g.id} className="flex items-center justify-between p-3 text-sm text-ink-2">
-              <span>
-                {g.role} <span className="ml-2 font-mono text-xs text-accent">{g.status}</span>
-              </span>
+          {goals.map((g, i) => (
+            <li key={g.id} className="flex flex-wrap items-end gap-2 p-3 text-sm text-ink-2">
+              <form action={updateGoalAction} className="flex flex-1 flex-wrap items-end gap-2">
+                <input type="hidden" name="id" value={g.id} />
+                <input type="hidden" name="order" value={g.order} />
+                <input className={`${input} flex-1`} name="role" defaultValue={g.role} required />
+                <select className={input} name="status" defaultValue={g.status}>
+                  {GOAL_STATUS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  className="rounded-md border border-border-strong px-3 py-2 text-sm text-ink-2 hover:bg-surface-2"
+                >
+                  Enregistrer
+                </button>
+              </form>
+              <form action={moveGoalAction}>
+                <input type="hidden" name="id" value={g.id} />
+                <input type="hidden" name="dir" value="up" />
+                <button
+                  type="submit"
+                  disabled={i === 0}
+                  className="rounded-md border border-border-strong px-3 py-2 text-sm text-ink-2 hover:bg-surface-2 disabled:opacity-40"
+                  aria-label="Monter"
+                >
+                  ↑
+                </button>
+              </form>
+              <form action={moveGoalAction}>
+                <input type="hidden" name="id" value={g.id} />
+                <input type="hidden" name="dir" value="down" />
+                <button
+                  type="submit"
+                  disabled={i === goals.length - 1}
+                  className="rounded-md border border-border-strong px-3 py-2 text-sm text-ink-2 hover:bg-surface-2 disabled:opacity-40"
+                  aria-label="Descendre"
+                >
+                  ↓
+                </button>
+              </form>
               <form action={deleteGoalAction}>
                 <input type="hidden" name="id" value={g.id} />
                 <ConfirmSubmitButton label="✕" />

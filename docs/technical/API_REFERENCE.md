@@ -62,7 +62,9 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
 Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `revalidatePath`.
 - **Contenu home** : `createKpiAction`/`updateKpiAction`/`deleteKpiAction`, `updateHomeSectionAction`,
   `createSkillAction`/`deleteSkillAction`, `createFaqAction`/`deleteFaqAction`, `saveSettingsAction`,
-  Career (`createTrackAction`/`createMilestoneAction`/`createGoalAction` + suppressions), Analyses
+  Career (`createTrackAction`/`createMilestoneAction`/`createGoalAction` + suppressions ;
+  objectifs du cap : `updateGoalAction` — édition rôle/statut, `moveGoalAction` — réordo ↑/↓
+  par échange d'`order` avec le voisin), Analyses
   du profil (`upsertAnalysisAction` / `deleteAnalysisAction` — un cadre par type).
 - **Analyses du profil** : quatre cadres (SWOT, 4P, Golden Circle, Ikigai), un par type
   (`Analysis.type` unique). Le contenu hétérogène est un payload JSON `Analysis.data` validé par
