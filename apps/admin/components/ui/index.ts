@@ -2,6 +2,7 @@
 export { cn } from "./cn";
 export { Status, type StatusVariant } from "./status";
 export { Button, type ButtonVariant, type ButtonSize } from "./button";
+export { ConfirmSubmitButton } from "./confirm-submit-button";
 export { KpiCard } from "./kpi-card";
 export { DataTable, type Column, type DataTableProps } from "./data-table";
 export { Switch } from "./switch";

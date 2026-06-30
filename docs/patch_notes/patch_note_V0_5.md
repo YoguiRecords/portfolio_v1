@@ -19,6 +19,10 @@ le back office (relances CRM, contenu, facturation, divers), pilotée en kanban.
   description, catégorie, statut, priorité, échéance, contact optionnel). Board chargé client-only
   (`next/dynamic ssr:false`) → pas de mismatch d'hydratation. **Suppression en deux temps**
   (confirmation anti misclick) ; le drawer se ferme après création/édition/suppression.
+- **Confirmations de suppression généralisées** : composant réutilisable `ConfirmSubmitButton`
+  (`components/ui`) appliqué à **toutes** les suppressions du BO qui en manquaient (blocs de projet,
+  KPI, compétences, FAQ, voies/jalons/objectifs de parcours, analyses & items, liens sociaux,
+  sociétés, évènements d'agenda) → plus aucune suppression en un seul clic.
 - **Mission Control** : le panneau tâches n'affiche plus que les **tâches du jour** (échéance =
   aujourd'hui, `status != DONE`) + lien « Tout voir » → `/taches`.
 - **Fiche contact** : la coche tâche utilise désormais le workflow `status` ; les tâches créées

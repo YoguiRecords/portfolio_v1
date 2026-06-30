@@ -1,3 +1,4 @@
+import { ConfirmSubmitButton } from "@/components/ui";
 import { createSocialAction, deleteSocialAction } from "@/lib/actions/profile-actions";
 
 interface Social {
@@ -27,9 +28,7 @@ export function ProfileSocials({ socials }: { socials: Social[] }) {
               </span>
               <form action={deleteSocialAction}>
                 <input type="hidden" name="id" value={s.id} />
-                <button type="submit" className="text-xs text-muted hover:text-danger">
-                  ✕
-                </button>
+                <ConfirmSubmitButton label="✕" />
               </form>
             </li>
           ))

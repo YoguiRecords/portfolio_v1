@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button } from "@/components/ui";
+import { Button, ConfirmSubmitButton } from "@/components/ui";
 import { listKpis } from "@/lib/content/kpi";
 import { listSections } from "@/lib/content/home-section";
 import { createKpiAction, deleteKpiAction, updateHomeSectionAction } from "@/lib/actions/content-actions";
@@ -68,9 +68,7 @@ export default async function ContentPage() {
                 </div>
                 <form action={deleteKpiAction}>
                   <input type="hidden" name="id" value={kpi.id} />
-                  <Button variant="subtle" size="sm" type="submit">
-                    Supprimer
-                  </Button>
+                  <ConfirmSubmitButton label="Supprimer" />
                 </form>
               </li>
             ))

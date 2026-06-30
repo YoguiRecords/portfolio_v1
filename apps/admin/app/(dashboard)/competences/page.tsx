@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { ConfirmSubmitButton } from "@/components/ui";
 import { listSkills } from "@/lib/content/skill";
 import { createSkillAction, deleteSkillAction } from "@/lib/actions/content-actions";
 
@@ -27,9 +28,7 @@ export default async function SkillsPage() {
               </div>
               <form action={deleteSkillAction}>
                 <input type="hidden" name="id" value={s.id} />
-                <button type="submit" className="rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
-                  Supprimer
-                </button>
+                <ConfirmSubmitButton label="Supprimer" />
               </form>
             </li>
           ))

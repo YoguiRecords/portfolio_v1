@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button } from "@/components/ui";
+import { Button, ConfirmSubmitButton } from "@/components/ui";
 import { listCompanies } from "@/lib/crm/crm";
 import { createCompanyAction, deleteCompanyAction } from "@/lib/actions/crm-actions";
 
@@ -28,9 +28,7 @@ export default async function CompaniesPage() {
               </div>
               <form action={deleteCompanyAction}>
                 <input type="hidden" name="id" value={c.id} />
-                <Button variant="subtle" size="sm" type="submit">
-                  Supprimer
-                </Button>
+                <ConfirmSubmitButton label="Supprimer" />
               </form>
             </li>
           ))
