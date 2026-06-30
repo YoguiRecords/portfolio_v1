@@ -151,6 +151,8 @@ export function TaskBoardView({
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
   const [todayOnly, setTodayOnly] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  // Two-step delete guard: the first click only arms the confirmation (anti misclick).
+  const [armedDelete, setArmedDelete] = useState(false);
   // Optimistic status overrides for snappy drag feedback before the server
   // revalidates (derived over props — no effect, no stale local copy).
   const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
@@ -194,6 +196,17 @@ export function TaskBoardView({
   const closeDrawer = () => {
     setCreating(false);
     setEditing(null);
+    setArmedDelete(false);
+  };
+  const openEdit = (task: TaskCardRow) => {
+    setArmedDelete(false);
+    setEditing(task);
+  };
+  // Run a server action from the drawer, then close it once it resolves (so the
+  // drawer never lingers with stale/deleted data). Stays open if the action throws.
+  const runAndClose = (action: (form: FormData) => Promise<void>) => async (form: FormData) => {
+    await action(form);
+    closeDrawer();
   };
   const activeTask = activeId ? localTasks.find((t) => t.id === activeId) ?? null : null;
 
@@ -239,7 +252,7 @@ export function TaskBoardView({
             return (
               <Column key={status} status={status} count={colTasks.length}>
                 {colTasks.map((t) => (
-                  <DraggableCard key={t.id} task={t} onEdit={setEditing} />
+                  <DraggableCard key={t.id} task={t} onEdit={openEdit} />
                 ))}
               </Column>
             );
@@ -249,7 +262,7 @@ export function TaskBoardView({
       </DndContext>
 
       <Drawer open={drawerOpen} onClose={closeDrawer} title={drawerTask ? "Modifier la tâche" : "Nouvelle tâche"}>
-        <form action={drawerTask ? actions.update : actions.create} className="flex flex-col gap-3">
+        <form action={runAndClose(drawerTask ? actions.update : actions.create)} className="flex flex-col gap-3">
           {drawerTask ? <input type="hidden" name="id" value={drawerTask.id} /> : null}
           <Input name="title" placeholder="Titre" required defaultValue={drawerTask?.title ?? ""} />
           <Textarea name="description" placeholder="Description (optionnel)" rows={3} defaultValue={drawerTask?.description ?? ""} />
@@ -288,12 +301,26 @@ export function TaskBoardView({
           </Button>
         </form>
         {drawerTask ? (
-          <form action={actions.remove} className="mt-3">
-            <input type="hidden" name="id" value={drawerTask.id} />
-            <Button variant="subtle" size="sm" type="submit">
-              Supprimer
-            </Button>
-          </form>
+          <div className="mt-4 border-t border-border pt-3">
+            {armedDelete ? (
+              <div className="flex flex-col gap-2">
+                <p className="text-sm text-ink-2">Confirmer la suppression de « {drawerTask.title} » ?</p>
+                <form action={runAndClose(actions.remove)} className="flex gap-2">
+                  <input type="hidden" name="id" value={drawerTask.id} />
+                  <Button variant="danger" size="sm" type="submit">
+                    Supprimer définitivement
+                  </Button>
+                  <Button variant="ghost" size="sm" type="button" onClick={() => setArmedDelete(false)}>
+                    Annuler
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <Button variant="subtle" size="sm" type="button" onClick={() => setArmedDelete(true)}>
+                Supprimer
+              </Button>
+            )}
+          </div>
         ) : null}
       </Drawer>
     </div>

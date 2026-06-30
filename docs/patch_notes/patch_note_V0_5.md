@@ -17,7 +17,8 @@ le back office (relances CRM, contenu, facturation, divers), pilotée en kanban.
   **drag & drop** (`@dnd-kit` — souris, tactile, clavier ; mise à jour optimiste + persistance via
   Server Action), filtres par catégorie + onglet « Du jour », drawer création/édition (titre,
   description, catégorie, statut, priorité, échéance, contact optionnel). Board chargé client-only
-  (`next/dynamic ssr:false`) → pas de mismatch d'hydratation.
+  (`next/dynamic ssr:false`) → pas de mismatch d'hydratation. **Suppression en deux temps**
+  (confirmation anti misclick) ; le drawer se ferme après création/édition/suppression.
 - **Mission Control** : le panneau tâches n'affiche plus que les **tâches du jour** (échéance =
   aujourd'hui, `status != DONE`) + lien « Tout voir » → `/taches`.
 - **Fiche contact** : la coche tâche utilise désormais le workflow `status` ; les tâches créées
