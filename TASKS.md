@@ -26,6 +26,7 @@
 - [x] **P10 — CRM schéma & socle** — modèles Prisma (Company/Contact/Deal/Activity/CrmTask) + migration **REVOKE app_web** (validée test DB) + schémas Zod `core/crm` + actions CRUD `crm-actions` (guard+Zod).
 - [x] **P11 — CRM UI** — Contacts (liste + fiche 360° deals/activités/tâches), Sociétés, Pipeline (board par stage + déplacement). _Reste : DnD (DT4), agrégation 360° cross-domaine + hooks « créer contact » (DT5)._
 - [x] **P12 — Mission Control** — agrégation `lib/data/mission-control.ts` (KPIs relation client, pipeline, tâches, à-traiter, aperçu inbox) + page dédiée.
+- [x] **Todo-list unifiée** — modèle `Task` générique (rename `CrmTask`, migration data-preserving), page `/taches` (kanban 4 statuts + filtres catégorie/« du jour »), Mission Control « tâches du jour », fiche contact adaptée (workflow `status`).
 - [x] **P13 — IA + Calendrier (reskin)** — pages `/ai` + `/calendrier` passées à la DA v2 (tokens), fonctions inchangées.
 - [x] **P14 — Réglages + FAQ + ⌘K** — reskin réglages (settings-form) + FAQ ; **command palette ⌘K** globale (navigation, ouverte par ⌘K/Ctrl+K ou bouton topbar). _Reste : recherche contenu DB dans la palette (DT)._
 - [x] **P15 — Finitions** — docs finales (`ARCHITECTURE`/`API_REFERENCE`) + patch note **v0.5.0** + E2E guard des routes BO ; états vides/confirmations en place. _Reste : audit a11y complet + screenshots responsive authentifiés + E2E parcours connecté (DT7)._

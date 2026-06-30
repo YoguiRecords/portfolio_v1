@@ -72,7 +72,7 @@ Application Access Policy → rayon de souffle limité. Détail : `docs/technica
   injection de prompt ne peut pas réécrire les règles. Endpoint soumis au rate-limit.
 
 ## CRM (données privées back office)
-Les tables CRM (`Company`, `Contact`, `Deal`, `Activity`, `CrmTask`) sont **strictement privées** :
+Les tables CRM (`Company`, `Contact`, `Deal`, `Activity`, `Task` — table `CrmTask` conservée) sont **strictement privées** :
 le rôle public `app_web` n'y a **aucun accès** (`REVOKE ALL` dans la migration, garde `pg_roles`),
 comme `ContactMessage`. Seul `app_admin` les lit/écrit, derrière le guard de session MFA. Toutes les
 Server Actions valident leurs entrées avec **Zod** (`@portfolio/core` → `crm/schemas`). Les liens

@@ -87,7 +87,12 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
   Contacts (`createContactAction`/`updateContactAction`/`deleteContactAction`),
   Sociétés (`createCompanyAction`/`updateCompanyAction`/`deleteCompanyAction`),
   Deals (`createDealAction`/`updateDealAction`/`deleteDealAction`/`setDealStageAction`),
-  Activités (`createActivityAction`/`deleteActivityAction`),
-  Tâches (`createTaskAction`/`setTaskDoneAction`/`deleteTaskAction`). Validation Zod via `@portfolio/core` (`crm/schemas`).
+  Activités (`createActivityAction`/`deleteActivityAction`). Validation Zod via `@portfolio/core` (`crm/schemas`).
+- **Tâches (todo unifiée)** : `crm-actions.ts` — `createTaskAction` / `updateTaskAction` /
+  `setTaskStatusAction` / `deleteTaskAction` (FormData : `title`, `description?`, `category`,
+  `status`, `priority`, `dueAt?`, `contactId?`, `dealId?` ; `setTaskStatus` ne lit que `id` + `status`).
+  Validées par `TaskInput` (`@portfolio/core`, `crm/schemas`) ; revalident `/taches`,
+  `/mission-control` et `/contacts/[id]` si lié. Modèle `Task` (`category`/`status`/`priority`),
+  table `CrmTask` conservée (`@@map`).
 - **Agrégations (lecture)** : `getDashboardData` (dashboard portfolio/audience), `getMissionControlData`
   (relation client + à-traiter), `getNavBadges` (compteurs nav).

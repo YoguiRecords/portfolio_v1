@@ -1,5 +1,30 @@
 # Patch notes — v0.5.x
 
+## v0.5.2 — Todo-list unifiée au back office (2026-06-30)
+
+Le modèle CRM `CrmTask` devient un modèle **`Task` générique** : une seule todo-list pour tout
+le back office (relances CRM, contenu, facturation, divers), pilotée en kanban.
+
+### Données
+- **Rename `CrmTask` → `Task`** (table conservée via `@@map("CrmTask")` → **zéro perte de données**,
+  FK `onDelete: Cascade` et REVOKE `app_web` du CRM intacts). Enums `TaskCategory` (CRM / CONTENT /
+  BILLING / GENERAL), `TaskStatus` (TODO / IN_PROGRESS / BLOCKED / DONE), `TaskPriority` (LOW /
+  NORMAL / HIGH). Migration **data-preserving** : `isDone=true → DONE`, tâches liées à un
+  contact/deal → catégorie `CRM`.
+
+### Back office
+- **Page `/taches`** (groupe « Relation client ») : **kanban 4 colonnes** par statut (déplacement
+  par `<select>`, pas de nouvelle dépendance), filtres par catégorie + onglet « Du jour », drawer
+  création/édition (titre, description, catégorie, statut, priorité, échéance, contact optionnel).
+- **Mission Control** : le panneau tâches n'affiche plus que les **tâches du jour** (échéance =
+  aujourd'hui, `status != DONE`) + lien « Tout voir » → `/taches`.
+- **Fiche contact** : la coche tâche utilise désormais le workflow `status` ; les tâches créées
+  depuis une fiche sont en catégorie `CRM`.
+
+### Tests
+- Vitest : défauts/rejets `TaskInput`, `createTask`/`setTaskStatus` (service), filtre « du jour »
+  de Mission Control. E2E : guard `/taches` (redirection /login sans session).
+
 ## v0.5.1 — Application réelle de la DA v2 + mutualisation + anti-drift DB (2026-06-30)
 
 Correctifs et durcissement de la livraison BO v2 : le thème validé n'était pas réellement appliqué
