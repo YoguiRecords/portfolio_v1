@@ -3,6 +3,7 @@
 > Backlog actionnable. Retirer chaque tâche dès qu'elle est livrée (pas d'historique ici).
 
 ## Plans restants (ordre d'exécution)
+- [ ] **Pcv** — CV dynamique : corpus éditable au BO → 3 projections (home, page `/cv` riche, PDF A4 figé), bilingue FR/EN, génération PDF via conteneur headless `cv-renderer`. Découpé en 6 PRs atomiques. Plan : `docs/plans/2026-06-30-cv-dynamique.md` (design : `…-cv-dynamique-design.md`).
 - [x] **P3** — Web : fiches projet (blocs modulaires, 12 types Zod) → `/projets/[slug]`. ✅
 - [x] **P4** — Web : News/Articles + Agenda/Événements (+ cron de publication programmée). ✅ (FR ; i18n → Pi18n)
 - [x] **Pi18n** — Bilingue (FR/EN), routes `[locale]`, overlay `Translation` + traduction IA, `LocalizedField`. ✅
@@ -24,7 +25,7 @@
 
 ## Infra / cleanup
 - [ ] Retirer le service Node `services/converter/` (remplacé par `image-processor` réutilisé d'OXO).
-- [ ] **image-processor** : warning `Permission denied: '/home/appuser'` au boot (gunicorn, `$HOME` absent) — healthy malgré tout, à corriger (`ENV HOME=/tmp` ou créer/chown le home).
+- [x] **image-processor** : warning `Permission denied: '/home/appuser'` au boot — corrigé via `ENV HOME=/app`. ✅
 - [ ] MinIO : clé d'écriture serveur à privilège minimal (vs root) pour le back office.
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 - [ ] Avatar : re-générer via `image-processor` (au lieu de sharp manuel) une fois P11 livré.
