@@ -17,7 +17,8 @@ import {
   createActivity,
   deleteActivity,
   createTask,
-  setTaskDone,
+  updateTask,
+  setTaskStatus,
   deleteTask,
 } from "@/lib/crm/crm";
 
@@ -151,26 +152,49 @@ export async function deleteActivityAction(form: FormData): Promise<void> {
   if (id) await deleteActivity(prisma, id);
 }
 
-// ── Tasks ──
-export async function createTaskAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
-  await createTask(prisma, {
+// ── Tasks (unified todo) ──
+function taskData(form: FormData) {
+  return {
     title: str(form, "title"),
+    description: str(form, "description"),
+    category: str(form, "category") ?? "GENERAL",
+    status: str(form, "status") ?? "TODO",
+    priority: str(form, "priority") ?? "NORMAL",
     dueAt: str(form, "dueAt"),
     contactId: str(form, "contactId"),
     dealId: str(form, "dealId"),
-  });
-  revalidatePath("/pipeline");
+  };
 }
-export async function setTaskDoneAction(form: FormData): Promise<void> {
+function revalidateTaskViews(form: FormData): void {
+  revalidatePath("/taches");
+  revalidatePath("/mission-control");
+  const contactId = str(form, "contactId");
+  if (contactId) revalidatePath(`/contacts/${contactId}`);
+}
+export async function createTaskAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  await createTask(prisma, taskData(form));
+  revalidateTaskViews(form);
+}
+export async function updateTaskAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const id = reqId(form);
-  if (id) await setTaskDone(prisma, id, form.get("isDone") === "true");
-  revalidatePath("/pipeline");
+  if (!id) return;
+  await updateTask(prisma, id, taskData(form));
+  revalidateTaskViews(form);
+}
+export async function setTaskStatusAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const id = reqId(form);
+  const status = str(form, "status");
+  if (id && status) await setTaskStatus(prisma, id, status);
+  revalidatePath("/taches");
+  revalidatePath("/mission-control");
 }
 export async function deleteTaskAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const id = reqId(form);
   if (id) await deleteTask(prisma, id);
-  revalidatePath("/pipeline");
+  revalidatePath("/taches");
+  revalidatePath("/mission-control");
 }
