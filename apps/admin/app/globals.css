@@ -1,12 +1,16 @@
 @import "tailwindcss";
 
-/* BO v2 design tokens — graphite (noir/gris) + accent or, statuts, rayons.
-   Valeurs de référence : mockups/bo/assets/bo.css. Aucune couleur en dur dans
-   les composants : tout passe par ces tokens (bg-bg, text-ink, text-accent…). */
+/* BO v2 design tokens — graphite (noir/gris) + accent or, Inter, statuts, rayons.
+   Référence : mockups/bo/assets/bo.css. Aucune couleur en dur dans les
+   composants : tout passe par ces tokens (bg-bg, bg-surface, text-ink…).
+   L'or est la couleur de marque canonique de `@portfolio/ui` (BRAND, brand.ts) ;
+   un test du package garde web et admin synchronisés (anti-drift). */
 @theme {
-  /* Accent or signature */
+  /* Accent or signature (canonique : @portfolio/ui BRAND) */
   --color-accent: #f0a800;
   --color-accent-strong: #c07800;
+  --color-accent-soft: rgba(240, 168, 0, 0.12);
+  --color-accent-faint: rgba(240, 168, 0, 0.07);
 
   /* Surfaces graphite (noir/gris — pas de bleu) */
   --color-bg: #0d0e10;
@@ -30,29 +34,17 @@
   /* Rayons */
   --radius-card: 10px;
   --radius-control: 8px;
+
+  /* Typographie — Inter (chargée par next/font dans layout.tsx) */
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* La base adopte le thème sombre v2 (graphite + Inter). Le clair reste une
+   option opt-in via la classe `.t-light` (cf. mockups/bo/assets/bo.css). */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }

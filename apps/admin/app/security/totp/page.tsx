@@ -20,11 +20,11 @@ export default async function TotpEnrolPage() {
   const qrDataUrl = await QRCode.toDataURL(keyUri);
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-zinc-950 px-4 py-10">
-      <div className="w-full max-w-md space-y-6 rounded-xl border border-zinc-800 bg-zinc-900 p-8">
+    <main className="flex flex-1 items-center justify-center bg-bg px-4 py-10">
+      <div className="w-full max-w-md space-y-6 rounded-xl border border-border bg-surface p-8">
         <div className="space-y-1">
-          <h1 className="text-xl font-semibold text-zinc-50">Double authentification</h1>
-          <p className="text-sm text-zinc-400">
+          <h1 className="text-xl font-semibold text-ink">Double authentification</h1>
+          <p className="text-sm text-muted">
             Scannez ce QR code avec votre application d&apos;authentification, puis saisissez le
             code généré. Ne rechargez pas la page avant d&apos;avoir terminé.
           </p>
@@ -36,8 +36,8 @@ export default async function TotpEnrolPage() {
         </div>
 
         <div className="space-y-1">
-          <p className="text-xs text-zinc-500">Saisie manuelle (si le scan échoue) :</p>
-          <code className="block break-all rounded bg-zinc-950 px-3 py-2 text-xs text-zinc-300">
+          <p className="text-xs text-muted">Saisie manuelle (si le scan échoue) :</p>
+          <code className="block break-all rounded bg-bg px-3 py-2 text-xs text-ink-2">
             {secret}
           </code>
         </div>

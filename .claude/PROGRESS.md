@@ -1,16 +1,18 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
-**Version courante : v0.3.0** (outillage test + DB agenda/média/programmation + home publique —
-voir `docs/patch_notes/patch_note_V0_3.md`).
+**Version courante : v0.5.1** (DA v2 réellement appliquée + `@portfolio/ui` partagé + anti-drift DB —
+voir `docs/patch_notes/patch_note_V0_5.md`).
 
 ## État courant
-Infra Docker complète + **auth back office** + **outillage de test partagé** + **schéma de contenu
-complet** + **page d'accueil publique rendue depuis la DB**. Tout reste **vert** :
-typecheck + lint + **35 tests Vitest** + **2 tests Playwright (E2E)**.
+Infra Docker complète + **back office v2 (DA graphite + or appliquée)** + **CRM** + **chatbot public** +
+**outillage de test partagé**. Mutualisation markdown via `@portfolio/ui`. Migrations DB appliquées
+automatiquement (service `migrate`). Tout reste **vert** : typecheck + lint + **266 tests Vitest** +
+E2E (guard des routes BO).
 
 ## Stack en place
 - Monorepo **pnpm** : `apps/web` (public), `apps/admin` (back office), `packages/db` (Prisma),
-  `packages/core` (types/utils + logique partagée), `services/converter`.
+  `packages/core` (types/utils + logique partagée), **`packages/ui`** (parser markdown sûr partagé +
+  constantes de marque), `services/image-processor`.
 - **Next.js 16.2.9** (App Router, RSC, TS strict), **Tailwind v4**, React 19.2.
 - **Prisma 7.8** (générateur `prisma-client` ESM + adapter `@prisma/adapter-pg`).
 - **Tests** : Vitest 4 (config partagée node + jsdom/RTL), DB de test isolée (schéma `test`),
@@ -40,11 +42,12 @@ typecheck + lint + **35 tests Vitest** + **2 tests Playwright (E2E)**.
 - Loader groupé `lib/data/home.ts` (`select` explicites, filtres `PUBLISHED`/`isVisible`).
 - Rendu **dynamique** (SSR par requête) → pas de dépendance DB au build (CI build sans DB).
 
-## Infra Docker (8 services, durcie)
+## Infra Docker (durcie)
 proxy (Caddy, seul exposé 443/8090), web, admin, **image-processor** (webp+EXIF, Flask+Pillow,
-réutilisé d'OXO — remplace l'ancien converter Node), minio (media public), db (Postgres, rôles
-séparés), umami. Réseaux `edge`/`internal`. Reste : retirer `services/converter` (mort), clé MinIO
-scopée, prod (db hors edge), diagnostiquer `minio-init`.
+réutilisé d'OXO — remplace l'ancien converter Node), minio (media public), **minio-init** (one-shot :
+crée le bucket `media` public — `Exited 0` = normal), **migrate** (one-shot : `prisma migrate deploy`
+avant web/admin → anti-drift), db (Postgres, rôles séparés), umami. Réseaux `edge`/`internal`.
+Reste : retirer `services/converter` (mort), clé MinIO scopée, prod (db hors edge).
 
 ## Avatar / médias
 - Photo de profil convertie en webp (sharp, manuel) et poussée dans **MinIO** (`media/profile.webp`,
@@ -88,6 +91,12 @@ scopée, prod (db hors edge), diagnostiquer `minio-init`.
   outil `book_appointment`, `/api/chat` désactivé par défaut, widget). Tout testé LLM **mocké**.
 
 ## Dernière livraison
+- **v0.5.1** : **DA v2 réellement appliquée** (le BO s'affichait en blanc — boilerplate Next écrasait
+  les tokens ; corrigé : base sombre graphite + or + Inter) + **purge couleurs en dur** (18 fichiers) ;
+  **`@portfolio/ui`** (parser markdown sûr partagé + `BRAND` + test de drift) ; **Dockerfiles web/admin**
+  (`prisma generate` avant build) ; **service `migrate`** (anti-drift DB) + migrations `crm`/`rbac`
+  appliquées. **266 tests verts.** Voir `docs/patch_notes/patch_note_V0_5.md`.
+- **v0.5.0** : refonte **BO v2** (design-system, CRM, inbox unifiée, Mission Control, chatbot public).
 - **v0.4.8** : **mail & calendrier dans le BO** (ports `Mailbox`/`Calendar` provider-agnostiques ;
   calendrier réel DB = agenda + RDV ; mail démo + **adaptateur Microsoft Graph OAuth app-only** prêt
   à activer ; doc Azure). **144 tests Vitest + 16 E2E.** Voir `docs/technical/INTEGRATIONS.md`.

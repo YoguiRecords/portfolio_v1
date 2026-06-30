@@ -16,10 +16,10 @@ export default async function MailsPage() {
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-zinc-50">Mails</h1>
+        <h1 className="text-2xl font-semibold text-ink">Mails</h1>
         <span
           className={`rounded-full px-3 py-1 text-xs font-medium ${
-            live ? "bg-emerald-500/15 text-emerald-300" : "bg-amber-500/15 text-amber-300"
+            live ? "bg-ok/15 text-ok" : "bg-accent-soft text-accent"
           }`}
         >
           {live ? "Boîte connectée (Exchange)" : "Mode démo — boîte non connectée"}
@@ -27,26 +27,26 @@ export default async function MailsPage() {
       </div>
 
       {messages.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun message.</p>
+        <p className="text-sm text-muted">Aucun message.</p>
       ) : (
-        <ul className="flex flex-col divide-y divide-zinc-800 rounded-lg border border-zinc-800">
+        <ul className="flex flex-col divide-y divide-border rounded-lg border border-border">
           {messages.map((m) => (
             <li key={m.id}>
               <Link
                 href={`/mails/${encodeURIComponent(m.id)}`}
-                className="flex flex-col gap-1 p-4 hover:bg-zinc-900"
+                className="flex flex-col gap-1 p-4 hover:bg-surface"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <span className={`truncate text-sm ${m.isRead ? "text-zinc-300" : "font-semibold text-zinc-50"}`}>
+                  <span className={`truncate text-sm ${m.isRead ? "text-ink-2" : "font-semibold text-ink"}`}>
                     {m.fromName}
                   </span>
-                  <span className="shrink-0 text-xs text-zinc-500">{fmt(m.receivedAt)}</span>
+                  <span className="shrink-0 text-xs text-muted">{fmt(m.receivedAt)}</span>
                 </div>
-                <span className={`truncate text-sm ${m.isRead ? "text-zinc-400" : "text-zinc-100"}`}>
+                <span className={`truncate text-sm ${m.isRead ? "text-muted" : "text-ink"}`}>
                   {!m.isRead ? "● " : ""}
                   {m.subject}
                 </span>
-                <span className="truncate text-xs text-zinc-500">{m.preview}</span>
+                <span className="truncate text-xs text-muted">{m.preview}</span>
               </Link>
             </li>
           ))}

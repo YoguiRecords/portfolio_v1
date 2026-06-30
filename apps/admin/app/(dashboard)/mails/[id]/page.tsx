@@ -19,19 +19,19 @@ export default async function MailDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <Link href="/mails" className="font-mono text-xs text-zinc-500 hover:text-amber-400">
+      <Link href="/mails" className="font-mono text-xs text-muted hover:text-accent">
         ← Mails
       </Link>
 
       <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-semibold text-zinc-50">{message.subject}</h1>
-        <p className="text-sm text-zinc-400">
+        <h1 className="text-xl font-semibold text-ink">{message.subject}</h1>
+        <p className="text-sm text-muted">
           {message.fromName} &lt;{message.fromAddress}&gt; ·{" "}
           {new Date(message.receivedAt).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" })}
         </p>
       </header>
 
-      <article className="whitespace-pre-wrap rounded-lg border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-200">
+      <article className="whitespace-pre-wrap rounded-lg border border-border bg-bg p-4 text-sm text-ink-2">
         {message.body}
       </article>
 

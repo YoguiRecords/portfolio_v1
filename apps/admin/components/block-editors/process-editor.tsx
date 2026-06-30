@@ -11,9 +11,9 @@ interface Phase {
 }
 
 const BAR_COLOR: Record<string, string> = {
-  green: "bg-emerald-400 text-emerald-950",
-  dark: "bg-zinc-700 text-zinc-100",
-  soft: "bg-amber-500/20 text-amber-300 border border-amber-500/50",
+  green: "bg-ok text-bg",
+  dark: "bg-surface-2 text-ink",
+  soft: "bg-accent-soft text-accent border border-accent/50",
 };
 
 /**
@@ -52,19 +52,19 @@ export function ProcessEditor({
     }
   }
 
-  const num = "w-20 rounded-md border border-zinc-700 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-100";
+  const num = "w-20 rounded-md border border-border-strong bg-surface px-2 py-1.5 text-sm text-ink";
 
   return (
     <div className="flex flex-col gap-4">
       {/* Aperçu visuel en direct */}
-      <div className="flex flex-col gap-1.5 rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+      <div className="flex flex-col gap-1.5 rounded-lg border border-border bg-bg p-3">
         {phases.map((ph, i) => (
           <div key={i} className="grid grid-cols-[120px_1fr] items-center gap-3">
-            <span className="truncate text-right font-mono text-xs text-zinc-400">{ph.label}</span>
-            <div className="relative h-5 rounded bg-zinc-900">
+            <span className="truncate text-right font-mono text-xs text-muted">{ph.label}</span>
+            <div className="relative h-5 rounded bg-surface">
               <div
                 className={`absolute inset-y-0.5 flex items-center rounded px-2 text-[10px] font-bold ${
-                  ph.style ? BAR_COLOR[ph.style] : "bg-amber-500 text-amber-950"
+                  ph.style ? BAR_COLOR[ph.style] : "bg-accent text-bg"
                 }`}
                 style={{ left: `${ph.start}%`, width: `${ph.width}%` }}
               >
@@ -78,14 +78,14 @@ export function ProcessEditor({
       {/* Édition des phases */}
       <div className="flex flex-col gap-2">
         {phases.map((ph, i) => (
-          <div key={i} className="flex flex-wrap items-center gap-2 rounded-md border border-zinc-800 p-2">
+          <div key={i} className="flex flex-wrap items-center gap-2 rounded-md border border-border p-2">
             <input
-              className="min-w-40 flex-1 rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100"
+              className="min-w-40 flex-1 rounded-md border border-border-strong bg-surface px-3 py-1.5 text-sm text-ink"
               value={ph.label}
               onChange={(e) => patch(i, { label: e.target.value })}
               placeholder="Libellé de la tâche"
             />
-            <label className="flex items-center gap-1 text-xs text-zinc-500">
+            <label className="flex items-center gap-1 text-xs text-muted">
               Début %
               <input
                 type="number"
@@ -96,7 +96,7 @@ export function ProcessEditor({
                 onChange={(e) => patch(i, { start: Number(e.target.value) })}
               />
             </label>
-            <label className="flex items-center gap-1 text-xs text-zinc-500">
+            <label className="flex items-center gap-1 text-xs text-muted">
               Durée %
               <input
                 type="number"
@@ -108,7 +108,7 @@ export function ProcessEditor({
               />
             </label>
             <select
-              className="rounded-md border border-zinc-700 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-100"
+              className="rounded-md border border-border-strong bg-surface px-2 py-1.5 text-sm text-ink"
               value={ph.style ?? ""}
               onChange={(e) => patch(i, { style: (e.target.value || undefined) as Phase["style"] })}
             >
@@ -120,7 +120,7 @@ export function ProcessEditor({
             <button
               type="button"
               onClick={() => remove(i)}
-              className="rounded-md border border-zinc-700 px-2 py-1.5 text-sm text-zinc-400 hover:bg-zinc-800"
+              className="rounded-md border border-border-strong px-2 py-1.5 text-sm text-muted hover:bg-surface-2"
             >
               ✕
             </button>
@@ -129,19 +129,19 @@ export function ProcessEditor({
       </div>
 
       <div className="flex items-center gap-3">
-        <button type="button" onClick={add} className="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800">
+        <button type="button" onClick={add} className="rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-2">
           + Ajouter une phase
         </button>
         <button
           type="button"
           onClick={save}
           disabled={status === "saving"}
-          className="rounded-md bg-amber-500 px-4 py-1.5 text-sm font-semibold text-amber-950 hover:bg-amber-600"
+          className="rounded-md bg-accent px-4 py-1.5 text-sm font-semibold text-bg hover:bg-accent-strong"
         >
           {status === "saving" ? "Enregistrement…" : "Enregistrer le Gantt"}
         </button>
-        {status === "ok" ? <span className="text-sm text-emerald-400">Enregistré ✓</span> : null}
-        {status === "err" ? <span className="text-sm text-red-400">Erreur : {error}</span> : null}
+        {status === "ok" ? <span className="text-sm text-ok">Enregistré ✓</span> : null}
+        {status === "err" ? <span className="text-sm text-danger">Erreur : {error}</span> : null}
       </div>
     </div>
   );

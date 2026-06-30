@@ -24,7 +24,7 @@
 
 ## Infra / cleanup
 - [ ] Retirer le service Node `services/converter/` (remplacé par `image-processor` réutilisé d'OXO).
-- [ ] **minio-init** : diagnostiquer pourquoi le one-shot ne se lance pas (bucket `media` déjà public → non bloquant).
+- [ ] **image-processor** : warning `Permission denied: '/home/appuser'` au boot (gunicorn, `$HOME` absent) — healthy malgré tout, à corriger (`ENV HOME=/tmp` ou créer/chown le home).
 - [ ] MinIO : clé d'écriture serveur à privilège minimal (vs root) pour le back office.
 - [ ] Prod hardening : sortir `db` de `edge` + retirer port 5436 (override prod), épingler images par digest.
 - [ ] Avatar : re-générer via `image-processor` (au lieu de sharp manuel) une fois P11 livré.

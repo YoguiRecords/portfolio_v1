@@ -10,7 +10,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="flex max-w-3xl flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-zinc-50">Réglages du site</h1>
+      <h1 className="text-2xl font-semibold text-ink">Réglages du site</h1>
       <SettingsForm settings={settings} />
     </div>
   );

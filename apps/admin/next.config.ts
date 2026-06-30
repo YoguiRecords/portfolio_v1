@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   // Monorepo : tracer les dépendances depuis la racine du workspace.
   outputFileTracingRoot: path.join(__dirname, "../../"),
   // Workspace packages shipped as TypeScript source and transpiled by Next.
-  transpilePackages: ["@portfolio/core", "@portfolio/db"],
+  transpilePackages: ["@portfolio/core", "@portfolio/db", "@portfolio/ui"],
 };
 
 export default nextConfig;

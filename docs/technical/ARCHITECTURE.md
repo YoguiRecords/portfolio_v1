@@ -14,6 +14,7 @@ apps/
 packages/
   db/         # Prisma (schéma + client)
   core/       # types & utils partagés
+  ui/         # parser markdown sûr partagé (web+admin) + constantes de marque (BRAND)
 services/
   image-processor/  # image -> webp + strip EXIF (Flask/Pillow, interne)
 ```
@@ -66,6 +67,8 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 | `admin` (Next.js) | Back office | Via proxy |
 | `image-processor` (Flask/Pillow) | Conversion image → webp + strip EXIF (réutilisé d'OXO) | Interne |
 | `minio` | Stockage objets (images) | Lecture publique via proxy / écriture interne |
+| `minio-init` | One-shot : crée le bucket `media` (lecture publique) puis s'arrête | Interne |
+| `migrate` | One-shot : applique `prisma migrate deploy` (rôle propriétaire) avant web/admin → schéma toujours synchronisé | Interne |
 | `db` (PostgreSQL 16) | Données | Interne |
 | `umami` | Statistiques (cookieless) | Collecte publique / dashboard authentifié |
 
@@ -92,6 +95,8 @@ globale. Le CV HTML est rendu **isolé** (iframe sandbox).
 ## Données
 Schéma relationnel géré par Prisma. Voir `docs/erd/schema_erd_global.md`. Les tables CRM
 (`Company`/`Contact`/`Deal`/`Activity`/`CrmTask`) sont privées (back office uniquement).
+Les migrations sont appliquées automatiquement par le service one-shot `migrate` à chaque
+démarrage de la stack (avant `web`/`admin`) : le schéma et la base ne peuvent pas diverger.
 
 ## Environnements
 Les URLs sont pilotées par l'environnement : liens internes en développement, domaines directs en
