@@ -15,6 +15,8 @@ import {
   deleteMilestone,
   createGoal,
   deleteGoal,
+  updateGoal,
+  moveGoal,
 } from "@/lib/content/career";
 import { upsertAnalysis, deleteAnalysis } from "@/lib/content/analysis";
 import { upsertProfile } from "@/lib/content/profile";
@@ -251,6 +253,23 @@ export async function deleteGoalAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const id = str(form, "id");
   if (id) await deleteGoal(prisma, id);
+  revalidatePath("/parcours");
+}
+export async function updateGoalAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  await updateGoal(prisma, {
+    id: str(form, "id"),
+    role: str(form, "role"),
+    status: str(form, "status") ?? "TARGET",
+    order: Number(form.get("order") ?? 0),
+  });
+  revalidatePath("/parcours");
+}
+export async function moveGoalAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const id = str(form, "id");
+  const dir = str(form, "dir") === "up" ? "up" : "down";
+  if (id) await moveGoal(prisma, id, dir);
   revalidatePath("/parcours");
 }
 
