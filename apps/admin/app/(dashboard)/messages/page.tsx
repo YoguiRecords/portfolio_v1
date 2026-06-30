@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { PageContainer } from "@/components/ui";
 import { listMessages } from "@/lib/content/moderation";
 import { markMessageReadAction, markMessageSpamAction } from "@/lib/actions/moderation-actions";
 
@@ -11,12 +12,13 @@ export default async function MessagesPage() {
   const messages = await listMessages(prisma);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-4">
+    <PageContainer width="full">
       <h1 className="text-2xl font-semibold text-ink">Messages de contact</h1>
       {messages.length === 0 ? (
         <p className="text-sm text-muted">Aucun message.</p>
       ) : (
-        messages.map((m) => (
+        <div className="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+        {messages.map((m) => (
           <div
             key={m.id}
             className={`flex flex-col gap-2 rounded-lg border p-4 ${
@@ -44,8 +46,9 @@ export default async function MessagesPage() {
               </form>
             </div>
           </div>
-        ))
+        ))}
+        </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

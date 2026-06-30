@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button, ConfirmSubmitButton } from "@/components/ui";
+import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listCompanies } from "@/lib/crm/crm";
 import { createCompanyAction, deleteCompanyAction } from "@/lib/actions/crm-actions";
 
@@ -13,9 +13,10 @@ export default async function CompaniesPage() {
   const companies = await listCompanies(prisma);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
+    <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">Sociétés</h1>
 
+      <div className="grid items-start gap-6 xl:grid-cols-[2fr_1fr]">
       <ul className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface">
         {companies.length === 0 ? (
           <li className="p-4 text-sm text-muted">Aucune société.</li>
@@ -35,7 +36,7 @@ export default async function CompaniesPage() {
         )}
       </ul>
 
-      <form action={createCompanyAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4">
+      <form action={createCompanyAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4 xl:sticky xl:top-6">
         <h2 className="text-sm font-semibold text-ink-2">Nouvelle société</h2>
         <input className={inputCls} name="name" placeholder="Nom" required />
         <input className={inputCls} name="website" type="url" placeholder="https://site.example" />
@@ -44,6 +45,7 @@ export default async function CompaniesPage() {
           Créer
         </Button>
       </form>
-    </div>
+      </div>
+    </PageContainer>
   );
 }

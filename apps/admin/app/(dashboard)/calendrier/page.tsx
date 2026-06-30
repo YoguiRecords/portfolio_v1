@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageContainer } from "@/components/ui";
 import { getCalendar, isGraphLive } from "@/lib/integrations/factory";
 import type { CalendarEvent } from "@portfolio/core/integrations";
 
@@ -60,7 +61,7 @@ export default async function CalendarPage({
   const monthLabel = monthStart.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
 
   return (
-    <div className="flex max-w-5xl flex-col gap-6">
+    <PageContainer width="full">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold capitalize text-ink">{monthLabel}</h1>
         <div className="flex items-center gap-2">
@@ -116,6 +117,6 @@ export default async function CalendarPage({
         <span className="text-ok">●</span> RDV confirmé ·{" "}
         <span className="text-info">●</span> Outlook
       </p>
-    </div>
+    </PageContainer>
   );
 }

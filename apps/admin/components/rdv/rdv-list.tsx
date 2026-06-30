@@ -52,7 +52,8 @@ export function RdvList({ requests, actions }: { requests: RdvRow[]; actions: Rd
       {filtered.length === 0 ? (
         <p className="text-sm text-muted">Aucune demande.</p>
       ) : (
-        filtered.map((r) => {
+        <div className="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+          {filtered.map((r) => {
           const meta = STATUS_META[r.status];
           return (
             <div key={r.id} className="flex flex-col gap-2 rounded-card border border-border bg-surface p-4">
@@ -82,7 +83,8 @@ export function RdvList({ requests, actions }: { requests: RdvRow[]; actions: Rd
               ) : null}
             </div>
           );
-        })
+          })}
+        </div>
       )}
 
       <Drawer open={toDecline !== null} onClose={() => setToDecline(null)} title="Refuser la demande">

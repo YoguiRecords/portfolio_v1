@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button, ConfirmSubmitButton } from "@/components/ui";
+import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listKpis } from "@/lib/content/kpi";
 import { listSections } from "@/lib/content/home-section";
 import { createKpiAction, deleteKpiAction, updateHomeSectionAction } from "@/lib/actions/content-actions";
@@ -14,7 +14,8 @@ export default async function ContentPage() {
   const [kpis, sections] = await Promise.all([listKpis(prisma), listSections(prisma)]);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-10">
+    <PageContainer width="full">
+      <div className="grid items-start gap-6 xl:grid-cols-2">
       <section className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold text-ink">Sections de la home</h1>
         <p className="text-sm text-muted">
@@ -85,6 +86,7 @@ export default async function ContentPage() {
           </Button>
         </form>
       </section>
-    </div>
+      </div>
+    </PageContainer>
   );
 }

@@ -9,6 +9,7 @@ export { Switch } from "./switch";
 export { Segmented, type SegmentedOption } from "./segmented";
 export { Pagination } from "./pagination";
 export { Panel } from "./card";
+export { PageContainer, type PageWidth } from "./page-container";
 export { Field } from "./field";
 export { Input } from "./input";
 export { Select } from "./select";

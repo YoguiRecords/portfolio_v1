@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { ConfirmSubmitButton } from "@/components/ui";
+import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listSkills } from "@/lib/content/skill";
 import { createSkillAction, deleteSkillAction } from "@/lib/actions/content-actions";
 
@@ -13,9 +13,10 @@ export default async function SkillsPage() {
   const skills = await listSkills(prisma);
 
   return (
-    <div className="flex max-w-2xl flex-col gap-8">
+    <PageContainer width="full">
       <h1 className="text-2xl font-semibold text-ink">Compétences</h1>
 
+      <div className="grid items-start gap-6 xl:grid-cols-[2fr_1fr]">
       <ul className="flex flex-col divide-y divide-border rounded-lg border border-border">
         {skills.length === 0 ? (
           <li className="p-4 text-sm text-muted">Aucune compétence.</li>
@@ -35,7 +36,7 @@ export default async function SkillsPage() {
         )}
       </ul>
 
-      <form action={createSkillAction} className="flex flex-col gap-3 rounded-lg border border-border p-4">
+      <form action={createSkillAction} className="flex flex-col gap-3 rounded-lg border border-border p-4 xl:sticky xl:top-6">
         <h2 className="text-sm font-semibold text-ink-2">Ajouter une compétence</h2>
         <input className={inputCls} name="name" placeholder="Nom (ex. Full-stack)" required />
         <input className={inputCls} name="category" placeholder="Catégorie (optionnel)" />
@@ -44,6 +45,7 @@ export default async function SkillsPage() {
           Ajouter
         </button>
       </form>
-    </div>
+      </div>
+    </PageContainer>
   );
 }

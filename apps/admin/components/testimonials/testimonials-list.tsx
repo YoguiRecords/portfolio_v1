@@ -106,18 +106,20 @@ export function TestimonialsList({ items, actions }: { items: TestimonialRow[]; 
       {filtered.length === 0 ? (
         <p className="text-sm text-muted">Aucun témoignage.</p>
       ) : (
-        filtered.map((item) => (
-          <div key={item.id} className="flex flex-col gap-2">
-            <TestimonialCard item={item} actions={actions} />
-            <button
-              type="button"
-              onClick={() => setToReject(item)}
-              className="self-end text-xs text-danger hover:underline"
-            >
-              Refuser ce témoignage
-            </button>
-          </div>
-        ))
+        <div className="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+          {filtered.map((item) => (
+            <div key={item.id} className="flex flex-col gap-2">
+              <TestimonialCard item={item} actions={actions} />
+              <button
+                type="button"
+                onClick={() => setToReject(item)}
+                className="self-end text-xs text-danger hover:underline"
+              >
+                Refuser ce témoignage
+              </button>
+            </div>
+          ))}
+        </div>
       )}
 
       <Drawer open={toReject !== null} onClose={() => setToReject(null)} title="Refuser le témoignage">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
+import { PageContainer } from "@/components/ui";
 import { updateArticleAction } from "@/lib/actions/article-actions";
 import { ArticleEditor, type ArticleEditorData } from "@/components/articles/article-editor";
 
@@ -26,7 +27,7 @@ export default async function ArticleEditPage({ params }: { params: Promise<{ id
   };
 
   return (
-    <div className="flex max-w-5xl flex-col gap-8">
+    <PageContainer width="editor" gap={8}>
       <div>
         <Link href="/articles" className="font-mono text-xs text-muted hover:text-accent">
           ← Articles
@@ -34,6 +35,6 @@ export default async function ArticleEditPage({ params }: { params: Promise<{ id
         <h1 className="mt-2 text-2xl font-bold text-ink">{article.title}</h1>
       </div>
       <ArticleEditor article={editorData} action={updateArticleAction} />
-    </div>
+    </PageContainer>
   );
 }

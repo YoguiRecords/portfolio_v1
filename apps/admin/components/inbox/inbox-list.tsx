@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Segmented } from "@/components/ui";
+import { usePathname } from "next/navigation";
+import { Segmented, cn } from "@/components/ui";
 import type { InboxFilter, InboxItem } from "@/lib/inbox/aggregate";
 
 const FILTERS = [
@@ -14,6 +15,7 @@ const FILTERS = [
 /** Boîte de réception unifiée : liste filtrable (Mail / Contact), non-lus en gras. */
 export function InboxList({ items }: { items: InboxItem[] }) {
   const [filter, setFilter] = useState<InboxFilter>("ALL");
+  const pathname = usePathname();
   const filtered = items.filter((i) => filter === "ALL" || i.source === filter);
 
   return (
@@ -24,11 +26,18 @@ export function InboxList({ items }: { items: InboxItem[] }) {
         <p className="text-sm text-muted">Aucun message.</p>
       ) : (
         <ul className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface">
-          {filtered.map((i) => (
+          {filtered.map((i) => {
+            const href = `/inbox/${i.source.toLowerCase()}/${encodeURIComponent(i.id)}`;
+            const active = pathname === href;
+            return (
             <li key={`${i.source}-${i.id}`}>
               <Link
-                href={`/inbox/${i.source.toLowerCase()}/${encodeURIComponent(i.id)}`}
-                className="flex items-center gap-3 p-3 transition-colors hover:bg-surface-2"
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex items-center gap-3 p-3 transition-colors hover:bg-surface-2",
+                  active && "bg-surface-2",
+                )}
               >
                 <span aria-hidden className="text-xs">
                   {i.source === "MAIL" ? "✉" : "📨"}
@@ -42,7 +51,8 @@ export function InboxList({ items }: { items: InboxItem[] }) {
                 <time className="shrink-0 text-xs text-muted">{new Date(i.date).toLocaleDateString("fr-FR")}</time>
               </Link>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

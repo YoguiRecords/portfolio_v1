@@ -18,8 +18,8 @@ export default async function MailDetailPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6">
-      <Link href="/mails" className="font-mono text-xs text-muted hover:text-accent">
+    <div className="flex flex-col gap-6">
+      <Link href="/mails" className="font-mono text-xs text-muted hover:text-accent lg:hidden">
         ← Mails
       </Link>
 

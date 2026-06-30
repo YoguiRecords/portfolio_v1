@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
-import { Button, Panel, Status, type StatusVariant } from "@/components/ui";
+import { Button, PageContainer, Panel, Status, type StatusVariant } from "@/components/ui";
 import { getContact } from "@/lib/crm/crm";
 import { createActivityAction, createTaskAction, setTaskStatusAction } from "@/lib/actions/crm-actions";
 
@@ -25,7 +25,7 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
   const meta = STATUS_META[contact.status];
 
   return (
-    <div className="flex max-w-4xl flex-col gap-6">
+    <PageContainer width="full">
       <div>
         <Link href="/contacts" className="font-mono text-xs text-muted hover:text-accent">
           ← Contacts
@@ -41,7 +41,7 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <Panel title="Affaires liées">
           {contact.deals.length === 0 ? (
             <p className="text-sm text-muted">Aucune affaire.</p>
@@ -82,9 +82,8 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
             </Button>
           </form>
         </Panel>
-      </div>
 
-      <Panel title="Activités & notes">
+        <Panel title="Activités & notes">
         <form action={createActivityAction} className="flex flex-col gap-2">
           <input type="hidden" name="contactId" value={contact.id} />
           <div className="flex gap-2">
@@ -115,7 +114,8 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
             ))
           )}
         </ul>
-      </Panel>
-    </div>
+        </Panel>
+      </div>
+    </PageContainer>
   );
 }

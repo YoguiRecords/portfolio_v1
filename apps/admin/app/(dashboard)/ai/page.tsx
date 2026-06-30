@@ -1,4 +1,4 @@
-import { Panel } from "@/components/ui";
+import { PageContainer, Panel } from "@/components/ui";
 import { getAiConfig } from "@/lib/ai/assistant";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ export default async function AiPage() {
   const pct = Math.min(100, Math.round((config.tokensUsedThisMonth / config.monthlyTokenBudget) * 100));
 
   return (
-    <div className="flex max-w-2xl flex-col gap-6">
+    <PageContainer width="reading">
       <h1 className="text-2xl font-bold text-ink">Assistant IA</h1>
 
       <Panel>
@@ -43,6 +43,6 @@ export default async function AiPage() {
         Assistance par champ (Corriger, Grammaire, Ponctuation, Reformuler, Idée) et traduction
         FR→EN automatique à l’enregistrement. Activées dès que la clé est présente.
       </p>
-    </div>
+    </PageContainer>
   );
 }

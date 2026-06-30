@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { ConfirmSubmitButton } from "@/components/ui";
+import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listTracks, listGoals } from "@/lib/content/career";
 import {
   createTrackAction,
@@ -21,7 +21,8 @@ export default async function CareerPage() {
   const [tracks, goals] = await Promise.all([listTracks(prisma), listGoals(prisma)]);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-10">
+    <PageContainer width="full">
+      <div className="grid items-start gap-6 xl:grid-cols-2">
       <section className="flex flex-col gap-4">
         <h1 className="text-2xl font-semibold text-ink">Parcours — voies & jalons</h1>
 
@@ -104,6 +105,7 @@ export default async function CareerPage() {
           </button>
         </form>
       </section>
-    </div>
+      </div>
+    </PageContainer>
   );
 }

@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { Button, ConfirmSubmitButton } from "@/components/ui";
+import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listFaqs } from "@/lib/content/faq";
 import { createFaqAction, deleteFaqAction } from "@/lib/actions/content-actions";
 
@@ -15,9 +15,10 @@ export default async function FaqPage() {
   const faqs = await listFaqs(prisma);
 
   return (
-    <div className="flex max-w-3xl flex-col gap-8">
+    <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">FAQ</h1>
 
+      <div className="grid items-start gap-6 xl:grid-cols-[2fr_1fr]">
       <ul className="flex flex-col gap-3">
         {faqs.length === 0 ? (
           <li className="text-sm text-muted">Aucune entrée.</li>
@@ -40,7 +41,7 @@ export default async function FaqPage() {
         )}
       </ul>
 
-      <form action={createFaqAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4">
+      <form action={createFaqAction} className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4 xl:sticky xl:top-6">
         <h2 className="text-sm font-semibold text-ink-2">Ajouter une question</h2>
         <input className={inputCls} name="question" placeholder="Question" required />
         <textarea className={inputCls} name="answer" placeholder="Réponse" rows={3} required />
@@ -60,6 +61,7 @@ export default async function FaqPage() {
           Ajouter
         </Button>
       </form>
-    </div>
+      </div>
+    </PageContainer>
   );
 }
