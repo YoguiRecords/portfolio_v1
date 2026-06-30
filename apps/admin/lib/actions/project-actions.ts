@@ -41,9 +41,12 @@ export async function updateProjectAction(form: FormData): Promise<void> {
     statusLabel: str(form, "statusLabel"),
     status: str(form, "status") ?? current.status,
     featured: form.get("featured") === "on",
+    showOnCv: form.get("showOnCv") === "on",
+    cvBadge: str(form, "cvBadge") ?? current.cvBadge,
   });
   revalidatePath("/projets");
   revalidatePath(`/projets/${id}`);
+  revalidatePath("/cv");
 }
 
 /** Toggles a project between DRAFT and PUBLISHED. */

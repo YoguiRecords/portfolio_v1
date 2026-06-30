@@ -5,7 +5,7 @@ import { prisma } from "@portfolio/db";
 import { requireEnrolledSession } from "@/lib/auth/guards";
 import { createKpi, updateKpi, deleteKpi } from "@/lib/content/kpi";
 import { updateSection } from "@/lib/content/home-section";
-import { createSkill, deleteSkill } from "@/lib/content/skill";
+import { createSkill, updateSkill, deleteSkill } from "@/lib/content/skill";
 import { createFaq, deleteFaq } from "@/lib/content/faq";
 import { upsertSettings } from "@/lib/content/site-settings";
 import {
@@ -36,6 +36,7 @@ export async function createKpiAction(form: FormData): Promise<void> {
     value: str(form, "value"),
     note: str(form, "note"),
     order: Number(form.get("order") ?? 0),
+    showOnCv: form.get("showOnCv") === "on",
   });
   revalidatePath("/content");
 }
@@ -50,6 +51,7 @@ export async function updateKpiAction(form: FormData): Promise<void> {
     value: str(form, "value"),
     note: str(form, "note"),
     order: Number(form.get("order") ?? 0),
+    showOnCv: form.get("showOnCv") === "on",
   });
   revalidatePath("/content");
 }
@@ -87,6 +89,10 @@ export async function upsertProfileAction(
       availabilityLabel: str(form, "availabilityLabel"),
       isAvailable: form.get("isAvailable") === "on",
       aiSummary: str(form, "aiSummary"),
+      cvAccroche: str(form, "cvAccroche"),
+      cvAvailabilityStart: str(form, "cvAvailabilityStart"),
+      cvMobility: str(form, "cvMobility"),
+      cvContractType: str(form, "cvContractType"),
       typewriterLines: (str(form, "typewriterLines") ?? "")
         .split("\n")
         .map((l) => l.trim())
@@ -147,15 +153,33 @@ export async function createSkillAction(form: FormData): Promise<void> {
   await createSkill(prisma, {
     name: str(form, "name"),
     category: str(form, "category"),
+    kind: str(form, "kind") === "SOFT" ? "SOFT" : "TECH",
+    showOnCv: form.get("showOnCv") === "on",
     order: Number(form.get("order") ?? 0),
   });
   revalidatePath("/competences");
+  revalidatePath("/cv");
+}
+export async function updateSkillAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const id = str(form, "id");
+  if (!id) return;
+  await updateSkill(prisma, id, {
+    name: str(form, "name"),
+    category: str(form, "category"),
+    kind: str(form, "kind") === "SOFT" ? "SOFT" : "TECH",
+    showOnCv: form.get("showOnCv") === "on",
+    order: Number(form.get("order") ?? 0),
+  });
+  revalidatePath("/competences");
+  revalidatePath("/cv");
 }
 export async function deleteSkillAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const id = str(form, "id");
   if (id) await deleteSkill(prisma, id);
   revalidatePath("/competences");
+  revalidatePath("/cv");
 }
 
 // ── FAQ ──

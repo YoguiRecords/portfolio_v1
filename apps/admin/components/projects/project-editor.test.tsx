@@ -14,6 +14,8 @@ const base: ProjectEditorData = {
   statusLabel: "",
   status: "DRAFT",
   featured: false,
+  showOnCv: false,
+  cvBadge: "NONE",
 };
 
 test("l'aperçu live reflète la saisie du titre", async () => {

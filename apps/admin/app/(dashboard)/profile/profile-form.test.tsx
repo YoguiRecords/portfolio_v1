@@ -20,6 +20,10 @@ const values: ProfileFormValues = {
   availabilityLabel: "Disponible",
   isAvailable: true,
   aiSummary: "Résumé",
+  cvAccroche: "",
+  cvAvailabilityStart: "",
+  cvMobility: "",
+  cvContractType: "",
 };
 
 beforeEach(() => {

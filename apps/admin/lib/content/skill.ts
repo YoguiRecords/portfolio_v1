@@ -14,6 +14,12 @@ export async function createSkill(prisma: PrismaClient, raw: unknown) {
   return prisma.skill.create({ data });
 }
 
+/** Updates a skill (name/category/kind/showOnCv/order) from validated input. */
+export async function updateSkill(prisma: PrismaClient, id: string, raw: unknown) {
+  const data = SkillInput.parse(raw);
+  return prisma.skill.update({ where: { id }, data });
+}
+
 /** Deletes a skill by id. */
 export async function deleteSkill(prisma: PrismaClient, id: string) {
   await prisma.skill.delete({ where: { id } });
