@@ -250,45 +250,49 @@ async function main(): Promise<void> {
     ],
   });
 
-  // 9. Analyses du profil (SWOT / PESTEL / PORTER)
+  // 9. Cadres d'analyse du profil (SWOT · 4P · Golden Circle · Ikigai)
   await prisma.analysis.create({
     data: {
       type: "SWOT", title: "Mon profil", order: 0,
-      items: { create: [
-        { groupLabel: "Forces", text: "Vision + management + exécution", order: 0 },
-        { groupLabel: "Forces", text: "Bilingue tech ↔ business", order: 1 },
-        { groupLabel: "Faiblesses", text: "Profil hybride à incarner clairement", order: 2 },
-        { groupLabel: "Faiblesses", text: "Séniorité direction à consolider", order: 3 },
-        { groupLabel: "Opportunités", text: "Demande de leaders tech hybrides", order: 4 },
-        { groupLabel: "Opportunités", text: "Rôles CTO / direction produit", order: 5 },
-        { groupLabel: "Menaces", text: "Spécialistes plus pointus par maillon", order: 6 },
-        { groupLabel: "Menaces", text: "Marché concurrentiel", order: 7 },
-      ] },
+      data: {
+        strengths: { label: "Forces", items: ["Vision + management + exécution", "Bilingue tech ↔ business"] },
+        weaknesses: { label: "Faiblesses", items: ["Profil hybride à incarner clairement", "Séniorité direction à consolider"] },
+        opportunities: { label: "Opportunités", items: ["Demande de leaders tech hybrides", "Rôles CTO / direction produit"] },
+        threats: { label: "Menaces", items: ["Spécialistes plus pointus par maillon", "Marché concurrentiel"] },
+      },
     },
   });
   await prisma.analysis.create({
     data: {
-      type: "PESTEL", title: "Contexte", order: 1,
-      items: { create: [
-        { groupLabel: "Politique", verdict: "Neutre", order: 0 },
-        { groupLabel: "Économique", verdict: "Porteur", order: 1 },
-        { groupLabel: "Socioculturel", verdict: "Favorable", order: 2 },
-        { groupLabel: "Technologique", verdict: "Moteur", order: 3 },
-        { groupLabel: "Écologique", verdict: "Latent", order: 4 },
-        { groupLabel: "Légal", verdict: "Vigilance", order: 5 },
-      ] },
+      type: "FOUR_P", title: "Mon positionnement", order: 1,
+      data: {
+        product: { label: "Produit", role: "L'offre", points: ["Vision produit + exécution technique", "Leadership d'équipes tech"] },
+        price: { label: "Prix", role: "Positionnement", points: ["Séniorité direction (CTO / CPO)", "Valeur = impact business"] },
+        place: { label: "Place", role: "Distribution", points: ["Portfolio, LinkedIn, réseau", "Open-source, conférences"] },
+        promotion: { label: "Promotion", role: "Communication", points: ["Études de cas chiffrées", "Récit « leader hybride »"] },
+      },
     },
   });
   await prisma.analysis.create({
     data: {
-      type: "PORTER", title: "Marché", order: 2,
-      items: { create: [
-        { groupLabel: "Rivalité", verdict: "Élevée", order: 0 },
-        { groupLabel: "Pouvoir clients", verdict: "Fort", order: 1 },
-        { groupLabel: "Nouveaux entrants", verdict: "Moyen", order: 2 },
-        { groupLabel: "Substituts", verdict: "Moyen", order: 3 },
-        { groupLabel: "Fournisseurs", verdict: "Faible", order: 4 },
-      ] },
+      type: "GOLDEN_CIRCLE", title: "Ma raison d'être", order: 2,
+      data: {
+        why: "Faire émerger des produits tech qui ont du sens, en alignant les gens.",
+        how: "En reliant vision business et exécution technique, en faisant grandir les équipes.",
+        what: "Je dirige des équipes produit/tech : architecture, delivery, management.",
+      },
+    },
+  });
+  await prisma.analysis.create({
+    data: {
+      type: "IKIGAI", title: "Mon équilibre", order: 3,
+      data: {
+        love: "Construire, faire grandir des équipes, résoudre des problèmes complexes.",
+        good: "Relier la tech et le business, décider, exécuter, manager.",
+        world: "Des produits utiles, bien construits, portés par des leaders fiables.",
+        paid: "Diriger la tech et le produit : architecture, delivery, vision.",
+        center: "Diriger des produits tech qui ont du sens, avec des équipes qui grandissent.",
+      },
     },
   });
 

@@ -1,7 +1,7 @@
 # PROGRESS — Portfolio Yohan Debusscher
 
-**Version courante : v0.5.1** (DA v2 réellement appliquée + `@portfolio/ui` partagé + anti-drift DB —
-voir `docs/patch_notes/patch_note_V0_5.md`).
+**Version courante : v0.6.0** (cadres d'analyse du profil refondus : SWOT / 4P / Golden Circle /
+Ikigai, éditables au BO et rendus animés sur le web — voir `docs/patch_notes/patch_note_V0_6.md`).
 
 ## État courant
 Infra Docker complète + **back office v2 (DA graphite + or appliquée)** + **CRM** + **chatbot public** +
@@ -21,7 +21,8 @@ E2E (guard des routes BO).
 ## Modèle de données (schema.prisma)
 - **Identité** : Profile (singleton, hero/CV/SEO) + SocialLink.
 - **Contenu home** : SiteSettings, HomeSection, Kpi, Skill, CareerTrack/Milestone, CareerGoal,
-  Analysis (SWOT/PESTEL/PORTER) + AnalysisItem, FaqEntry.
+  Analysis (cadres profil : **SWOT / 4P / Golden Circle / Ikigai**, un par type, payload `data` JSON
+  validé Zod via `parseAnalysis`), FaqEntry.
 - **Projets** : Project (+ type, blocs `ProjectBlock`, liens, images), Technology.
 - **News** : Article (statuts DRAFT/**SCHEDULED**/PUBLISHED, `scheduledAt`, lien évènement, galerie).
 - **Agenda** : Event (date/lieu/online/inscription externe, visibilité, programmable), EventMedia.

@@ -6,7 +6,7 @@ import { createSkill, deleteSkill, listSkills } from "./skill";
 import { createFaq, listFaqs } from "./faq";
 import { upsertSettings, getSettings } from "./site-settings";
 import { createTrack, createMilestone, listTracks, createGoal, listGoals } from "./career";
-import { createAnalysis, createAnalysisItem, listAnalyses } from "./analysis";
+import { upsertAnalysis, listAnalyses } from "./analysis";
 
 const prisma = makeTestClient();
 beforeEach(() => resetDb(prisma));
@@ -51,11 +51,24 @@ test("Career: rejette une couleur hex invalide", async () => {
   await expect(createTrack(prisma, { name: "X", slug: "x", colorHex: "rouge", order: 0 })).rejects.toThrow();
 });
 
-test("Analysis: un bloc SWOT avec son item", async () => {
-  const analysis = await createAnalysis(prisma, { type: "SWOT", title: "Profil", order: 0 });
-  await createAnalysisItem(prisma, { analysisId: analysis.id, groupLabel: "Forces", text: "Polyvalence", order: 0 });
+test("Analysis: upsert d'un SWOT (un seul par type, idempotent)", async () => {
+  const swot = (items: string[]) => ({
+    strengths: { label: "Forces", items },
+    weaknesses: { label: "Faiblesses", items: [] },
+    opportunities: { label: "Opportunités", items: [] },
+    threats: { label: "Menaces", items: [] },
+  });
+  await upsertAnalysis(prisma, { type: "SWOT", title: "Profil", order: 0 }, swot(["Polyvalence"]));
+  await upsertAnalysis(prisma, { type: "SWOT", title: "Profil 2", order: 0 }, swot(["Vision", "Exécution"]));
 
-  const [a] = await listAnalyses(prisma);
-  expect(a.type).toBe("SWOT");
-  expect(a.items).toHaveLength(1);
+  const all = await listAnalyses(prisma);
+  expect(all).toHaveLength(1); // @@unique([type]) → un seul SWOT
+  expect(all[0].type).toBe("SWOT");
+  expect(all[0].title).toBe("Profil 2");
+});
+
+test("Analysis: rejette un payload invalide", async () => {
+  await expect(
+    upsertAnalysis(prisma, { type: "SWOT", title: "X", order: 0 }, { strengths: "oops" }),
+  ).rejects.toThrow();
 });

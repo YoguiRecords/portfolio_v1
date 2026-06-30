@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ANALYSIS_TYPES } from "../profile-analyses/schemas";
 
 /**
  * Zod schemas for back-office content editing. Shared so the Server Actions
@@ -198,20 +199,15 @@ export const CareerMilestoneInput = z.object({
 });
 export type CareerMilestoneInput = z.infer<typeof CareerMilestoneInput>;
 
-/** A strategic analysis block (SWOT / PESTEL / PORTER). */
+/**
+ * A profile analysis block (SWOT / 4P / Golden Circle / Ikigai). The heterogeneous
+ * `data` JSON payload is validated per-type by the core `analysisSchemas`
+ * (see `parseAnalysis`) at the Server Action boundary.
+ */
 export const AnalysisInput = z.object({
-  type: z.enum(["SWOT", "PESTEL", "PORTER"]),
+  type: z.enum(ANALYSIS_TYPES),
   title: z.string().max(120).optional(),
   order: z.number().int().min(0).default(0),
+  isVisible: z.boolean().default(true),
 });
 export type AnalysisInput = z.infer<typeof AnalysisInput>;
-
-/** An item inside an analysis (bullet for SWOT, reading for PESTEL/PORTER). */
-export const AnalysisItemInput = z.object({
-  analysisId: z.string().min(1),
-  groupLabel: z.string().min(1).max(80),
-  text: z.string().max(400).optional(),
-  verdict: z.string().max(400).optional(),
-  order: z.number().int().min(0).default(0),
-});
-export type AnalysisItemInput = z.infer<typeof AnalysisItemInput>;

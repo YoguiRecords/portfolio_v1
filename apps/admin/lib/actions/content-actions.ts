@@ -16,13 +16,9 @@ import {
   createGoal,
   deleteGoal,
 } from "@/lib/content/career";
-import {
-  createAnalysis,
-  deleteAnalysis,
-  createAnalysisItem,
-  deleteAnalysisItem,
-} from "@/lib/content/analysis";
+import { upsertAnalysis, deleteAnalysis } from "@/lib/content/analysis";
 import { upsertProfile } from "@/lib/content/profile";
+import type { AnalysisType } from "@portfolio/core";
 
 /** Reads an optional string FormData field (empty → undefined). */
 function str(form: FormData, key: string): string | undefined {
@@ -258,36 +254,64 @@ export async function deleteGoalAction(form: FormData): Promise<void> {
   revalidatePath("/parcours");
 }
 
-// ── Analysis (SWOT/PESTEL/PORTER) ──
-export async function createAnalysisAction(form: FormData): Promise<void> {
+// ── Profile analyses (SWOT / 4P / Golden Circle / Ikigai) ──
+
+/** Splits a textarea value into trimmed, non-empty lines (one bullet per line). */
+function lines(form: FormData, name: string): string[] {
+  return (str(form, name) ?? "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+}
+
+/** Builds the heterogeneous `data` payload from the editor form, per type. */
+function analysisDataFromForm(type: string, form: FormData): unknown {
+  const s = (k: string) => str(form, k) ?? "";
+  switch (type) {
+    case "SWOT":
+      return {
+        strengths: { label: s("strengthsLabel"), items: lines(form, "strengthsItems") },
+        weaknesses: { label: s("weaknessesLabel"), items: lines(form, "weaknessesItems") },
+        opportunities: { label: s("opportunitiesLabel"), items: lines(form, "opportunitiesItems") },
+        threats: { label: s("threatsLabel"), items: lines(form, "threatsItems") },
+      };
+    case "FOUR_P":
+      return {
+        product: { label: s("productLabel"), role: s("productRole"), points: lines(form, "productPoints") },
+        price: { label: s("priceLabel"), role: s("priceRole"), points: lines(form, "pricePoints") },
+        place: { label: s("placeLabel"), role: s("placeRole"), points: lines(form, "placePoints") },
+        promotion: { label: s("promotionLabel"), role: s("promotionRole"), points: lines(form, "promotionPoints") },
+      };
+    case "GOLDEN_CIRCLE":
+      return { why: s("why"), how: s("how"), what: s("what") };
+    case "IKIGAI":
+      return { love: s("love"), good: s("good"), world: s("world"), paid: s("paid"), center: s("center") };
+    default:
+      return {};
+  }
+}
+
+/** Upserts the single analysis of a type from its structured editor form. */
+export async function upsertAnalysisAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
-  await createAnalysis(prisma, {
-    type: str(form, "type") ?? "SWOT",
-    title: str(form, "title"),
-    order: Number(form.get("order") ?? 0),
-  });
+  const type = str(form, "type") ?? "SWOT";
+  await upsertAnalysis(
+    prisma,
+    {
+      type,
+      title: str(form, "title"),
+      order: Number(form.get("order") ?? 0),
+      isVisible: form.get("isVisible") !== null,
+    },
+    analysisDataFromForm(type, form),
+  );
   revalidatePath("/analyses");
 }
+
+/** Deletes the analysis of a given type. */
 export async function deleteAnalysisAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
-  const id = str(form, "id");
-  if (id) await deleteAnalysis(prisma, id);
-  revalidatePath("/analyses");
-}
-export async function createAnalysisItemAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
-  await createAnalysisItem(prisma, {
-    analysisId: str(form, "analysisId"),
-    groupLabel: str(form, "groupLabel"),
-    text: str(form, "text"),
-    verdict: str(form, "verdict"),
-    order: Number(form.get("order") ?? 0),
-  });
-  revalidatePath("/analyses");
-}
-export async function deleteAnalysisItemAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
-  const id = str(form, "id");
-  if (id) await deleteAnalysisItem(prisma, id);
+  const type = str(form, "type");
+  if (type) await deleteAnalysis(prisma, type as AnalysisType);
   revalidatePath("/analyses");
 }

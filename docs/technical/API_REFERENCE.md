@@ -62,8 +62,12 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
 Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `revalidatePath`.
 - **Contenu home** : `createKpiAction`/`updateKpiAction`/`deleteKpiAction`, `updateHomeSectionAction`,
   `createSkillAction`/`deleteSkillAction`, `createFaqAction`/`deleteFaqAction`, `saveSettingsAction`,
-  Career (`createTrackAction`/`createMilestoneAction`/`createGoalAction` + suppressions), Analysis
-  (`createAnalysisAction`/`createAnalysisItemAction` + suppressions).
+  Career (`createTrackAction`/`createMilestoneAction`/`createGoalAction` + suppressions), Analyses
+  du profil (`upsertAnalysisAction` / `deleteAnalysisAction` — un cadre par type).
+- **Analyses du profil** : quatre cadres (SWOT, 4P, Golden Circle, Ikigai), un par type
+  (`Analysis.type` unique). Le contenu hétérogène est un payload JSON `Analysis.data` validé par
+  `parseAnalysis` (@portfolio/core) à l'écriture (BO) comme au rendu (web) — même symétrie que les
+  `ProjectBlock`. PESTEL/PORTER ne s'appliquent plus au profil (réservés aux fiches projet).
 - **Profil** : `upsertProfileAction`, `uploadProfileAvatarAction` (pipeline média), `createSocialAction`/`deleteSocialAction`.
 - **Projets** : `createProjectAction` / `setProjectStatusAction` / `deleteProjectAction` ;
   actions de blocs (ajout/maj validée Zod par type/réordo/visibilité/suppression).
