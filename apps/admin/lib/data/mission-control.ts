@@ -48,14 +48,23 @@ const CLOSED_STAGES: ("WON" | "LOST")[] = ["WON", "LOST"];
  * Distinct du Dashboard (portfolio/audience).
  */
 export async function getMissionControlData(): Promise<MissionControlData> {
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const endOfDay = new Date(startOfDay);
+  endOfDay.setDate(endOfDay.getDate() + 1);
+
   const [contacts, openDeals, unread, pendingTasks, grouped, tasks, pendingTestimonials, pendingAppointments, draftArticles, inboxPreview] =
     await Promise.all([
       prisma.contact.count(),
       prisma.deal.count({ where: { stage: { notIn: CLOSED_STAGES } } }),
       prisma.contactMessage.count({ where: { isRead: false } }),
-      prisma.crmTask.count({ where: { isDone: false } }),
+      prisma.task.count({ where: { status: { not: "DONE" } } }),
       prisma.deal.groupBy({ by: ["stage"], _count: { _all: true }, _sum: { valueCents: true } }),
-      prisma.crmTask.findMany({ where: { isDone: false }, orderBy: { dueAt: "asc" }, take: 8 }),
+      prisma.task.findMany({
+        where: { status: { not: "DONE" }, dueAt: { gte: startOfDay, lt: endOfDay } },
+        orderBy: { dueAt: "asc" },
+        include: { contact: true },
+      }),
       prisma.testimonial.count({ where: { status: "PENDING" } }),
       prisma.appointmentRequest.count({ where: { status: "PENDING" } }),
       prisma.article.count({ where: { status: "DRAFT" } }),

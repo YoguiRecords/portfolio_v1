@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
 import { Button, Panel, Status, type StatusVariant } from "@/components/ui";
 import { getContact } from "@/lib/crm/crm";
-import { createActivityAction, createTaskAction, setTaskDoneAction } from "@/lib/actions/crm-actions";
+import { createActivityAction, createTaskAction, setTaskStatusAction } from "@/lib/actions/crm-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -61,12 +61,12 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
           <ul className="flex flex-col gap-2">
             {contact.tasks.map((t) => (
               <li key={t.id} className="flex items-center justify-between gap-2 text-sm">
-                <span className={t.isDone ? "text-muted line-through" : "text-ink-2"}>{t.title}</span>
-                <form action={setTaskDoneAction}>
+                <span className={t.status === "DONE" ? "text-muted line-through" : "text-ink-2"}>{t.title}</span>
+                <form action={setTaskStatusAction}>
                   <input type="hidden" name="id" value={t.id} />
-                  <input type="hidden" name="isDone" value={t.isDone ? "false" : "true"} />
+                  <input type="hidden" name="status" value={t.status === "DONE" ? "TODO" : "DONE"} />
                   <Button variant="subtle" size="sm" type="submit">
-                    {t.isDone ? "Rouvrir" : "Fait"}
+                    {t.status === "DONE" ? "Rouvrir" : "Fait"}
                   </Button>
                 </form>
               </li>
@@ -74,6 +74,7 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
           </ul>
           <form action={createTaskAction} className="mt-3 flex flex-col gap-2">
             <input type="hidden" name="contactId" value={contact.id} />
+            <input type="hidden" name="category" value="CRM" />
             <input className={inputCls} name="title" placeholder="Nouvelle tâche…" required />
             <input className={inputCls} name="dueAt" type="datetime-local" />
             <Button variant="primary" size="sm" type="submit" className="self-start">

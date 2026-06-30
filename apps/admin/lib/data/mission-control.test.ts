@@ -17,7 +17,7 @@ vi.mock("@portfolio/db", () => ({
   prisma: {
     contact: { count: db.contactCount },
     deal: { count: db.dealCount, groupBy: db.dealGroupBy },
-    crmTask: { count: db.taskCount, findMany: db.taskFindMany },
+    task: { count: db.taskCount, findMany: db.taskFindMany },
     contactMessage: { count: db.messageCount, findMany: db.messageFindMany },
     testimonial: { count: db.testimonialCount },
     appointmentRequest: { count: db.appointmentCount },
@@ -50,4 +50,12 @@ test("agrège KPIs, pipeline et à-traiter", async () => {
   expect(data.pipeline).toEqual([{ stage: "PROSPECT", count: 3, valueCents: 150000 }]);
   expect(data.toTreat).toEqual({ pendingTestimonials: 1, pendingAppointments: 0, draftArticles: 3 });
   expect(data.tasks[0]).toMatchObject({ id: "t1", title: "Relancer" });
+});
+
+test("tasks : ne renvoie que les tâches du jour (dueAt = aujourd'hui), status != DONE", async () => {
+  await getMissionControlData();
+  const arg = db.taskFindMany.mock.calls[0][0];
+  expect(arg.where.status).toEqual({ not: "DONE" });
+  expect(arg.where.dueAt).toHaveProperty("gte");
+  expect(arg.where.dueAt).toHaveProperty("lt");
 });

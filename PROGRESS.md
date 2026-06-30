@@ -50,7 +50,8 @@
 - **P15** — Docs finales (`ARCHITECTURE`/`API_REFERENCE` + section BO v2/CRM), patch note `docs/patch_notes/patch_note_V0_5.md`, E2E `e2e/bo-v2.spec.ts` (guard des routes BO).
 - **P16 (socle)** — Migration `20260630130000_rbac` (AdminUser RBAC + AdminInvite, REVOKE app_web). Core `auth/{permissions,password-policy}` (+ tests). Gardes `requirePermission`/`requireOwner`/`assertCanWrite` (guards.ts) + `/403` + `lib/privacy/mask.ts`. **Suite = DT8** (voir resume.md).
 - **P17** — Chatbot public fonctionnel : `route.ts` (events à venir), `chat-context.ts` (prochain évènement), `chat-widget.tsx` (prop `enabled`), `[locale]/layout.tsx` (lit `isPublicChatEnabled`). Modèle `openrouter/fusion`.
-- Gate vert : 150 admin + 59 core + 49 web tests, `tsc` OK (admin/core/web), lint 0 erreur, `next build` (admin+web) OK.
+- **Todo-list unifiée** — modèle Prisma **`Task`** générique (rename `CrmTask` via `@@map("CrmTask")`, migration `20260630140000_task_unify` **data-preserving** : `isDone→status`, liens→`CRM`). `@portfolio/core` : `TaskInput` + constantes catégorie/statut/priorité. Service `lib/crm/crm.ts` (`createTask`/`updateTask`/`setTaskStatus`/`deleteTask`) + actions `crm-actions.ts`. Page **`/taches`** (`components/crm/task-board{,-view}.tsx` : kanban 4 colonnes **drag & drop** `@dnd-kit` — souris/tactile/clavier, optimistic UI + Server Action ; board client-only `next/dynamic ssr:false` ; filtres catégorie + « du jour », drawer création/édition + suppression). Mission Control → **tâches du jour** (`status != DONE`, échéance = aujourd'hui) + lien `/taches`. Fiche contact passée au workflow `status` (création en catégorie `CRM`). E2E guard `e2e/taches.spec.ts`.
+- Gate vert : 156 admin + 63 core tests, `tsc` OK (admin/core), lint 0 erreur. Migration appliquée sur la DB locale.
 
 ## Garde-fous (rappel)
 - Travail sur `llm`, PR `llm → dev` (revue humaine). Jamais de push direct `dev`/`main`.

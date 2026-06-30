@@ -85,6 +85,11 @@ Réseau interne (jamais exposé) :
 2. **Exécution** : suivre le plan, signaler toute déviation avant de l'appliquer.
 3. **Clôture** : mettre à jour la doc/tracking impactés (voir `STACK_DOCUMENTATION.md`).
 
+> **Validation NON-NÉGOCIABLE avant de dire « terminé »** (toute feature avec UI) : tester le
+> **parcours réel dans un navigateur piloté par l'IA** (MCP Playwright), screenshots **desktop +
+> mobile**, et **validation UX** (agréable à utiliser sur les deux). Tests unitaires + build verts
+> ne suffisent **jamais**. Détail : `.claude/rules/STACK_TESTING.md` § « Validation en navigateur réel ».
+
 Utiliser les skills Superpowers quand disponibles
 (`superpowers:brainstorming` → `superpowers:writing-plans` → `superpowers:executing-plans`).
 

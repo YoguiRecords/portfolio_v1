@@ -94,7 +94,7 @@ globale. Le CV HTML est rendu **isolé** (iframe sandbox).
 
 ## Données
 Schéma relationnel géré par Prisma. Voir `docs/erd/schema_erd_global.md`. Les tables CRM
-(`Company`/`Contact`/`Deal`/`Activity`/`CrmTask`) sont privées (back office uniquement).
+(`Company`/`Contact`/`Deal`/`Activity`/`Task` — table `CrmTask` conservée) sont privées (back office uniquement).
 Les migrations sont appliquées automatiquement par le service one-shot `migrate` à chaque
 démarrage de la stack (avant `web`/`admin`) : le schéma et la base ne peuvent pas diverger.
 

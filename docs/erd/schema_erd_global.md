@@ -6,6 +6,9 @@ Source de vérité : `packages/db/prisma/schema.prisma` (le diagramme ci-dessous
 > **Agenda/média** : `Event`, `EventMedia`, `ArticleMedia`, `AppointmentRequest` (+ `MediaKind`
 > VIDEO/EMBED sur `MediaAsset`, `Article.scheduledAt`/`status SCHEDULED`).
 > **i18n** : `Translation` (overlay EN par champ). **IA** : `AiAssistantConfig`.
+> **RBAC** : `AdminUser.role`/`isActive`, `AdminInvite`.
+> **CRM + Todo** : `Company`, `Contact`, `Deal`, `Activity`, `Task` (todo unifiée — table `CrmTask`
+> conservée via `@@map`). Voir la section « CRM & Todo » ci-dessous.
 
 ```mermaid
 erDiagram
@@ -138,6 +141,23 @@ erDiagram
 - **MediaAsset** — chaque image webp convertie (url, type, taille, dimensions) ; référencée par
   avatar de profil, cover de projet/article et galerie.
 
+### CRM & Todo (données privées back office — `app_web` REVOKE)
+- **Company** — organisation (nom, site, notes) ; liée à des `Contact` et `Deal`.
+- **Contact** — personne (identité, statut `CrmContactStatus`, notes), liens souples cross-domaine
+  (projet/témoignage/message) en IDs. Possède `deals`, `activities`, `tasks`.
+- **Deal** — opportunité de pipeline (`DealStage`, valeur, probabilité), rattachée à un `Contact`.
+- **Activity** — interaction (`ActivityType` : appel/email/réunion/note) sur un contact et/ou deal.
+- **Task** — **todo unifiée** (CRM + générale). `category` (`TaskCategory`), `status` (`TaskStatus`,
+  kanban), `priority` (`TaskPriority`), `dueAt?`, `description?`. Liens optionnels `contactId`/`dealId`
+  (`onDelete: Cascade`) → une tâche `GENERAL`/`BILLING` sans lien n'est jamais supprimée par cascade.
+  Table physique **`CrmTask`** conservée (`@@map`) → migration data-preserving (rename + colonnes).
+
 ## Enums
 - `ProjectStatus` : `DRAFT`, `PUBLISHED`
 - `ArticleStatus` : `DRAFT`, `PUBLISHED`
+- `CrmContactStatus` : `LEAD`, `ACTIVE`, `CUSTOMER`, `ARCHIVED`
+- `DealStage` : `PROSPECT`, `QUALIFIED`, `PROPOSAL`, `WON`, `LOST`
+- `ActivityType` : `CALL`, `EMAIL`, `MEETING`, `NOTE`
+- `TaskCategory` : `CRM`, `CONTENT`, `BILLING`, `GENERAL`
+- `TaskStatus` : `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE`
+- `TaskPriority` : `LOW`, `NORMAL`, `HIGH`
