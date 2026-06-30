@@ -9,7 +9,7 @@ import {
   type GoldenCircleDataType,
   type IkigaiDataType,
 } from "@portfolio/core";
-import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
+import { ConfirmSubmitButton } from "@/components/ui";
 import { listAnalyses } from "@/lib/content/analysis";
 import { upsertAnalysisAction, deleteAnalysisAction } from "@/lib/actions/content-actions";
 
@@ -43,7 +43,7 @@ export default async function AnalysesPage() {
   const ikigai = dataOf<IkigaiDataType>("IKIGAI");
 
   return (
-    <PageContainer width="full">
+    <div className="flex w-full flex-col gap-8">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold text-ink">Analyses du profil</h1>
         <p className="text-sm text-muted">
@@ -129,7 +129,7 @@ export default async function AnalysesPage() {
           </div>
         </Editor>
       </div>
-    </PageContainer>
+    </div>
   );
 }
 
