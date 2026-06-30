@@ -16,12 +16,15 @@ export const KpiInput = z.object({
   trend: trend.optional(),
   order: z.number().int().min(0).default(0),
   isVisible: z.boolean().default(true),
+  showOnCv: z.boolean().default(false),
 });
 
-/** Skill (ecosystem orbit). */
+/** Skill (ecosystem orbit + CV competences/soft skills). */
 export const SkillInput = z.object({
   name: z.string().min(1).max(60),
   category: z.string().max(60).optional(),
+  kind: z.enum(["TECH", "SOFT"]).default("TECH"),
+  showOnCv: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
 });
 
@@ -34,6 +37,56 @@ export const CareerGoalInput = z.object({
 
 /** Career goal update (edit an existing row — requires its id). */
 export const CareerGoalUpdate = CareerGoalInput.extend({ id: z.string().min(1) });
+
+// ── CV corpus (experiences, education, languages, interests) ──
+
+/** Experience (CV corpus — projected onto PDF / /cv page / home via flags). */
+export const ExperienceInput = z.object({
+  title: z.string().min(1).max(160),
+  company: z.string().min(1).max(120),
+  location: z.string().max(160).optional(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date().optional(),
+  tier: z.enum(["FEATURED", "PREVIOUS", "MINI"]).default("MINI"),
+  badge: z.enum(["NONE", "PERSO", "EN_COURS", "CLE"]).default("NONE"),
+  stack: z.array(z.string().min(1).max(40)).max(24).default([]),
+  bullets: z.array(z.string().min(1).max(280)).max(12).default([]),
+  description: z.string().max(2000).optional(),
+  order: z.number().int().min(0).default(0),
+  showOnPdf: z.boolean().default(false),
+  showOnCvPage: z.boolean().default(true),
+  showOnSite: z.boolean().default(false),
+});
+
+/** Education entry (CV « Formations » chapter). */
+export const EducationInput = z.object({
+  title: z.string().min(1).max(160),
+  institution: z.string().max(160).optional(),
+  date: z.string().min(1).max(60),
+  details: z.array(z.string().min(1).max(200)).max(8).default([]),
+  order: z.number().int().min(0).default(0),
+  showOnPdf: z.boolean().default(true),
+  showOnCvPage: z.boolean().default(true),
+});
+
+/** Language (CV sidebar). */
+export const LanguageInput = z.object({
+  name: z.string().min(1).max(60),
+  level: z.string().min(1).max(60),
+  order: z.number().int().min(0).default(0),
+});
+
+/** Interest (CV sidebar). */
+export const InterestInput = z.object({
+  label: z.string().min(1).max(80),
+  order: z.number().int().min(0).default(0),
+});
+
+/** Update variants (edit an existing row — require its id). */
+export const ExperienceUpdate = ExperienceInput.extend({ id: z.string().min(1) });
+export const EducationUpdate = EducationInput.extend({ id: z.string().min(1) });
+export const LanguageUpdate = LanguageInput.extend({ id: z.string().min(1) });
+export const InterestUpdate = InterestInput.extend({ id: z.string().min(1) });
 
 /** Home section (editorial copy + order/visibility). */
 export const HomeSectionInput = z.object({
@@ -61,6 +114,11 @@ export const ProfileInput = z.object({
   availabilityLabel: z.string().max(120).optional(),
   currentRole: z.string().max(120).optional(),
   aiSummary: z.string().max(600).optional(),
+  // CV — champs spécifiques au document
+  cvAccroche: z.string().max(600).optional(),
+  cvAvailabilityStart: z.string().max(80).optional(),
+  cvMobility: z.string().max(160).optional(),
+  cvContractType: z.string().max(80).optional(),
 });
 
 /** Project case-study header (blocks are edited separately). */
@@ -82,6 +140,8 @@ export const ProjectInput = z.object({
   status: z.enum(["DRAFT", "PUBLISHED"]).default("DRAFT"),
   featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
+  showOnCv: z.boolean().default(false),
+  cvBadge: z.enum(["NONE", "KEY", "IN_PROGRESS"]).default("NONE"),
   seoTitle: z.string().max(160).optional(),
   seoDescription: z.string().max(300).optional(),
   aiSummary: z.string().max(600).optional(),
@@ -146,6 +206,14 @@ export type KpiInput = z.infer<typeof KpiInput>;
 export type SkillInput = z.infer<typeof SkillInput>;
 export type CareerGoalInput = z.infer<typeof CareerGoalInput>;
 export type CareerGoalUpdate = z.infer<typeof CareerGoalUpdate>;
+export type ExperienceInput = z.infer<typeof ExperienceInput>;
+export type ExperienceUpdate = z.infer<typeof ExperienceUpdate>;
+export type EducationInput = z.infer<typeof EducationInput>;
+export type EducationUpdate = z.infer<typeof EducationUpdate>;
+export type LanguageInput = z.infer<typeof LanguageInput>;
+export type LanguageUpdate = z.infer<typeof LanguageUpdate>;
+export type InterestInput = z.infer<typeof InterestInput>;
+export type InterestUpdate = z.infer<typeof InterestUpdate>;
 export type HomeSectionInput = z.infer<typeof HomeSectionInput>;
 export type ProfileInput = z.infer<typeof ProfileInput>;
 export type ProjectInput = z.infer<typeof ProjectInput>;
