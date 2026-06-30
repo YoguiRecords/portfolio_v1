@@ -21,6 +21,10 @@ export type ProfileFormValues = {
   availabilityLabel: string;
   isAvailable: boolean;
   aiSummary: string;
+  cvAccroche: string;
+  cvAvailabilityStart: string;
+  cvMobility: string;
+  cvContractType: string;
 };
 
 /**
@@ -90,6 +94,44 @@ export function ProfileForm({ profile }: { profile: ProfileFormValues }) {
           <Field label="Résumé IA (chatbot / SEO)" htmlFor="aiSummary">
             <Textarea id="aiSummary" name="aiSummary" value={data.aiSummary} onChange={(e) => set("aiSummary", e.target.value)} />
           </Field>
+
+          <div className="mt-2 border-t border-border pt-4">
+            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">CV</h2>
+            <Field label="Accroche du CV" htmlFor="cvAccroche">
+              <Textarea
+                id="cvAccroche"
+                name="cvAccroche"
+                value={data.cvAccroche}
+                onChange={(e) => set("cvAccroche", e.target.value)}
+              />
+            </Field>
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Prise de poste" htmlFor="cvAvailabilityStart">
+                <Input
+                  id="cvAvailabilityStart"
+                  name="cvAvailabilityStart"
+                  value={data.cvAvailabilityStart}
+                  onChange={(e) => set("cvAvailabilityStart", e.target.value)}
+                />
+              </Field>
+              <Field label="Contrat" htmlFor="cvContractType">
+                <Input
+                  id="cvContractType"
+                  name="cvContractType"
+                  value={data.cvContractType}
+                  onChange={(e) => set("cvContractType", e.target.value)}
+                />
+              </Field>
+            </div>
+            <Field label="Mobilité" htmlFor="cvMobility">
+              <Input
+                id="cvMobility"
+                name="cvMobility"
+                value={data.cvMobility}
+                onChange={(e) => set("cvMobility", e.target.value)}
+              />
+            </Field>
+          </div>
         </div>
 
         <LivePreview open={previewOpen} onToggle={() => setPreviewOpen((o) => !o)}>

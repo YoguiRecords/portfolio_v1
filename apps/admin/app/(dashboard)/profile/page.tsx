@@ -27,6 +27,10 @@ export default async function ProfilePage() {
           availabilityLabel: profile?.availabilityLabel ?? "",
           isAvailable: profile?.isAvailable ?? true,
           aiSummary: profile?.aiSummary ?? "",
+          cvAccroche: profile?.cvAccroche ?? "",
+          cvAvailabilityStart: profile?.cvAvailabilityStart ?? "",
+          cvMobility: profile?.cvMobility ?? "",
+          cvContractType: profile?.cvContractType ?? "",
         }}
       />
 

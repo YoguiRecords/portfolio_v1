@@ -65,6 +65,8 @@ export default async function ProjectEditPage({ params }: { params: Promise<{ id
     statusLabel: project.statusLabel ?? "",
     status: project.status,
     featured: project.featured,
+    showOnCv: project.showOnCv,
+    cvBadge: project.cvBadge,
   };
 
   return (

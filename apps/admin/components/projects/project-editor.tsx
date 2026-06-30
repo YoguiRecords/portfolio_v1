@@ -17,6 +17,8 @@ export interface ProjectEditorData {
   statusLabel: string;
   status: string;
   featured: boolean;
+  showOnCv: boolean;
+  cvBadge: string;
 }
 
 /**
@@ -41,6 +43,7 @@ export function ProjectEditor({
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="id" value={data.id} />
       <input type="hidden" name="featured" value={data.featured ? "on" : ""} />
+      <input type="hidden" name="showOnCv" value={data.showOnCv ? "on" : ""} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-4">
@@ -79,6 +82,19 @@ export function ProjectEditor({
             <label className="flex items-center gap-2 text-sm text-ink-2">
               <Switch checked={data.featured} onCheckedChange={(v) => set("featured", v)} label="Mettre en avant" />
               Mettre en avant
+            </label>
+          </div>
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Field label="Badge CV" htmlFor="cvBadge">
+              <Select id="cvBadge" name="cvBadge" value={data.cvBadge} onChange={(e) => set("cvBadge", e.target.value)}>
+                <option value="NONE">Aucun</option>
+                <option value="KEY">Projet clé</option>
+                <option value="IN_PROGRESS">En cours</option>
+              </Select>
+            </Field>
+            <label className="flex items-center gap-2 text-sm text-ink-2">
+              <Switch checked={data.showOnCv} onCheckedChange={(v) => set("showOnCv", v)} label="Afficher sur le CV" />
+              Afficher sur le CV
             </label>
           </div>
         </div>

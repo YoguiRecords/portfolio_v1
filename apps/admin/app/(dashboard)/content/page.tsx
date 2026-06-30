@@ -2,7 +2,12 @@ import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listKpis } from "@/lib/content/kpi";
 import { listSections } from "@/lib/content/home-section";
-import { createKpiAction, deleteKpiAction, updateHomeSectionAction } from "@/lib/actions/content-actions";
+import {
+  createKpiAction,
+  updateKpiAction,
+  deleteKpiAction,
+  updateHomeSectionAction,
+} from "@/lib/actions/content-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -67,10 +72,28 @@ export default async function ContentPage() {
                   <div className="text-lg font-bold text-accent">{kpi.value}</div>
                   {kpi.note ? <div className="text-xs text-muted">{kpi.note}</div> : null}
                 </div>
-                <form action={deleteKpiAction}>
-                  <input type="hidden" name="id" value={kpi.id} />
-                  <ConfirmSubmitButton label="Supprimer" />
-                </form>
+                <div className="flex items-center gap-2">
+                  <form action={updateKpiAction} className="flex items-center gap-2">
+                    <input type="hidden" name="id" value={kpi.id} />
+                    <input type="hidden" name="label" value={kpi.label} />
+                    <input type="hidden" name="value" value={kpi.value} />
+                    <input type="hidden" name="note" value={kpi.note ?? ""} />
+                    <input type="hidden" name="order" value={kpi.order} />
+                    <label className="flex items-center gap-1 text-xs text-muted">
+                      <input type="checkbox" name="showOnCv" defaultChecked={kpi.showOnCv} /> CV
+                    </label>
+                    <button
+                      type="submit"
+                      className="rounded-md border border-border-strong px-2 py-1 text-xs text-ink-2 hover:bg-surface-2"
+                    >
+                      OK
+                    </button>
+                  </form>
+                  <form action={deleteKpiAction}>
+                    <input type="hidden" name="id" value={kpi.id} />
+                    <ConfirmSubmitButton label="Supprimer" />
+                  </form>
+                </div>
               </li>
             ))
           )}
@@ -81,6 +104,9 @@ export default async function ContentPage() {
           <input className={inputCls} name="label" placeholder="Label (ex. Expérience)" required />
           <input className={inputCls} name="value" placeholder="Valeur (ex. 4 ans)" required />
           <input className={inputCls} name="note" placeholder="Note (optionnel)" />
+          <label className="flex items-center gap-2 text-xs text-muted">
+            <input type="checkbox" name="showOnCv" /> Afficher sur le CV (« En chiffres »)
+          </label>
           <Button variant="primary" type="submit" className="self-start">
             Ajouter
           </Button>
