@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyses — pages à arbitrer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); }
+      .hub { max-width:860px; margin:0 auto; padding:64px clamp(18px,5vw,40px) 90px; }
+      .eyebrow { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+      h1 { font-size:clamp(30px,7vw,52px); font-weight:900; letter-spacing:-.03em; line-height:1; margin:16px 0 14px; }
+      .intro { color:var(--on-dark-2); font-weight:300; font-size:16px; line-height:1.6; max-width:62ch; margin-bottom:40px; padding-bottom:34px; border-bottom:1px solid var(--border-dark); }
+
+      .grp { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--on-dark-muted); display:flex; align-items:center; gap:14px; margin:34px 0 16px; }
+      .grp::after { content:""; flex:1; height:1px; background:var(--border-dark); }
+
+      .card { display:block; text-decoration:none; color:inherit; background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid var(--accent); border-radius:12px; padding:24px 26px; margin-bottom:14px; transition:.2s; }
+      .card:hover { transform:translateY(-3px); border-color:var(--border-dark); box-shadow:0 24px 60px rgba(0,0,0,.45); }
+      .card:hover { border-left-color:var(--accent); }
+      .card .h { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+      .card h2 { font-size:21px; font-weight:800; letter-spacing:-.01em; }
+      .card .go { margin-left:auto; color:var(--accent); font-weight:600; font-size:14px; }
+      .card p { color:var(--on-dark-2); font-size:14px; line-height:1.55; }
+      .card .decide { margin-top:14px; padding-top:13px; border-top:1px solid var(--border-dark); font:600 12.5px/1.5 "Inter",sans-serif; color:#fff; }
+      .card .decide b { color:var(--accent); font-family:"JetBrains Mono",monospace; font-weight:700; }
+      .ok { color:#46c98b; font-weight:700; }
+    </style>
+  </head>
+  <body>
+    <div class="hub">
+      <span class="eyebrow">Bloc Analyses · pages à arbitrer</span>
+      <h1>Ce qu'on décide.</h1>
+      <p class="intro">Trois pages, rien d'autre. Ouvre, regarde, et donne-moi un choix par ligne. <span class="ok">SWOT déjà validé : option B.</span></p>
+
+      <div class="grp">Projets — études de cas business</div>
+      <a class="card" href="./frameworks.html">
+        <div class="h"><h2>PESTEL &amp; PORTER — mises en page</h2><span class="go">Ouvrir →</span></div>
+        <p>Visuels pour les fiches projet (analyse d'un vrai marché). PESTEL : cartes · jauges · spectre · <b>réel (Tesla)</b>. PORTER : diagramme 5 forces · compteurs · cartes · <b>réel (Netflix)</b>.</p>
+        <div class="decide">À choisir : <b>1 design PESTEL</b> + <b>1 design PORTER</b>.</div>
+      </a>
+
+      <div class="grp">Humain — page profil</div>
+      <a class="card" href="./profil-designs.html">
+        <div class="h"><h2>4P · Golden Circle · Ikigai — designs</h2><span class="go">Ouvrir →</span></div>
+        <p>3 propositions visuelles par cadre. 4P (quadrant / table de mixage / index) · Golden Circle (cibles+énoncés / bandes / cible hero) · Ikigai (quadrant / Venn / boussole).</p>
+        <div class="decide">À choisir : <b>1 design 4P</b> + <b>1 Golden Circle</b> + <b>1 Ikigai</b>.</div>
+      </a>
+
+      <a class="card" href="./profil-analyses.html">
+        <div class="h"><h2>La sélection assemblée</h2><span class="go">Ouvrir →</span></div>
+        <p>Aperçu des 4 cadres retenus pour le profil, bout à bout : SWOT-B · 4P · Golden Circle · Ikigai. (Pour vérifier la cohérence d'ensemble — pas une décision.)</p>
+      </a>
+    </div>
+  </body>
+</html>

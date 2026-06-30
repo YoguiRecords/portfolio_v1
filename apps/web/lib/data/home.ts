@@ -42,8 +42,8 @@ export async function getHomeData(prisma: PrismaClient, locale = "fr") {
     }),
     prisma.careerGoal.findMany({ orderBy: { order: "asc" } }),
     prisma.analysis.findMany({
+      where: { isVisible: true },
       orderBy: { order: "asc" },
-      include: { items: { orderBy: { order: "asc" } } },
     }),
     prisma.project.findMany({
       where: { status: "PUBLISHED" },

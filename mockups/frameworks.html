@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grilles d'analyse — PESTEL · PORTER · SWOT (propositions)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      /* Page = même grammaire que project-business.html : fond très sombre,
+         blocs .block / .marker / .lead. Mobile-first (base = téléphone). */
+      body { background:#060606; color:var(--on-dark); }
+      .top { padding:34px 0 0; }
+      .top a { font:600 13px "Inter",sans-serif; color:var(--on-dark-2); text-decoration:none; }
+      .top a:hover { color:var(--accent); }
+      .phead { padding:30px 0 0; }
+      .phead .eyebrow { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); display:inline-flex; gap:12px; align-items:center; }
+      .phead .eyebrow::before { content:""; width:30px; height:2px; background:var(--accent); }
+      .phead h1 { font-size:clamp(34px,8vw,68px); font-weight:900; letter-spacing:-.03em; line-height:.96; margin:20px 0 0; }
+      .phead p { max-width:64ch; font-size:clamp(15px,2.6vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.6; margin-top:22px; }
+
+      /* status tokens (mêmes hex que project-business.html) */
+      .grn { color:#46c98b; } .bg-grn { background:#46c98b; }
+      .gld { color:var(--accent); } .bg-gld { background:var(--accent); }
+      .org { color:#e0892f; } .bg-org { background:#e0892f; }
+      .red { color:#d3576b; } .bg-red { background:#d3576b; }
+      .mut { color:var(--on-dark-muted); } .bg-mut { background:#4a4a4a; }
+
+      .block { padding: clamp(56px,9vw,104px) 0; border-top:1px solid var(--border-dark); }
+      .block .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+      .block h2 { font-size:clamp(28px,6vw,50px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:20px; }
+      .block .lead { max-width:64ch; font-size:clamp(15px,2.4vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.6; }
+      .block .lead strong { color:#fff; font-weight:600; }
+
+      /* enveloppe d'option (étiquette A/B/C + intitulé + note) */
+      .opt { margin-top:40px; }
+      .opt .ohead { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
+      .opt .obadge { font:700 10px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); border:1px solid rgba(240,168,0,.45); border-radius:5px; padding:6px 9px; }
+      .opt .oname { font:800 16px "Inter",sans-serif; letter-spacing:-.01em; }
+      .opt .onote { font:300 13px "Inter",sans-serif; color:var(--on-dark-muted); }
+      @media (min-width:680px){ .opt .onote { margin-left:auto; } }
+      .frame { border:1px solid var(--border-dark); border-radius:14px; background:var(--dark-900); padding:clamp(20px,4vw,38px); }
+
+      /* en-tête de bloc d'analyse, repris de .ftitle */
+      .ftitle { display:flex; align-items:baseline; gap:13px; margin-bottom:24px; border-bottom:1px solid var(--border-dark); padding-bottom:14px; }
+      .ftitle .t { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.16em; color:var(--accent); }
+      .ftitle h4 { font-family:"Inter",sans-serif; font-size:20px; font-weight:800; letter-spacing:-.01em; }
+
+      /* ===== SWOT (classes existantes du site) ===== */
+      .swot { display:grid; grid-template-columns:1fr; gap:28px 48px; }
+      @media (min-width:680px){ .swot{ grid-template-columns:repeat(2,1fr); } }
+      .swot .q { padding-left:20px; border-left:2px solid var(--accent); }
+      .swot .q .qk { display:flex; align-items:baseline; gap:9px; font:700 11px/1 "Inter",sans-serif; letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
+      .swot .q .qk em { font:600 9.5px/1 "JetBrains Mono",monospace; letter-spacing:.08em; color:var(--on-dark-muted); font-style:normal; }
+      .swot .q.s{ border-left-color:#46c98b; } .swot .q.s .qk{ color:#46c98b; }
+      .swot .q.w{ border-left-color:#e0892f; } .swot .q.w .qk{ color:#e0892f; }
+      .swot .q.o{ border-left-color:var(--accent); } .swot .q.o .qk{ color:var(--accent); }
+      .swot .q.t{ border-left-color:#d3576b; } .swot .q.t .qk{ color:#d3576b; }
+      .swot .q ul { list-style:none; display:flex; flex-direction:column; gap:11px; }
+      .swot .q li { font-size:15px; color:var(--on-dark-2); line-height:1.5; }
+
+      /* ===== SWOT — variante tuiles teintées ===== */
+      .swotile { display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:680px){ .swotile{ grid-template-columns:repeat(2,1fr); } }
+      .swotile .st { border:1px solid var(--border-dark); border-radius:12px; padding:22px; }
+      .swotile .st .sh { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+      .swotile .st .sh b { width:30px; height:30px; display:grid; place-items:center; border-radius:7px; font:900 13px/1 "JetBrains Mono",monospace; color:#111; }
+      .swotile .st .sh span { font:700 12px/1 "Inter",sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+      .swotile .st ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+      .swotile .st li { font-size:14px; color:var(--on-dark-2); line-height:1.5; }
+      .swotile .s{ background:linear-gradient(160deg,rgba(70,201,139,.07),transparent); } .swotile .s .sh b{ background:#46c98b; } .swotile .s .sh span{ color:#46c98b; }
+      .swotile .w{ background:linear-gradient(160deg,rgba(224,137,47,.07),transparent); } .swotile .w .sh b{ background:#e0892f; } .swotile .w .sh span{ color:#e0892f; }
+      .swotile .o{ background:linear-gradient(160deg,rgba(240,168,0,.07),transparent); } .swotile .o .sh b{ background:var(--accent); } .swotile .o .sh span{ color:var(--accent); }
+      .swotile .t{ background:linear-gradient(160deg,rgba(211,87,107,.07),transparent); } .swotile .t .sh b{ background:#d3576b; } .swotile .t .sh span{ color:#d3576b; }
+
+      /* ===== PESTEL A — cartes numérotées ===== */
+      .pcards { display:grid; grid-template-columns:1fr; gap:13px; }
+      @media (min-width:560px){ .pcards{ grid-template-columns:repeat(2,1fr); } }
+      @media (min-width:920px){ .pcards{ grid-template-columns:repeat(3,1fr); } }
+      .pcards .pc { position:relative; background:var(--dark-800); border:1px solid var(--border-dark); border-radius:10px; padding:18px 18px 16px; overflow:hidden; }
+      .pcards .pc .strip { position:absolute; left:0; top:0; bottom:0; width:3px; }
+      .pcards .pc .idx { font:900 13px/1 "JetBrains Mono",monospace; color:var(--accent); opacity:.5; }
+      .pcards .pc .nm { font:600 15px "Inter",sans-serif; margin:10px 0 14px; }
+      .pcards .pc .vd { display:inline-flex; align-items:center; gap:7px; font:700 12px "Inter",sans-serif; }
+      .pcards .pc .vd .dot { width:8px; height:8px; border-radius:50%; }
+
+      /* ===== PESTEL B — jauges de favorabilité ===== */
+      .pmeters { display:flex; flex-direction:column; gap:20px; }
+      .pm { display:grid; grid-template-columns:1fr 72px; grid-template-areas:"n v" "t t"; row-gap:9px; align-items:center; }
+      @media (min-width:620px){ .pm{ grid-template-columns:150px 1fr 92px; grid-template-areas:"n t v"; column-gap:18px; } }
+      .pm .nm { grid-area:n; font-size:14.5px; color:var(--on-dark-2); }
+      .pm .vv { grid-area:v; text-align:right; font:700 12px/1 "JetBrains Mono",monospace; }
+      .pm .tk { grid-area:t; position:relative; height:8px; border-radius:6px; background:var(--dark-700); }
+      .pm .tk::before { content:""; position:absolute; left:50%; top:-4px; bottom:-4px; width:1px; background:rgba(255,255,255,.12); }
+      .pm .fill { position:absolute; top:0; bottom:0; left:0; border-radius:6px; }
+
+      /* ===== PESTEL C — spectre vertical (cohérent SWOT) ===== */
+      .pspec { display:grid; grid-template-columns:1fr; gap:2px; }
+      @media (min-width:760px){ .pspec{ grid-template-columns:repeat(2,1fr); column-gap:48px; } }
+      .pspec .ps { display:flex; align-items:center; gap:14px; padding:14px 0 14px 18px; border-left:2.5px solid var(--border-dark); border-bottom:1px solid var(--border-dark); }
+      .pspec .ps .k { font:600 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--on-dark-muted); min-width:96px; }
+      .pspec .ps .nm { flex:1; font:500 14px "Inter",sans-serif; color:var(--on-dark-2); }
+      .pspec .ps .chip { font:700 11px "Inter",sans-serif; padding:4px 10px; border-radius:20px; }
+
+      /* ===== PORTER A — diagramme 5 forces ===== */
+      .five { display:grid; grid-template-columns:1fr; gap:12px; max-width:680px; margin:0 auto; }
+      @media (min-width:680px){
+        .five { grid-template-columns:repeat(3,1fr); grid-template-rows:auto auto auto;
+          grid-template-areas:". top ." "left center right" ". bottom ."; align-items:stretch; }
+      }
+      .five .fa { background:var(--dark-800); border:1px solid var(--border-dark); border-radius:10px; padding:16px 18px; }
+      .five .fa .fk { font:600 10px/1 "JetBrains Mono",monospace; letter-spacing:.13em; text-transform:uppercase; color:var(--on-dark-muted); margin-bottom:8px; }
+      .five .fa .fn { font:600 14px "Inter",sans-serif; margin-bottom:11px; }
+      .five .fa .fb { display:inline-flex; align-items:center; gap:7px; font:700 12px "Inter",sans-serif; }
+      .five .fa .fb .dot { width:8px; height:8px; border-radius:50%; }
+      .five .top{ grid-area:top; } .five .left{ grid-area:left; } .five .right{ grid-area:right; } .five .bottom{ grid-area:bottom; }
+      .five .center { grid-area:center; background:linear-gradient(150deg,#241a00,#141414); border-color:rgba(240,168,0,.45); text-align:center; }
+      .five .center .fk { color:var(--accent); }
+      .five .center .fn { font-size:18px; font-weight:800; }
+      .five .center .fb { justify-content:center; }
+
+      /* ===== PORTER B — compteurs de pression ===== */
+      .prs { display:flex; flex-direction:column; }
+      .pr { display:grid; grid-template-columns:1fr 64px; grid-template-areas:"l g" "s s"; row-gap:11px; align-items:center; padding:16px 0; border-top:1px solid var(--border-dark); }
+      .pr:first-child { border-top:0; }
+      @media (min-width:620px){ .pr{ grid-template-columns:210px 1fr 84px; grid-template-areas:"l s g"; column-gap:18px; } }
+      .pr .pl { grid-area:l; font-size:14.5px; color:var(--on-dark-2); }
+      .pr .pl small { display:block; font:500 11px/1 "JetBrains Mono",monospace; color:var(--on-dark-muted); margin-top:5px; letter-spacing:.03em; }
+      .pr .gg { grid-area:g; text-align:right; font:700 12px/1 "JetBrains Mono",monospace; }
+      .pr .segs { grid-area:s; display:flex; gap:5px; }
+      .pr .segs i { height:9px; flex:1; border-radius:2px; background:var(--dark-700); }
+
+      /* ===== PORTER C — cartes directionnelles ===== */
+      .pdir { display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:720px){ .pdir{ grid-template-columns:repeat(2,1fr); } }
+      .pdir .pd { display:flex; align-items:center; gap:15px; background:var(--dark-800); border:1px solid var(--border-dark); border-left-width:3px; border-radius:10px; padding:15px 18px; }
+      .pdir .pd .arr { font-size:19px; line-height:1; }
+      .pdir .pd .tx { flex:1; }
+      .pdir .pd .tx b { font:600 14.5px "Inter",sans-serif; }
+      .pdir .pd .tx span { display:block; font:500 11px/1 "JetBrains Mono",monospace; color:var(--on-dark-muted); margin-top:5px; letter-spacing:.03em; }
+      .pdir .pd .lv { font:700 12px "Inter",sans-serif; }
+
+      /* ===== version réelle : verdict + justifications (PESTEL & PORTER) ===== */
+      .pfact { display:flex; flex-direction:column; }
+      .pfact .pf { padding:18px 0; border-top:1px solid var(--border-dark); }
+      .pfact .pf:first-child { border-top:0; }
+      .pfact .pf .ph { display:flex; align-items:center; gap:12px; margin-bottom:11px; }
+      .pfact .pf .ph .k { font:600 10px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--on-dark-muted); min-width:78px; }
+      .pfact .pf .ph .nm { font:700 15px "Inter",sans-serif; }
+      .pfact .pf .ph .chip { margin-left:auto; font:700 11px "Inter",sans-serif; padding:4px 11px; border-radius:20px; white-space:nowrap; }
+      .pfact .pf ul { list-style:none; display:flex; flex-direction:column; gap:7px; padding-left:2px; }
+      .pfact .pf li { font-size:13.5px; color:var(--on-dark-2); line-height:1.5; display:flex; gap:9px; }
+      .pfact .pf li::before { content:"▸"; color:var(--accent); flex:none; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap top"><a href="./index.html">← Maquettes du site public</a></div>
+
+    <header class="wrap phead">
+      <span class="eyebrow">Bloc Analyses · fiches projet (business)</span>
+      <h1>PESTEL · PORTER<br />pour les projets.</h1>
+      <p>Ici, ces deux grilles analysent un <strong style="color:#fff;font-weight:600">vrai marché / client</strong> dans une étude de cas — c'est là qu'elles sont pleinement légitimes (pour l'humain, voir <a href="./profil-analyses.html" style="color:var(--accent)">profil-analyses</a>). Aujourd'hui elles sortent en <strong style="color:#fff;font-weight:600">liste plate</strong>, qui efface leur structure. Options A/B/C = mises en page « synthèse » ; <strong style="color:#fff;font-weight:600">Option D = version réelle</strong> (verdict + justifications, comme une vraie analyse). Code couleur : vert = favorable · or = moteur · orange = vigilance · rouge = pression forte · gris = neutre.</p>
+    </header>
+
+    <!-- ============ PESTEL ============ -->
+    <section class="wrap block">
+      <div class="marker">PESTEL — 6 facteurs macro · « Contexte »</div>
+      <h2>Le contexte,<br />pas une liste.</h2>
+      <p class="lead">Politique · Économique · Socioculturel · Technologique · Écologique · Légal. Chaque facteur porte un <strong>verdict pondéré</strong>, pas qu'un mot.</p>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option A</span><span class="oname">Cartes numérotées</span><span class="onote">dense, éditorial, ça se scanne vite</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PESTEL</span><h4>Contexte</h4></div>
+          <div class="pcards">
+            <div class="pc"><span class="strip bg-mut"></span><div class="idx">01</div><div class="nm">Politique</div><div class="vd mut"><span class="dot bg-mut"></span>Neutre</div></div>
+            <div class="pc"><span class="strip bg-grn"></span><div class="idx">02</div><div class="nm">Économique</div><div class="vd grn"><span class="dot bg-grn"></span>Porteur</div></div>
+            <div class="pc"><span class="strip bg-grn"></span><div class="idx">03</div><div class="nm">Socioculturel</div><div class="vd grn"><span class="dot bg-grn"></span>Favorable</div></div>
+            <div class="pc"><span class="strip bg-gld"></span><div class="idx">04</div><div class="nm">Technologique</div><div class="vd gld"><span class="dot bg-gld"></span>Moteur</div></div>
+            <div class="pc"><span class="strip bg-mut"></span><div class="idx">05</div><div class="nm">Écologique</div><div class="vd mut"><span class="dot bg-mut"></span>Latent</div></div>
+            <div class="pc"><span class="strip bg-org"></span><div class="idx">06</div><div class="nm">Légal</div><div class="vd org"><span class="dot bg-org"></span>Vigilance</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option B</span><span class="oname">Jauges de favorabilité</span><span class="onote">data-viz : on lit l'intensité (défavorable → moteur)</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PESTEL</span><h4>Contexte</h4></div>
+          <div class="pmeters">
+            <div class="pm"><span class="nm">Politique</span><div class="tk"><div class="fill bg-mut" style="width:50%"></div></div><span class="vv mut">Neutre</span></div>
+            <div class="pm"><span class="nm">Économique</span><div class="tk"><div class="fill bg-grn" style="width:76%"></div></div><span class="vv grn">Porteur</span></div>
+            <div class="pm"><span class="nm">Socioculturel</span><div class="tk"><div class="fill bg-grn" style="width:70%"></div></div><span class="vv grn">Favorable</span></div>
+            <div class="pm"><span class="nm">Technologique</span><div class="tk"><div class="fill bg-gld" style="width:92%"></div></div><span class="vv gld">Moteur</span></div>
+            <div class="pm"><span class="nm">Écologique</span><div class="tk"><div class="fill bg-mut" style="width:36%"></div></div><span class="vv mut">Latent</span></div>
+            <div class="pm"><span class="nm">Légal</span><div class="tk"><div class="fill bg-org" style="width:45%"></div></div><span class="vv org">Vigilance</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option C</span><span class="oname">Spectre vertical</span><span class="onote">même bord-couleur que le SWOT</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PESTEL</span><h4>Contexte</h4></div>
+          <div class="pspec">
+            <div class="ps" style="border-left-color:#4a4a4a"><span class="k">Politique</span><span class="nm">Stabilité institutionnelle</span><span class="chip" style="background:rgba(255,255,255,.06);color:var(--on-dark-muted)">Neutre</span></div>
+            <div class="ps" style="border-left-color:#46c98b"><span class="k">Économique</span><span class="nm">Conjoncture du secteur</span><span class="chip" style="background:rgba(70,201,139,.12);color:#46c98b">Porteur</span></div>
+            <div class="ps" style="border-left-color:#46c98b"><span class="k">Socioculturel</span><span class="nm">Attentes des usages</span><span class="chip" style="background:rgba(70,201,139,.12);color:#46c98b">Favorable</span></div>
+            <div class="ps" style="border-left-color:var(--accent)"><span class="k">Technologique</span><span class="nm">Maturité des outils</span><span class="chip" style="background:var(--accent-soft);color:var(--accent)">Moteur</span></div>
+            <div class="ps" style="border-left-color:#4a4a4a"><span class="k">Écologique</span><span class="nm">Pression environnementale</span><span class="chip" style="background:rgba(255,255,255,.06);color:var(--on-dark-muted)">Latent</span></div>
+            <div class="ps" style="border-left-color:#e0892f"><span class="k">Légal</span><span class="nm">Cadre réglementaire</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Vigilance</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option D</span><span class="oname">Version réelle — verdict + justifs</span><span class="onote">exemple Tesla · ce que contient une vraie analyse</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PESTEL</span><h4>Contexte — Tesla</h4></div>
+          <div class="pfact">
+            <div class="pf"><div class="ph"><span class="nm">Politique</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Vigilance</span></div><ul><li>Tarifs douaniers (Chine +40 % sur véhicules importés des USA)</li><li>Subventions EV (IRA) conditionnées au « assemblé aux USA »</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Économique</span><span class="chip" style="background:rgba(70,201,139,.12);color:#46c98b">Porteur</span></div><ul><li>Baisse continue du coût des batteries → marge &amp; baisses de prix</li><li>Demande corrélée aux taux d'intérêt &amp; au pouvoir d'achat</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Socioculturel</span><span class="chip" style="background:rgba(70,201,139,.12);color:#46c98b">Favorable</span></div><ul><li>Conscience écologique → adoption des véhicules électriques</li><li>Image premium &amp; communauté early-adopters forte</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Technologique</span><span class="chip" style="background:var(--accent-soft);color:var(--accent)">Moteur</span></div><ul><li>Avance batteries &amp; powertrain intégré</li><li>Conduite autonome (Autopilot / FSD) = surface logicielle différenciante</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Écologique</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Exigeant</span></div><ul><li>Normes CO2 qui durcissent (atout VE, mais cadre mouvant)</li><li>Cycle de vie &amp; recyclage des batteries (lithium)</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Légal</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Vigilance</span></div><ul><li>Cadre de la conduite autonome encore flou selon les pays</li><li>Litiges sur le marketing « Full Self-Driving »</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PORTER ============ -->
+    <section class="wrap block">
+      <div class="marker">PORTER — 5 forces · « Marché »</div>
+      <h2>La pression,<br />avec sa géométrie.</h2>
+      <p class="lead">La rivalité au centre, les quatre pressions autour (amont, aval, entrants, substituts). Une liste plate efface tout le modèle.</p>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option A</span><span class="oname">Diagramme 5 forces</span><span class="onote">la géométrie canonique — l'audacieux</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PORTER</span><h4>Marché</h4></div>
+          <div class="five">
+            <div class="fa top"><div class="fk">Menace ▲</div><div class="fn">Nouveaux entrants</div><div class="fb org"><span class="dot bg-org"></span>Moyen</div></div>
+            <div class="fa left"><div class="fk">Pouvoir ◀</div><div class="fn">Fournisseurs</div><div class="fb grn"><span class="dot bg-grn"></span>Faible</div></div>
+            <div class="fa center"><div class="fk">Cœur du marché</div><div class="fn">Rivalité interne</div><div class="fb red"><span class="dot bg-red"></span>Élevée</div></div>
+            <div class="fa right"><div class="fk">Pouvoir ▶</div><div class="fn">Clients</div><div class="fb red"><span class="dot bg-red"></span>Fort</div></div>
+            <div class="fa bottom"><div class="fk">Menace ▼</div><div class="fn">Substituts</div><div class="fb org"><span class="dot bg-org"></span>Moyen</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option B</span><span class="oname">Compteurs de pression</span><span class="onote">5 segments = intensité de la force</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PORTER</span><h4>Marché</h4></div>
+          <div class="prs">
+            <div class="pr"><div class="pl">Rivalité interne<small>Concurrence directe</small></div><div class="segs"><i class="bg-red"></i><i class="bg-red"></i><i class="bg-red"></i><i class="bg-red"></i><i class="bg-red"></i></div><span class="gg red">Élevée</span></div>
+            <div class="pr"><div class="pl">Pouvoir clients<small>Négociation aval</small></div><div class="segs"><i class="bg-red"></i><i class="bg-red"></i><i class="bg-red"></i><i class="bg-red"></i><i></i></div><span class="gg red">Fort</span></div>
+            <div class="pr"><div class="pl">Nouveaux entrants<small>Barrières à l'entrée</small></div><div class="segs"><i class="bg-org"></i><i class="bg-org"></i><i class="bg-org"></i><i></i><i></i></div><span class="gg org">Moyen</span></div>
+            <div class="pr"><div class="pl">Substituts<small>Solutions alternatives</small></div><div class="segs"><i class="bg-org"></i><i class="bg-org"></i><i class="bg-org"></i><i></i><i></i></div><span class="gg org">Moyen</span></div>
+            <div class="pr"><div class="pl">Fournisseurs<small>Négociation amont</small></div><div class="segs"><i class="bg-grn"></i><i class="bg-grn"></i><i></i><i></i><i></i></div><span class="gg grn">Faible</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option C</span><span class="oname">Cartes directionnelles</span><span class="onote">la flèche = sens de la pression</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PORTER</span><h4>Marché</h4></div>
+          <div class="pdir">
+            <div class="pd" style="border-left-color:#d3576b"><span class="arr red">⟲</span><div class="tx"><b>Rivalité interne</b><span>Concurrence directe</span></div><span class="lv red">Élevée</span></div>
+            <div class="pd" style="border-left-color:#d3576b"><span class="arr red">◀</span><div class="tx"><b>Pouvoir clients</b><span>Pression aval</span></div><span class="lv red">Fort</span></div>
+            <div class="pd" style="border-left-color:#e0892f"><span class="arr org">▼</span><div class="tx"><b>Nouveaux entrants</b><span>Menace d'entrée</span></div><span class="lv org">Moyen</span></div>
+            <div class="pd" style="border-left-color:#e0892f"><span class="arr org">▲</span><div class="tx"><b>Substituts</b><span>Report possible</span></div><span class="lv org">Moyen</span></div>
+            <div class="pd" style="border-left-color:#46c98b"><span class="arr grn">▶</span><div class="tx"><b>Fournisseurs</b><span>Pression amont</span></div><span class="lv grn">Faible</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option D</span><span class="oname">Version réelle — note + justifs</span><span class="onote">exemple streaming (Netflix) · ce que contient une vraie analyse</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">PORTER</span><h4>Marché — streaming (Netflix)</h4></div>
+          <div class="pfact">
+            <div class="pf"><div class="ph"><span class="nm">Rivalité interne</span><span class="chip" style="background:rgba(211,87,107,.14);color:#d3576b">Élevée</span></div><ul><li>Disney+, Prime Video, Max, Apple TV+ se disputent le temps d'écran</li><li>Guerre des contenus originaux (budgets en milliards)</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Pouvoir des clients</span><span class="chip" style="background:rgba(211,87,107,.14);color:#d3576b">Fort</span></div><ul><li>Résiliation en 1 clic, coût de changement quasi nul</li><li>Forte sensibilité au prix → churn élevé</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Nouveaux entrants</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Moyen</span></div><ul><li>Barrière capitalistique (catalogue) élevée…</li><li>…mais les studios (Disney, WBD) entrent avec leurs propres IP</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Produits de substitution</span><span class="chip" style="background:rgba(211,87,107,.14);color:#d3576b">Élevé</span></div><ul><li>YouTube, TikTok, jeux vidéo captent l'attention</li><li>Piratage</li></ul></div>
+            <div class="pf"><div class="ph"><span class="nm">Pouvoir des fournisseurs</span><span class="chip" style="background:rgba(224,137,47,.14);color:#e0892f">Moyen</span></div><ul><li>Studios, talents &amp; ayants droit en position de force</li><li>Dépendance au cloud / CDN (AWS)</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SWOT ============ -->
+    <section class="wrap block">
+      <div class="marker">SWOT — matrice · « Mon profil »</div>
+      <h2>Tu l'aimes déjà.<br />2 variantes au cas où.</h2>
+      <p class="lead">L'actuel reste valable ; voici deux finitions pour comparer.</p>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option A</span><span class="oname">Matrice axée</span><span class="onote">l'actuel + repères Interne/Externe · Positif/Négatif</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">SWOT</span><h4>Mon profil</h4></div>
+          <div class="swot">
+            <div class="q s"><div class="qk">Forces <em>interne · positif</em></div><ul><li>Vision + management + exécution</li><li>Bilingue tech ↔ business</li></ul></div>
+            <div class="q w"><div class="qk">Faiblesses <em>interne · négatif</em></div><ul><li>Profil hybride à incarner clairement</li><li>Séniorité direction à consolider</li></ul></div>
+            <div class="q o"><div class="qk">Opportunités <em>externe · positif</em></div><ul><li>Demande de leaders tech hybrides</li><li>Rôles CTO / direction produit</li></ul></div>
+            <div class="q t"><div class="qk">Menaces <em>externe · négatif</em></div><ul><li>Spécialistes plus pointus par maillon</li><li>Marché concurrentiel</li></ul></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="ohead"><span class="obadge">Option B</span><span class="oname">Quadrant plein</span><span class="onote">tuiles teintées + badge S/W/O/T</span></div>
+        <div class="frame">
+          <div class="ftitle"><span class="t">SWOT</span><h4>Mon profil</h4></div>
+          <div class="swotile">
+            <div class="st s"><div class="sh"><b>S</b><span>Forces</span></div><ul><li>Vision + management + exécution</li><li>Bilingue tech ↔ business</li></ul></div>
+            <div class="st w"><div class="sh"><b>W</b><span>Faiblesses</span></div><ul><li>Profil hybride à incarner clairement</li><li>Séniorité direction à consolider</li></ul></div>
+            <div class="st o"><div class="sh"><b>O</b><span>Opportunités</span></div><ul><li>Demande de leaders tech hybrides</li><li>Rôles CTO / direction produit</li></ul></div>
+            <div class="st t"><div class="sh"><b>T</b><span>Menaces</span></div><ul><li>Spécialistes plus pointus par maillon</li><li>Marché concurrentiel</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap" style="padding:60px 0 90px;border-top:1px solid var(--border-dark);color:var(--on-dark-muted);font-size:13px;line-height:1.6;max-width:74ch">
+      Maquette statique — données = ton vrai contenu en placeholder. On juge la <b style="color:var(--on-dark-2)">forme</b>. Dis-moi la combinaison (ex. <b style="color:var(--on-dark-2)">PESTEL-A + PORTER-A</b>) et je l'intègre dans le composant <code>analysis-block.tsx</code> (web) ; côté BO, l'édition reste un formulaire par item.
+    </div>
+  </body>
+</html>

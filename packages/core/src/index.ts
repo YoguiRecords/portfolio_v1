@@ -49,7 +49,6 @@ export {
   CareerTrackInput,
   CareerMilestoneInput,
   AnalysisInput,
-  AnalysisItemInput,
   SiteSettingsInput,
   FaqInput,
   HomeSectionInput,
@@ -110,6 +109,25 @@ export {
   type GalleryData,
   type TextData,
 } from "./project-blocks/schemas";
+
+// Profile analyses (SWOT / 4P / Golden Circle / Ikigai — chapter "Qui je suis")
+export {
+  ANALYSIS_TYPES,
+  ANALYSIS_TYPE_LABELS,
+  ANALYSIS_DEFAULTS,
+  analysisSchemas,
+  parseAnalysis,
+  SwotData,
+  FourPData,
+  GoldenCircleData,
+  IkigaiData,
+  type AnalysisType,
+  type ParsedAnalysis,
+  type SwotData as SwotDataType,
+  type FourPData as FourPDataType,
+  type GoldenCircleData as GoldenCircleDataType,
+  type IkigaiData as IkigaiDataType,
+} from "./profile-analyses/schemas";
 
 // AI (LLM port + OpenRouter adapter + assistance + budget guard)
 export type {

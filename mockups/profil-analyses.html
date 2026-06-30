@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyses appliquées à l'humain — propositions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./shared.css" />
+    <style>
+      body { background:#060606; color:var(--on-dark); }
+      .top { padding:34px 0 0; } .top a { font:600 13px "Inter",sans-serif; color:var(--on-dark-2); text-decoration:none; } .top a:hover { color:var(--accent); }
+      .phead { padding:30px 0 0; }
+      .phead .eyebrow { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); display:inline-flex; gap:12px; align-items:center; }
+      .phead .eyebrow::before { content:""; width:30px; height:2px; background:var(--accent); }
+      .phead h1 { font-size:clamp(34px,8vw,68px); font-weight:900; letter-spacing:-.03em; line-height:.96; margin:20px 0 0; }
+      .phead p { max-width:66ch; font-size:clamp(15px,2.6vw,19px); font-weight:300; color:var(--on-dark-2); line-height:1.6; margin-top:22px; }
+      .phead p strong { color:#fff; font-weight:600; }
+
+      .block { padding: clamp(52px,8vw,92px) 0; border-top:1px solid var(--border-dark); }
+      .block .marker { font:700 12px/1 "JetBrains Mono",monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+      .block .marker .pick { font:700 9.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; color:#1a1400; background:#46c98b; border-radius:20px; padding:5px 10px; }
+      .block .marker .alt { font:600 9.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; color:var(--on-dark-muted); border:1px solid var(--border-dark); border-radius:20px; padding:5px 10px; }
+      .block h2 { font-size:clamp(26px,5.5vw,46px); font-weight:900; letter-spacing:-.03em; line-height:1; margin-bottom:18px; }
+      .block .lead { max-width:64ch; font-size:clamp(15px,2.4vw,18px); font-weight:300; color:var(--on-dark-2); line-height:1.6; }
+      .block .lead strong { color:#fff; font-weight:600; }
+      .frame { border:1px solid var(--border-dark); border-radius:14px; background:var(--dark-900); padding:clamp(20px,4vw,38px); margin-top:34px; }
+      .ftitle { display:flex; align-items:baseline; gap:13px; margin-bottom:24px; border-bottom:1px solid var(--border-dark); padding-bottom:14px; }
+      .ftitle .t { font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.16em; color:var(--accent); }
+      .ftitle h4 { font-family:"Inter",sans-serif; font-size:20px; font-weight:800; letter-spacing:-.01em; }
+
+      /* ===== SWOT — quadrant teinté (option B validée) ===== */
+      .swotile { display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:680px){ .swotile{ grid-template-columns:repeat(2,1fr); } }
+      .swotile .st { border:1px solid var(--border-dark); border-radius:12px; padding:22px; }
+      .swotile .st .sh { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+      .swotile .st .sh b { width:30px; height:30px; display:grid; place-items:center; border-radius:7px; font:900 13px/1 "JetBrains Mono",monospace; color:#111; }
+      .swotile .st .sh span { font:700 12px/1 "Inter",sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+      .swotile .st ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+      .swotile .st li { font-size:14px; color:var(--on-dark-2); line-height:1.5; }
+      .swotile .s{ background:linear-gradient(160deg,rgba(70,201,139,.07),transparent); } .swotile .s .sh b{ background:#46c98b; } .swotile .s .sh span{ color:#46c98b; }
+      .swotile .w{ background:linear-gradient(160deg,rgba(224,137,47,.07),transparent); } .swotile .w .sh b{ background:#e0892f; } .swotile .w .sh span{ color:#e0892f; }
+      .swotile .o{ background:linear-gradient(160deg,rgba(240,168,0,.07),transparent); } .swotile .o .sh b{ background:var(--accent); } .swotile .o .sh span{ color:var(--accent); }
+      .swotile .t{ background:linear-gradient(160deg,rgba(211,87,107,.07),transparent); } .swotile .t .sh b{ background:#d3576b; } .swotile .t .sh span{ color:#d3576b; }
+
+      /* ===== PESTEL reframé — spectre vertical ===== */
+      .pspec { display:grid; grid-template-columns:1fr; gap:2px; }
+      @media (min-width:820px){ .pspec{ grid-template-columns:repeat(2,1fr); column-gap:48px; } }
+      .pspec .ps { display:flex; align-items:flex-start; gap:14px; padding:15px 0 15px 18px; border-left:2.5px solid var(--border-dark); border-bottom:1px solid var(--border-dark); }
+      .pspec .ps .k { font:600 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--on-dark-muted); min-width:96px; padding-top:2px; }
+      .pspec .ps .bd { flex:1; }
+      .pspec .ps .bd .nm { font:500 14px "Inter",sans-serif; color:var(--on-dark-2); line-height:1.5; }
+      .pspec .ps .chip { font:700 11px "Inter",sans-serif; padding:4px 10px; border-radius:20px; white-space:nowrap; }
+
+      /* ===== PESTEL reframé — facteurs réels (faits + verdict) ===== */
+      .pestreal { display:grid; grid-template-columns:1fr; gap:14px; }
+      @media (min-width:760px){ .pestreal{ grid-template-columns:repeat(2,1fr); } }
+      .pestreal .pr { background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid var(--border-dark); border-radius:11px; padding:18px 20px; }
+      .pestreal .pr .ph { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+      .pestreal .pr .ph .k { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--on-dark-2); }
+      .pestreal .pr .ph .chip { margin-left:auto; font:700 11px "Inter",sans-serif; padding:4px 11px; border-radius:20px; white-space:nowrap; }
+      .pestreal .pr ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+      .pestreal .pr li { font-size:13.5px; color:var(--on-dark-2); line-height:1.5; display:flex; gap:9px; }
+      .pestreal .pr li::before { content:"▸"; color:var(--accent); flex:none; }
+
+      /* ===== 4P — mix marketing personnel (2×2) ===== */
+      .mix { display:grid; grid-template-columns:1fr; gap:13px; }
+      @media (min-width:680px){ .mix{ grid-template-columns:repeat(2,1fr); } }
+      .mix .mp { background:var(--dark-800); border:1px solid var(--border-dark); border-left:2.5px solid var(--accent); border-radius:12px; padding:22px; }
+      .mix .mp .mh { display:flex; align-items:baseline; gap:11px; margin-bottom:8px; }
+      .mix .mp .mh .p { font:900 18px/1 "JetBrains Mono",monospace; color:var(--accent); }
+      .mix .mp .mh b { font:800 16px "Inter",sans-serif; }
+      .mix .mp .mh em { font:600 10px/1 "JetBrains Mono",monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--on-dark-muted); font-style:normal; margin-left:auto; }
+      .mix .mp .role { font-size:13.5px; color:#fff; font-weight:500; margin-bottom:12px; }
+      .mix .mp ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+      .mix .mp li { font-size:13.5px; color:var(--on-dark-2); line-height:1.5; display:flex; gap:9px; }
+      .mix .mp li::before { content:"▸"; color:var(--accent); flex:none; }
+
+      /* ===== Golden Circle — concentrique + énoncés ===== */
+      .golden { display:grid; grid-template-columns:1fr; gap:34px; align-items:center; }
+      @media (min-width:760px){ .golden{ grid-template-columns:300px 1fr; gap:48px; } }
+      .rings { position:relative; width:min(280px,80vw); aspect-ratio:1; margin:0 auto; border-radius:50%; border:1px solid rgba(240,168,0,.18); display:grid; place-items:center; background:radial-gradient(circle, rgba(240,168,0,.05), transparent 70%); }
+      .rings .r { position:absolute; border-radius:50%; display:grid; place-items:start center; padding-top:10px; font:700 10px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; }
+      .rings .r3 { inset:0; border:1px solid rgba(240,168,0,.3); color:var(--on-dark-muted); }
+      .rings .r2 { inset:22%; border:1px solid rgba(240,168,0,.5); color:var(--on-dark-2); }
+      .rings .r1 { inset:42%; border:0; background:var(--accent); color:#1a1400; place-items:center; padding:0; font-size:13px; letter-spacing:.1em; }
+      .gstmt { display:flex; flex-direction:column; gap:0; }
+      .gstmt .gl { padding:18px 0; border-top:1px solid var(--border-dark); }
+      .gstmt .gl:first-child { border-top:0; }
+      .gstmt .gl .lab { font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+      .gstmt .gl .lab .en { color:var(--on-dark-muted); margin-left:8px; }
+      .gstmt .gl p { font-size:15.5px; color:var(--on-dark-2); line-height:1.55; margin-top:9px; }
+      .gstmt .gl p strong { color:#fff; font-weight:600; }
+
+      /* ===== Ikigai — 4 zones + centre ===== */
+      .ikigai { position:relative; display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:680px){ .ikigai{ grid-template-columns:repeat(2,1fr); gap:14px; } }
+      .ikigai .iz { background:var(--dark-800); border:1px solid var(--border-dark); border-radius:14px; padding:22px; }
+      .ikigai .iz .il { font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+      .ikigai .iz p { font-size:14px; color:var(--on-dark-2); line-height:1.55; }
+      .ikigai .core { grid-column:1 / -1; text-align:center; background:linear-gradient(150deg,#241a00,#141414); border:1px solid rgba(240,168,0,.45); border-radius:14px; padding:24px; }
+      .ikigai .core .cl { font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+      .ikigai .core .cv { font:800 19px "Inter",sans-serif; letter-spacing:-.01em; margin-top:10px; color:#fff; }
+
+      .closing { padding:56px 0 90px; border-top:1px solid var(--border-dark); color:var(--on-dark-muted); font-size:13px; line-height:1.65; max-width:76ch; }
+      .closing b { color:var(--on-dark-2); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap top"><a href="./index.html">← Maquettes du site public</a></div>
+
+    <header class="wrap phead">
+      <span class="eyebrow">Analyses · appliquées à l'humain</span>
+      <h1>Te lire comme<br />une stratégie.</h1>
+      <p>On garde les cadres « business » <strong>qui tiennent vraiment sur une personne</strong>, et on renvoie les autres (PORTER, PESTEL « marché ») vers les <strong>fiches projet</strong>. Données réelles = placeholder, on juge la forme. Accent or = couleur de mise en avant unique (sauf SWOT, multi-statuts assumé).</p>
+    </header>
+
+    <!-- SWOT -->
+    <section class="wrap block">
+      <div class="marker">SWOT — profil <span class="pick">★ ton choix : option B</span></div>
+      <h2>Forces, faiblesses,<br />opportunités, menaces.</h2>
+      <p class="lead">Le cadre le plus naturel sur un humain. Quadrant teinté + badge S/W/O/T.</p>
+      <div class="frame">
+        <div class="ftitle"><span class="t">SWOT</span><h4>Mon profil</h4></div>
+        <div class="swotile">
+          <div class="st s"><div class="sh"><b>S</b><span>Forces</span></div><ul><li>Vision + management + exécution</li><li>Bilingue tech ↔ business</li></ul></div>
+          <div class="st w"><div class="sh"><b>W</b><span>Faiblesses</span></div><ul><li>Profil hybride à incarner clairement</li><li>Séniorité direction à consolider</li></ul></div>
+          <div class="st o"><div class="sh"><b>O</b><span>Opportunités</span></div><ul><li>Demande de leaders tech hybrides</li><li>Rôles CTO / direction produit</li></ul></div>
+          <div class="st t"><div class="sh"><b>T</b><span>Menaces</span></div><ul><li>Spécialistes plus pointus par maillon</li><li>Marché concurrentiel</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4P -->
+    <section class="wrap block">
+      <div class="marker">4P — mix marketing personnel</div>
+      <h2>Mon offre,<br />en 4 leviers.</h2>
+      <p class="lead">Le mix marketing transposé : qu'est-ce que je propose, à quel positionnement, où l'on me trouve, comment je le fais savoir.</p>
+      <div class="frame">
+        <div class="ftitle"><span class="t">MIX 4P</span><h4>Mon positionnement</h4></div>
+        <div class="mix">
+          <div class="mp"><div class="mh"><span class="p">1</span><b>Produit</b><em>l'offre</em></div><div class="role">Ce que je délivre</div><ul><li>Vision produit + exécution technique</li><li>Leadership d'équipes tech</li></ul></div>
+          <div class="mp"><div class="mh"><span class="p">2</span><b>Prix</b><em>positionnement</em></div><div class="role">Mon niveau assumé</div><ul><li>Séniorité direction (CTO / CPO)</li><li>Valeur = impact business, pas le code à l'heure</li></ul></div>
+          <div class="mp"><div class="mh"><span class="p">3</span><b>Place</b><em>distribution</em></div><div class="role">Où l'on me trouve</div><ul><li>Ce portfolio, LinkedIn, réseau</li><li>Open-source, conférences</li></ul></div>
+          <div class="mp"><div class="mh"><span class="p">4</span><b>Promotion</b><em>communication</em></div><div class="role">Comment je le fais savoir</div><ul><li>Études de cas chiffrées</li><li>Récit « leader hybride tech × business »</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Golden Circle -->
+    <section class="wrap block">
+      <div class="marker">Golden Circle — Why / How / What</div>
+      <h2>Commencer par<br />le pourquoi.</h2>
+      <p class="lead">Le cadre de Simon Sinek : <strong>les leaders communiquent de l'intérieur vers l'extérieur</strong>. Le « pourquoi » d'abord, le « quoi » en dernier.</p>
+      <div class="frame">
+        <div class="ftitle"><span class="t">GOLDEN CIRCLE</span><h4>Ma raison d'être pro</h4></div>
+        <div class="golden">
+          <div class="rings" aria-hidden="true">
+            <div class="r r3">What</div>
+            <div class="r r2">How</div>
+            <div class="r r1">Why</div>
+          </div>
+          <div class="gstmt">
+            <div class="gl"><div class="lab">Why <span class="en">· pourquoi</span></div><p>Faire émerger des produits tech <strong>qui ont du sens</strong>, en alignant les gens autour d'une vision claire.</p></div>
+            <div class="gl"><div class="lab">How <span class="en">· comment</span></div><p>En <strong>reliant vision business et exécution technique</strong>, et en faisant grandir les équipes.</p></div>
+            <div class="gl"><div class="lab">What <span class="en">· quoi</span></div><p>Je dirige des équipes produit/tech : <strong>architecture, delivery, management</strong>.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ikigai -->
+    <section class="wrap block">
+      <div class="marker">Ikigai — raison de se lever</div>
+      <h2>Au croisement<br />de quatre cercles.</h2>
+      <p class="lead">Ce que j'aime · ce où je suis bon · ce dont le monde a besoin · ce pour quoi on me paie. Le centre, c'est l'ikigai.</p>
+      <div class="frame">
+        <div class="ftitle"><span class="t">IKIGAI</span><h4>Mon équilibre</h4></div>
+        <div class="ikigai">
+          <div class="iz"><div class="il">Ce que j'aime</div><p>Construire, faire grandir des équipes, résoudre des problèmes complexes.</p></div>
+          <div class="iz"><div class="il">Ce où je suis bon</div><p>Relier la tech et le business, décider, exécuter, manager.</p></div>
+          <div class="iz"><div class="il">Ce dont le monde a besoin</div><p>Des produits utiles, bien construits, portés par des leaders fiables.</p></div>
+          <div class="iz"><div class="il">Ce pour quoi on me paie</div><p>Diriger la tech et le produit : architecture, delivery, vision.</p></div>
+          <div class="core"><div class="cl">★ Ikigai</div><div class="cv">Diriger des produits tech qui ont du sens, avec des équipes qui grandissent.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap closing">
+      Maquette statique — contenu = placeholder, on juge la <b>forme</b> et le <b>choix des cadres</b>. Dis-moi lesquels tu gardes (SWOT-B est acté) ; <b>PORTER</b> et le <b>PESTEL « marché »</b> partent sur les <b>fiches projet business</b> (voir <code>frameworks.html</code> pour leurs mises en page). On peut aussi ajouter <b>VRIO</b> (ce qui te rend non-substituable) si tu veux pousser l'angle « avantage compétitif ».
+    </div>
+  </body>
+</html>

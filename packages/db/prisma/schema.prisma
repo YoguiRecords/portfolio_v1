@@ -41,11 +41,13 @@ enum TrendDirection {
   FLAT
 }
 
-/// Grilles d'analyse appliquées au profil (chapitre « Qui je suis »).
+/// Cadres d'analyse appliqués au profil humain (chapitre « Qui je suis »).
+/// PESTEL/PORTER sont réservés aux fiches projet (cf. ProjectBlock ANALYSIS).
 enum AnalysisType {
-  SWOT
-  PESTEL
-  PORTER
+  SWOT // forces / faiblesses / opportunités / menaces
+  FOUR_P // mix marketing : produit · prix · place · promotion
+  GOLDEN_CIRCLE // why · how · what (Simon Sinek)
+  IKIGAI // 4 cercles + centre
 }
 
 /// Statut d'un objectif de carrière (chapitre « Le cap »).
@@ -614,32 +616,18 @@ model CareerGoal {
   @@index([order])
 }
 
-/// Grille d'analyse appliquée au profil (une SWOT, une PESTEL, une PORTER).
+/// Cadre d'analyse du profil (une SWOT, une 4P, une Golden Circle, une Ikigai).
+/// Le contenu (`data`) est un JSON dont la forme dépend de `type`, validé par Zod
+/// (cf. `parseAnalysis` dans @portfolio/core) côté Server Action de l'admin.
 model Analysis {
-  id        String         @id @default(cuid())
-  type      AnalysisType
+  id        String       @id @default(cuid())
+  type      AnalysisType @unique // un seul cadre de chaque type pour le profil
   title     String?
-  order     Int            @default(0)
-  items     AnalysisItem[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-
-  @@unique([type]) // une seule grille de chaque type pour le profil
-}
-
-/// Élément d'une grille : SWOT (groupLabel = quadrant, text = puce) ;
-/// PESTEL/PORTER (groupLabel = facteur, verdict = lecture « Moteur », « Élevée »).
-model AnalysisItem {
-  id         String  @id @default(cuid())
-  groupLabel String // « Forces », « Technologique », « Rivalité »
-  text       String? // puce (SWOT)
-  verdict    String? // lecture (PESTEL / PORTER)
-  order      Int     @default(0)
-
-  analysisId String
-  analysis   Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
-
-  @@index([analysisId])
+  order     Int          @default(0)
+  isVisible Boolean      @default(true)
+  data      Json         @default("{}")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 // ──────────────────────────────────────────────────────────────────────────

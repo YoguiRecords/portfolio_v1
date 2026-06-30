@@ -1,37 +1,39 @@
 import type { HomeData } from "../../lib/data/home";
+import {
+  parseAnalysis,
+  type SwotDataType,
+  type FourPDataType,
+  type GoldenCircleDataType,
+  type IkigaiDataType,
+} from "@portfolio/core";
 
 type Section = HomeData["sections"][number];
 type Analysis = HomeData["analyses"][number];
 
-/** Groups analysis items by their `groupLabel`, preserving first-seen order. */
-function groupByLabel(items: Analysis["items"]): { label: string; items: Analysis["items"] }[] {
-  const groups: { label: string; items: Analysis["items"] }[] = [];
-  for (const item of items) {
-    let group = groups.find((g) => g.label === item.groupLabel);
-    if (!group) {
-      group = { label: item.groupLabel, items: [] };
-      groups.push(group);
-    }
-    group.items.push(item);
-  }
-  return groups;
-}
-
-function SwotBlock({ analysis }: { analysis: Analysis }) {
-  const groups = groupByLabel(analysis.items);
+/** SWOT — quadrant of tinted tiles with S/W/O/T badges (validated design "B"). */
+function SwotBlock({ title, data }: { title: string | null; data: SwotDataType }) {
+  const quadrants = [
+    { k: "s", badge: "S", q: data.strengths },
+    { k: "w", badge: "W", q: data.weaknesses },
+    { k: "o", badge: "O", q: data.opportunities },
+    { k: "t", badge: "T", q: data.threats },
+  ] as const;
   return (
     <div className="block reveal">
       <div className="ftitle">
         <span className="t mono">SWOT</span>
-        <h4>{analysis.title ?? "Mon profil"}</h4>
+        <h4>{title ?? "Mon profil"}</h4>
       </div>
-      <div className="swot">
-        {groups.map((g, i) => (
-          <div key={g.label} className={`q i${i}`}>
-            <div className="qk">{g.label}</div>
+      <div className="swotile">
+        {quadrants.map(({ k, badge, q }) => (
+          <div key={k} className={`st ${k}`}>
+            <div className="sh">
+              <b>{badge}</b>
+              <span>{q.label}</span>
+            </div>
             <ul>
-              {g.items.map((it) => (
-                <li key={it.id}>{it.text}</li>
+              {q.items.map((it, i) => (
+                <li key={i}>{it}</li>
               ))}
             </ul>
           </div>
@@ -41,18 +43,31 @@ function SwotBlock({ analysis }: { analysis: Analysis }) {
   );
 }
 
-function VerdictBlock({ analysis }: { analysis: Analysis }) {
+/** 4P — four "open" editorial columns (validated design "4P-2"). */
+function FourPBlock({ title, data }: { title: string | null; data: FourPDataType }) {
+  const levers = [
+    { n: "01", lever: data.product },
+    { n: "02", lever: data.price },
+    { n: "03", lever: data.place },
+    { n: "04", lever: data.promotion },
+  ] as const;
   return (
-    <div className="block">
+    <div className="block reveal">
       <div className="ftitle">
-        <span className="t mono">{analysis.type}</span>
-        <h4>{analysis.title ?? ""}</h4>
+        <span className="t mono">MIX 4P</span>
+        <h4>{title ?? "Mon positionnement"}</h4>
       </div>
-      <div className="verdict">
-        {analysis.items.map((it) => (
-          <div key={it.id} className="vr">
-            <span className="f">{it.groupLabel}</span>
-            <span className="d">{it.verdict}</span>
+      <div className="strips">
+        {levers.map(({ n, lever }) => (
+          <div key={n} className="strip">
+            <div className="n">{n}</div>
+            <b>{lever.label}</b>
+            <div className="role">{lever.role}</div>
+            <ul>
+              {lever.points.map((p, i) => (
+                <li key={i}>{p}</li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
@@ -60,9 +75,107 @@ function VerdictBlock({ analysis }: { analysis: Analysis }) {
   );
 }
 
+/** Golden Circle — statements left, animated radar right (validated "GC-2b"). */
+function GoldenBlock({ title, data }: { title: string | null; data: GoldenCircleDataType }) {
+  return (
+    <div className="block reveal">
+      <div className="ftitle">
+        <span className="t mono">GOLDEN CIRCLE</span>
+        <h4>{title ?? "Ma raison d'être"}</h4>
+      </div>
+      <div className="gradar rev">
+        <div className="gstmt">
+          <div className="gl">
+            <div className="lab">
+              Why <span className="en">· pourquoi</span>
+            </div>
+            <p>{data.why}</p>
+          </div>
+          <div className="gl">
+            <div className="lab">
+              How <span className="en">· comment</span>
+            </div>
+            <p>{data.how}</p>
+          </div>
+          <div className="gl">
+            <div className="lab">
+              What <span className="en">· quoi</span>
+            </div>
+            <p>{data.what}</p>
+          </div>
+        </div>
+        <div className="radar" aria-hidden="true">
+          <span className="grid" />
+          <span className="sweep" />
+          <span className="ping" />
+          <span className="ping p2" />
+          <span className="rl outer">What</span>
+          <span className="rl mid">How</span>
+          <span className="core">Why</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Ikigai — four zones converging onto the centre (validated design "IK-5"). */
+function IkigaiBlock({ title, data }: { title: string | null; data: IkigaiDataType }) {
+  return (
+    <div className="block reveal">
+      <div className="ftitle">
+        <span className="t mono">IKIGAI</span>
+        <h4>{title ?? "Mon équilibre"}</h4>
+      </div>
+      <div className="converge">
+        <div className="cv2 n">
+          <div className="il">Ce que j&apos;aime</div>
+          <p>{data.love}</p>
+        </div>
+        <div className="cv2 w">
+          <div className="il">Ce où je suis bon</div>
+          <p>{data.good}</p>
+        </div>
+        <div className="cv2 c">
+          <span className="ar pn">▼</span>
+          <span className="ar pw">▶</span>
+          <span className="ar pe">◀</span>
+          <span className="ar ps">▲</span>
+          <div className="cl">★ Ikigai</div>
+          <div className="cv3">{data.center}</div>
+        </div>
+        <div className="cv2 e">
+          <div className="il">Ce dont le monde a besoin</div>
+          <p>{data.world}</p>
+        </div>
+        <div className="cv2 s">
+          <div className="il">Ce pour quoi on me paie</div>
+          <p>{data.paid}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Renders one analysis from its validated JSON payload (fail-safe: skips bad data). */
+function AnalysisBlock({ analysis }: { analysis: Analysis }) {
+  const parsed = parseAnalysis(analysis.type, analysis.data);
+  if (!parsed) return null;
+  switch (parsed.type) {
+    case "SWOT":
+      return <SwotBlock title={analysis.title} data={parsed.data} />;
+    case "FOUR_P":
+      return <FourPBlock title={analysis.title} data={parsed.data} />;
+    case "GOLDEN_CIRCLE":
+      return <GoldenBlock title={analysis.title} data={parsed.data} />;
+    case "IKIGAI":
+      return <IkigaiBlock title={analysis.title} data={parsed.data} />;
+  }
+}
+
 /**
- * Profil chapter: lede, KPI stat-cards, and the SWOT / PESTEL / PORTER analysis
- * grids — all rendered from the `analyses` + `kpis` rows.
+ * Profil chapter: lede, KPI stat-cards, and the four strategic frameworks
+ * applied to the human profile (SWOT / 4P / Golden Circle / Ikigai), each
+ * rendered from its `Analysis.data` JSON payload.
  */
 export function Profil({
   section,
@@ -73,9 +186,6 @@ export function Profil({
   kpis: HomeData["kpis"];
   analyses: HomeData["analyses"];
 }) {
-  const swot = analyses.find((a) => a.type === "SWOT");
-  const verdicts = analyses.filter((a) => a.type === "PESTEL" || a.type === "PORTER");
-
   return (
     <section className="chapter" id="about">
       <div className="wrap">
@@ -101,15 +211,9 @@ export function Profil({
             </div>
           ) : null}
 
-          {swot ? <SwotBlock analysis={swot} /> : null}
-
-          {verdicts.length > 0 ? (
-            <div className="two reveal">
-              {verdicts.map((a) => (
-                <VerdictBlock key={a.id} analysis={a} />
-              ))}
-            </div>
-          ) : null}
+          {analyses.map((a) => (
+            <AnalysisBlock key={a.id} analysis={a} />
+          ))}
         </div>
       </div>
     </section>
