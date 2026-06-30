@@ -2,6 +2,9 @@ packages:
   - apps/*
   - packages/*
   - services/*
+  # cv-renderer est un service Docker autonome (déps installées dans son
+  # Dockerfile via npm) — hors du workspace pnpm pour ne pas polluer le lockfile.
+  - "!services/cv-renderer"
 
 # Scripts de build natifs explicitement approuvés (pnpm 11 — sécurité : rien ne build sans aval).
 allowBuilds:

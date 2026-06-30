@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
 import { requireEnrolledSession } from "@/lib/auth/guards";
+import { generateCvExports } from "@/lib/cv/generate";
+import { buildCvPorts } from "@/lib/cv/ports";
 import {
   createExperience,
   updateExperience,
@@ -21,6 +23,16 @@ import {
   deleteInterest,
   reorderInterests,
 } from "@/lib/content/cv-corpus";
+
+/**
+ * Generates the CV PDF for FR + EN via the internal `cv-renderer`, stores them in
+ * MinIO and upserts the `CvExport` rows. Authenticated admin action.
+ */
+export async function generateCvPdfAction(): Promise<void> {
+  await requireEnrolledSession();
+  await generateCvExports(buildCvPorts());
+  revalidatePath("/cv");
+}
 
 /** Reads an optional string FormData field (empty → undefined). */
 function str(form: FormData, key: string): string | undefined {

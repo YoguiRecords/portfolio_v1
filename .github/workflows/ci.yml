@@ -156,6 +156,9 @@ jobs:
           - service: image-processor
             context: ./services/image-processor
             dockerfile: ./services/image-processor/Dockerfile
+          - service: cv-renderer
+            context: ./services/cv-renderer
+            dockerfile: ./services/cv-renderer/Dockerfile
           - service: migrate
             context: .
             dockerfile: packages/db/Dockerfile

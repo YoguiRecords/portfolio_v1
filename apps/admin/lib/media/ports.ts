@@ -33,9 +33,14 @@ function minioClient(): Client {
 }
 
 /** Stores an object in the public `media` bucket, returns its public URL. */
-async function putObject(name: string, data: Buffer, contentType: string): Promise<string> {
+export async function putObject(name: string, data: Buffer, contentType: string): Promise<string> {
   await minioClient().putObject(BUCKET, name, data, data.length, { "Content-Type": contentType });
   return `${MEDIA_BASE}/${name}`;
+}
+
+/** Generates a non-guessable 24-char hex object name. */
+export function randomName(): string {
+  return randomBytes(12).toString("hex");
 }
 
 /** Builds the production upload ports (image-processor + MinIO + Prisma). */
@@ -43,7 +48,7 @@ export function buildPorts(): UploadPorts {
   return {
     convertToWebp,
     putObject,
-    randomName: () => randomBytes(12).toString("hex"),
+    randomName,
     prisma,
   };
 }

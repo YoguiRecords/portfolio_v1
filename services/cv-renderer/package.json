@@ -1,0 +1,13 @@
+{
+  "name": "cv-renderer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Internal hardened headless service that prints the admin CV document to PDF.",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.61.1"
+  }
+}
