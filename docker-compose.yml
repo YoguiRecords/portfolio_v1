@@ -31,6 +31,22 @@ services:
       timeout: 3s
       retries: 10
 
+  # Init one-shot : applique les migrations Prisma en attente AVANT que web/admin
+  # démarrent → le schéma et la DB ne peuvent plus diverger (plus de `migrate
+  # deploy` manuel à oublier). Tourne avec le rôle propriétaire (POSTGRES_USER),
+  # seul à avoir les droits DDL ; interne uniquement, s'arrête après exécution.
+  migrate:
+    build:
+      context: .
+      dockerfile: packages/db/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [internal]
+    restart: "no"
+
   minio:
     image: minio/minio:latest # prod : épingler par digest
     restart: unless-stopped
@@ -109,6 +125,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     networks: [internal, edge]
 
   admin:
@@ -124,6 +142,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       image-processor:
         condition: service_healthy
     networks: [internal, edge]
