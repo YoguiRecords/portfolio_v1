@@ -67,10 +67,17 @@ Closes #234
   doit être **vert** (mode `strict` : branche à jour avec `dev`) pour merger. → resync `dev`
   dans `llm` avant la PR. Override admin possible (urgence), pas de review forcée (mono-dev).
 - Assets en **Git LFS** (`.gitattributes`) → le checkout CI utilise `lfs: true`.
+- **Publication d'images Docker (job `docker`)** : sur **tag `v*.*.*` uniquement**, et **gated** sur
+  `build` + `e2e` verts. Build + push des 4 images à Dockerfile (`web`, `admin`, `image-processor`,
+  `migrate`) vers **GitHub Packages (`ghcr.io/<repo>/<service>`)**, tags `X.Y.Z` + `latest`,
+  `linux/amd64`, auth `GITHUB_TOKEN` (`packages: write`). Les images sont **privées** par défaut
+  (le déploiement s'authentifie avec un PAT `read:packages`).
 
 ## Tags & releases
 - Format: `vX.Y.Z` (semantic versioning)
 - Patch++ bug fixes | Minor++ features | Major++ breaking
+- **Un tag `vX.Y.Z` (sur `main`) déclenche la publication des images Docker** (cf. CI). C'est le
+  point d'entrée release → déploiement (pas de branche `prod` : `main` joue ce rôle).
 
 ## Forbidden
 - **Push direct / tag de l'IA sur `main` ou `dev`** (l'IA passe TOUJOURS par `llm` + PR).
