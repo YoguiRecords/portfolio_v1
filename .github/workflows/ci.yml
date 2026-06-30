@@ -130,3 +130,70 @@ jobs:
 
       - name: Run E2E tests
         run: pnpm test:e2e
+
+  # Publication des images Docker — UNIQUEMENT sur tag de version (release),
+  # et seulement si la qualité (build + E2E) est verte. Les images sont poussées
+  # sur GitHub Packages (ghcr.io). Les services proxy/db/minio/umami utilisent
+  # des images publiques et ne sont pas reconstruits ici.
+  docker:
+    name: Build & Push Docker images
+    needs: [build, e2e]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: web
+            context: .
+            dockerfile: apps/web/Dockerfile
+          - service: admin
+            context: .
+            dockerfile: apps/admin/Dockerfile
+          - service: image-processor
+            context: ./services/image-processor
+            dockerfile: ./services/image-processor/Dockerfile
+          - service: migrate
+            context: .
+            dockerfile: packages/db/Dockerfile
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true # le build web/admin embarque les assets (Git LFS)
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Déduit les tags d'image depuis le tag git (vX.Y.Z → X.Y.Z) + `latest`.
+      # `metadata-action` force le nom d'image en minuscules (requis par ghcr).
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push ${{ matrix.service }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
