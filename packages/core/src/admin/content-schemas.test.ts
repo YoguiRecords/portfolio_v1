@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { KpiInput, ProfileInput, HomeSectionInput } from "./content-schemas";
+import { CareerGoalUpdate, KpiInput, ProfileInput, HomeSectionInput } from "./content-schemas";
 
 test("KpiInput applique les défauts order/isVisible", () => {
   const r = KpiInput.safeParse({ label: "Expérience", value: "4 ans" });
@@ -29,4 +29,12 @@ test("ProfileInput exige un email valide et borne typewriterLines", () => {
 test("HomeSectionInput exige une clé", () => {
   expect(HomeSectionInput.safeParse({ key: "" }).success).toBe(false);
   expect(HomeSectionInput.safeParse({ key: "hero" }).success).toBe(true);
+});
+
+test("CareerGoalUpdate exige un id et valide le statut", () => {
+  expect(
+    CareerGoalUpdate.safeParse({ id: "g1", role: "CTO", status: "TARGET", order: 2 }).success,
+  ).toBe(true);
+  expect(CareerGoalUpdate.safeParse({ role: "CTO", status: "TARGET" }).success).toBe(false); // id manquant
+  expect(CareerGoalUpdate.safeParse({ id: "g1", role: "X", status: "NOPE" }).success).toBe(false);
 });

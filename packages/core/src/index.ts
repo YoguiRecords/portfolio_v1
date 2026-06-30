@@ -46,6 +46,7 @@ export {
   KpiInput,
   SkillInput,
   CareerGoalInput,
+  CareerGoalUpdate,
   CareerTrackInput,
   CareerMilestoneInput,
   AnalysisInput,
