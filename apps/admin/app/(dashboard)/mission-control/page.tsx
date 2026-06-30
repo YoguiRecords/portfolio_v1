@@ -83,9 +83,9 @@ export default async function MissionControlPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel title="Tâches & relances">
+        <Panel title="Tâches du jour" action={<Link href="/taches" className="text-xs text-accent hover:underline">Tout voir</Link>}>
           {tasks.length === 0 ? (
-            <p className="text-sm text-muted">Aucune tâche en attente.</p>
+            <p className="text-sm text-muted">Aucune tâche aujourd’hui.</p>
           ) : (
             <ul className="flex flex-col gap-2">
               {tasks.map((t) => (
