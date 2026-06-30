@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@portfolio/db";
-import { ActivityInput, CompanyInput, CrmContactInput, CrmTaskInput, DealInput, DEAL_STAGES } from "@portfolio/core";
+import { ActivityInput, CompanyInput, CrmContactInput, TaskInput, TASK_STATUSES, DealInput, DEAL_STAGES } from "@portfolio/core";
 
 /**
  * CRM persistence (write side, `app_admin` only). All inputs validated with Zod
@@ -70,16 +70,26 @@ export async function deleteActivity(prisma: PrismaClient, id: string) {
   await prisma.activity.delete({ where: { id } });
 }
 
-// ── Tasks ──
+// ── Tasks (unified todo) ──
 export function listTasks(prisma: PrismaClient) {
-  return prisma.crmTask.findMany({ orderBy: [{ isDone: "asc" }, { dueAt: "asc" }] });
+  return prisma.task.findMany({
+    orderBy: [{ status: "asc" }, { dueAt: "asc" }],
+    include: { contact: true },
+  });
 }
 export async function createTask(prisma: PrismaClient, raw: unknown) {
-  return prisma.crmTask.create({ data: CrmTaskInput.parse(raw) });
+  return prisma.task.create({ data: TaskInput.parse(raw) });
 }
-export async function setTaskDone(prisma: PrismaClient, id: string, isDone: boolean) {
-  return prisma.crmTask.update({ where: { id }, data: { isDone } });
+export async function updateTask(prisma: PrismaClient, id: string, raw: unknown) {
+  return prisma.task.update({ where: { id }, data: TaskInput.parse(raw) });
+}
+/** Moves a task to another kanban column (validated against the known statuses). */
+export async function setTaskStatus(prisma: PrismaClient, id: string, status: string) {
+  if (!(TASK_STATUSES as readonly string[]).includes(status)) {
+    throw new Error(`invalid_status: ${status}`);
+  }
+  return prisma.task.update({ where: { id }, data: { status: status as (typeof TASK_STATUSES)[number] } });
 }
 export async function deleteTask(prisma: PrismaClient, id: string) {
-  await prisma.crmTask.delete({ where: { id } });
+  await prisma.task.delete({ where: { id } });
 }
