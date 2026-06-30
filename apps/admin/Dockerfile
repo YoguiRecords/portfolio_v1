@@ -12,6 +12,9 @@ WORKDIR /repo
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --filter admin... --frozen-lockfile
+# Generate the Prisma client (../generated/prisma, git-ignored) before the Next
+# build — admin imports it at module load, so it must exist at build time.
+RUN pnpm --filter @portfolio/db run db:generate
 RUN pnpm --filter admin build
 
 FROM base AS runtime
