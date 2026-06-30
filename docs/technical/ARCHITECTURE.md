@@ -35,6 +35,7 @@ Réseau interne (non exposé) :
   web   ─▶ PostgreSQL (rôle lecture seule + INSERT contact/RDV/témoignage)
   admin ─▶ PostgreSQL (rôle lecture/écriture)
   admin ─▶ image-processor (HTTP interne : image -> webp)
+  admin ─▶ cv-renderer (HTTP interne : imprime la route admin /internal/cv-document -> PDF)
   admin ─▶ MinIO (écriture, credentials serveur)
   web/admin ─▶ OpenRouter (HTTPS sortant : assistant IA / chatbot ; clé en .env)
   admin     ─▶ Microsoft Graph (HTTPS sortant : mail + calendrier Outlook, OAuth app-only ; optionnel)
@@ -66,7 +67,8 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 | `web` (Next.js) | Site public | Via proxy |
 | `admin` (Next.js) | Back office | Via proxy |
 | `image-processor` (Flask/Pillow) | Conversion image → webp + strip EXIF (réutilisé d'OXO) | Interne |
-| `minio` | Stockage objets (images) | Lecture publique via proxy / écriture interne |
+| `cv-renderer` (Node/Playwright) | Imprime la route interne `admin /internal/cv-document` en **PDF** (Chromium headless durci) | Interne |
+| `minio` | Stockage objets (images + PDF du CV) | Lecture publique via proxy / écriture interne |
 | `minio-init` | One-shot : crée le bucket `media` (lecture publique) puis s'arrête | Interne |
 | `migrate` | One-shot : applique `prisma migrate deploy` (rôle propriétaire) avant web/admin → schéma toujours synchronisé | Interne |
 | `db` (PostgreSQL 16) | Données | Interne |
@@ -74,7 +76,7 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 
 ## Réseaux
 - `edge` : proxy ↔ applications, umami, lecture MinIO.
-- `internal` (sans accès Internet) : base de données, image-processor, écriture MinIO.
+- `internal` (sans accès Internet) : base de données, image-processor, cv-renderer, écriture MinIO.
 
 ## Pipeline d'upload d'images
 1. Le back office reçoit le fichier et le valide (type MIME, taille, dimensions).
@@ -82,6 +84,22 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 3. Le résultat est écrit dans le bucket `media` de MinIO (nom de fichier randomisé).
 4. L'URL est enregistrée comme `MediaAsset` en base. Les vidéos/embeds (`MediaKind` VIDEO/EMBED)
    contournent la conversion et référencent une URL externe.
+
+## CV dynamique — corpus unique, 3 projections
+Le CV est un **contenu éditable au BO**, modélisé comme un **corpus unique** en base
+(`Experience`, `Education`, `Language`, `Interest`, + drapeaux CV sur `Profile`/`Skill`/`Project`/`Kpi`)
+projeté sur **trois surfaces** via des drapeaux d'inclusion (`showOnPdf` / `showOnCvPage` / `showOnSite`) :
+- **Home** : curation existante (inchangée).
+- **Page `/cv`** (web) : projection **riche** (`showOnCvPage`/`showOnCv`), bilingue, responsive.
+- **PDF A4** : composant `CvDocument` (sous-ensemble `showOnPdf`), rendu sur la route interne
+  `admin /internal/cv-document?locale=fr|en` (jamais routée par Caddy, garde par token).
+
+**Pipeline de génération PDF** (un clic BO → FR + EN) :
+1. `generateCvPdfAction` (admin authentifiée) appelle le service interne `cv-renderer`.
+2. `cv-renderer` (Chromium headless) visite la route interne, imprime en PDF
+   (`printBackground`, `preferCSSPageSize` → A4).
+3. Le PDF est écrit dans MinIO `media` (nom randomisé) et la ligne `CvExport` (une par locale) est upsert.
+4. La page `/cv` sert les PDF **figés** (téléchargement), via l'URL publique MinIO.
 
 ## Back office (BO v2)
 Le back office (`apps/admin`) s'appuie sur un **design-system de primitives** (`components/ui/*`,

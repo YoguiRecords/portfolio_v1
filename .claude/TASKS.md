@@ -3,7 +3,6 @@
 > Backlog actionnable. Retirer chaque tâche dès qu'elle est livrée (pas d'historique ici).
 
 ## Plans restants (ordre d'exécution)
-- [ ] **Pcv** — CV dynamique : corpus éditable au BO → 3 projections (home, page `/cv` riche, PDF A4 figé), bilingue FR/EN, génération PDF via conteneur headless `cv-renderer`. Découpé en 6 PRs atomiques. Plan : `docs/plans/2026-06-30-cv-dynamique.md` (design : `…-cv-dynamique-design.md`).
 - [x] **P3** — Web : fiches projet (blocs modulaires, 12 types Zod) → `/projets/[slug]`. ✅
 - [x] **P4** — Web : News/Articles + Agenda/Événements (+ cron de publication programmée). ✅ (FR ; i18n → Pi18n)
 - [x] **Pi18n** — Bilingue (FR/EN), routes `[locale]`, overlay `Translation` + traduction IA, `LocalizedField`. ✅

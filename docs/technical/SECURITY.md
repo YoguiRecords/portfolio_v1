@@ -4,8 +4,8 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
 évaluée à l'aune de la surface d'attaque ajoutée. Détail opérationnel : `.claude/rules/STACK_SECURITY.md`.
 
 ## Isolation réseau
-- Seul le reverse proxy est exposé à Internet. Base de données, image-processor et écriture MinIO
-  vivent sur un réseau interne sans accès Internet.
+- Seul le reverse proxy est exposé à Internet. Base de données, image-processor, cv-renderer et
+  écriture MinIO vivent sur un réseau interne sans accès Internet.
 - Les navigateurs ne communiquent qu'avec les applications Next.js et la lecture des médias publics.
 
 ## Moindre privilège (base de données)
@@ -42,6 +42,18 @@ session `httpOnly`/`Secure`/`SameSite`, protection CSRF, messages d'erreur gén�
 Validation type MIME / taille / dimensions, **ré-encodage systématique** en webp (neutralise la
 plupart des payloads), suppression des métadonnées EXIF, noms de fichiers randomisés, stockage hors
 webroot, aucune exécution de fichier uploadé.
+
+## Génération du PDF du CV
+- **Service `cv-renderer` durci** : Chromium headless (Playwright), conteneur **non-root**,
+  **filesystem read-only** (+ `tmpfs /tmp`), `no-new-privileges`, **aucun port publié**, réseau
+  `internal` **sans accès Internet**, aucun secret dans l'image.
+- **Route interne** `admin /internal/cv-document` : **jamais routée par Caddy** (`handle /internal/* → 404`)
+  et **garde applicative par token** (`CV_RENDER_TOKEN`, en-tête `x-cv-token`). En production la route
+  est **fermée par défaut** (404) si le token n'est pas configuré ; la middleware `proxy.ts` l'exempte
+  de la session BO (c'est le token qui protège, pas la session). Le contenu rendu est public par nature
+  (c'est le PDF téléchargeable).
+- **Génération** = Server Action **admin authentifiée** (`requireEnrolledSession`), entrées validées.
+  Le PDF est stocké dans MinIO `media` (lecture publique voulue = téléchargement), **nom randomisé**.
 
 ## Soumissions publiques (anti-abus)
 Les formulaires publics (contact, demande de RDV, témoignage) passent par des Route Handlers
