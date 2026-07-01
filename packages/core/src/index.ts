@@ -102,8 +102,9 @@ export {
 // Media upload validation (mime/size/dimensions)
 export { validateUpload, ALLOWED_IMAGE_MIME, type UploadCandidate } from "./media/validate";
 
-// Security (in-memory rate limiter)
+// Security (in-memory rate limiter + trusted client IP)
 export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";
+export { clientIpFromHeaders } from "./security/client-ip";
 
 // Scheduled publishing (cron trigger logic)
 export { isDue, splitDue } from "./publishing/due";

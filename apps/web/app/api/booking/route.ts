@@ -1,13 +1,9 @@
-import { allow, BookingInput } from "@portfolio/core";
+import { allow, BookingInput, clientIpFromHeaders } from "@portfolio/core";
 import { submitBooking } from "../../../lib/booking/admin-client";
 
 export const dynamic = "force-dynamic";
 
 const RATE = { max: 5, windowMs: 60 * 60 * 1000 }; // 5 / hour / IP
-
-function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
 
 /**
  * Public chatbot booking endpoint. Honeypot + rate-limit + Zod shape check, then
@@ -15,7 +11,7 @@ function clientIp(request: Request): string {
  * email). Responses mirror admin: 201 ok · 400 invalid · 409 slot taken.
  */
 export async function POST(request: Request): Promise<Response> {
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
   if (!allow(`booking:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });
   }

@@ -60,7 +60,7 @@ function getDummyHash(): Promise<string> {
  */
 export async function loginAction(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const requestHeaders = await headers();
-  const ip = parseClientIp(requestHeaders.get("x-forwarded-for"));
+  const ip = parseClientIp(requestHeaders);
   const userAgent = requestHeaders.get("user-agent");
 
   const rawEmail = formData.get("email");
@@ -145,7 +145,7 @@ export async function verifyTotpAction(_prev: TotpState, formData: FormData): Pr
 
   const admin = session.adminUser;
   const requestHeaders = await headers();
-  const ip = parseClientIp(requestHeaders.get("x-forwarded-for"));
+  const ip = parseClientIp(requestHeaders);
   const userAgent = requestHeaders.get("user-agent");
 
   // Lockout (from password or TOTP failures) also blocks the MFA step.

@@ -1,12 +1,8 @@
 import { prisma } from "@portfolio/db";
-import { AppointmentInput, allow } from "@portfolio/core";
+import { AppointmentInput, allow, clientIpFromHeaders } from "@portfolio/core";
 import { persistAppointment } from "../../../lib/contact/submit";
 
 const RATE = { max: 5, windowMs: 60 * 60 * 1000 }; // 5 / hour / IP
-
-function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
 
 /**
  * Public appointment-request endpoint. Same guard order as contact; stored as
@@ -14,7 +10,7 @@ function clientIp(request: Request): string {
  * Responses: 201 ok · 400 invalid · 429 rate-limited · 200 silent (honeypot).
  */
 export async function POST(request: Request): Promise<Response> {
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
   if (!allow(`appointment:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });
   }

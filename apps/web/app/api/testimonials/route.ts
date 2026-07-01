@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { TestimonialInput, allow } from "@portfolio/core";
+import { TestimonialInput, allow, clientIpFromHeaders } from "@portfolio/core";
 import { persistTestimonial } from "../../../lib/testimonials/submit";
 
 const RATE = { max: 3, windowMs: 60 * 60 * 1000 }; // 3 submissions / hour / IP
@@ -18,7 +18,7 @@ function clientIp(request: Request): string {
  * Responses: 201 ok · 400 invalid · 429 rate-limited · 200 silent (honeypot).
  */
 export async function POST(request: Request): Promise<Response> {
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
 
   if (!allow(`testimonial:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });

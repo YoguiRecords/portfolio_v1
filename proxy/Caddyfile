@@ -38,7 +38,11 @@
 		reverse_proxy minio:9000
 	}
 	handle {
-		reverse_proxy web:3100
+		# X-Real-IP écrasé (jamais relayé du client) → IP de confiance pour le
+		# rate-limit applicatif ; X-Forwarded-For reste spoofable (append).
+		reverse_proxy web:3100 {
+			header_up X-Real-IP {client_ip}
+		}
 	}
 }
 
@@ -57,7 +61,9 @@
 		respond 404
 	}
 	handle {
-		reverse_proxy admin:3101
+		reverse_proxy admin:3101 {
+			header_up X-Real-IP {client_ip}
+		}
 	}
 }
 

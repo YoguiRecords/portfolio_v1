@@ -1,5 +1,5 @@
 import { prisma } from "@portfolio/db";
-import { allow, assertBudget, buildContext, recordUsage } from "@portfolio/core";
+import { allow, assertBudget, buildContext, recordUsage, clientIpFromHeaders } from "@portfolio/core";
 import { runChat, type ChatTurn } from "../../../lib/chat/run";
 import { buildChatLlm } from "../../../lib/chat/llm";
 
@@ -8,10 +8,6 @@ const RATE = { max: 12, windowMs: 10 * 60 * 1000 }; // 12 / 10 min / IP
 /** Rough token estimate (≈ 4 chars/token) for the monthly budget guard. */
 function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);
-}
-
-function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 }
 
 /** Validates the chat history payload. */
@@ -44,7 +40,7 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "disabled" }, { status: 404 });
   }
 
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
   if (!allow(`chat:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });
   }
