@@ -175,6 +175,10 @@ services:
       CV_RENDER_TOKEN: ${CV_RENDER_TOKEN:-dev-cv-token}
       # Assistance IA du back office (même clé OpenRouter que le site).
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # DEV LOCAL UNIQUEMENT : raccourci de connexion (bypass password+MFA).
+      # NE JAMAIS définir en prod (défaut off). L'image tourne en NODE_ENV=production
+      # même en local, d'où ce flag runtime dédié plutôt qu'un check NODE_ENV.
+      ENABLE_DEV_QUICK_LOGIN: ${ENABLE_DEV_QUICK_LOGIN:-true}
     depends_on:
       db:
         condition: service_healthy
