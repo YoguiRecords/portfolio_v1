@@ -78,12 +78,20 @@ export default async function FormationsPage() {
           <input className={`${input} w-40`} name="date" placeholder="2018 — 2020" required />
         </div>
         <textarea className={input} name="details" rows={2} placeholder="Détails (une ligne par item)" />
-        <button
-          type="submit"
-          className="self-start rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg hover:bg-accent-strong"
-        >
-          + Formation
-        </button>
+        <div className="flex flex-wrap items-center gap-4 text-xs text-muted">
+          <label className="flex items-center gap-1">
+            <input type="checkbox" name="showOnPdf" defaultChecked /> PDF
+          </label>
+          <label className="flex items-center gap-1">
+            <input type="checkbox" name="showOnCvPage" defaultChecked /> Page /cv
+          </label>
+          <button
+            type="submit"
+            className="ml-auto rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg hover:bg-accent-strong"
+          >
+            + Formation
+          </button>
+        </div>
       </form>
     </PageContainer>
   );

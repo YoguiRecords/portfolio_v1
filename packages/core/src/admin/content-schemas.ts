@@ -132,19 +132,23 @@ export const ProjectInput = z.object({
   summary: z.string().min(1).max(400),
   content: z.string().min(1).max(8000),
   type: z.enum(["GAME", "SOFTWARE", "WEBSITE", "BUSINESS"]).default("SOFTWARE"),
-  role: z.string().max(120).optional(),
-  periodLabel: z.string().max(60).optional(),
-  statusLabel: z.string().max(60).optional(),
-  tagline: z.string().max(200).optional(),
-  sigText: z.string().max(120).optional(),
+  // Optional strings accept null (Prisma returns null for empty nullable columns):
+  // the update action merges the current record, so `.nullish()` avoids a Zod
+  // "expected string, received null" failure when saving a project whose optional
+  // fields are still empty (e.g. a freshly created draft).
+  role: z.string().max(120).nullish(),
+  periodLabel: z.string().max(60).nullish(),
+  statusLabel: z.string().max(60).nullish(),
+  tagline: z.string().max(200).nullish(),
+  sigText: z.string().max(120).nullish(),
   status: z.enum(["DRAFT", "PUBLISHED"]).default("DRAFT"),
   featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
   showOnCv: z.boolean().default(false),
   cvBadge: z.enum(["NONE", "KEY", "IN_PROGRESS"]).default("NONE"),
-  seoTitle: z.string().max(160).optional(),
-  seoDescription: z.string().max(300).optional(),
-  aiSummary: z.string().max(600).optional(),
+  seoTitle: z.string().max(160).nullish(),
+  seoDescription: z.string().max(300).nullish(),
+  aiSummary: z.string().max(600).nullish(),
 });
 
 /** Article (news) with scheduled publishing. */

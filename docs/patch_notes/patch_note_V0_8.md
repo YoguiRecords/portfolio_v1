@@ -1,5 +1,32 @@
 # Patch notes — v0.8.x
 
+## v0.8.1 — 2026-07-01 — Correctifs QA (formulaires publics, droits DB, édition projet)
+
+Passe de recette complète (tous les CRUD du back office + fonctionnalités du site + responsive
+4 breakpoints). Quatre correctifs livrés.
+
+### Sécurité / droits DB — formulaires publics réparés (bloquant)
+Le rôle `app_web` (moindre privilège) écrit via des formulaires publics, mais Prisma `create()`
+émet un `INSERT ... RETURNING`, qui exige `SELECT` sur les colonnes retournées. Trois surfaces
+échouaient (« permission denied for table … ») :
+- **Page `/temoignages`** (500) : la migration relationship/company avait ajouté `authorCompany` /
+  `authorRelationship` sans étendre le grant `SELECT` par colonne d'`app_web`. Migration
+  `20260701000000_testimonial_web_grant` : ré-accorde ces deux colonnes d'affichage.
+- **Formulaire de contact** et **demande de RDV** (erreur à l'envoi) : `app_web` n'avait aucun
+  `SELECT`, donc le RETURNING de `contactMessage.create` / `appointmentRequest.create` échouait.
+  Migration `20260701000100_public_write_returning_grant` : `GRANT SELECT (id)` sur `ContactMessage`
+  et `AppointmentRequest`. Le code borne le RETURNING à `id` (`select: { id: true }`) sur les trois
+  créations publiques (contact, RDV, témoignage) → `app_web` ne relit jamais le message ni la PII.
+
+### Back office
+- **Édition projet — 500 corrigé** : `updateProjectAction` étalait le record Prisma (colonnes
+  nullable = `null`) dans `ProjectInput.parse`, qui refusait `null` sur les champs `.optional()`.
+  Conséquence : **impossible d'enregistrer un projet fraîchement créé** (champs facultatifs vides).
+  Les chaînes optionnelles de `ProjectInput` acceptent désormais `null` (`.nullish()`).
+- **Formulaire d'ajout de formation** : ajout des cases `PDF` / `Page /cv` (cochées par défaut,
+  comme les expériences). Une formation créée est désormais visible immédiatement au lieu d'être
+  masquée partout jusqu'à une seconde édition.
+
 ## v0.8.0 — 2026-07-01 — CV dynamique (corpus unique → 3 projections + PDF auto)
 
 Le CV devient un **contenu dynamique éditable au back office**, projeté sur **trois surfaces**

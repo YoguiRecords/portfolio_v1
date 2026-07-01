@@ -9,10 +9,14 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
 - Les navigateurs ne communiquent qu'avec les applications Next.js et la lecture des médias publics.
 
 ## Moindre privilège (base de données)
-- `app_web` : rôle **lecture seule** du contenu public, **+ INSERT seul** sur `ContactMessage`,
-  `Testimonial` et `AppointmentRequest` (soumissions publiques). Il ne peut **jamais lire** ces
-  tables ni définir un `status` (témoignage toujours `PENDING` → pas d'auto-validation) — toute la
-  PII (email, IP, texte original) reste invisible côté public.
+- `app_web` : rôle **lecture seule** du contenu public, **+ INSERT** sur `ContactMessage`,
+  `Testimonial` et `AppointmentRequest` (soumissions publiques). Il ne peut **jamais lire** le
+  contenu de ces tables ni définir un `status` (témoignage toujours `PENDING` → pas
+  d'auto-validation) — toute la PII (email, IP, texte original) reste invisible côté public.
+  - Seul `SELECT (id)` (et, pour `Testimonial`, les colonnes d'**affichage**) est accordé : Prisma
+    `create()` émet un `INSERT ... RETURNING`, qui exige `SELECT` sur les colonnes retournées ; le
+    code borne ce RETURNING à `id` (`select: { id: true }`). L'insertion aboutit donc **sans**
+    ouvrir la lecture de la PII.
 - `app_admin` : rôle **lecture/écriture** utilisé par le back office.
 - Le **rôle propriétaire** (DDL) est réservé aux migrations : il n'est utilisé que par le service
   one-shot `migrate` (conteneur isolé, réseau interne, s'arrête après exécution), jamais par `web`
