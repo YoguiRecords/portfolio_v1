@@ -23,6 +23,7 @@ import {
   deleteInterest,
   reorderInterests,
 } from "@/lib/content/cv-corpus";
+import { csv, lines, str } from "./form-utils";
 
 /**
  * Generates the CV PDF for FR + EN via the internal `cv-renderer`, stores them in
@@ -32,28 +33,6 @@ export async function generateCvPdfAction(): Promise<void> {
   assertCanWrite(await requirePermission("content"));
   await generateCvExports(buildCvPorts());
   revalidatePath("/cv");
-}
-
-/** Reads an optional string FormData field (empty → undefined). */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
-
-/** Splits a comma-separated field into trimmed, non-empty values. */
-function csv(form: FormData, key: string): string[] {
-  return (str(form, key) ?? "")
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-}
-
-/** Splits a textarea field into trimmed, non-empty lines (one item per line). */
-function lines(form: FormData, key: string): string[] {
-  return (str(form, key) ?? "")
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
 }
 
 /** Parses a hidden ordered id list (comma-joined) used by drag-reorder. */

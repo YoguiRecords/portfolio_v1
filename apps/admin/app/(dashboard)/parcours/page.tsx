@@ -11,7 +11,7 @@ import {
   deleteGoalAction,
   updateGoalAction,
   moveGoalAction,
-} from "@/lib/actions/content-actions";
+} from "@/lib/actions/career-actions";
 
 export const dynamic = "force-dynamic";
 

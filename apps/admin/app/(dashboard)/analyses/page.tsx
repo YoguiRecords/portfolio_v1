@@ -12,7 +12,7 @@ import {
 } from "@portfolio/core";
 import { ConfirmSubmitButton } from "@/components/ui";
 import { listAnalyses } from "@/lib/content/analysis";
-import { upsertAnalysisAction, deleteAnalysisAction } from "@/lib/actions/content-actions";
+import { upsertAnalysisAction, deleteAnalysisAction } from "@/lib/actions/analysis-actions";
 
 export const dynamic = "force-dynamic";
 

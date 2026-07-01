@@ -6,12 +6,7 @@ import { prisma } from "@portfolio/db";
 import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { uploadImage } from "@/lib/media/upload";
 import { buildPorts } from "@/lib/media/ports";
-
-/** Reads an optional trimmed string FormData field. */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
+import { str } from "./form-utils";
 
 const SocialSchema = z.object({
   label: z.string().min(1).max(40),

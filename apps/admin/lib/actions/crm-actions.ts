@@ -21,21 +21,14 @@ import {
   setTaskStatus,
   deleteTask,
 } from "@/lib/crm/crm";
+import { reqId, str } from "./form-utils";
 
-/** Reads an optional string FormData field (empty → undefined). */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
 /** Reads an optional integer FormData field. */
 function int(form: FormData, key: string): number | undefined {
   const v = str(form, key);
   if (v === undefined) return undefined;
   const n = Number(v);
   return Number.isFinite(n) ? Math.trunc(n) : undefined;
-}
-function reqId(form: FormData): string | undefined {
-  return str(form, "id");
 }
 
 // ── Companies ──

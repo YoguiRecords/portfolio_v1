@@ -4,11 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
 import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { createEvent, deleteEvent, generateNewsFromEvent } from "@/lib/content/event";
-
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
+import { str } from "./form-utils";
 
 /** Creates an agenda event from the editor form. */
 export async function createEventAction(form: FormData): Promise<void> {
