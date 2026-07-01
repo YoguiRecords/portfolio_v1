@@ -12,8 +12,9 @@ import {
   markMessageSpam,
   confirmAppointmentWithEvent,
   declineAppointment,
+  cancelAppointment,
 } from "@/lib/content/moderation";
-import { getCalendar } from "@/lib/integrations/factory";
+import { getCalendar, getMailbox } from "@/lib/integrations/factory";
 
 function id(form: FormData): string | undefined {
   const v = form.get("id");
@@ -62,13 +63,23 @@ export async function markMessageSpamAction(form: FormData): Promise<void> {
 export async function confirmAppointmentAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const i = id(form);
-  if (i) await confirmAppointmentWithEvent(prisma, getCalendar(), i);
+  const joinRaw = form.get("joinInfo");
+  const joinInfo = typeof joinRaw === "string" ? joinRaw : "";
+  if (i) await confirmAppointmentWithEvent(prisma, getCalendar(), getMailbox(), i, joinInfo);
   revalidatePath("/rdv");
   revalidatePath("/calendrier");
 }
 export async function declineAppointmentAction(form: FormData): Promise<void> {
   await requireEnrolledSession();
   const i = id(form);
-  if (i) await declineAppointment(prisma, i);
+  if (i) await declineAppointment(prisma, getMailbox(), i);
   revalidatePath("/rdv");
+  revalidatePath("/calendrier");
+}
+export async function cancelAppointmentAction(form: FormData): Promise<void> {
+  await requireEnrolledSession();
+  const i = id(form);
+  if (i) await cancelAppointment(prisma, getMailbox(), i);
+  revalidatePath("/rdv");
+  revalidatePath("/calendrier");
 }
