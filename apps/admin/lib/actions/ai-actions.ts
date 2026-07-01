@@ -1,17 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { assistText, assertBudget, recordUsage, type AssistAction } from "@portfolio/core";
+import { assistText, assertBudget, estimateTokens, recordUsage, type AssistAction } from "@portfolio/core";
 import { prisma } from "@portfolio/db";
 import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { buildAssistantLlm, getAiConfig } from "@/lib/ai/assistant";
 import { uploadImage } from "@/lib/media/upload";
 import { buildPorts } from "@/lib/media/ports";
-
-/** Rough token estimate (≈ 4 chars/token) for the budget guard. */
-function estimateTokens(text: string): number {
-  return Math.ceil((text.length * 2) / 4);
-}
 
 /**
  * Updates the AI assistant configuration from the `/ai` settings form:
@@ -86,13 +81,13 @@ export async function assistFieldAction(
   try {
     const config = await getAiConfig();
     if (!config.isBoAssistEnabled) return { ok: false, error: "disabled" };
-    const estimated = estimateTokens(text);
+    const estimated = estimateTokens(text, 2);
     assertBudget(config, estimated);
 
     const llm = await buildAssistantLlm();
     const suggestion = await assistText(llm, { action, text });
 
-    const updated = recordUsage(config, estimateTokens(text + suggestion));
+    const updated = recordUsage(config, estimateTokens(text + suggestion, 2));
     await prisma.aiAssistantConfig.update({
       where: { id: config.id },
       data: { tokensUsedThisMonth: updated.tokensUsedThisMonth },

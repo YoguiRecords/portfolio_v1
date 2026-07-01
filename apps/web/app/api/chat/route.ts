@@ -1,14 +1,9 @@
 import { prisma } from "@portfolio/db";
-import { allow, assertBudget, buildContext, recordUsage, clientIpFromHeaders } from "@portfolio/core";
+import { allow, assertBudget, buildContext, estimateTokens, recordUsage, clientIpFromHeaders } from "@portfolio/core";
 import { runChat, type ChatTurn } from "../../../lib/chat/run";
 import { buildChatLlm } from "../../../lib/chat/llm";
 
 const RATE = { max: 12, windowMs: 10 * 60 * 1000 }; // 12 / 10 min / IP
-
-/** Rough token estimate (≈ 4 chars/token) for the monthly budget guard. */
-function estimateTokens(text: string): number {
-  return Math.ceil(text.length / 4);
-}
 
 /** Validates the chat history payload. */
 function parseHistory(body: unknown): ChatTurn[] | null {

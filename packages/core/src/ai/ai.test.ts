@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { createOpenRouterLlm } from "./openrouter";
 import { assistText } from "./assist";
-import { assertBudget, recordUsage } from "./budget";
+import { assertBudget, estimateTokens, recordUsage } from "./budget";
 import { mockLlm } from "../testing/mock-llm";
 
 test("OpenRouter: requête bien formée (Authorization, model, messages) + réponse mappée", async () => {
@@ -32,4 +32,11 @@ test("budget: refuse au-delà du plafond, recordUsage cumule", () => {
   expect(() => assertBudget(budget, 50)).not.toThrow();
   expect(() => assertBudget(budget, 200)).toThrow(/ai_budget_exceeded/);
   expect(recordUsage(budget, 50).tokensUsedThisMonth).toBe(950);
+});
+
+test("estimateTokens: ≈ 4 caractères par token, arrondi supérieur, facteur de marge", () => {
+  expect(estimateTokens("abcd")).toBe(1);
+  expect(estimateTokens("abcde")).toBe(2);
+  expect(estimateTokens("abcd", 2)).toBe(2);
+  expect(estimateTokens("")).toBe(0);
 });

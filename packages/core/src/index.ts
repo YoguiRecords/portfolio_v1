@@ -159,6 +159,6 @@ export type {
 } from "./ai/llm";
 export { createOpenRouterLlm, type OpenRouterOptions } from "./ai/openrouter";
 export { assistText, type AssistAction } from "./ai/assist";
-export { assertBudget, recordUsage, type AiBudget } from "./ai/budget";
+export { assertBudget, estimateTokens, recordUsage, type AiBudget } from "./ai/budget";
 export { buildContext, type ChatContextInput } from "./ai/chat-context";
 export { buildSystemPrompt } from "./ai/guardrails";
