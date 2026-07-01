@@ -1,4 +1,5 @@
 import { allow, clientIpFromHeaders } from "@portfolio/core";
+import { readJsonBody } from "../../../../lib/http/public-request";
 import { submitCancel } from "../../../../lib/booking/admin-client";
 
 export const dynamic = "force-dynamic";
@@ -16,10 +17,8 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Too Many Requests", { status: 429 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request);
+  if (body === null) {
     return Response.json({ ok: false }, { status: 400 });
   }
 

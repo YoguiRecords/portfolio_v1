@@ -1,5 +1,6 @@
 import { prisma } from "@portfolio/db";
 import { allow, assertBudget, buildContext, estimateTokens, recordUsage, clientIpFromHeaders } from "@portfolio/core";
+import { readJsonBody } from "../../../lib/http/public-request";
 import { runChat, type ChatTurn } from "../../../lib/chat/run";
 import { buildChatLlm } from "../../../lib/chat/llm";
 
@@ -40,10 +41,8 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Too Many Requests", { status: 429 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request);
+  if (body === null) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
   const history = parseHistory(body);

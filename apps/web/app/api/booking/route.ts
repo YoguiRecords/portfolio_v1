@@ -1,4 +1,5 @@
 import { allow, BookingInput, clientIpFromHeaders } from "@portfolio/core";
+import { isHoneypotHit, readJsonBody } from "../../../lib/http/public-request";
 import { submitBooking } from "../../../lib/booking/admin-client";
 
 export const dynamic = "force-dynamic";
@@ -16,15 +17,13 @@ export async function POST(request: Request): Promise<Response> {
     return new Response("Too Many Requests", { status: 429 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request);
+  if (body === null) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  // Honeypot: silently accept bots without booking anything.
-  if (body && typeof body === "object" && "website" in body && (body as { website: unknown }).website) {
+  // Honeypot: silently accept bots without persisting anything.
+  if (isHoneypotHit(body)) {
     return Response.json({ ok: true }, { status: 201 });
   }
 
