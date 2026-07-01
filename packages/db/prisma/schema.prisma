@@ -922,11 +922,15 @@ model Translation {
 model AppointmentRequest {
   id          String            @id @default(cuid())
   name        String
+  firstName   String? // renseigné par la réservation chatbot (identité du visiteur)
+  lastName    String?
   email       String
+  phone       String? // téléphone du visiteur (réservation chatbot)
   topic       String?
   message     String?
   requestedAt DateTime? // créneau souhaité
   durationMin Int?
+  cancelToken String?           @unique // annulation self-service (lien email)
   status      AppointmentStatus @default(PENDING)
   source      AppointmentSource @default(CONTACT)
   ip          String?
@@ -939,6 +943,20 @@ model AppointmentRequest {
   updatedAt DateTime @updatedAt
 
   @@index([status, requestedAt])
+}
+
+/// Indisponibilité déclarée au BO (vacances, blocage ponctuel). Bloque tous les
+/// créneaux chevauchant [startAt, endAt] dans le calcul de disponibilité de
+/// Friday. Donnée PRIVÉE : `app_web` n'y accède jamais (REVOKE ALL en migration).
+model Unavailability {
+  id        String   @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startAt, endAt])
 }
 
 // ──────────────────────────────────────────────────────────────────────────
