@@ -94,8 +94,9 @@ Application Access Policy → rayon de souffle limité. Détail : `docs/technica
 ## Réservation de créneaux (chatbot Friday)
 - Le site public (`app_web`, lecture seule) **ne lit jamais** le calendrier ni les RDV privés. Le
   calcul des disponibilités, la réservation et l'annulation sont **centralisés dans `admin`** et
-  exposés via une **API interne** (`/api/internal/*`) : **jamais routée par Caddy**, sur le réseau
-  Docker `internal`, **gardée par token** (`APPOINTMENTS_INTERNAL_TOKEN`, en-tête `x-internal-token`,
+  exposés via une **API interne** (`/api/internal/*`) : **bloquée par Caddy** sur l'hôte admin
+  (`handle /api/internal/* → 404`), joignable uniquement sur le réseau Docker `internal`, et
+  **gardée par token** (`APPOINTMENTS_INTERNAL_TOKEN`, en-tête `x-internal-token`,
   fail-closed si absent). La middleware BO exempte `/api/internal` de la session (c'est le token qui
   protège). `web` proxifie ces routes (`/api/availability`, `/api/booking`, `/api/booking/cancel`).
 - Entrées validées **Zod** (`BookingInput`) aux deux frontières. **Anti double-booking** garanti par

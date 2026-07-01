@@ -1,8 +1,9 @@
 /**
  * Shared-secret guard for internal admin routes called by the public web app
  * (availability / booking / cancellation) over the Docker `internal` network.
- * These routes are never exposed through the proxy; the token is a defence in
- * depth against any accidental exposure. Fails closed when the env is unset.
+ * Caddy blocks `/api/internal/*` on the admin host (respond 404); the token is
+ * a defence in depth against any accidental exposure. Fails closed when the
+ * env is unset.
  */
 export function isInternalAuthorized(request: Request): boolean {
   const expected = process.env.APPOINTMENTS_INTERNAL_TOKEN;

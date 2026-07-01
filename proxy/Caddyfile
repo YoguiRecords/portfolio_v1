@@ -31,10 +31,14 @@
 # Back office
 {$ADMIN_SITE:http://bo.yohan-debusscher.com} {
 	import security_headers
-	# Route interne de rendu du CV (visitée par cv-renderer sur le réseau interne
-	# uniquement) — jamais exposée publiquement. Défense en profondeur : Caddy la
-	# bloque, et l'app exige le token CV_RENDER_TOKEN.
+	# Surfaces internes — jamais exposées publiquement. Défense en profondeur :
+	# Caddy les bloque, et l'app exige leurs tokens dédiés.
+	# - /internal/*     : rendu CV (cv-renderer, CV_RENDER_TOKEN)
+	# - /api/internal/* : API booking web→admin (APPOINTMENTS_INTERNAL_TOKEN)
 	handle /internal/* {
+		respond 404
+	}
+	handle /api/internal/* {
 		respond 404
 	}
 	handle {
