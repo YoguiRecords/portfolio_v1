@@ -10,12 +10,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 
 /**
- * Paths reachable without a session. `/internal/*` is the renderer-only surface
- * (e.g. the CV document printed by `cv-renderer`): it has no BO session, so the
- * session gate must skip it — it is protected instead by its own token guard
- * (`CV_RENDER_TOKEN`) and is never routed by Caddy.
+ * Paths reachable without a session. These internal surfaces carry no BO session
+ * (they are called machine-to-machine on the Docker `internal` network, never
+ * routed by Caddy) and are protected instead by their own shared-secret tokens:
+ * - `/internal/*`   : the CV document printed by `cv-renderer` (`CV_RENDER_TOKEN`).
+ * - `/api/internal/*`: the booking API called by `web` (`APPOINTMENTS_INTERNAL_TOKEN`).
  */
-const PUBLIC_PATHS = ["/login", "/internal"];
+const PUBLIC_PATHS = ["/login", "/internal", "/api/internal"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));

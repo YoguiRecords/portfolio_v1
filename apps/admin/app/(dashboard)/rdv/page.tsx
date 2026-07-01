@@ -22,7 +22,11 @@ export default async function AppointmentsPage() {
     message: r.message,
     status: r.status,
     requestedAtLabel: r.requestedAt
-      ? r.requestedAt.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })
+      ? r.requestedAt.toLocaleString("fr-FR", {
+          dateStyle: "short",
+          timeStyle: "short",
+          timeZone: "Europe/Paris",
+        })
       : null,
   }));
 
