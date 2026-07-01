@@ -13,8 +13,10 @@
 - [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
 ## Recette QA (2026-07-01) — reste à traiter
-- [ ] **Chatbot — câblage outil RDV** (P17 DT) : le prompt propose un rendez-vous, mais l'outil
-  `book_appointment` n'est pas encore branché (créer un `AppointmentRequest` depuis le chat).
+- [x] **Chatbot — réservation de créneaux** (livrée) : carte-formulaire dans le chat, vrais créneaux
+  (lun→sam 9h→20h Paris moins RDV/Outlook/congés), RDV `PENDING` bloquant, emails + annulation
+  self-service, BO congés + accepter/refuser/annuler. Via API interne admin token-gardée.
+  Détail : `docs/plans/2026-07-01-friday-booking.md`.
 - [ ] **Chatbot — rendu markdown (option)** : le widget affiche la réponse en texte brut ; passer par
   le renderer markdown si l'on veut du gras/listes. _(modèle DeepSeek v4 flash + persona secrétaire
   synthétique livrés v0.8.2 — réponses déjà propres)._

@@ -22,8 +22,14 @@ export class DbCalendar implements CalendarProvider {
         where: { startAt: { gte: from, lte: to } },
         orderBy: { startAt: "asc" },
       }),
+      // Only real reservations block a slot: any CONFIRMED appointment, plus
+      // PENDING ones from the chatbot (a real booking awaiting validation).
+      // Soft CONTACT-form leads (PENDING) are wishes and never block.
       this.prisma.appointmentRequest.findMany({
-        where: { status: "CONFIRMED", requestedAt: { gte: from, lte: to } },
+        where: {
+          requestedAt: { gte: from, lte: to },
+          OR: [{ status: "CONFIRMED" }, { status: "PENDING", source: "CHATBOT" }],
+        },
         orderBy: { requestedAt: "asc" },
       }),
     ]);

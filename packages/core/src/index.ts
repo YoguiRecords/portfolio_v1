@@ -39,7 +39,17 @@ export { TestimonialInput, TESTIMONIAL_RELATIONSHIPS } from "./testimonials/sche
 export type { TestimonialRelationship } from "./testimonials/schema";
 
 // Contact & appointment (public submission schemas)
-export { ContactInput, AppointmentInput } from "./contact/schema";
+export { ContactInput, AppointmentInput, BookingInput } from "./contact/schema";
+
+// Booking (free-slot availability computation)
+export {
+  computeFreeSlots,
+  DEFAULT_AVAILABILITY,
+  type AvailabilityConfig,
+  type BusyInterval,
+  type Slot,
+} from "./booking/availability";
+export { UnavailabilityInput } from "./booking/schema";
 
 // Admin content editing schemas
 export {

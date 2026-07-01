@@ -1,5 +1,36 @@
 # Patch notes — v0.8.x
 
+## v0.8.4 — 2026-07-01 — Réservation de créneaux par Friday
+
+Friday peut désormais **réserver un rendez-vous** de bout en bout.
+
+### Côté visiteur (site public)
+- **Carte-formulaire dans le chat** (bouton « Prendre RDV ») : prénom, nom, email, téléphone,
+  motif + **choix d'un vrai créneau libre**. Données validées côté serveur (Zod `BookingInput`),
+  aucune extraction par le LLM.
+- **Créneaux réels** : lundi→samedi 9h→20h (Europe/Paris), 30 min à l'heure pile, moins les RDV
+  déjà pris, les évènements Outlook et les congés déclarés. Dimanche exclu.
+- La demande crée un RDV **PENDING** qui **bloque le créneau immédiatement**. Message : « Yohan
+  validera dès que possible + email de confirmation ».
+- **Annulation self-service** : lien tokenisé (`/rdv/annuler?token=…`) → libère le créneau.
+
+### Côté BO (admin)
+- Page **/disponibilites** : déclarer congés / indispos (bloque tous les créneaux de la période).
+- **/rdv** : accepter (→ CONFIRMED + évènement Outlook best-effort + email de confirmation avec
+  lien/lieu + lien d'annulation), refuser, **annuler un RDV confirmé** — chaque geste libère le
+  créneau et notifie le visiteur (emails Microsoft Graph, best-effort).
+- **/calendrier** : affiche aussi les RDV en attente (chatbot) et les congés.
+
+### Sécurité & technique
+- `app_web` (site public, lecture seule) **ne lit jamais** le calendrier/RDV privés : disponibilités,
+  réservation et annulation passent par l'**API interne d'`admin`** (`/api/internal/*`, token
+  `APPOINTMENTS_INTERNAL_TOKEN`, réseau Docker `internal`, jamais routée par Caddy).
+- Anti double-booking : **index unique partiel** sur les vraies réservations actives (confirmées, ou
+  en attente issues du chatbot). Les leads souples du formulaire de contact restent non bloquants.
+- Calcul des créneaux : fonction pure `computeFreeSlots` (timezone-aware Paris via `Intl`, testée).
+- Migration `20260701010000_friday_booking` (identité + `cancelToken` + `Unavailability`, REVOKE
+  `app_web` sur `Unavailability`).
+
 ## v0.8.3 — 2026-07-01 — Identité de l'e-secrétaire (nom + avatar) + ton plus concis
 
 - **Nom éditable au BO** : le chatbot a un prénom (`AiAssistantConfig.assistantName`, défaut

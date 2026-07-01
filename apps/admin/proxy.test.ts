@@ -20,6 +20,11 @@ test("/internal est accessible sans session (garde par token, pas par la middlew
   expect(res.headers.get("location")).toBeNull();
 });
 
+test("/api/internal est accessible sans session (garde par token)", () => {
+  const res = proxy(request("/api/internal/availability", false));
+  expect(res.headers.get("location")).toBeNull();
+});
+
 test("/login est accessible sans session", () => {
   const res = proxy(request("/login", false));
   expect(res.headers.get("location")).toBeNull();

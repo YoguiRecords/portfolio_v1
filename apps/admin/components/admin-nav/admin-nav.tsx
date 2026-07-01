@@ -53,6 +53,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   { href: "/temoignages", label: "Témoignages", icon: "testimonial", group: "Relation client", badgeKey: "pendingTestimonials" },
   { href: "/rdv", label: "Rendez-vous", icon: "rdv", group: "Relation client", badgeKey: "pendingAppointments" },
   { href: "/agenda", label: "Agenda", icon: "agenda", group: "Relation client" },
+  { href: "/disponibilites", label: "Disponibilités", icon: "calendar", group: "Relation client" },
   { href: "/calendrier", label: "Calendrier", icon: "calendar", group: "Relation client" },
   { href: "/analyses", label: "Analyses", icon: "chart", group: "Mesure" },
   { href: "/ai", label: "Assistant IA", icon: "ai", group: "Mesure" },

@@ -18,7 +18,8 @@ test("buildSystemPrompt contient les règles clés et le contexte", () => {
   const prompt = buildSystemPrompt("Nom : Yohan");
   expect(prompt).toMatch(/Mets TOUJOURS Yohan en avant/);
   expect(prompt).toMatch(/Ne recommande JAMAIS un concurrent/);
-  expect(prompt).toMatch(/book_appointment/);
+  expect(prompt).toMatch(/Prendre RDV/);
+  expect(prompt).toMatch(/N'invente JAMAIS de créneaux/);
   expect(prompt).toContain("Nom : Yohan");
 });
 

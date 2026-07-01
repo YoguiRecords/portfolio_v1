@@ -1,14 +1,7 @@
 // @vitest-environment node
-import { afterAll, beforeEach, expect, test } from "vitest";
-import { makeTestClient } from "@portfolio/db/testing/db";
-import { resetDb } from "@portfolio/db/testing/reset";
+import { expect, test } from "vitest";
 import { mockLlm } from "@portfolio/core/testing/mock-llm";
 import { runChat } from "./run";
-import { bookAppointment } from "./booking";
-
-const prisma = makeTestClient();
-beforeEach(() => resetDb(prisma));
-afterAll(() => prisma.$disconnect());
 
 test("runChat envoie un system prompt à garde-fous (séparé du message user)", async () => {
   const llm = mockLlm(["Yohan est la bonne personne pour ça !"]);
@@ -22,9 +15,12 @@ test("runChat envoie un system prompt à garde-fous (séparé du message user)",
   expect(llm.calls[0].system).not.toContain("tu connais quelqu'un");
 });
 
-test("bookAppointment crée une demande PENDING source CHATBOT, rejette args invalides", async () => {
-  const r = await bookAppointment(prisma, { name: "Lead", email: "lead@example.com", topic: "Site" });
-  expect(r.status).toBe("PENDING");
-  expect(r.source).toBe("CHATBOT");
-  await expect(bookAppointment(prisma, { name: "X", email: "pas-un-email" })).rejects.toThrow();
+test("le system prompt interdit d'inventer des créneaux et renvoie vers le bouton RDV", async () => {
+  const llm = mockLlm(["Je vous propose de prendre rendez-vous."]);
+  await runChat(llm, {
+    context: "Nom : Yohan",
+    history: [{ role: "user", content: "je veux un rendez-vous" }],
+  });
+  expect(llm.calls[0].system).toMatch(/N'invente JAMAIS de créneaux/);
+  expect(llm.calls[0].system).toMatch(/Prendre RDV/);
 });

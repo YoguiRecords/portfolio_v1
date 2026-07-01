@@ -5,6 +5,17 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 ») + features web.
+- **Dernière livraison :** **Réservation de créneaux par Friday** — le chatbot public propose de
+  **vrais créneaux libres** (lun→sam 9h→20h Paris, 30 min à l'heure, moins Outlook + RDV pris +
+  congés) via une **carte-formulaire dans le chat** (prénom/nom/email/tél/motif). La demande crée
+  un RDV **PENDING** qui **bloque le créneau immédiatement**, envoie un email (best-effort Graph) et
+  prévient que Yohan validera dès que possible. **Annulation self-service** par lien email (libère le
+  créneau). BO : page **/disponibilites** (congés), RDV **accepter/refuser/annuler** (emails +
+  créneau libéré), calendrier affiche PENDING + congés. Sécurité : `app_web` ne lit jamais le
+  calendrier/RDV privés → tout via l'**API interne admin token-gardée** (`/api/internal/*`, réseau
+  Docker `internal`). Migration `20260701010000_friday_booking`. Validé navigateur (desktop + mobile,
+  parcours complet réserver → bloquer → congés → accepter → annuler). Détail :
+  `docs/plans/2026-07-01-friday-booking.md`.
 - **Dernier correctif :** **v0.8.2 — chatbot activable + FAQ publique** : clé OpenRouter câblée
   (web/admin), toggle d'activation + config (modèle/persona/budget) au BO (`/ai`), garde-fou budget
   effectif (migration `20260701000200`). Page **`/faq`** (FAQPage JSON-LD) + FAQ projet/article
@@ -41,7 +52,7 @@
 ## Prochaine action (suite — câblage & dettes, plans prêts)
 - **P16 DT8** : câbler le RBAC (le moteur est livré+testé) — `requirePermission` sur chaque page/action,
   filtre nav, UI gestion comptes (`/utilisateurs`), onboarding invitation, login `isActive`, zxcvbn.
-- **Chatbot** : toggle d'activation au BO + câblage outil RDV.
+- **Chatbot** : toggle d'activation au BO ✅ + **réservation de créneaux livrée** (cf. « Dernière livraison »).
 - Dettes mineures (DT1–DT7) listées dans `resume.md`.
 - **Quand prêt :** revue humaine + merge de la PR `llm → dev`.
 - **Phase ajoutée** : **P17 — Chatbot public IA** (rendre fonctionnel le chatbot existant) — `docs/plans/2026-06-30-phase-17-public-chatbot.md`.

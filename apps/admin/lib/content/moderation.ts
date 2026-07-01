@@ -1,10 +1,45 @@
 import { z } from "zod";
 import type { PrismaClient } from "@portfolio/db";
-import type { CreateEventInput } from "@portfolio/core/integrations";
+import type { CreateEventInput, Mailbox } from "@portfolio/core/integrations";
+import { cancelledEmail, confirmedEmail, sendBookingEmail } from "../booking/emails";
+import { cancelUrl, formatSlotLabel } from "../booking/format";
 
 /** Minimal calendar writer (subset of CalendarProvider) — injectable for tests. */
 export interface CalendarWriter {
   createEvent(input: CreateEventInput): Promise<void>;
+}
+
+/** Row fields needed to email the visitor about their appointment. */
+type ApptRow = {
+  name: string;
+  firstName?: string | null;
+  email: string;
+  requestedAt?: Date | null;
+  cancelToken?: string | null;
+};
+
+/** Best-effort visitor email for an appointment lifecycle change. */
+async function notifyVisitor(
+  mailbox: Mailbox,
+  appt: ApptRow,
+  kind: "confirmed" | "cancelled",
+  extra: { joinInfo?: string } = {},
+): Promise<void> {
+  if (!appt.requestedAt) return;
+  const base = {
+    firstName: appt.firstName ?? appt.name,
+    email: appt.email,
+    whenLabel: formatSlotLabel(appt.requestedAt),
+  };
+  const mail =
+    kind === "confirmed"
+      ? confirmedEmail({
+          ...base,
+          joinInfo: extra.joinInfo ?? "",
+          cancelUrl: appt.cancelToken ? cancelUrl(appt.cancelToken) : "",
+        })
+      : cancelledEmail(base);
+  await sendBookingEmail(mailbox, mail);
 }
 
 /**
@@ -69,34 +104,49 @@ export function confirmAppointment(prisma: PrismaClient, id: string) {
 }
 
 /**
- * Confirms an appointment **and** best-effort creates a calendar event for the
- * requested slot (default 30 min). The calendar write is non-blocking: if no
- * writable provider is connected (e.g. Microsoft Graph absent), the confirmation
- * still succeeds — the event is simply skipped (logged), never throwing.
+ * Confirms an appointment, best-effort creates a calendar event for the slot
+ * (default 30 min), and best-effort emails the visitor the confirmation (with
+ * optional join info + their cancel link). Both side effects are non-blocking:
+ * if Microsoft Graph is absent, the confirmation still succeeds (logged).
  */
 export async function confirmAppointmentWithEvent(
   prisma: PrismaClient,
   calendar: CalendarWriter,
+  mailbox: Mailbox,
   id: string,
+  joinInfo = "",
 ): Promise<void> {
   const appt = await prisma.appointmentRequest.findUnique({ where: { id } });
   if (!appt) return;
   await prisma.appointmentRequest.update({ where: { id }, data: { status: "CONFIRMED" } });
   if (!appt.requestedAt) return;
   const start = appt.requestedAt;
-  const end = new Date(start.getTime() + 30 * 60_000);
+  const end = new Date(start.getTime() + (appt.durationMin ?? 30) * 60_000);
   try {
     await calendar.createEvent({
       title: `RDV — ${appt.name}`,
       start: start.toISOString(),
       end: end.toISOString(),
-      location: appt.topic ?? undefined,
+      location: joinInfo || appt.topic || undefined,
     });
   } catch (error) {
     console.error("[confirmAppointment] calendar event skipped (no writable calendar?):", error);
   }
+  await notifyVisitor(mailbox, appt, "confirmed", { joinInfo });
 }
 
-export function declineAppointment(prisma: PrismaClient, id: string) {
-  return prisma.appointmentRequest.update({ where: { id }, data: { status: "DECLINED" } });
+/** Declines a PENDING request (frees the slot) and notifies the visitor. */
+export async function declineAppointment(prisma: PrismaClient, mailbox: Mailbox, id: string): Promise<void> {
+  const appt = await prisma.appointmentRequest.findUnique({ where: { id } });
+  if (!appt) return;
+  await prisma.appointmentRequest.update({ where: { id }, data: { status: "DECLINED" } });
+  await notifyVisitor(mailbox, appt, "cancelled");
+}
+
+/** Cancels a confirmed (or pending) RDV from the BO (frees the slot) + notifies. */
+export async function cancelAppointment(prisma: PrismaClient, mailbox: Mailbox, id: string): Promise<void> {
+  const appt = await prisma.appointmentRequest.findUnique({ where: { id } });
+  if (!appt) return;
+  await prisma.appointmentRequest.update({ where: { id }, data: { status: "CANCELLED" } });
+  await notifyVisitor(mailbox, appt, "cancelled");
 }

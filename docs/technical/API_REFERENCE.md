@@ -52,6 +52,23 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
   garde-fou budget (`assertBudget` + incrément `tokensUsedThisMonth`) ; `429` si plafond atteint.
 - Pages : `/faq` (FAQ globale + FAQPage JSON-LD) ; les FAQ projet/article sont rendues visibles.
 
+### Réservation de créneaux (chatbot Friday)
+Le site public **ne lit jamais** le calendrier/RDV privés : il proxifie l'API interne d'`admin`.
+- `GET /api/availability` → créneaux libres (ISO, sans PII). Rate-limit. Proxy → admin.
+- `POST /api/booking` → réservation chatbot (`BookingInput` : prénom, nom, email, téléphone, motif,
+  créneau). Honeypot + rate-limit + Zod, puis proxy → admin (création atomique). `201` ok ·
+  `409` créneau pris · `400` invalide.
+- `POST /api/booking/cancel` → annulation self-service par token (proxy → admin). Réponse générique
+  `{ ok }` (pas d'énumération).
+
+### API interne `admin` (jamais routée par Caddy, réseau Docker `internal`)
+Auth : header `x-internal-token: <APPOINTMENTS_INTERNAL_TOKEN>` (`401` sinon). Appelée par `web`.
+- `GET /api/internal/availability` → `computeFreeSlots` sur le calendrier composite (RDV bloquants +
+  agenda + Outlook) moins les `Unavailability`. Fenêtre défaut now→+14 j (clamp 31 j).
+- `POST /api/internal/appointments` → valide (`BookingInput`), re-check atomique du créneau, crée un
+  RDV `PENDING` (`source=CHATBOT`, `cancelToken`), email « demande reçue » (best-effort). `409` si pris.
+- `POST /api/internal/appointments/cancel` → annule par `cancelToken` (libère le créneau + email).
+
 ### SEO / découvrabilité (`apps/web`)
 - `GET /sitemap.xml` — contenu publié, 2 locales (hreflang). `GET /robots.txt` — politique crawlers
   IA selon `SiteSettings.allowAiCrawlers`. `GET /llms.txt` — présentation IA (`text/plain`).
@@ -85,7 +102,10 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
 - **Agenda** : `createEventAction` / `deleteEventAction` / `generateNewsAction` (actu depuis évènement).
 - **Modération** : `approveTestimonialAction` / `rejectTestimonialAction` / `editTestimonialAction`
   (édite le texte affiché, jamais l'original d'audit) ; inbox `markMessageReadAction` /
-  `markMessageSpamAction` ; RDV `confirmAppointmentAction` / `declineAppointmentAction`.
+  `markMessageSpamAction` ; RDV `confirmAppointmentAction` (email + lien réunion) /
+  `declineAppointmentAction` / `cancelAppointmentAction` (libèrent le créneau + email).
+- **Disponibilités** : `createUnavailabilityAction` / `deleteUnavailabilityAction` (`/disponibilites` :
+  congés/indispos bloquant les créneaux de Friday).
 - **IA** : `assistFieldAction(action, text)` (assistance par champ ; budget tokens ; OpenRouter) ;
   `updateAiConfigAction(formData)` (`/ai` : active le chatbot public / l'assistance BO, modèle,
   persona, budget mensuel ; la clé OpenRouter reste dans `.env`).

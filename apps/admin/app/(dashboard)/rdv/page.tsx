@@ -1,6 +1,10 @@
 import { prisma } from "@portfolio/db";
 import { listAppointments } from "@/lib/content/moderation";
-import { confirmAppointmentAction, declineAppointmentAction } from "@/lib/actions/moderation-actions";
+import {
+  confirmAppointmentAction,
+  declineAppointmentAction,
+  cancelAppointmentAction,
+} from "@/lib/actions/moderation-actions";
 import { PageContainer } from "@/components/ui";
 import { RdvList, type RdvRow } from "@/components/rdv/rdv-list";
 
@@ -13,18 +17,30 @@ export default async function AppointmentsPage() {
     id: r.id,
     name: r.name,
     email: r.email,
+    phone: r.phone,
     topic: r.topic,
     message: r.message,
     status: r.status,
     requestedAtLabel: r.requestedAt
-      ? r.requestedAt.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })
+      ? r.requestedAt.toLocaleString("fr-FR", {
+          dateStyle: "short",
+          timeStyle: "short",
+          timeZone: "Europe/Paris",
+        })
       : null,
   }));
 
   return (
     <PageContainer width="full">
       <h1 className="text-2xl font-bold text-ink">Demandes de rendez-vous</h1>
-      <RdvList requests={rows} actions={{ confirm: confirmAppointmentAction, decline: declineAppointmentAction }} />
+      <RdvList
+        requests={rows}
+        actions={{
+          confirm: confirmAppointmentAction,
+          decline: declineAppointmentAction,
+          cancel: cancelAppointmentAction,
+        }}
+      />
     </PageContainer>
   );
 }

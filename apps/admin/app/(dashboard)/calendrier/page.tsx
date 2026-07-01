@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { prisma } from "@portfolio/db";
 import { PageContainer } from "@/components/ui";
 import { getCalendar, isGraphLive } from "@/lib/integrations/factory";
+import { listUnavailabilities } from "@/lib/booking/unavailability";
 import type { CalendarEvent } from "@portfolio/core/integrations";
 
 export const dynamic = "force-dynamic";
@@ -41,7 +43,17 @@ export default async function CalendarPage({
 
   const monthStart = new Date(year, month, 1);
   const monthEnd = new Date(year, month + 1, 0, 23, 59, 59);
-  const events = await getCalendar().listEvents(monthStart.toISOString(), monthEnd.toISOString());
+  const [events, unavailabilities] = await Promise.all([
+    getCalendar().listEvents(monthStart.toISOString(), monthEnd.toISOString()),
+    listUnavailabilities(prisma, monthStart),
+  ]);
+
+  /** True if `date`'s day overlaps any declared unavailability. */
+  const isOff = (date: Date): boolean => {
+    const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+    return unavailabilities.some((u) => u.startAt <= dayEnd && u.endAt >= dayStart);
+  };
 
   // Bucket events per local day.
   const byDay = new Map<string, CalendarEvent[]>();
@@ -96,6 +108,11 @@ export default async function CalendarPage({
               <>
                 <div className="mb-1 text-xs text-muted">{date.getDate()}</div>
                 <div className="flex flex-col gap-1">
+                  {isOff(date) ? (
+                    <div className="truncate rounded bg-muted/20 px-1.5 py-0.5 text-[11px] text-muted">
+                      Indisponible
+                    </div>
+                  ) : null}
                   {(byDay.get(dayKey(date)) ?? []).map((e) => (
                     <div
                       key={e.id}
@@ -115,7 +132,8 @@ export default async function CalendarPage({
       <p className="text-xs text-muted">
         <span className="text-accent">●</span> Évènement agenda ·{" "}
         <span className="text-ok">●</span> RDV confirmé ·{" "}
-        <span className="text-info">●</span> Outlook
+        <span className="text-info">●</span> Outlook ·{" "}
+        <span className="text-muted">▨</span> Indisponible (congés)
       </p>
     </PageContainer>
   );
