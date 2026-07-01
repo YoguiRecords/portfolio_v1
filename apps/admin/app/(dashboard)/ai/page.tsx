@@ -1,6 +1,6 @@
 import { PageContainer, Panel } from "@/components/ui";
 import { getAiConfig } from "@/lib/ai/assistant";
-import { updateAiConfigAction } from "@/lib/actions/ai-actions";
+import { updateAiConfigAction, uploadAssistantAvatarAction } from "@/lib/actions/ai-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +47,45 @@ export default async function AiPage() {
         Assistance par champ (Corriger, Grammaire, Ponctuation, Reformuler, Idée) et traduction
         FR→EN automatique à l’enregistrement. Activées dès que la clé est présente.
       </p>
+
+      <Panel>
+        <h2 className="text-sm font-semibold text-ink-2">Avatar de l’e-secrétaire</h2>
+        <div className="mt-3 flex items-center gap-4">
+          {config.assistantAvatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={config.assistantAvatarUrl}
+              alt="Avatar actuel"
+              width={56}
+              height={56}
+              className="h-14 w-14 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-lg font-bold text-bg">
+              {config.assistantName.charAt(0).toUpperCase()}
+            </span>
+          )}
+          <form action={uploadAssistantAvatarAction} className="flex flex-col gap-2">
+            <input
+              type="file"
+              name="file"
+              accept="image/*"
+              required
+              className="text-sm text-muted file:mr-3 file:rounded-md file:border-0 file:bg-surface-2 file:px-3 file:py-2 file:text-ink"
+            />
+            <button
+              type="submit"
+              className="self-start rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg hover:bg-accent-strong"
+            >
+              Importer l’avatar
+            </button>
+          </form>
+        </div>
+        <p className="mt-2 text-xs text-muted">
+          Converti en webp (EXIF supprimé) et stocké dans MinIO. Vide le champ URL ci-dessous pour
+          revenir au monogramme.
+        </p>
+      </Panel>
 
       <Panel>
         <h2 className="text-sm font-semibold text-ink-2">Configuration</h2>
