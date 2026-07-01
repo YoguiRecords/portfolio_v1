@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth/session";
+import { isQuickLoginEnabled } from "@/lib/auth/quick-login-flag";
 import { LoginForm } from "./login-form";
 
 /**
@@ -12,5 +13,5 @@ export default async function LoginPage() {
   if (session) {
     redirect("/");
   }
-  return <LoginForm />;
+  return <LoginForm quickLoginEnabled={isQuickLoginEnabled()} />;
 }

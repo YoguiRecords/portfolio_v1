@@ -6,11 +6,13 @@ import { quickLoginAction } from "@/lib/auth/dev-login";
 
 const initialState: LoginState = {};
 
-/** Dev-only: the quick-login shortcut is never rendered in production. */
-const QUICK_LOGIN_ENABLED = process.env.NODE_ENV !== "production";
-
-/** Back office login form (client). */
-export function LoginForm() {
+/**
+ * Back office login form (client).
+ *
+ * @param quickLoginEnabled - Server-resolved flag; renders the dev quick-login
+ *   shortcut only when the back office explicitly enables it (local dev).
+ */
+export function LoginForm({ quickLoginEnabled = false }: { quickLoginEnabled?: boolean }) {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
 
   return (
@@ -63,7 +65,7 @@ export function LoginForm() {
           {pending ? "Connexion…" : "Se connecter"}
         </button>
 
-        {QUICK_LOGIN_ENABLED ? (
+        {quickLoginEnabled ? (
           <button
             type="submit"
             formAction={quickLoginAction}
