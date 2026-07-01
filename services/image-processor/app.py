@@ -83,14 +83,18 @@ def convert():
         image.save(output, **save_kwargs)
         
         output.seek(0)
-        
-        # Return the WebP image
-        return send_file(
+
+        # Return the WebP image. Expose the final (post-resize) dimensions as
+        # headers so the caller can persist them without re-decoding the image.
+        response = send_file(
             output,
             mimetype='image/webp',
             download_name='converted.webp'
         )
-        
+        response.headers['X-Image-Width'] = str(image.width)
+        response.headers['X-Image-Height'] = str(image.height)
+        return response
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

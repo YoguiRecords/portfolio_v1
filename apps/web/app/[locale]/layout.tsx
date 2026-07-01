@@ -76,6 +76,7 @@ export default async function LocaleLayout({
     { href: `${prefix}/actus`, label: isEn ? "News" : "Actus" },
     { href: `${prefix}/agenda`, label: isEn ? "Agenda" : "Agenda" },
     { href: `${prefix}/temoignages`, label: isEn ? "Reviews" : "Avis" },
+    { href: `${prefix}/faq`, label: "FAQ" },
     { href: `${prefix}/contact`, label: isEn ? "Contact" : "Contact" },
   ];
 

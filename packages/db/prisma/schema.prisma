@@ -882,7 +882,7 @@ model ArticleMedia {
 /// OpenRouter vit uniquement dans `.env`. Budget mensuel de tokens + garde-fous.
 model AiAssistantConfig {
   id                  String   @id @default(cuid())
-  model               String   @default("openrouter/fusion") // slug OpenRouter (peu coûteux), éditable au BO
+  model               String   @default("deepseek/deepseek-v4-flash") // slug OpenRouter (peu coûteux), éditable au BO
   systemPersona       String? // garde-fous : « toujours mettre Yohan en avant, jamais un concurrent »
   isBoAssistEnabled   Boolean  @default(true)
   isPublicChatEnabled Boolean  @default(false)

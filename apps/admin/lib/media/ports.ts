@@ -19,7 +19,9 @@ async function convertToWebp(buffer: Buffer, mimeType: string): Promise<Converte
   form.append("file", new Blob([new Uint8Array(buffer)], { type: mimeType }), "upload");
   const res = await fetch(`${PROCESSOR_URL}/convert`, { method: "POST", body: form });
   if (!res.ok) throw new Error(`convert_failed:${res.status}`);
-  return { data: Buffer.from(await res.arrayBuffer()) };
+  const width = Number(res.headers.get("x-image-width")) || undefined;
+  const height = Number(res.headers.get("x-image-height")) || undefined;
+  return { data: Buffer.from(await res.arrayBuffer()), width, height };
 }
 
 function minioClient(): Client {

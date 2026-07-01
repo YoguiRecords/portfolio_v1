@@ -12,15 +12,12 @@
 - [~] **P16 — Multi-users BO + RBAC** — **socle livré** (schéma+migration, moteur permissions core, politique mdp, gardes `requirePermission`/`assertCanWrite`, /403, masquage PII). **Reste (DT8)** : enforcement par page/action, filtre nav, UI gestion comptes, onboarding invitation, login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
 - [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
-## Recette QA (2026-07-01) — observations non bloquantes
-- [ ] **Chatbot — toggle d'activation au BO** : `AiAssistantConfig.isPublicChatEnabled` n'est pilotable
-  qu'en base (aucune UI BO). L'API `/api/chat` répond proprement `{"error":"disabled"}` quand off. (P17 DT)
-- [ ] **FAQ — surface publique** : les entrées FAQ (CRUD BO OK) ne sont consommées par aucune page du
-  site public. Décider d'un rendu (page/section) ou du périmètre (SEO/JSON-LD/chatbot seulement).
-- [ ] **Projet (détail) — mini-Gantt « Démarche »** légèrement serré en mobile ≤390px (dernier libellé
-  tronqué). Cosmétique.
-- [ ] **Médias — dimensions** : `MediaAsset.width/height` restent `null` après upload (le converter
-  connaît les dimensions ; les persister améliorerait le panneau détails).
+## Recette QA (2026-07-01) — reste à traiter
+- [ ] **Chatbot — câblage outil RDV** (P17 DT) : le prompt propose un rendez-vous, mais l'outil
+  `book_appointment` n'est pas encore branché (créer un `AppointmentRequest` depuis le chat).
+- [ ] **Chatbot — rendu markdown (option)** : le widget affiche la réponse en texte brut ; passer par
+  le renderer markdown si l'on veut du gras/listes. _(modèle DeepSeek v4 flash + persona secrétaire
+  synthétique livrés v0.8.2 — réponses déjà propres)._
 - [ ] **Contenu — narratif « en solo »** (aiSummary Domestic Revolt, article `build-solo`) : à revoir
   au regard du positionnement « leader, pas solo » (décision de contenu, éditable au BO).
 

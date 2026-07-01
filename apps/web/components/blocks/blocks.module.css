@@ -153,6 +153,15 @@
     grid-template-columns: 84px 1fr;
     gap: 8px;
   }
+  /* La barre répète le libellé déjà affiché à gauche de la ligne : on masque le
+     texte in-barre en mobile pour supprimer tout débordement (segment coloré). */
+  .bar {
+    font-size: 0;
+    padding: 0;
+  }
+  .tickLabel {
+    font-size: 8.5px;
+  }
 }
 
 /* Game design : piliers + core loop + mécaniques */

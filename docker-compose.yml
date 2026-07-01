@@ -146,6 +146,9 @@ services:
       HOSTNAME: 0.0.0.0
       # Site public → rôle lecture seule.
       DATABASE_URL: postgresql://app_web:${WEB_DB_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      # Chatbot public : clé OpenRouter (serveur uniquement, jamais exposée au client).
+      # Le chatbot reste inactif tant que `AiAssistantConfig.isPublicChatEnabled` est faux.
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy
@@ -170,6 +173,8 @@ services:
       # Génération du PDF du CV (service interne cv-renderer + route interne durcie).
       CV_RENDERER_URL: http://cv-renderer:5051
       CV_RENDER_TOKEN: ${CV_RENDER_TOKEN:-dev-cv-token}
+      # Assistance IA du back office (même clé OpenRouter que le site).
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy

@@ -48,7 +48,9 @@ Tous : validation Zod + honeypot + rate-limit par IP. Réponses : `201` ok · `4
 - `POST /api/testimonials` → crée un `Testimonial` (`status=PENDING`, modéré au BO). Champs auteur :
   nom, rôle, **entreprise**, **lien hiérarchique** (`TestimonialRelationship`), email (non publié).
 - `POST /api/chat` → chatbot public (**désactivé par défaut** via `AiAssistantConfig` + clé OpenRouter).
-  Rate-limit ; contexte **public uniquement** + prompt à garde-fous ; `404` si désactivé.
+  Rate-limit ; contexte **public uniquement** + prompt à garde-fous ; `404` si désactivé ;
+  garde-fou budget (`assertBudget` + incrément `tokensUsedThisMonth`) ; `429` si plafond atteint.
+- Pages : `/faq` (FAQ globale + FAQPage JSON-LD) ; les FAQ projet/article sont rendues visibles.
 
 ### SEO / découvrabilité (`apps/web`)
 - `GET /sitemap.xml` — contenu publié, 2 locales (hreflang). `GET /robots.txt` — politique crawlers
@@ -84,7 +86,9 @@ Chaque action : `requireEnrolledSession()` → validation Zod → mutation → `
 - **Modération** : `approveTestimonialAction` / `rejectTestimonialAction` / `editTestimonialAction`
   (édite le texte affiché, jamais l'original d'audit) ; inbox `markMessageReadAction` /
   `markMessageSpamAction` ; RDV `confirmAppointmentAction` / `declineAppointmentAction`.
-- **IA** : `assistFieldAction(action, text)` (assistance par champ ; budget tokens ; OpenRouter).
+- **IA** : `assistFieldAction(action, text)` (assistance par champ ; budget tokens ; OpenRouter) ;
+  `updateAiConfigAction(formData)` (`/ai` : active le chatbot public / l'assistance BO, modèle,
+  persona, budget mensuel ; la clé OpenRouter reste dans `.env`).
 - **Mail** : `markMailReadAction(id, isRead)`, `sendMailAction(prev, formData)` (Zod) — via le port
   `Mailbox` (Exchange/Graph si configuré, sinon démo). Le calendrier (`/calendrier`) lit le port
   `CalendarProvider` (agenda + RDV DB, fusion Outlook si configuré).

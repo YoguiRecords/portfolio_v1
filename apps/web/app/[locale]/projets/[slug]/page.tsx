@@ -4,6 +4,7 @@ import { getProject } from "../../../../lib/data/project";
 import { ProjectHero } from "../../../../components/sections/project-hero";
 import { BlockRenderer } from "../../../../components/blocks/block-renderer";
 import { ProjectNext } from "../../../../components/project-next/project-next";
+import { FaqAccordion } from "../../../../components/faq/faq-accordion";
 import { JsonLd } from "../../../../components/json-ld/json-ld";
 import { creativeWorkJsonLd, faqPageJsonLd } from "../../../../lib/seo/jsonld";
 import { localizedUrl } from "../../../../lib/seo/url";
@@ -57,6 +58,15 @@ export default async function ProjectPage({
       <div className="wrap">
         <BlockRenderer blocks={project.blocks} images={images} />
       </div>
+      {project.faqs.length > 0 ? (
+        <div className="wrap">
+          <div className="marker">{loc === "en" ? "FAQ" : "FAQ"}</div>
+          <h3 style={{ fontSize: 22, fontWeight: 800, margin: "8px 0 20px" }}>
+            {loc === "en" ? "Frequently asked" : "Questions fréquentes"}
+          </h3>
+          <FaqAccordion items={project.faqs} />
+        </div>
+      ) : null}
       <div className="wrap">
         <ProjectNext next={next} />
       </div>

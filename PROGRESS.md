@@ -5,7 +5,12 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 ») + features web.
-- **Dernier correctif :** **v0.8.1 — recette QA** : passe complète (tous CRUD BO + fonctionnalités
+- **Dernier correctif :** **v0.8.2 — chatbot activable + FAQ publique** : clé OpenRouter câblée
+  (web/admin), toggle d'activation + config (modèle/persona/budget) au BO (`/ai`), garde-fou budget
+  effectif (migration `20260701000200`). Page **`/faq`** (FAQPage JSON-LD) + FAQ projet/article
+  visibles. Dimensions média persistées, Gantt mobile corrigé. Validé navigateur (chat LLM réel,
+  budget décompté). Détail : `docs/patch_notes/patch_note_V0_8.md`.
+- **Correctif précédent :** **v0.8.1 — recette QA** : passe complète (tous CRUD BO + fonctionnalités
   web + responsive 4 breakpoints). 4 fixes : droits `app_web` sur les **formulaires publics**
   (`/temoignages` 500, contact & RDV KO → migrations `20260701000000` / `20260701000100` +
   `select:{id:true}`), **édition projet 500** (`ProjectInput` `.nullish()`), cases visibilité au
