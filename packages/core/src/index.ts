@@ -49,6 +49,7 @@ export {
   type BusyInterval,
   type Slot,
 } from "./booking/availability";
+export { UnavailabilityInput } from "./booking/schema";
 
 // Admin content editing schemas
 export {
