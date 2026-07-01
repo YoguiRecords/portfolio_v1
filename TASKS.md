@@ -12,6 +12,18 @@
 - [~] **P16 — Multi-users BO + RBAC** — **socle livré** (schéma+migration, moteur permissions core, politique mdp, gardes `requirePermission`/`assertCanWrite`, /403, masquage PII). **Reste (DT8)** : enforcement par page/action, filtre nav, UI gestion comptes, onboarding invitation, login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
 - [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
+## Recette QA (2026-07-01) — observations non bloquantes
+- [ ] **Chatbot — toggle d'activation au BO** : `AiAssistantConfig.isPublicChatEnabled` n'est pilotable
+  qu'en base (aucune UI BO). L'API `/api/chat` répond proprement `{"error":"disabled"}` quand off. (P17 DT)
+- [ ] **FAQ — surface publique** : les entrées FAQ (CRUD BO OK) ne sont consommées par aucune page du
+  site public. Décider d'un rendu (page/section) ou du périmètre (SEO/JSON-LD/chatbot seulement).
+- [ ] **Projet (détail) — mini-Gantt « Démarche »** légèrement serré en mobile ≤390px (dernier libellé
+  tronqué). Cosmétique.
+- [ ] **Médias — dimensions** : `MediaAsset.width/height` restent `null` après upload (le converter
+  connaît les dimensions ; les persister améliorerait le panneau détails).
+- [ ] **Contenu — narratif « en solo »** (aiSummary Domestic Revolt, article `build-solo`) : à revoir
+  au regard du positionnement « leader, pas solo » (décision de contenu, éditable au BO).
+
 ## Livré
 - [x] **P0 — Design system & tokens** — tokens `@theme` + 18 primitives UI testées (barrel `@/components/ui`).
 - [x] **P1 — Shell v2** — rail icônes groupé + topbar (search ⌘K placeholder/notif/Créer/avatar) + bottom bar mobile + tiroir, compteurs serveur.

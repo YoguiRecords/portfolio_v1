@@ -5,6 +5,11 @@
 
 ## Version
 - **Cycle en cours :** refonte UI du back office (« BO v2 ») + features web.
+- **Dernier correctif :** **v0.8.1 — recette QA** : passe complète (tous CRUD BO + fonctionnalités
+  web + responsive 4 breakpoints). 4 fixes : droits `app_web` sur les **formulaires publics**
+  (`/temoignages` 500, contact & RDV KO → migrations `20260701000000` / `20260701000100` +
+  `select:{id:true}`), **édition projet 500** (`ProjectInput` `.nullish()`), cases visibilité au
+  **formulaire d'ajout formation**. Détail : `docs/patch_notes/patch_note_V0_8.md`.
 - **Dernier jalon livré :** **v0.8.0 — CV dynamique** : corpus unique éditable au BO → 3 projections
   (home, page `/cv` riche, **PDF A4** figé), bilingue FR/EN, génération PDF via le service durci
   **`cv-renderer`** (8ᵉ service). **404 `/cv` tué.** 6 PRs (#18→#22). Détail : `docs/patch_notes/patch_note_V0_8.md`.

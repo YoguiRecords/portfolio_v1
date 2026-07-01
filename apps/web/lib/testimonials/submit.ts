@@ -36,5 +36,9 @@ export async function persistTestimonial(
       ip: meta.ip,
       userAgent: meta.userAgent,
     },
+    // `app_web` may INSERT a testimonial but only SELECT display columns — cap
+    // the INSERT ... RETURNING to `id` so it never reads back `submittedContent`
+    // or the author's e-mail/PII it just wrote.
+    select: { id: true },
   });
 }

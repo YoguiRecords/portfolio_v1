@@ -25,6 +25,9 @@ export async function persistContact(
       ip: meta.ip,
       userAgent: meta.userAgent,
     },
+    // Restrict the INSERT ... RETURNING to `id`: the least-privilege `app_web`
+    // role may only SELECT the id, never read back the message/PII it wrote.
+    select: { id: true },
   });
 }
 
@@ -48,5 +51,7 @@ export async function persistAppointment(
       ip: meta.ip,
       userAgent: meta.userAgent,
     },
+    // Same least-privilege constraint as contact messages: return only the id.
+    select: { id: true },
   });
 }
