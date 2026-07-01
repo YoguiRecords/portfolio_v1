@@ -91,6 +91,20 @@ Application Access Policy → rayon de souffle limité. Détail : `docs/technica
   Yohan, jamais un concurrent) est assemblé côté serveur, **séparé du message utilisateur** → une
   injection de prompt ne peut pas réécrire les règles. Endpoint soumis au rate-limit.
 
+## Réservation de créneaux (chatbot Friday)
+- Le site public (`app_web`, lecture seule) **ne lit jamais** le calendrier ni les RDV privés. Le
+  calcul des disponibilités, la réservation et l'annulation sont **centralisés dans `admin`** et
+  exposés via une **API interne** (`/api/internal/*`) : **jamais routée par Caddy**, sur le réseau
+  Docker `internal`, **gardée par token** (`APPOINTMENTS_INTERNAL_TOKEN`, en-tête `x-internal-token`,
+  fail-closed si absent). La middleware BO exempte `/api/internal` de la session (c'est le token qui
+  protège). `web` proxifie ces routes (`/api/availability`, `/api/booking`, `/api/booking/cancel`).
+- Entrées validées **Zod** (`BookingInput`) aux deux frontières. **Anti double-booking** garanti par
+  un **index unique partiel** (au plus une vraie réservation active par créneau).
+- **Annulation self-service** par `cancelToken` aléatoire (256 bits) ; réponses **génériques**
+  (aucune énumération de RDV). `Unavailability` (congés) : `REVOKE ALL` pour `app_web`.
+- Emails de cycle de vie (demande reçue / confirmé / annulé) envoyés via Microsoft Graph en
+  **best-effort** (jamais bloquant), en **texte brut** (pas de HTML distant).
+
 ## CRM (données privées back office)
 Les tables CRM (`Company`, `Contact`, `Deal`, `Activity`, `Task` — table `CrmTask` conservée) sont **strictement privées** :
 le rôle public `app_web` n'y a **aucun accès** (`REVOKE ALL` dans la migration, garde `pg_roles`),

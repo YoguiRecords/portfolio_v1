@@ -36,6 +36,7 @@ Réseau interne (non exposé) :
   admin ─▶ PostgreSQL (rôle lecture/écriture)
   admin ─▶ image-processor (HTTP interne : image -> webp)
   admin ─▶ cv-renderer (HTTP interne : imprime la route admin /internal/cv-document -> PDF)
+  web   ─▶ admin (HTTP interne token-gardé : /api/internal/* — disponibilités / réservation / annulation)
   admin ─▶ MinIO (écriture, credentials serveur)
   web/admin ─▶ OpenRouter (HTTPS sortant : assistant IA / chatbot ; clé en .env)
   admin     ─▶ Microsoft Graph (HTTPS sortant : mail + calendrier Outlook, OAuth app-only ; optionnel)
@@ -52,7 +53,12 @@ médias publics. La base de données, l'image-processor et l'écriture MinIO res
 - **Publication programmée** : un cron appelle un endpoint protégé (`admin`, secret) qui bascule
   les actus/événements échus `SCHEDULED → PUBLISHED`.
 - **Chatbot public** : `web` `/api/chat` (désactivé par défaut) assemble un prompt à garde-fous +
-  contexte **public** et appelle OpenRouter ; outil de prise de RDV → `AppointmentRequest`.
+  contexte **public** et appelle OpenRouter.
+- **Réservation de créneaux (Friday)** : le site public ne lit jamais le calendrier/RDV privés. `web`
+  proxifie l'**API interne d'`admin`** (`/api/internal/*`, token-gardée, réseau interne) qui calcule
+  les créneaux libres (`computeFreeSlots` : lun→sam 9h→20h Paris moins RDV/Outlook/congés), crée le
+  RDV `PENDING` (bloque le créneau, `cancelToken`) et gère l'annulation self-service + emails Graph
+  (best-effort). Congés déclarés au BO (`Unavailability`). Détail : `docs/plans/2026-07-01-friday-booking.md`.
 - **Assistant BO** : `admin` appelle OpenRouter pour l'assistance rédactionnelle par champ et la
   traduction FR→EN à l'enregistrement.
 - **Mail & calendrier BO** : ports `Mailbox`/`CalendarProvider` (`@portfolio/core/integrations`).
