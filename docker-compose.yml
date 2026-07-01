@@ -209,6 +209,9 @@ services:
       WEB_SITE: http://yohan-debusscher.com
       ADMIN_SITE: http://bo.yohan-debusscher.com
       STATS_SITE: http://stats.yohan-debusscher.com
+      # Origine publique des images pour la CSP (dev : MinIO sur l'hôte).
+      # PROD : laisser vide (les médias passent par /media/* → même origine).
+      MEDIA_ORIGIN: http://localhost:9100
     ports:
       - "8090:80" # DEV (HTTP). PROD : 80:80 + 443:443
     volumes:

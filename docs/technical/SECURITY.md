@@ -33,7 +33,12 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
 ## Reverse proxy
 - HTTPS automatique en production. En-têtes de sécurité appliqués à toutes les réponses :
   `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
-  `Referrer-Policy`. En-tête `Server` masqué.
+  `Referrer-Policy`, `Permissions-Policy` (caméra/micro/géoloc désactivés). En-tête `Server` masqué.
+- **Content-Security-Policy par hôte** : `default-src 'self'` partout, `frame-ancestors 'none'`,
+  `base-uri 'self'`, `form-action 'self'`. Le site public autorise le script/connect Umami
+  (`STATS_SITE`) ; l'admin autorise `img-src https:` (avatars MinIO/Graph) et `frame-src 'self'`
+  (aperçu CV en iframe). L'origine des images est pilotée par `MEDIA_ORIGIN` (vide en prod :
+  `/media/*` est servi même origine).
 
 ## Back office
 Le back office est accessible en ligne et durci : authentification forte (mots de passe hachés
