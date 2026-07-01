@@ -6,7 +6,9 @@
   **« Friday »**, migration `20260701000400`) — affiché dans l'entête du widget et injecté dans le
   prompt (elle se présente sous ce prénom, à la 3ᵉ personne pour Yohan).
 - **Avatar éditable au BO** : `assistantAvatarUrl` (migration `20260701000500`) — image de profil
-  affichée sur la bulle flottante et l'entête ; **fallback monogramme doré** si vide.
+  affichée sur la bulle flottante et l'entête ; **fallback monogramme doré** si vide. Réglable par
+  **upload direct** sur `/ai` (`uploadAssistantAvatarAction` → pipeline converter/MinIO, aperçu live)
+  ou par URL de média.
 - **Ton plus concis** : la persona par défaut adapte la longueur à la question (à un simple bonjour →
   réponse brève, sans dérouler le profil).
 
