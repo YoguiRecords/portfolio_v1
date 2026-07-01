@@ -17,6 +17,10 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
     `create()` émet un `INSERT ... RETURNING`, qui exige `SELECT` sur les colonnes retournées ; le
     code borne ce RETURNING à `id` (`select: { id: true }`). L'insertion aboutit donc **sans**
     ouvrir la lecture de la PII.
+  - **Chatbot public** : `app_web` a un `UPDATE` limité à la **seule** colonne compteur
+    `AiAssistantConfig.tokensUsedThisMonth` (garde-fou budget), via un `UPDATE` brut ciblé (ni
+    `updatedAt`, ni RETURNING). Il ne peut ni activer le chat, ni changer le modèle/persona/plafond.
+    La clé OpenRouter reste **serveur uniquement** (`.env`), jamais exposée au client.
 - `app_admin` : rôle **lecture/écriture** utilisé par le back office.
 - Le **rôle propriétaire** (DDL) est réservé aux migrations : il n'est utilisé que par le service
   one-shot `migrate` (conteneur isolé, réseau interne, s'arrête après exécution), jamais par `web`

@@ -1,5 +1,40 @@
 # Patch notes — v0.8.x
 
+## v0.8.2 — 2026-07-01 — Chatbot public activable + FAQ publique (SEO) + finitions
+
+Suite de la recette : les deux fonctionnalités « inexploitables de bout en bout » sont livrées,
+plus deux finitions.
+
+### Chatbot public — pleinement fonctionnel
+- **Clé câblée** : `OPENROUTER_API_KEY` (déjà dans `.env`) n'était transmise à aucun conteneur.
+  Ajoutée aux blocs `environment:` de `web` **et** `admin` dans `docker-compose.yml` (même clé).
+- **Activation au BO** : formulaire sur `/ai` (`updateAiConfigAction`, gardé) — bascule
+  `isPublicChatEnabled`, assistance BO, **modèle** (slug OpenRouter éditable), **persona**
+  (garde-fous), **budget mensuel**. Plus besoin de toucher la base.
+- **Garde-fou budget effectif** : `/api/chat` estime les tokens, applique `assertBudget` avant
+  l'appel et **incrémente** `tokensUsedThisMonth` après (UPDATE brut de la seule colonne compteur →
+  migration `20260701000200_chat_budget_grant`, `GRANT UPDATE (tokensUsedThisMonth)` à `app_web`).
+- **Modèle + persona par défaut** : `deepseek/deepseek-v4-flash` (unique, propre, peu coûteux — fini
+  le format multi-modèles verbeux de `openrouter/fusion`) via migration `20260701000300` + seed. La
+  persona par défaut fait du chatbot la **« secrétaire personnelle » de Yohan** : réponses
+  **synthétiques** (2–4 phrases), 3ᵉ personne, propose un rendez-vous. Tout éditable au BO.
+- **Robustesse** : une erreur fournisseur/modèle sur `/api/chat` renvoie désormais `502`
+  (message convivial) au lieu d'un `500` brut.
+- Validé navigateur : activation via BO → widget → réponse LLM réelle, synthétique, ton secrétaire →
+  budget décompté.
+
+### FAQ publique (SEO)
+- Page **`/faq`** dédiée (scope GLOBAL) : accordéon `<details>` accessible (contenu crawlable) +
+  **FAQPage JSON-LD** (éligible rich results) + lien dans la nav. Rendu markdown sûr des réponses.
+- **FAQ projet/article rendues visibles** (accordéon) en plus du JSON-LD existant — Google exige le
+  contenu visible pour valider le schema. Couche data `listFaq(scope)`, seed GLOBAL de départ.
+
+### Finitions
+- **Dimensions média persistées** : le converter expose `X-Image-Width/Height`, lus par le pipeline
+  d'upload → `MediaAsset.width/height` renseignés (panneau détails complet).
+- **Gantt « Démarche » (mobile)** : masquage du texte in-barre ≤640px (redondant avec le libellé de
+  ligne) → plus de débordement/troncature sur petit écran.
+
 ## v0.8.1 — 2026-07-01 — Correctifs QA (formulaires publics, droits DB, édition projet)
 
 Passe de recette complète (tous les CRUD du back office + fonctionnalités du site + responsive

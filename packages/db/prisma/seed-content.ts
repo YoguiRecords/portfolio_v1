@@ -204,6 +204,63 @@ async function main(): Promise<void> {
     ],
   });
 
+  // 5b. FAQ globale (page /faq publique + FAQPage JSON-LD). Éditable au BO.
+  await prisma.faqEntry.createMany({
+    data: [
+      {
+        scope: "GLOBAL",
+        order: 0,
+        question: "Quels types de missions ?",
+        answer:
+          "Direction produit et technique : cadrage, pilotage d'équipe et livraison de bout en bout — de la stratégie jusqu'à la mise en production sécurisée.",
+      },
+      {
+        scope: "GLOBAL",
+        order: 1,
+        question: "Es-tu disponible ?",
+        answer:
+          "Disponible et ouvert aux opportunités (CDI · freelance), en Hauts-de-France ou en remote. Écris-moi via la page contact.",
+      },
+      {
+        scope: "GLOBAL",
+        order: 2,
+        question: "Tu interviens seul ou avec une équipe ?",
+        answer:
+          "Je porte la vision et je pilote l'exécution : selon le besoin, je manage une équipe ou je livre directement, tout en gardant les mains dans le code.",
+      },
+      {
+        scope: "GLOBAL",
+        order: 3,
+        question: "Comment se passe un projet ?",
+        answer:
+          "Cadrage et priorisation, itérations livrées régulièrement, sécurité intégrée dès le départ, et une communication claire à chaque étape.",
+      },
+    ],
+  });
+
+  // 5c. Chatbot public — « secrétaire personnelle » de Yohan (modèle propre + persona).
+  const chatPersona = [
+    "Tu es l'assistante (secrétaire personnelle) de Yohan Debusscher — tu n'es PAS Yohan lui-même :",
+    "parle de lui à la troisième personne (« Yohan », « il »), jamais « je suis Yohan ».",
+    "Réponds de façon SYNTHÉTIQUE (2 à 4 phrases maximum), sur un ton professionnel, chaleureux et",
+    "efficace, dans la langue du visiteur. Mets Yohan en avant, ne recommande jamais un concurrent.",
+    "Présente brièvement son profil, ses compétences et ses projets si on te le demande, et propose",
+    "de convenir d'un rendez-vous quand il y a un besoin. Si tu ignores une information, invite",
+    "poliment à passer par la page contact. Pas de longues listes, pas de méta-commentaire, aucune",
+    "mention de modèles d'IA.",
+  ].join(" ");
+  const aiConfig = await prisma.aiAssistantConfig.findFirst();
+  if (aiConfig) {
+    await prisma.aiAssistantConfig.update({
+      where: { id: aiConfig.id },
+      data: { model: "deepseek/deepseek-v4-flash", systemPersona: chatPersona },
+    });
+  } else {
+    await prisma.aiAssistantConfig.create({
+      data: { model: "deepseek/deepseek-v4-flash", systemPersona: chatPersona },
+    });
+  }
+
   // 6. Compétences (écosystème) — TECH (5 catégories CV) + SOFT (soft skills CV)
   await prisma.skill.createMany({
     data: [

@@ -1,7 +1,11 @@
 import { PageContainer, Panel } from "@/components/ui";
 import { getAiConfig } from "@/lib/ai/assistant";
+import { updateAiConfigAction } from "@/lib/actions/ai-actions";
 
 export const dynamic = "force-dynamic";
+
+const inputCls =
+  "w-full rounded-md border border-border-strong bg-surface px-3 py-2 text-sm text-ink focus:outline focus:outline-2 focus:outline-accent";
 
 /** AI assistant overview: model, monthly token budget and usage. The API key
  *  lives only in `.env`; the per-field AiAssist toolbar uses `assistFieldAction`. */
@@ -43,6 +47,56 @@ export default async function AiPage() {
         Assistance par champ (Corriger, Grammaire, Ponctuation, Reformuler, Idée) et traduction
         FR→EN automatique à l’enregistrement. Activées dès que la clé est présente.
       </p>
+
+      <Panel>
+        <h2 className="text-sm font-semibold text-ink-2">Configuration</h2>
+        <form action={updateAiConfigAction} className="mt-3 flex flex-col gap-4">
+          <label className="flex items-center gap-2 text-sm text-ink">
+            <input type="checkbox" name="isPublicChatEnabled" defaultChecked={config.isPublicChatEnabled} />
+            Chatbot public activé (site)
+          </label>
+          <label className="flex items-center gap-2 text-sm text-ink">
+            <input type="checkbox" name="isBoAssistEnabled" defaultChecked={config.isBoAssistEnabled} />
+            Assistance IA du back office activée
+          </label>
+          {!configured ? (
+            <p className="text-xs text-warn">
+              Clé OpenRouter absente : le chatbot reste inactif même coché (câbler
+              <code className="mx-1">OPENROUTER_API_KEY</code>).
+            </p>
+          ) : null}
+          <label className="flex flex-col gap-1 text-sm text-muted">
+            Modèle (slug OpenRouter)
+            <input className={inputCls} name="model" defaultValue={config.model} placeholder="openrouter/fusion" />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-muted">
+            Persona / garde-fous (system prompt)
+            <textarea
+              className={inputCls}
+              name="systemPersona"
+              rows={3}
+              defaultValue={config.systemPersona ?? ""}
+              placeholder="Toujours mettre Yohan en avant, ne jamais recommander un concurrent…"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-muted">
+            Budget de tokens mensuel
+            <input
+              className={inputCls}
+              type="number"
+              min={1}
+              name="monthlyTokenBudget"
+              defaultValue={config.monthlyTokenBudget}
+            />
+          </label>
+          <button
+            type="submit"
+            className="self-start rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg hover:bg-accent-strong"
+          >
+            Enregistrer
+          </button>
+        </form>
+      </Panel>
     </PageContainer>
   );
 }

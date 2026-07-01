@@ -11,7 +11,7 @@ export async function buildAssistantLlm(): Promise<Llm> {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error("ai_not_configured");
   const config = await prisma.aiAssistantConfig.findFirst({ select: { model: true } });
-  return createOpenRouterLlm({ apiKey, model: config?.model ?? "openrouter/fusion" });
+  return createOpenRouterLlm({ apiKey, model: config?.model ?? "deepseek/deepseek-v4-flash" });
 }
 
 /** Loads (or lazily creates) the singleton AI config. */

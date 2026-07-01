@@ -1,13 +1,42 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { assistText, assertBudget, recordUsage, type AssistAction } from "@portfolio/core";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requireEnrolledSession } from "@/lib/auth/guards";
 import { buildAssistantLlm, getAiConfig } from "@/lib/ai/assistant";
 
 /** Rough token estimate (≈ 4 chars/token) for the budget guard. */
 function estimateTokens(text: string): number {
   return Math.ceil((text.length * 2) / 4);
+}
+
+/**
+ * Updates the AI assistant configuration from the `/ai` settings form:
+ * public chatbot on/off, BO assistance on/off, model slug, guardrail persona and
+ * the monthly token budget. The OpenRouter key stays in `.env` (never editable).
+ */
+export async function updateAiConfigAction(form: FormData): Promise<void> {
+  const session = await requireEnrolledSession();
+  assertCanWrite(session);
+
+  const config = await getAiConfig();
+  const model = String(form.get("model") ?? "").trim();
+  const persona = String(form.get("systemPersona") ?? "").trim();
+  const budget = Number(form.get("monthlyTokenBudget"));
+
+  await prisma.aiAssistantConfig.update({
+    where: { id: config.id },
+    data: {
+      isPublicChatEnabled: form.get("isPublicChatEnabled") === "on",
+      isBoAssistEnabled: form.get("isBoAssistEnabled") === "on",
+      model: model || config.model,
+      systemPersona: persona || null,
+      monthlyTokenBudget:
+        Number.isFinite(budget) && budget > 0 ? Math.floor(budget) : config.monthlyTokenBudget,
+    },
+  });
+  revalidatePath("/ai");
 }
 
 /**
