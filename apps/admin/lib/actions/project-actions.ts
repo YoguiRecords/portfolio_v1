@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { createProject, updateProject, deleteProject } from "@/lib/content/project";
 
 function str(form: FormData, key: string): string | undefined {
@@ -12,7 +12,7 @@ function str(form: FormData, key: string): string | undefined {
 
 /** Creates a project header from the editor form. */
 export async function createProjectAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("projects"));
   await createProject(prisma, {
     title: str(form, "title"),
     slug: str(form, "slug"),
@@ -25,7 +25,7 @@ export async function createProjectAction(form: FormData): Promise<void> {
 
 /** Updates a project header from the editor form (merges with current values). */
 export async function updateProjectAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("projects"));
   const id = str(form, "id");
   if (!id) return;
   const current = await prisma.project.findUnique({ where: { id } });
@@ -51,7 +51,7 @@ export async function updateProjectAction(form: FormData): Promise<void> {
 
 /** Toggles a project between DRAFT and PUBLISHED. */
 export async function setProjectStatusAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("projects"));
   const id = str(form, "id");
   const status = str(form, "status");
   if (!id || !status) return;
@@ -63,7 +63,7 @@ export async function setProjectStatusAction(form: FormData): Promise<void> {
 
 /** Deletes a project. */
 export async function deleteProjectAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("projects"));
   const id = str(form, "id");
   if (id) await deleteProject(prisma, id);
   revalidatePath("/projets");

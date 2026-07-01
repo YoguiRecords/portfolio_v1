@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { createEvent, deleteEvent, generateNewsFromEvent } from "@/lib/content/event";
 
 function str(form: FormData, key: string): string | undefined {
@@ -12,7 +12,7 @@ function str(form: FormData, key: string): string | undefined {
 
 /** Creates an agenda event from the editor form. */
 export async function createEventAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("agenda"));
   await createEvent(prisma, {
     title: str(form, "title"),
     slug: str(form, "slug"),
@@ -30,7 +30,7 @@ export async function createEventAction(form: FormData): Promise<void> {
 
 /** Generates a DRAFT news article from an event (manual). */
 export async function generateNewsAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("agenda"));
   const id = str(form, "id");
   if (id) await generateNewsFromEvent(prisma, id);
   revalidatePath("/articles");
@@ -38,7 +38,7 @@ export async function generateNewsAction(form: FormData): Promise<void> {
 
 /** Deletes an event. */
 export async function deleteEventAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("agenda"));
   const id = str(form, "id");
   if (id) await deleteEvent(prisma, id);
   revalidatePath("/agenda");

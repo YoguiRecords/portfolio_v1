@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { createKpi, updateKpi, deleteKpi } from "@/lib/content/kpi";
 import { updateSection } from "@/lib/content/home-section";
 import { createSkill, updateSkill, deleteSkill } from "@/lib/content/skill";
@@ -30,7 +30,7 @@ function str(form: FormData, key: string): string | undefined {
 
 /** Creates a KPI from the editor form. */
 export async function createKpiAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await createKpi(prisma, {
     label: str(form, "label"),
     value: str(form, "value"),
@@ -43,7 +43,7 @@ export async function createKpiAction(form: FormData): Promise<void> {
 
 /** Updates a KPI value/label from the inline editor. */
 export async function updateKpiAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (!id) return;
   await updateKpi(prisma, id, {
@@ -58,7 +58,7 @@ export async function updateKpiAction(form: FormData): Promise<void> {
 
 /** Deletes a KPI. */
 export async function deleteKpiAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (id) await deleteKpi(prisma, id);
   revalidatePath("/content");
@@ -76,7 +76,7 @@ export async function upsertProfileAction(
   _prev: ProfileFormState,
   form: FormData,
 ): Promise<ProfileFormState> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("profile"));
   try {
     await upsertProfile(prisma, {
       fullName: str(form, "fullName"),
@@ -114,7 +114,7 @@ export type CvFormState = { ok?: boolean; error?: string };
  * into the admin DOM (cf. STACK_SECURITY §5). Bounded length as a guardrail.
  */
 export async function updateCvHtmlAction(_prev: CvFormState, form: FormData): Promise<CvFormState> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const cvHtml = typeof form.get("cvHtml") === "string" ? (form.get("cvHtml") as string) : "";
   if (cvHtml.length > 200_000) {
     return { error: "CV trop volumineux (200 000 caractères max)." };
@@ -128,7 +128,7 @@ export async function updateCvHtmlAction(_prev: CvFormState, form: FormData): Pr
 
 /** Updates a home section's text, visibility and order from the editor form. */
 export async function updateHomeSectionAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   const key = str(form, "key");
   if (!id || !key) return;
@@ -149,7 +149,7 @@ export async function updateHomeSectionAction(form: FormData): Promise<void> {
 
 // ── Skills ──
 export async function createSkillAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("skills"));
   await createSkill(prisma, {
     name: str(form, "name"),
     category: str(form, "category"),
@@ -161,7 +161,7 @@ export async function createSkillAction(form: FormData): Promise<void> {
   revalidatePath("/cv");
 }
 export async function updateSkillAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("skills"));
   const id = str(form, "id");
   if (!id) return;
   await updateSkill(prisma, id, {
@@ -175,7 +175,7 @@ export async function updateSkillAction(form: FormData): Promise<void> {
   revalidatePath("/cv");
 }
 export async function deleteSkillAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("skills"));
   const id = str(form, "id");
   if (id) await deleteSkill(prisma, id);
   revalidatePath("/competences");
@@ -184,7 +184,7 @@ export async function deleteSkillAction(form: FormData): Promise<void> {
 
 // ── FAQ ──
 export async function createFaqAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("faq"));
   await createFaq(prisma, {
     question: str(form, "question"),
     answer: str(form, "answer"),
@@ -195,7 +195,7 @@ export async function createFaqAction(form: FormData): Promise<void> {
   revalidatePath("/faq");
 }
 export async function deleteFaqAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("faq"));
   const id = str(form, "id");
   if (id) await deleteFaq(prisma, id);
   revalidatePath("/faq");
@@ -206,7 +206,7 @@ export async function saveSettingsAction(
   _prev: { ok?: boolean; error?: string },
   form: FormData,
 ): Promise<{ ok?: boolean; error?: string }> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("settings"));
   try {
     await upsertSettings(prisma, {
       brandName: str(form, "brandName"),
@@ -231,7 +231,7 @@ export async function saveSettingsAction(
 
 // ── Career (tracks, milestones, goals) ──
 export async function createTrackAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   await createTrack(prisma, {
     name: str(form, "name"),
     slug: str(form, "slug"),
@@ -241,13 +241,13 @@ export async function createTrackAction(form: FormData): Promise<void> {
   revalidatePath("/parcours");
 }
 export async function deleteTrackAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   const id = str(form, "id");
   if (id) await deleteTrack(prisma, id);
   revalidatePath("/parcours");
 }
 export async function createMilestoneAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   await createMilestone(prisma, {
     trackId: str(form, "trackId"),
     dateLabel: str(form, "dateLabel"),
@@ -259,13 +259,13 @@ export async function createMilestoneAction(form: FormData): Promise<void> {
   revalidatePath("/parcours");
 }
 export async function deleteMilestoneAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   const id = str(form, "id");
   if (id) await deleteMilestone(prisma, id);
   revalidatePath("/parcours");
 }
 export async function createGoalAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   await createGoal(prisma, {
     role: str(form, "role"),
     status: str(form, "status") ?? "TARGET",
@@ -274,13 +274,13 @@ export async function createGoalAction(form: FormData): Promise<void> {
   revalidatePath("/parcours");
 }
 export async function deleteGoalAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   const id = str(form, "id");
   if (id) await deleteGoal(prisma, id);
   revalidatePath("/parcours");
 }
 export async function updateGoalAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   await updateGoal(prisma, {
     id: str(form, "id"),
     role: str(form, "role"),
@@ -290,7 +290,7 @@ export async function updateGoalAction(form: FormData): Promise<void> {
   revalidatePath("/parcours");
 }
 export async function moveGoalAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("career"));
   const id = str(form, "id");
   const dir = str(form, "dir") === "up" ? "up" : "down";
   if (id) await moveGoal(prisma, id, dir);
@@ -336,7 +336,7 @@ function analysisDataFromForm(type: string, form: FormData): unknown {
 
 /** Upserts the single analysis of a type from its structured editor form. */
 export async function upsertAnalysisAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("analyses"));
   const type = str(form, "type") ?? "SWOT";
   await upsertAnalysis(
     prisma,
@@ -353,7 +353,7 @@ export async function upsertAnalysisAction(form: FormData): Promise<void> {
 
 /** Deletes the analysis of a given type. */
 export async function deleteAnalysisAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("analyses"));
   const type = str(form, "type");
   if (type) await deleteAnalysis(prisma, type as AnalysisType);
   revalidatePath("/analyses");

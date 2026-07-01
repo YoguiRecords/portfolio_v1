@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { assistText, assertBudget, recordUsage, type AssistAction } from "@portfolio/core";
 import { prisma } from "@portfolio/db";
-import { assertCanWrite, requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { buildAssistantLlm, getAiConfig } from "@/lib/ai/assistant";
 import { uploadImage } from "@/lib/media/upload";
 import { buildPorts } from "@/lib/media/ports";
@@ -19,7 +19,7 @@ function estimateTokens(text: string): number {
  * the monthly token budget. The OpenRouter key stays in `.env` (never editable).
  */
 export async function updateAiConfigAction(form: FormData): Promise<void> {
-  const session = await requireEnrolledSession();
+  const session = await requirePermission("ai");
   assertCanWrite(session);
 
   const config = await getAiConfig();
@@ -51,7 +51,7 @@ export async function updateAiConfigAction(form: FormData): Promise<void> {
  * avatar. One-step alternative to pasting a media URL.
  */
 export async function uploadAssistantAvatarAction(form: FormData): Promise<void> {
-  const session = await requireEnrolledSession();
+  const session = await requirePermission("ai");
   assertCanWrite(session);
   const file = form.get("file");
   if (!(file instanceof File) || file.size === 0) return;
@@ -81,7 +81,7 @@ export async function assistFieldAction(
   action: AssistAction,
   text: string,
 ): Promise<{ ok: true; suggestion: string } | { ok: false; error: string }> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("ai"));
   if (!text.trim()) return { ok: false, error: "empty" };
   try {
     const config = await getAiConfig();

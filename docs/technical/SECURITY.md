@@ -46,6 +46,10 @@ argon2id), **MFA TOTP obligatoire**, rate-limit par IP et lockout de compte sur 
 session `httpOnly`/`Secure`/`SameSite`, protection CSRF, messages d'erreur génériques (anti-énumération).
 - **Sessions opaques** : token aléatoire 256 bits en cookie ; seul son hash SHA-256 est stocké
   (pas de JWT). Validité vérifiée côté serveur (le proxy ne fait qu'une garde sur la présence du cookie).
+- **RBAC effectif partout** (défense en profondeur) : chaque page du BO appelle
+  `requirePermission(<module>)` et chaque Server Action mutante `assertCanWrite(await
+  requirePermission(<module>))` — un rôle sans le module est renvoyé sur `/403`, un compte
+  VIEWER (lecture seule) est rejeté côté serveur sur toute écriture.
 - **Isolation des secrets** : les tables d'authentification (`AdminUser`, `Session`, `LoginAttempt`)
   sont inaccessibles au rôle `app_web` (REVOKE explicite) → une compromission du site public
   n'expose ni les hashes ni les secrets TOTP.

@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { getMailbox } from "@/lib/integrations/factory";
 
 const SendMailSchema = z.object({
@@ -13,7 +13,7 @@ const SendMailSchema = z.object({
 
 /** Marks a mailbox message read/unread. */
 export async function markMailReadAction(id: string, isRead: boolean): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("inbox"));
   await getMailbox().markRead(id, isRead);
   revalidatePath("/mails");
 }
@@ -23,7 +23,7 @@ export async function sendMailAction(
   _prev: { ok: boolean; error?: string },
   formData: FormData,
 ): Promise<{ ok: boolean; error?: string }> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("inbox"));
   const parsed = SendMailSchema.safeParse({
     to: formData.get("to"),
     subject: formData.get("subject"),
