@@ -149,6 +149,13 @@ services:
       # Chatbot public : clé OpenRouter (serveur uniquement, jamais exposée au client).
       # Le chatbot reste inactif tant que `AiAssistantConfig.isPublicChatEnabled` est faux.
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # Réservation de créneaux : le site public appelle l'API interne d'`admin`
+      # (jamais via le proxy) avec un token partagé. `app_web` ne lit jamais le
+      # calendrier privé ni les RDV — tout passe par `admin`.
+      ADMIN_INTERNAL_URL: http://admin:3101
+      APPOINTMENTS_INTERNAL_TOKEN: ${APPOINTMENTS_INTERNAL_TOKEN:-dev-appt-token}
+      # Base des liens publics (emails : lien d'annulation self-service).
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3100}
     depends_on:
       db:
         condition: service_healthy
@@ -175,6 +182,10 @@ services:
       CV_RENDER_TOKEN: ${CV_RENDER_TOKEN:-dev-cv-token}
       # Assistance IA du back office (même clé OpenRouter que le site).
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # Réservation de créneaux : token partagé de l'API interne (appelée par `web`)
+      # + base des liens publics (emails d'annulation).
+      APPOINTMENTS_INTERNAL_TOKEN: ${APPOINTMENTS_INTERNAL_TOKEN:-dev-appt-token}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3100}
       # DEV LOCAL UNIQUEMENT : raccourci de connexion (bypass password+MFA).
       # NE JAMAIS définir en prod (défaut off). L'image tourne en NODE_ENV=production
       # même en local, d'où ce flag runtime dédié plutôt qu'un check NODE_ENV.
