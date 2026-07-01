@@ -23,6 +23,8 @@ export async function updateAiConfigAction(form: FormData): Promise<void> {
   const config = await getAiConfig();
   const model = String(form.get("model") ?? "").trim();
   const persona = String(form.get("systemPersona") ?? "").trim();
+  const assistantName = String(form.get("assistantName") ?? "").trim();
+  const avatarUrl = String(form.get("assistantAvatarUrl") ?? "").trim();
   const budget = Number(form.get("monthlyTokenBudget"));
 
   await prisma.aiAssistantConfig.update({
@@ -30,6 +32,8 @@ export async function updateAiConfigAction(form: FormData): Promise<void> {
     data: {
       isPublicChatEnabled: form.get("isPublicChatEnabled") === "on",
       isBoAssistEnabled: form.get("isBoAssistEnabled") === "on",
+      assistantName: assistantName || config.assistantName,
+      assistantAvatarUrl: avatarUrl || null,
       model: model || config.model,
       systemPersona: persona || null,
       monthlyTokenBudget:

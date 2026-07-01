@@ -66,8 +66,21 @@ export default async function AiPage() {
             </p>
           ) : null}
           <label className="flex flex-col gap-1 text-sm text-muted">
+            Prénom de l’e-secrétaire (chatbot)
+            <input className={inputCls} name="assistantName" defaultValue={config.assistantName} placeholder="Friday" />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-muted">
+            Avatar (URL d’un média — vide = monogramme)
+            <input
+              className={inputCls}
+              name="assistantAvatarUrl"
+              defaultValue={config.assistantAvatarUrl ?? ""}
+              placeholder="http://localhost:9100/media/…webp"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-muted">
             Modèle (slug OpenRouter)
-            <input className={inputCls} name="model" defaultValue={config.model} placeholder="openrouter/fusion" />
+            <input className={inputCls} name="model" defaultValue={config.model} placeholder="deepseek/deepseek-v4-flash" />
           </label>
           <label className="flex flex-col gap-1 text-sm text-muted">
             Persona / garde-fous (system prompt)
