@@ -25,6 +25,7 @@ import {
   isIpRateLimited,
   isLocked,
   parseClientIp,
+  purgeOldAttempts,
   recordAttempt,
   registerAccountFailure,
   resetAccountFailures,
@@ -102,9 +103,11 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
     return { error: GENERIC_LOGIN_ERROR };
   }
 
-  // Password OK: clear failure counters and record the success.
+  // Password OK: clear failure counters, record the success and keep the
+  // audit table bounded (retention purge piggy-backed on success).
   await resetAccountFailures(admin.id);
   await recordAttempt({ email, ip, userAgent, success: true });
+  await purgeOldAttempts();
 
   const meta = { ip, userAgent };
 

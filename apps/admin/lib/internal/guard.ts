@@ -5,9 +5,11 @@
  * a defence in depth against any accidental exposure. Fails closed when the
  * env is unset.
  */
+import { secretEquals } from "@portfolio/core";
+
 export function isInternalAuthorized(request: Request): boolean {
   const expected = process.env.APPOINTMENTS_INTERNAL_TOKEN;
   if (!expected) return false; // fail closed: no token configured → deny
   const got = request.headers.get("x-internal-token");
-  return typeof got === "string" && got.length > 0 && got === expected;
+  return typeof got === "string" && got.length > 0 && secretEquals(got, expected);
 }

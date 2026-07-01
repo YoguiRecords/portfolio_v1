@@ -4,12 +4,6 @@ import { persistTestimonial } from "../../../lib/testimonials/submit";
 
 const RATE = { max: 3, windowMs: 60 * 60 * 1000 }; // 3 submissions / hour / IP
 
-/** Extracts the caller IP from proxy headers (best-effort). */
-function clientIp(request: Request): string {
-  const fwd = request.headers.get("x-forwarded-for");
-  return fwd?.split(",")[0]?.trim() || "unknown";
-}
-
 /**
  * Public testimonial submission endpoint.
  *
