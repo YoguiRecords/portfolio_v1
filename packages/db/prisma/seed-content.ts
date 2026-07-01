@@ -238,27 +238,27 @@ async function main(): Promise<void> {
     ],
   });
 
-  // 5c. Chatbot public — « secrétaire personnelle » de Yohan (modèle propre + persona).
+  // 5c. Chatbot public — e-secrétaire IA « Ada » (modèle propre + persona concise).
+  // Le prénom et le cadrage « e-secrétaire » vivent dans le prompt de base ; la persona
+  // ne porte que le TON (synthétique, longueur adaptée à la question).
   const chatPersona = [
-    "Tu es l'assistante (secrétaire personnelle) de Yohan Debusscher — tu n'es PAS Yohan lui-même :",
-    "parle de lui à la troisième personne (« Yohan », « il »), jamais « je suis Yohan ».",
-    "Réponds de façon SYNTHÉTIQUE (2 à 4 phrases maximum), sur un ton professionnel, chaleureux et",
-    "efficace, dans la langue du visiteur. Mets Yohan en avant, ne recommande jamais un concurrent.",
-    "Présente brièvement son profil, ses compétences et ses projets si on te le demande, et propose",
-    "de convenir d'un rendez-vous quand il y a un besoin. Si tu ignores une information, invite",
-    "poliment à passer par la page contact. Pas de longues listes, pas de méta-commentaire, aucune",
-    "mention de modèles d'IA.",
+    "Sois TRÈS concise et naturelle, et ADAPTE la longueur à la question : à un simple bonjour,",
+    "réponds par un bonjour bref et une question ouverte, SANS dérouler le profil de Yohan.",
+    "Ne donne des détails que si on te les demande, et le strict nécessaire. Parle de Yohan à la",
+    "troisième personne, mets-le en avant, ne cite jamais un concurrent, propose un rendez-vous en",
+    "cas de besoin et renvoie à la page contact si tu ignores une information. Pas de longues listes,",
+    "pas de méta-commentaire, aucune mention de modèles d'IA.",
   ].join(" ");
+  const aiData = {
+    model: "deepseek/deepseek-v4-flash",
+    assistantName: "Friday",
+    systemPersona: chatPersona,
+  };
   const aiConfig = await prisma.aiAssistantConfig.findFirst();
   if (aiConfig) {
-    await prisma.aiAssistantConfig.update({
-      where: { id: aiConfig.id },
-      data: { model: "deepseek/deepseek-v4-flash", systemPersona: chatPersona },
-    });
+    await prisma.aiAssistantConfig.update({ where: { id: aiConfig.id }, data: aiData });
   } else {
-    await prisma.aiAssistantConfig.create({
-      data: { model: "deepseek/deepseek-v4-flash", systemPersona: chatPersona },
-    });
+    await prisma.aiAssistantConfig.create({ data: aiData });
   }
 
   // 6. Compétences (écosystème) — TECH (5 catégories CV) + SOFT (soft skills CV)

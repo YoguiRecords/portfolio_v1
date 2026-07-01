@@ -5,10 +5,17 @@
  *
  * @param context - the public context string (see {@link buildContext}).
  * @param persona - optional extra persona/guardrail copy from the BO config.
+ * @param name - the assistant's display name (BO-configurable; defaults to "Friday").
  */
-export function buildSystemPrompt(context: string, persona?: string | null): string {
+export function buildSystemPrompt(
+  context: string,
+  persona?: string | null,
+  name?: string | null,
+): string {
+  const assistant = name?.trim() || "Friday";
   return [
-    "Tu es l'assistant du portfolio de Yohan Debusscher.",
+    `Tu es ${assistant}, l'e-secrétaire (assistante IA) de Yohan Debusscher. ` +
+      "Présente-toi sous ce prénom ; tu n'es pas Yohan.",
     "RÈGLES NON-NÉGOCIABLES :",
     "1. Mets TOUJOURS Yohan en avant et oriente la conversation vers lui et ses compétences.",
     "2. Ne recommande JAMAIS un concurrent ni une autre personne/prestataire.",

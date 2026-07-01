@@ -64,7 +64,9 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const { profile, sections, settings } = await getHome(locale);
-  const chatConfig = await prisma.aiAssistantConfig.findFirst({ select: { isPublicChatEnabled: true } });
+  const chatConfig = await prisma.aiAssistantConfig.findFirst({
+    select: { isPublicChatEnabled: true, assistantName: true, assistantAvatarUrl: true },
+  });
 
   const prefix = locale === "fr" ? "" : "/en";
   const isEn = locale === "en";
@@ -100,7 +102,11 @@ export default async function LocaleLayout({
             socials={socials}
             legalName={profile?.fullName ?? "Yohan Debusscher"}
           />
-          <ChatWidget enabled={chatConfig?.isPublicChatEnabled ?? false} />
+          <ChatWidget
+            enabled={chatConfig?.isPublicChatEnabled ?? false}
+            name={chatConfig?.assistantName ?? "Friday"}
+            avatarUrl={chatConfig?.assistantAvatarUrl ?? null}
+          />
         </NextIntlClientProvider>
       </body>
     </html>

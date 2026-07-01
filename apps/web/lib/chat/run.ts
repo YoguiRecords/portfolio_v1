@@ -16,8 +16,8 @@ export interface ChatTurn {
  */
 export async function runChat(
   llm: Llm,
-  opts: { context: string; persona?: string | null; history: ChatTurn[] },
+  opts: { context: string; persona?: string | null; name?: string | null; history: ChatTurn[] },
 ): Promise<LlmResult> {
-  const system = buildSystemPrompt(opts.context, opts.persona);
+  const system = buildSystemPrompt(opts.context, opts.persona, opts.name);
   return llm.complete({ system, messages: opts.history });
 }

@@ -883,6 +883,8 @@ model ArticleMedia {
 model AiAssistantConfig {
   id                  String   @id @default(cuid())
   model               String   @default("deepseek/deepseek-v4-flash") // slug OpenRouter (peu coûteux), éditable au BO
+  assistantName       String   @default("Friday") // prénom de l'e-secrétaire IA (affiché + présentation)
+  assistantAvatarUrl  String? // URL d'avatar du chatbot (média public) ; fallback monogramme si vide
   systemPersona       String? // garde-fous : « toujours mettre Yohan en avant, jamais un concurrent »
   isBoAssistEnabled   Boolean  @default(true)
   isPublicChatEnabled Boolean  @default(false)

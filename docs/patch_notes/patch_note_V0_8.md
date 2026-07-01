@@ -1,5 +1,15 @@
 # Patch notes — v0.8.x
 
+## v0.8.3 — 2026-07-01 — Identité de l'e-secrétaire (nom + avatar) + ton plus concis
+
+- **Nom éditable au BO** : le chatbot a un prénom (`AiAssistantConfig.assistantName`, défaut
+  **« Friday »**, migration `20260701000400`) — affiché dans l'entête du widget et injecté dans le
+  prompt (elle se présente sous ce prénom, à la 3ᵉ personne pour Yohan).
+- **Avatar éditable au BO** : `assistantAvatarUrl` (migration `20260701000500`) — image de profil
+  affichée sur la bulle flottante et l'entête ; **fallback monogramme doré** si vide.
+- **Ton plus concis** : la persona par défaut adapte la longueur à la question (à un simple bonjour →
+  réponse brève, sans dérouler le profil).
+
 ## v0.8.2 — 2026-07-01 — Chatbot public activable + FAQ publique (SEO) + finitions
 
 Suite de la recette : les deux fonctionnalités « inexploitables de bout en bout » sont livrées,

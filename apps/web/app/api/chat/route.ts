@@ -85,7 +85,12 @@ export async function POST(request: Request): Promise<Response> {
   const context = buildContext({ profile, projects, skills, articles, events });
   let result;
   try {
-    result = await runChat(llm, { context, persona: config.systemPersona, history });
+    result = await runChat(llm, {
+      context,
+      persona: config.systemPersona,
+      name: config.assistantName,
+      history,
+    });
   } catch {
     // Provider/model error (bad slug, outage, timeout…): fail gracefully so the
     // widget shows a friendly message instead of a raw 500.
