@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { ContactInput, AppointmentInput } from "./schema";
+import { ContactInput, AppointmentInput, BookingInput } from "./schema";
 
 test("ContactInput accepte un message valide, rejette un email invalide", () => {
   expect(
@@ -25,4 +25,39 @@ test("AppointmentInput coerce requestedAt en Date", () => {
   });
   expect(r.success).toBe(true);
   expect(r.success && r.data.requestedAt instanceof Date).toBe(true);
+});
+
+test("BookingInput accepte une réservation complète", () => {
+  const r = BookingInput.safeParse({
+    firstName: "Marc",
+    lastName: "Durand",
+    email: "marc@durand.fr",
+    phone: "+33612345678",
+    reason: "Projet web",
+    requestedAt: "2026-09-15T08:00:00Z",
+  });
+  expect(r.success).toBe(true);
+  expect(r.success && r.data.requestedAt instanceof Date).toBe(true);
+});
+
+test("BookingInput rejette un téléphone ou une identité manquants", () => {
+  expect(
+    BookingInput.safeParse({
+      firstName: "Marc",
+      lastName: "Durand",
+      email: "marc@durand.fr",
+      reason: "Projet",
+      requestedAt: "2026-09-15T08:00:00Z",
+    }).success,
+  ).toBe(false);
+  expect(
+    BookingInput.safeParse({
+      firstName: "",
+      lastName: "Durand",
+      email: "marc@durand.fr",
+      phone: "+33612345678",
+      reason: "Projet",
+      requestedAt: "2026-09-15T08:00:00Z",
+    }).success,
+  ).toBe(false);
 });
