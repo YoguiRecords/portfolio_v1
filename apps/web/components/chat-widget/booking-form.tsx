@@ -26,19 +26,30 @@ export function BookingForm({ onClose }: { onClose: () => void }) {
   const [slots, setSlots] = useState<string[] | null>(null);
   const [status, setStatus] = useState<Status>("idle");
 
-  async function loadSlots() {
-    setSlots(null);
+  async function fetchSlots(): Promise<string[]> {
     try {
       const res = await fetch("/api/availability");
       const data = (await res.json()) as { slots?: string[] };
-      setSlots(Array.isArray(data.slots) ? data.slots : []);
+      return Array.isArray(data.slots) ? data.slots : [];
     } catch {
-      setSlots([]);
+      return [];
     }
   }
 
+  /** Refreshes slots (event-handler use, e.g. after a slot is taken). */
+  async function reloadSlots() {
+    setSlots(null);
+    setSlots(await fetchSlots());
+  }
+
   useEffect(() => {
-    void loadSlots();
+    let active = true;
+    void fetchSlots().then((s) => {
+      if (active) setSlots(s);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -63,7 +74,7 @@ export function BookingForm({ onClose }: { onClose: () => void }) {
       if (res.status === 201) setStatus("done");
       else if (res.status === 409) {
         setStatus("taken");
-        void loadSlots();
+        void reloadSlots();
       } else setStatus("error");
     } catch {
       setStatus("error");

@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import type { CalendarEvent, CalendarProvider, CreateEventInput } from "@portfolio/core/integrations";
+import type { CalendarEvent, CalendarProvider } from "@portfolio/core/integrations";
 import { listFreeSlots } from "./availability-service";
 
 const FROM = "2026-07-06T00:00:00.000Z"; // Monday (summer, Paris = UTC+2)
@@ -11,7 +11,7 @@ const NOW = new Date("2026-07-01T00:00:00.000Z");
 function fakeCalendar(events: CalendarEvent[]): CalendarProvider {
   return {
     listEvents: async () => events,
-    createEvent: async (_i: CreateEventInput) => undefined,
+    createEvent: async () => undefined,
   };
 }
 
