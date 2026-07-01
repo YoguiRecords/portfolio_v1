@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import styles from "./chat-widget.module.css";
+import { BookingForm } from "./booking-form";
 
 interface Turn {
   role: "user" | "assistant";
@@ -23,6 +24,7 @@ export function ChatWidget({
   avatarUrl?: string | null;
 }) {
   const [open, setOpen] = useState(false);
+  const [booking, setBooking] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [pending, setPending] = useState(false);
 
@@ -91,7 +93,20 @@ export function ChatWidget({
               </span>
             )}
             <span>{name} · e-secrétaire de Yohan</span>
+            <button
+              type="button"
+              className={styles.bookCta}
+              onClick={() => setBooking((v) => !v)}
+              aria-pressed={booking}
+            >
+              {booking ? "Chat" : "Prendre RDV"}
+            </button>
           </div>
+          {booking ? (
+            <div className={styles.log}>
+              <BookingForm onClose={() => setBooking(false)} />
+            </div>
+          ) : (
           <div className={styles.log}>
             {turns.length === 0 ? (
               <p className={`${styles.msg} ${styles.assistant}`}>
@@ -106,12 +121,15 @@ export function ChatWidget({
               ))
             )}
           </div>
+          )}
+          {booking ? null : (
           <form className={styles.form} onSubmit={onSubmit}>
             <input name="q" placeholder="Votre message…" autoComplete="off" aria-label="Message" />
             <button type="submit" disabled={pending}>
               →
             </button>
           </form>
+          )}
         </section>
       ) : null}
     </>

@@ -114,3 +114,76 @@
   font-weight: 600;
   cursor: pointer;
 }
+.bookCta {
+  margin-left: auto;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bookingHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+}
+.bookingClose {
+  border: 0;
+  background: transparent;
+  color: var(--on-dark-2);
+  cursor: pointer;
+  font-size: 14px;
+}
+.bookingRow {
+  display: flex;
+  gap: 8px;
+}
+.booking input,
+.booking select {
+  width: 100%;
+  min-width: 0;
+  background: var(--dark-800);
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  padding: 10px 11px;
+  color: var(--on-dark);
+  font: inherit;
+  font-size: 14px;
+}
+.bookingSubmit {
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #1a1400;
+  padding: 11px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.bookingSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.bookingSecondary {
+  align-self: flex-start;
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--on-dark-2);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.bookingError {
+  color: #ff9d9d;
+  font-size: 13px;
+  margin: 0;
+}
