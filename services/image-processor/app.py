@@ -10,6 +10,12 @@ DEFAULT_QUALITY = 82
 DEFAULT_MAX_WIDTH = 1920
 DEFAULT_STRIP_METADATA = True
 
+# Hardening (internal-only service, still defence in depth):
+# - reject oversized uploads before decoding (Flask returns 413);
+# - cap decoded pixel count against decompression bombs (Pillow raises).
+app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_CONTENT_LENGTH', 10 * 1024 * 1024))
+Image.MAX_IMAGE_PIXELS = 40_000_000
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'healthy', 'service': 'image-processor'})
@@ -95,8 +101,10 @@ def convert():
         response.headers['X-Image-Height'] = str(image.height)
         return response
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        # Never echo internals to the caller; details go to the service logs.
+        app.logger.exception('conversion failed')
+        return jsonify({'error': 'conversion failed'}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5050))

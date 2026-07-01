@@ -20,6 +20,7 @@ COPY app.py .
 RUN useradd --system --no-create-home --uid 10001 appuser \
     && chown -R appuser:appuser /app
 USER appuser
+ENV HOME=/app
 
 EXPOSE 5050
 
