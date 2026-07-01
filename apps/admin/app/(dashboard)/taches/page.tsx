@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listTasks, listContacts } from "@/lib/crm/crm";
 import { createTaskAction, updateTaskAction, setTaskStatusAction, deleteTaskAction } from "@/lib/actions/crm-actions";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** Todo board: unified tasks (CRM + general) by status, with category filters. */
 export default async function TachesPage() {
+  await requirePermission("tasks");
   const [tasks, contacts] = await Promise.all([listTasks(prisma), listContacts(prisma)]);
   const cards: TaskCardRow[] = tasks.map((t) => ({
     id: t.id,

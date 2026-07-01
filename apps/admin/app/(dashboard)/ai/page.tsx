@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { PageContainer, Panel } from "@/components/ui";
 import { getAiConfig } from "@/lib/ai/assistant";
 import { updateAiConfigAction, uploadAssistantAvatarAction } from "@/lib/actions/ai-actions";
@@ -10,6 +11,7 @@ const inputCls =
 /** AI assistant overview: model, monthly token budget and usage. The API key
  *  lives only in `.env`; the per-field AiAssist toolbar uses `assistFieldAction`. */
 export default async function AiPage() {
+  await requirePermission("ai");
   const config = await getAiConfig();
   const configured = Boolean(process.env.OPENROUTER_API_KEY);
   const pct = Math.min(100, Math.round((config.tokensUsedThisMonth / config.monthlyTokenBudget) * 100));

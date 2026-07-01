@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { PageContainer } from "@/components/ui";
 import { getSettings } from "@/lib/content/site-settings";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** Site settings editor (branding, SEO defaults, footer, contact, AI crawlers). */
 export default async function SettingsPage() {
+  await requirePermission("settings");
   const settings = await getSettings(prisma);
 
   return (

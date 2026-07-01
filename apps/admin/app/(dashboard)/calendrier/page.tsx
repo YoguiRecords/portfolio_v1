@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { prisma } from "@portfolio/db";
 import { PageContainer } from "@/components/ui";
@@ -38,6 +39,7 @@ export default async function CalendarPage({
 }: {
   searchParams: Promise<{ m?: string }>;
 }) {
+  await requirePermission("calendar");
   const { m } = await searchParams;
   const { year, month } = resolveMonth(m);
 

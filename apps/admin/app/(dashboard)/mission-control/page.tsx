@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { KpiCard, Panel } from "@/components/ui";
 import { getMissionControlData } from "@/lib/data/mission-control";
@@ -18,6 +19,7 @@ function euros(cents: number): string {
 
 /** Mission Control: client-relationship piloting + things to handle (distinct from Dashboard). */
 export default async function MissionControlPage() {
+  await requirePermission("mission-control");
   const { kpis, pipeline, tasks, toTreat, inboxPreview } = await getMissionControlData();
 
   return (

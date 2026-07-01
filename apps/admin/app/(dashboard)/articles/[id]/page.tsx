@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
@@ -9,6 +10,7 @@ export const dynamic = "force-dynamic";
 
 /** Article editor v2: markdown + live preview + scheduled publishing. */
 export default async function ArticleEditPage({ params }: { params: Promise<{ id: string }> }) {
+  await requirePermission("articles");
   const { id } = await params;
   const article = await prisma.article.findUnique({ where: { id } });
   if (!article) notFound();

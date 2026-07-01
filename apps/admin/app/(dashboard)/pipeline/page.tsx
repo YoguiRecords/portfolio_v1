@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listContacts, listDeals } from "@/lib/crm/crm";
 import { createDealAction, setDealStageAction } from "@/lib/actions/crm-actions";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** CRM pipeline board: columns by stage, move deals, per-column totals. */
 export default async function PipelinePage() {
+  await requirePermission("pipeline");
   const [deals, contacts] = await Promise.all([listDeals(prisma), listContacts(prisma)]);
 
   const cards: DealCardRow[] = deals.map((d) => ({

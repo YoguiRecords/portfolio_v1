@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer, Status } from "@/components/ui";
 import { listEvents } from "@/lib/content/event";
@@ -12,6 +13,7 @@ const STATUS_LABEL: Record<string, string> = { DRAFT: "Brouillon", SCHEDULED: "P
 
 /** Agenda editor v2 — event CRUD + "generate news from event". */
 export default async function AdminAgendaPage() {
+  await requirePermission("agenda");
   const events = await listEvents(prisma);
 
   return (

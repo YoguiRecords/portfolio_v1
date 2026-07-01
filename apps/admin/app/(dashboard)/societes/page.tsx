@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listCompanies } from "@/lib/crm/crm";
@@ -10,6 +11,7 @@ const inputCls =
 
 /** CRM companies: list + create + delete. */
 export default async function CompaniesPage() {
+  await requirePermission("companies");
   const companies = await listCompanies(prisma);
 
   return (

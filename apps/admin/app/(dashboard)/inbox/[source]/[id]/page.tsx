@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
@@ -25,6 +26,7 @@ function ItemView({ from, subject, body, to }: { from: string; subject: string; 
 
 /** Unified inbox item view + reply (MAIL via Graph, CONTACT via email to sender). */
 export default async function InboxItemPage({ params }: { params: Promise<{ source: string; id: string }> }) {
+  await requirePermission("inbox");
   const { source, id } = await params;
 
   if (source === "mail") {

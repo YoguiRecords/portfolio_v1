@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
@@ -47,6 +48,7 @@ function BlockEditor({ block, projectId }: { block: { id: string; type: string; 
 
 /** Project editor v2: header form + live preview, then flexible block editors. */
 export default async function ProjectEditPage({ params }: { params: Promise<{ id: string }> }) {
+  await requirePermission("projects");
   const { id } = await params;
   const project = await prisma.project.findUnique({
     where: { id },

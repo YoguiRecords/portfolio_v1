@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { uploadImageAction } from "@/lib/actions/media-actions";
 import { Dropzone } from "@/components/media/dropzone";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** Media library v2: dropzone (→ webp/MinIO) + grid with details panel. */
 export default async function MediaPage() {
+  await requirePermission("media");
   const assets = await prisma.mediaAsset.findMany({ orderBy: { createdAt: "desc" }, take: 48 });
   const rows: MediaRow[] = assets.map((a) => ({
     id: a.id,

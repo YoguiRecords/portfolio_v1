@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { PageContainer } from "@/components/ui";
 import { ProfileForm } from "./profile-form";
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 /** Profile editor (singleton): identity fields, avatar, and social links. */
 export default async function ProfilePage() {
+  await requirePermission("profile");
   const profile = await prisma.profile.findFirst({
     include: { avatar: true, socials: { orderBy: { order: "asc" } } },
   });

@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listFaqs } from "@/lib/content/faq";
@@ -12,6 +13,7 @@ const SCOPES = ["GLOBAL", "HOME", "PROJECT", "ARTICLE"] as const;
 
 /** FAQ editor (global / home / scoped entries). */
 export default async function FaqPage() {
+  await requirePermission("faq");
   const faqs = await listFaqs(prisma);
 
   return (

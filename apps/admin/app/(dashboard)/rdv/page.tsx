@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listAppointments } from "@/lib/content/moderation";
 import {
@@ -12,6 +13,7 @@ export const dynamic = "force-dynamic";
 
 /** Appointment requests v2: accept (→ calendar event) / decline, distinct from inbox. */
 export default async function AppointmentsPage() {
+  await requirePermission("appointments");
   const requests = await listAppointments(prisma);
   const rows: RdvRow[] = requests.map((r) => ({
     id: r.id,

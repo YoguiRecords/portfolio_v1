@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listTracks, listGoals } from "@/lib/content/career";
@@ -20,6 +21,7 @@ const GOAL_STATUS = ["ACHIEVED", "IN_PROGRESS", "TARGET", "HORIZON"] as const;
 
 /** Career editor: tracks (timeline lanes) + their milestones, and the goals. */
 export default async function CareerPage() {
+  await requirePermission("career");
   const [tracks, goals] = await Promise.all([listTracks(prisma), listGoals(prisma)]);
 
   return (

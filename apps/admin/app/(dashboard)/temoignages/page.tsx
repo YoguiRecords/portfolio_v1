@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { TESTIMONIAL_RELATIONSHIPS } from "@portfolio/core";
 import { PageContainer } from "@/components/ui";
@@ -14,6 +15,7 @@ export const dynamic = "force-dynamic";
 
 /** Testimonial moderation v2: status tabs, edit displayed text, feature, confirmed reject. */
 export default async function ModerationPage() {
+  await requirePermission("testimonials");
   const items = await listTestimonials(prisma);
   const rows: TestimonialRow[] = items.map((t) => ({
     id: t.id,

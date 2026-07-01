@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listArticles } from "@/lib/content/article";
 import { createArticleAction, deleteArticleAction } from "@/lib/actions/article-actions";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** Liste Articles v2 (DataTable CRUD : recherche, filtres statut, suppression confirmée). */
 export default async function ArticlesPage() {
+  await requirePermission("articles");
   const articles = await listArticles(prisma);
   const rows: ArticleRow[] = articles.map((a) => ({
     id: a.id,

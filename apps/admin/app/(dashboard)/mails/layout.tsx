@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { requirePermission } from "@/lib/auth/guards";
 import { getMailbox, isGraphLive } from "@/lib/integrations/factory";
 import { MailsPane, type MailListItem } from "./mails-pane";
 
@@ -10,6 +11,7 @@ export const dynamic = "force-dynamic";
  * `[id]` s'affichent dans le panneau droit (`children`).
  */
 export default async function MailsLayout({ children }: { children: ReactNode }) {
+  await requirePermission("inbox");
   const messages = await getMailbox().listMessages("inbox");
   const items: MailListItem[] = messages.map((m) => ({
     id: m.id,
