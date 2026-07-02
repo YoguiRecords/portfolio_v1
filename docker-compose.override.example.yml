@@ -1,0 +1,28 @@
+# DEV uniquement — copier vers `docker-compose.override.yml` (git-ignoré) :
+#   cp docker-compose.override.example.yml docker-compose.override.yml
+# Chargé automatiquement par `docker compose up` en local. Publie les ports de
+# commodité (apps, outils DB, console MinIO, dashboard Umami) sur localhost.
+# La base `docker-compose.yml` reste proxy-only : en PROD, déployer avec
+#   docker compose -f docker-compose.yml up -d
+# (sans override) → seul Caddy publie un port.
+services:
+  web:
+    ports:
+      - "3100:3100"
+  admin:
+    ports:
+      - "3101:3101"
+  db:
+    # `edge` requis pour publier un port depuis l'hôte (un réseau `internal: true`
+    # n'est pas routable). Sans override, `db` reste strictement interne.
+    networks:
+      - edge
+    ports:
+      - "5436:5432" # outils DB + tests locaux (.env.test)
+  minio:
+    ports:
+      - "9100:9000" # API S3 (MEDIA_PUBLIC_BASE_URL dev)
+      - "9101:9001" # console
+  umami:
+    ports:
+      - "3102:3000" # dashboard stats en direct

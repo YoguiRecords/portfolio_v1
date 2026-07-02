@@ -3,7 +3,7 @@ import { getEvents } from "../../../lib/data/agenda";
 import { EventCard } from "../../../components/feed/event-card";
 import styles from "../../../components/feed/feed.module.css";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Agenda",

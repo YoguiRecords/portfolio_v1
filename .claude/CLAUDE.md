@@ -4,7 +4,7 @@
 La cybersécurité prime sur tout le reste. À chaque décision (archi, dépendance, code,
 config), se poser d'abord : « est-ce que ça augmente la surface d'attaque ? ».
 - Rien n'est exposé sur Internet sauf via le proxy (Caddy). DB, MinIO (écriture),
-  converter ne sont **jamais** joignables de l'extérieur.
+  image-processor et cv-renderer ne sont **jamais** joignables de l'extérieur.
 - Moindre privilège partout (rôles DB, credentials, capacités containers).
 - Valider **toutes** les entrées externes (Zod), jamais de secret en dur.
 - Détail de la posture : `.claude/rules/STACK_SECURITY.md`.
@@ -53,8 +53,8 @@ portfolio_v1/
 
 ### Qui parle à quoi (frontière de sécurité)
 Les navigateurs parlent **uniquement** à Next.js (web/admin) via le proxy. Aucun accès
-direct navigateur → DB / MinIO (écriture) / converter. Tout le backend sensible reste sur
-le réseau Docker interne.
+direct navigateur → DB / MinIO (écriture) / image-processor / cv-renderer. Tout le backend
+sensible reste sur le réseau Docker interne.
 
 ```
 Internet ─▶ Caddy (443) ─┬─▶ web    (yohan-debusscher.com)
@@ -64,20 +64,24 @@ Internet ─▶ Caddy (443) ─┬─▶ web    (yohan-debusscher.com)
 
 Réseau interne (jamais exposé) :
   web/admin ─▶ Postgres (Prisma)
-  admin     ─▶ converter (HTTP interne : image → webp)
+  web       ─▶ admin /api/internal/* (booking, token partagé)
+  admin     ─▶ image-processor (HTTP interne : image → webp)
+  admin     ─▶ cv-renderer (HTTP interne : CV → PDF A4)
   admin     ─▶ MinIO (écriture, credentials serveur)
 ```
 
-### Services Docker (7)
+### Services Docker (8 + 2 init one-shot)
 | Service | Exposé ? | Rôle |
 |---|---|---|
-| `proxy` (Caddy) | Oui (443) | Seul point d'entrée, HTTPS auto, en-têtes sécu |
+| `proxy` (Caddy) | Oui (443) | Seul point d'entrée, HTTPS auto, en-têtes sécu (CSP…) |
 | `web` (Next.js) | via proxy | Site public |
 | `admin` (Next.js) | via proxy | Back office |
-| `converter` | interne | Conversion image → webp (strip EXIF) |
-| `minio` | lecture via proxy / écriture interne | Stockage images |
+| `image-processor` (Flask/Pillow) | interne | Conversion image → webp (strip EXIF) |
+| `cv-renderer` (Chromium headless) | interne | Impression PDF A4 du CV |
+| `minio` | lecture via proxy / écriture interne | Stockage images + PDF |
 | `db` (Postgres) | interne | DB `portfolio` + DB `umami` (rôles séparés) |
 | `umami` | collecte publique / dashboard derrière auth | Statistiques (cookieless, RGPD) |
+| `migrate` / `minio-init` | interne, one-shot | Migrations Prisma / bucket `media` au démarrage |
 
 ## Workflow de dev (3 phases — OBLIGATOIRE)
 1. **Analyse** : décomposer la demande, risques & dépendances, plan étape par étape

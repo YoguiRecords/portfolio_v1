@@ -36,13 +36,22 @@ function minioClient(): Client {
 
 /** Stores an object in the public `media` bucket, returns its public URL. */
 export async function putObject(name: string, data: Buffer, contentType: string): Promise<string> {
-  await minioClient().putObject(BUCKET, name, data, data.length, { "Content-Type": contentType });
+  await minioClient().putObject(BUCKET, name, data, data.length, {
+    "Content-Type": contentType,
+    // Object names are random (content-addressed-ish): safe to cache forever.
+    "Cache-Control": "public, max-age=31536000, immutable",
+  });
   return `${MEDIA_BASE}/${name}`;
 }
 
 /** Generates a non-guessable 24-char hex object name. */
 export function randomName(): string {
   return randomBytes(12).toString("hex");
+}
+
+/** Removes an object from the public `media` bucket (deletion pipeline). */
+export async function removeObject(name: string): Promise<void> {
+  await minioClient().removeObject(BUCKET, name);
 }
 
 /** Builds the production upload ports (image-processor + MinIO + Prisma). */

@@ -1,6 +1,6 @@
 import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
-import { uploadImageAction } from "@/lib/actions/media-actions";
+import { deleteMediaAction, uploadImageAction } from "@/lib/actions/media-actions";
 import { Dropzone } from "@/components/media/dropzone";
 import { MediaGrid, type MediaRow } from "@/components/media/media-grid";
 
@@ -28,7 +28,7 @@ export default async function MediaPage() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-ink">Médias</h1>
       <Dropzone action={uploadImageAction} />
-      <MediaGrid assets={rows} />
+      <MediaGrid assets={rows} deleteAction={deleteMediaAction} />
     </div>
   );
 }

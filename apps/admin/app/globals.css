@@ -23,7 +23,7 @@
   /* Texte */
   --color-ink: #f1f2f4;
   --color-ink-2: #b3b9c0;
-  --color-muted: #79808a;
+  --color-muted: #7f8791; /* ≥ 4.5:1 sur surface (a11y AA, audit Lighthouse) */
 
   /* Statuts */
   --color-ok: #3fb27f;

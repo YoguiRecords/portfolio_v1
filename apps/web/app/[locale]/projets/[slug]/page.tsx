@@ -10,7 +10,7 @@ import { creativeWorkJsonLd, faqPageJsonLd } from "../../../../lib/seo/jsonld";
 import { localizedUrl } from "../../../../lib/seo/url";
 
 // Rendered per request from the DB (no build-time DB dependency).
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 /** Builds SEO metadata from the project's SEO fields (falls back to summary). */
 export async function generateMetadata({

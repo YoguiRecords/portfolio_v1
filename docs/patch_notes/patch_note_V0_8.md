@@ -1,5 +1,40 @@
 # Patch notes — v0.8.x
 
+## v0.8.6 — 2026-07-02 — Reliquats d'audit + optimisation Lighthouse
+
+### Reliquats P2/P3 de l'audit
+- **Ports dev → override compose** : le `docker-compose.yml` de base est désormais sûr par
+  défaut (db strictement interne, aucun port dev) ; `docker-compose.override.yml` (git-ignoré)
+  porte les commodités locales, documenté par `docker-compose.override.example.yml`.
+- **Suppression de médias au BO** (garde d'usage) : refus explicite tant qu'un contenu référence
+  l'asset (profil, témoignage, projet, article, évènement, OG réglages), sinon suppression DB +
+  objet MinIO. Confirmation en deux temps. Validé navigateur (suppression + refus).
+- **i18n** : les CTA du hero utilisent les catalogues (un visiteur `/en` les voyait en français).
+- **Décisions actées** : tokens web conservés en `:root` (site en CSS artisanal, 1 seule classe
+  utilitaire Tailwind dans `apps/web` — un renommage `@theme` serait du risque sans gain) ;
+  conversion d'images : Flask durci conservé (option sharp consignée dans l'audit).
+- `CLAUDE.md` projet : table des services alignée sur le réel (image-processor, cv-renderer,
+  one-shots migrate/minio-init).
+
+### Lighthouse (build de prod)
+**Site public — desktop : 100/100/100/100 (home et /cv) · mobile : 93-95 avec CLS 0 et toutes
+les checklists LCP vertes.** BO login : Perf 97-100, A11y 100, BP 100.
+- **LCP** : avatar héro préchargé `fetchpriority=high`, servi **same-origin** (`/media/*` :
+  Caddy en prod, passthrough Next en dev ; URLs stockées normalisées au rendu).
+- **CLS 0** : le caret du typewriter n'occupe plus de largeur (le texte ne refoulait à chaque
+  frappe) ; chapitres en `content-visibility: auto` (layout hors écran sauté).
+- **ISR 60 s** sur les pages publiques (fini le `no-store` : back/forward cache OK ; le build
+  des images Docker reste sans DB via `generateStaticParams` vide). `revalidatePath` BO ne
+  traverse pas les apps : une modif BO apparaît sous ≤ 60 s côté public.
+- **CSS inliné** (`experimental.inlineCss`, web + admin) : plus de requête CSS bloquante.
+- Typewriter **rendu plein en SSR** (premier paint signifiant + SEO), médias MinIO en
+  `Cache-Control: immutable` (métadonnée à l'upload + retrofit), avatar Friday ré-encodé 112 px
+  (17 Ko → 2,3 Ko), `llms.txt` au format llmstxt.org (sections de liens générées), catalogue
+  a11y : ordre des titres (h3), contrastes AA (axe du Cap, `--color-muted` BO).
+- BO : `robots.txt` deny-all servi hors gate de session. Restes assumés : BO volontairement
+  non indexable (SEO/Agentic bas par design) ; `unused/legacy JS` = chunk framework
+  React/polyfills Next, non actionnable proprement.
+
 ## v0.8.5 — 2026-07-02 — Audit complet + remédiation (sécurité, qualité, UX)
 
 Audit professionnel de tout le code (rapport : `docs/audit/2026-07-01-audit.md`) suivi de

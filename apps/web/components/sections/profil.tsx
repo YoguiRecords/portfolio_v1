@@ -22,7 +22,7 @@ function SwotBlock({ title, data }: { title: string | null; data: SwotDataType }
     <div className="block reveal">
       <div className="ftitle">
         <span className="t mono">SWOT</span>
-        <h4>{title ?? "Mon profil"}</h4>
+        <h3>{title ?? "Mon profil"}</h3>
       </div>
       <div className="swotile">
         {quadrants.map(({ k, badge, q }) => (
@@ -55,7 +55,7 @@ function FourPBlock({ title, data }: { title: string | null; data: FourPDataType
     <div className="block reveal">
       <div className="ftitle">
         <span className="t mono">MIX 4P</span>
-        <h4>{title ?? "Mon positionnement"}</h4>
+        <h3>{title ?? "Mon positionnement"}</h3>
       </div>
       <div className="strips">
         {levers.map(({ n, lever }) => (
@@ -81,7 +81,7 @@ function GoldenBlock({ title, data }: { title: string | null; data: GoldenCircle
     <div className="block reveal">
       <div className="ftitle">
         <span className="t mono">GOLDEN CIRCLE</span>
-        <h4>{title ?? "Ma raison d'être"}</h4>
+        <h3>{title ?? "Ma raison d'être"}</h3>
       </div>
       <div className="gradar rev">
         <div className="gstmt">
@@ -124,7 +124,7 @@ function IkigaiBlock({ title, data }: { title: string | null; data: IkigaiDataTy
     <div className="block reveal">
       <div className="ftitle">
         <span className="t mono">IKIGAI</span>
-        <h4>{title ?? "Mon équilibre"}</h4>
+        <h3>{title ?? "Mon équilibre"}</h3>
       </div>
       <div className="converge">
         <div className="cv2 n">

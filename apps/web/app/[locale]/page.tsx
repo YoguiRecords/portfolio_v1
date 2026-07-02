@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { getHome } from "../../lib/data/home";
 import { JsonLd } from "../../components/json-ld/json-ld";
 import { personJsonLd } from "../../lib/seo/jsonld";
@@ -11,7 +12,7 @@ import { Projets } from "../../components/sections/projets";
 
 // Rendered per request from the database (no build-time DB dependency); the
 // server still emits full HTML, so SEO is preserved.
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 /**
  * Public home page. Composes the chapters in the order defined by `HomeSection`
@@ -20,6 +21,8 @@ export const dynamic = "force-dynamic";
  */
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  // Requis pour le rendu statique/ISR : la page utilise getTranslations (Hero).
+  setRequestLocale(locale);
   const data = await getHome(locale);
   const { profile, sections } = data;
   const loc = locale === "en" ? "en" : "fr";

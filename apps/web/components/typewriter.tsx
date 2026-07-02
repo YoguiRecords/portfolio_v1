@@ -25,7 +25,9 @@ const GAP_MS = 250;
  * rendering the first line statically.
  */
 export function Typewriter({ lines }: { lines: string[] }) {
-  const [n, setN] = useState(0);
+  // SSR renders the first line fully typed: the headline is meaningful at
+  // first paint (LCP/SEO); the animation then resumes from "hold" and cycles.
+  const [n, setN] = useState(lines[0]?.length ?? 0);
   const [li, setLi] = useState(0);
   const reduced = useRef(false);
 
@@ -37,7 +39,7 @@ export function Typewriter({ lines }: { lines: string[] }) {
       return;
     }
     let cancelled = false;
-    let ci = 0;
+    let ci = lines[0].length;
     let cur = 0;
     let deleting = false;
     const tick = () => {
@@ -66,7 +68,7 @@ export function Typewriter({ lines }: { lines: string[] }) {
     const schedule = (ms: number) => {
       timer = setTimeout(tick, ms);
     };
-    schedule(GAP_MS);
+    schedule(HOLD_MS);
     return () => {
       cancelled = true;
       clearTimeout(timer);

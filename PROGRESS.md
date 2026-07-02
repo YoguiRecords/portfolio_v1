@@ -4,8 +4,16 @@
 > Historique versionné → `docs/patch_notes/`.
 
 ## Version
-- **Cycle en cours :** consolidation post-audit (sécurité/qualité/UX) après la refonte BO v2 + Friday booking.
-- **Dernier correctif :** **v0.8.5 — audit complet + remédiation** : rapport d'audit professionnel
+- **Cycle en cours :** consolidation post-audit (sécurité/qualité/UX/perf) après la refonte BO v2 + Friday booking.
+- **Dernier correctif :** **v0.8.6 — reliquats d'audit + Lighthouse** : ports dev → override
+  compose (base prod-safe), suppression de médias au BO (garde d'usage, validée navigateur),
+  hero CTA i18n, CLAUDE.md services à jour, et optimisation Lighthouse — **desktop 100/100/100/100
+  (home + /cv), mobile 93-95 (CLS 0, checklists LCP toutes vertes)**, BO 97-100/A11y 100 :
+  media same-origin + immutable, ISR 60 s (bf-cache), CSS inliné, content-visibility,
+  typewriter SSR plein + caret zéro-largeur, llms.txt llmstxt.org, contrastes AA.
+  Décisions actées : tokens web en `:root` (pas de `@theme` sans consommateur Tailwind),
+  Flask durci conservé. Détail : `docs/patch_notes/patch_note_V0_8.md`.
+- **Correctif précédent :** **v0.8.5 — audit complet + remédiation** : rapport d'audit professionnel
   (`docs/audit/2026-07-01-audit.md`) puis exécution de 3 plans
   (`docs/plans/2026-07-02-audit-remediation-{1-security,2-quality,3-ux}.md`) —
   Caddy bloque `/api/internal/*`, **CSP/Permissions-Policy** au proxy, **RBAC câblé partout**

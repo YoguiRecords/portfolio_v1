@@ -274,7 +274,7 @@
   font: 600 10px/1 var(--font-mono), monospace;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #5a5e62;
+  color: #8b9096; /* contraste AA sur fond sombre (audit Lighthouse) */
 }
 
 /* ===== Reveal (déclenché par .play sur le conteneur) ===== */
