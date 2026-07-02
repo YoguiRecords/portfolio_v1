@@ -56,13 +56,13 @@ function Chart({ layout, variant }: { layout: Layout; variant: "chart" | "mchart
             x2={variant === "mchart" ? "0" : "1"}
             y2="0"
           >
-            <stop offset="0" stopColor="#9a6000" />
-            <stop offset="1" stopColor="#f0a800" />
+            <stop offset="0" stopColor="var(--accent-deep)" />
+            <stop offset="1" stopColor="var(--accent)" />
           </linearGradient>
           {areaPath ? (
             <linearGradient id={`ar-${idp}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="rgba(240,168,0,.24)" />
-              <stop offset="1" stopColor="rgba(240,168,0,0)" />
+              <stop offset="0" stopColor="color-mix(in srgb, var(--accent) 24%, transparent)" />
+              <stop offset="1" stopColor="transparent" />
             </linearGradient>
           ) : null}
         </defs>
@@ -71,7 +71,7 @@ function Chart({ layout, variant }: { layout: Layout; variant: "chart" | "mchart
           <path
             d={dashedPath}
             fill="none"
-            stroke="#3a3d41"
+            stroke="var(--line-subtle)"
             strokeWidth="2"
             strokeDasharray="1 8"
             strokeLinecap="round"

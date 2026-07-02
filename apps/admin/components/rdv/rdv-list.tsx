@@ -34,6 +34,7 @@ const FILTERS = [
   { value: "PENDING", label: "En attente" },
   { value: "CONFIRMED", label: "Confirmés" },
   { value: "DECLINED", label: "Refusés" },
+  { value: "CANCELLED", label: "Annulés" },
 ] as const;
 type Filter = (typeof FILTERS)[number]["value"];
 
