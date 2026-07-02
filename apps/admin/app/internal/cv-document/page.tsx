@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { secretEquals } from "@portfolio/core";
 import { prisma } from "@portfolio/db";
 import { loadCvDocument } from "@/lib/data/cv-document";
 import { CvDocument } from "@/components/cv/cv-document";
@@ -18,14 +19,15 @@ export const dynamic = "force-dynamic";
 export default async function CvDocumentRoute({
   searchParams,
 }: {
-  searchParams: Promise<{ locale?: string; token?: string }>;
+  searchParams: Promise<{ locale?: string }>;
 }) {
   const sp = await searchParams;
   const expected = process.env.CV_RENDER_TOKEN;
-  const provided = (await headers()).get("x-cv-token") ?? sp.token;
+  // Header only — a query-param token would leak into access logs.
+  const provided = (await headers()).get("x-cv-token");
 
   if (expected) {
-    if (provided !== expected) notFound();
+    if (!provided || !secretEquals(provided, expected)) notFound();
   } else if (process.env.NODE_ENV === "production") {
     notFound();
   }

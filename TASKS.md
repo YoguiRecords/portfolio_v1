@@ -9,7 +9,14 @@
 
 ## Backlog (ordre conseillé)
 
-- [~] **P16 — Multi-users BO + RBAC** — **socle livré** (schéma+migration, moteur permissions core, politique mdp, gardes `requirePermission`/`assertCanWrite`, /403, masquage PII). **Reste (DT8)** : enforcement par page/action, filtre nav, UI gestion comptes, onboarding invitation, login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
+- [~] **P16 — Multi-users BO + RBAC** — **socle livré** + **enforcement livré (v0.8.5)** :
+  `requirePermission` sur chaque page et `assertCanWrite` sur chaque action mutante (module `tasks` ajouté).
+  **Reste (DT8)** : filtre nav par permissions, UI gestion comptes (`/utilisateurs`), onboarding invitation,
+  login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
+- [ ] **Audit v0.8.5 — reliquats P2/P3** (rapport `docs/audit/2026-07-01-audit.md` §8) : i18n des
+  libellés éditoriaux (public-cv, hero CTA), suppression de médias au BO (avec garde d'usage),
+  ports dev (db/minio/umami) → override compose, `globals.css` web en `@theme`, cache court du
+  site public, décision converter sharp (option A) si besoin.
 - [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
 ## Recette QA (2026-07-01) — reste à traiter

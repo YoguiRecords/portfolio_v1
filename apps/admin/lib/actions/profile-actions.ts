@@ -3,15 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { uploadImage } from "@/lib/media/upload";
 import { buildPorts } from "@/lib/media/ports";
-
-/** Reads an optional trimmed string FormData field. */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
+import { str } from "./form-utils";
 
 const SocialSchema = z.object({
   label: z.string().min(1).max(40),
@@ -24,7 +19,7 @@ const SocialSchema = z.object({
  * strip → MinIO → MediaAsset) and links it to the singleton profile.
  */
 export async function uploadProfileAvatarAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("profile"));
   const file = form.get("file");
   if (!(file instanceof File) || file.size === 0) return;
 
@@ -45,7 +40,7 @@ export async function uploadProfileAvatarAction(form: FormData): Promise<void> {
 
 /** Adds a social link to the profile (validated with Zod). */
 export async function createSocialAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("profile"));
   const data = SocialSchema.parse({ label: str(form, "label"), url: str(form, "url"), icon: str(form, "icon") });
   const profile = await prisma.profile.findFirst({ select: { id: true } });
   if (!profile) return;
@@ -56,7 +51,7 @@ export async function createSocialAction(form: FormData): Promise<void> {
 
 /** Removes a social link by id. */
 export async function deleteSocialAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("profile"));
   const id = str(form, "id");
   if (id) await prisma.socialLink.delete({ where: { id } });
   revalidatePath("/profile");

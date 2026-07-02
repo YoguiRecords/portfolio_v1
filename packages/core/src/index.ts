@@ -102,8 +102,10 @@ export {
 // Media upload validation (mime/size/dimensions)
 export { validateUpload, ALLOWED_IMAGE_MIME, type UploadCandidate } from "./media/validate";
 
-// Security (in-memory rate limiter)
+// Security (in-memory rate limiter + trusted client IP)
 export { allow, resetRateLimit, type RateLimitOptions } from "./security/rate-limit";
+export { clientIpFromHeaders } from "./security/client-ip";
+export { secretEquals } from "./security/constant-time";
 
 // Scheduled publishing (cron trigger logic)
 export { isDue, splitDue } from "./publishing/due";
@@ -157,6 +159,7 @@ export type {
 } from "./ai/llm";
 export { createOpenRouterLlm, type OpenRouterOptions } from "./ai/openrouter";
 export { assistText, type AssistAction } from "./ai/assist";
-export { assertBudget, recordUsage, type AiBudget } from "./ai/budget";
+export { assertBudget, estimateTokens, recordUsage, type AiBudget } from "./ai/budget";
 export { buildContext, type ChatContextInput } from "./ai/chat-context";
+export { parseChatHistory, type ChatHistoryTurn } from "./ai/chat-history";
 export { buildSystemPrompt } from "./ai/guardrails";

@@ -1,13 +1,10 @@
-import { allow } from "@portfolio/core";
+import { allow, clientIpFromHeaders } from "@portfolio/core";
+import { readJsonBody } from "../../../../lib/http/public-request";
 import { submitCancel } from "../../../../lib/booking/admin-client";
 
 export const dynamic = "force-dynamic";
 
 const RATE = { max: 20, windowMs: 60 * 60 * 1000 }; // 20 / hour / IP
-
-function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
 
 /**
  * Public self-service cancellation endpoint. Forwards the token to the admin
@@ -15,15 +12,13 @@ function clientIp(request: Request): string {
  * token matched (no enumeration).
  */
 export async function POST(request: Request): Promise<Response> {
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
   if (!allow(`booking-cancel:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request);
+  if (body === null) {
     return Response.json({ ok: false }, { status: 400 });
   }
 

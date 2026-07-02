@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listSkills } from "@/lib/content/skill";
@@ -15,6 +16,7 @@ const KINDS = ["TECH", "SOFT"] as const;
 
 /** Skills editor (orbit nodes on the home ecosystem + CV competences/soft skills). */
 export default async function SkillsPage() {
+  await requirePermission("skills");
   const skills = await listSkills(prisma);
 
   return (

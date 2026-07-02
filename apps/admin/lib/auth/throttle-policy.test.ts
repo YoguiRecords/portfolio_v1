@@ -8,16 +8,21 @@ import {
 } from "./throttle-policy";
 
 describe("parseClientIp", () => {
-  it("returns null when the header is absent", () => {
-    expect(parseClientIp(null)).toBeNull();
+  it("returns null when no header is present (disables the per-IP check)", () => {
+    expect(parseClientIp(new Headers())).toBeNull();
   });
 
-  it("returns the first IP of an X-Forwarded-For chain", () => {
-    expect(parseClientIp("203.0.113.7, 10.0.0.1")).toBe("203.0.113.7");
+  it("prefers the proxy-set X-Real-IP over a spoofable X-Forwarded-For", () => {
+    const headers = new Headers({
+      "x-real-ip": "203.0.113.7",
+      "x-forwarded-for": "6.6.6.6, 203.0.113.7",
+    });
+    expect(parseClientIp(headers)).toBe("203.0.113.7");
   });
 
-  it("trims surrounding whitespace", () => {
-    expect(parseClientIp("  198.51.100.4  ")).toBe("198.51.100.4");
+  it("falls back to the first X-Forwarded-For hop in dev", () => {
+    const headers = new Headers({ "x-forwarded-for": "198.51.100.4, 10.0.0.1" });
+    expect(parseClientIp(headers)).toBe("198.51.100.4");
   });
 });
 

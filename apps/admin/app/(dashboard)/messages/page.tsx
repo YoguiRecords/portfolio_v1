@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { PageContainer } from "@/components/ui";
 import { listMessages } from "@/lib/content/moderation";
@@ -9,6 +10,7 @@ const btn = "rounded-md border border-border-strong px-3 py-1.5 text-sm text-ink
 
 /** Contact inbox: messages (unread first), mark read / spam. */
 export default async function MessagesPage() {
+  await requirePermission("inbox");
   const messages = await listMessages(prisma);
 
   return (

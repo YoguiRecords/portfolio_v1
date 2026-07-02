@@ -83,3 +83,22 @@ export async function resetAccountFailures(adminId: string): Promise<void> {
     data: { failedAttempts: 0, lockedUntil: null },
   });
 }
+
+/** Retention window for the `LoginAttempt` audit rows, in days. */
+export const ATTEMPT_RETENTION_DAYS = 90;
+
+/**
+ * Deletes audit rows older than the retention window. Piggy-backed on every
+ * successful login (cheap indexed delete) so the table stays bounded without a
+ * dedicated scheduler.
+ *
+ * @param db - Prisma client (injectable for the test database).
+ * @param now - Reference time (injectable for tests).
+ */
+export async function purgeOldAttempts(
+  db: { loginAttempt: { deleteMany: (typeof prisma)["loginAttempt"]["deleteMany"] } } = prisma,
+  now: Date = new Date(),
+): Promise<void> {
+  const cutoff = new Date(now.getTime() - ATTEMPT_RETENTION_DAYS * 86_400_000);
+  await db.loginAttempt.deleteMany({ where: { createdAt: { lt: cutoff } } });
+}

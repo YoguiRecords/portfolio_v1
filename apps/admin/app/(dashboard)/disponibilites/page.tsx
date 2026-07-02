@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listUnavailabilities } from "@/lib/booking/unavailability";
@@ -14,6 +15,7 @@ const inputCls =
  * matching slots so Friday never offers them.
  */
 export default async function AvailabilityPage() {
+  await requirePermission("appointments");
   const items = await listUnavailabilities(prisma);
 
   return (

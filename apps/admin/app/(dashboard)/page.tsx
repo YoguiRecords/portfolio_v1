@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { KpiCard } from "@/components/ui";
 import { getDashboardData } from "@/lib/data/dashboard";
 import { ContentToTreatPanel } from "@/components/dashboard/content-to-treat-panel";
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 /** Back-office home: portfolio & audience overview (distinct from Mission Control). */
 export default async function DashboardPage() {
+  await requirePermission("dashboard");
   const { kpis, traffic, contentToTreat, topContent } = await getDashboardData();
   const visitorsTrend = traffic.deltaPct === null ? "flat" : traffic.deltaPct >= 0 ? "up" : "down";
   const visitorsDelta =

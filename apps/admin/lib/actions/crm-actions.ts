@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import {
   createCompany,
   updateCompany,
@@ -21,12 +21,8 @@ import {
   setTaskStatus,
   deleteTask,
 } from "@/lib/crm/crm";
+import { reqId, str } from "./form-utils";
 
-/** Reads an optional string FormData field (empty → undefined). */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
 /** Reads an optional integer FormData field. */
 function int(form: FormData, key: string): number | undefined {
   const v = str(form, key);
@@ -34,25 +30,22 @@ function int(form: FormData, key: string): number | undefined {
   const n = Number(v);
   return Number.isFinite(n) ? Math.trunc(n) : undefined;
 }
-function reqId(form: FormData): string | undefined {
-  return str(form, "id");
-}
 
 // ── Companies ──
 export async function createCompanyAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("companies"));
   await createCompany(prisma, { name: str(form, "name"), website: str(form, "website"), notes: str(form, "notes") });
   revalidatePath("/societes");
 }
 export async function updateCompanyAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("companies"));
   const id = reqId(form);
   if (!id) return;
   await updateCompany(prisma, id, { name: str(form, "name"), website: str(form, "website"), notes: str(form, "notes") });
   revalidatePath("/societes");
 }
 export async function deleteCompanyAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("companies"));
   const id = reqId(form);
   if (id) await deleteCompany(prisma, id);
   revalidatePath("/societes");
@@ -76,12 +69,12 @@ function contactData(form: FormData) {
   };
 }
 export async function createContactAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("contacts"));
   await createContact(prisma, contactData(form));
   revalidatePath("/contacts");
 }
 export async function updateContactAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("contacts"));
   const id = reqId(form);
   if (!id) return;
   await updateContact(prisma, id, contactData(form));
@@ -89,7 +82,7 @@ export async function updateContactAction(form: FormData): Promise<void> {
   revalidatePath(`/contacts/${id}`);
 }
 export async function deleteContactAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("contacts"));
   const id = reqId(form);
   if (id) await deleteContact(prisma, id);
   revalidatePath("/contacts");
@@ -108,25 +101,25 @@ function dealData(form: FormData) {
   };
 }
 export async function createDealAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("pipeline"));
   await createDeal(prisma, dealData(form));
   revalidatePath("/pipeline");
 }
 export async function updateDealAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("pipeline"));
   const id = reqId(form);
   if (!id) return;
   await updateDeal(prisma, id, dealData(form));
   revalidatePath("/pipeline");
 }
 export async function deleteDealAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("pipeline"));
   const id = reqId(form);
   if (id) await deleteDeal(prisma, id);
   revalidatePath("/pipeline");
 }
 export async function setDealStageAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("pipeline"));
   const id = reqId(form);
   const stage = str(form, "stage");
   if (id && stage) await setDealStage(prisma, id, stage);
@@ -135,7 +128,7 @@ export async function setDealStageAction(form: FormData): Promise<void> {
 
 // ── Activities ──
 export async function createActivityAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("contacts"));
   await createActivity(prisma, {
     type: str(form, "type") ?? "NOTE",
     content: str(form, "content"),
@@ -147,7 +140,7 @@ export async function createActivityAction(form: FormData): Promise<void> {
   if (contactId) revalidatePath(`/contacts/${contactId}`);
 }
 export async function deleteActivityAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("contacts"));
   const id = reqId(form);
   if (id) await deleteActivity(prisma, id);
 }
@@ -172,19 +165,19 @@ function revalidateTaskViews(form: FormData): void {
   if (contactId) revalidatePath(`/contacts/${contactId}`);
 }
 export async function createTaskAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("tasks"));
   await createTask(prisma, taskData(form));
   revalidateTaskViews(form);
 }
 export async function updateTaskAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("tasks"));
   const id = reqId(form);
   if (!id) return;
   await updateTask(prisma, id, taskData(form));
   revalidateTaskViews(form);
 }
 export async function setTaskStatusAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("tasks"));
   const id = reqId(form);
   const status = str(form, "status");
   if (id && status) await setTaskStatus(prisma, id, status);
@@ -192,7 +185,7 @@ export async function setTaskStatusAction(form: FormData): Promise<void> {
   revalidatePath("/mission-control");
 }
 export async function deleteTaskAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("tasks"));
   const id = reqId(form);
   if (id) await deleteTask(prisma, id);
   revalidatePath("/taches");

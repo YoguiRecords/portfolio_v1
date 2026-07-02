@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { SortableList } from "@/components/ui/sortable-list";
@@ -16,6 +17,7 @@ const input =
 
 /** CV editor — languages (drag to reorder, inline edit, delete). */
 export default async function LanguesPage() {
+  await requirePermission("content");
   const items = await listLanguages(prisma);
 
   const rows = items.map((l) => ({

@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@portfolio/db";
@@ -19,6 +20,7 @@ const STATUS_META: Record<string, { variant: StatusVariant; label: string }> = {
 
 /** Contact 360° view: info + deals + activity timeline + follow-up tasks. */
 export default async function ContactPage({ params }: { params: Promise<{ id: string }> }) {
+  await requirePermission("contacts");
   const { id } = await params;
   const contact = await getContact(prisma, id);
   if (!contact) notFound();

@@ -25,6 +25,7 @@ import {
   isIpRateLimited,
   isLocked,
   parseClientIp,
+  purgeOldAttempts,
   recordAttempt,
   registerAccountFailure,
   resetAccountFailures,
@@ -60,7 +61,7 @@ function getDummyHash(): Promise<string> {
  */
 export async function loginAction(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const requestHeaders = await headers();
-  const ip = parseClientIp(requestHeaders.get("x-forwarded-for"));
+  const ip = parseClientIp(requestHeaders);
   const userAgent = requestHeaders.get("user-agent");
 
   const rawEmail = formData.get("email");
@@ -102,9 +103,11 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
     return { error: GENERIC_LOGIN_ERROR };
   }
 
-  // Password OK: clear failure counters and record the success.
+  // Password OK: clear failure counters, record the success and keep the
+  // audit table bounded (retention purge piggy-backed on success).
   await resetAccountFailures(admin.id);
   await recordAttempt({ email, ip, userAgent, success: true });
+  await purgeOldAttempts();
 
   const meta = { ip, userAgent };
 
@@ -145,7 +148,7 @@ export async function verifyTotpAction(_prev: TotpState, formData: FormData): Pr
 
   const admin = session.adminUser;
   const requestHeaders = await headers();
-  const ip = parseClientIp(requestHeaders.get("x-forwarded-for"));
+  const ip = parseClientIp(requestHeaders);
   const userAgent = requestHeaders.get("user-agent");
 
   // Lockout (from password or TOTP failures) also blocks the MFA step.

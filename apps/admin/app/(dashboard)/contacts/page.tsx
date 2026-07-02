@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listContacts } from "@/lib/crm/crm";
 import { createContactAction, deleteContactAction } from "@/lib/actions/crm-actions";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 /** CRM contacts list (search, status filter, confirmed delete, create). */
 export default async function ContactsPage() {
+  await requirePermission("contacts");
   const contacts = await listContacts(prisma);
   const rows: ContactRow[] = contacts.map((c) => ({
     id: c.id,

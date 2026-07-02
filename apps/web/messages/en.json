@@ -15,5 +15,37 @@
     "thanks": "Thank you! Your testimonial has been submitted and will appear after review.",
     "error": "Something went wrong. Please try again shortly."
   },
-  "language": { "label": "Language", "fr": "Français", "en": "English" }
+  "language": { "label": "Language", "fr": "Français", "en": "English" },
+  "chat": {
+    "open": "Open the chat with {name}",
+    "assistantRole": "Yohan's e-secretary",
+    "greeting": "Hi, I'm {name}, Yohan's e-secretary. A question about his profile or projects, or would you like to schedule a call?",
+    "placeholder": "Your message…",
+    "messageLabel": "Message",
+    "unavailable": "The chat is unavailable right now.",
+    "error": "Something went wrong.",
+    "typing": "{name} is typing…",
+    "book": "Book a call",
+    "backToChat": "Chat",
+    "booking": {
+      "title": "Book a call",
+      "close": "Close the form",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "reason": "Reason for the meeting",
+      "slot": "Time slot",
+      "loading": "Loading slots…",
+      "choose": "Pick a slot",
+      "none": "No slot available",
+      "hint": "30-minute slots · Paris time",
+      "taken": "This slot was just taken. Please pick another one.",
+      "error": "Something went wrong. Please try again shortly.",
+      "submit": "Send the request",
+      "sending": "Sending…",
+      "done": "Thank you! Your appointment request is recorded. Yohan will confirm it as soon as possible and you will receive a confirmation email. See you soon!",
+      "back": "Back to chat"
+    }
+  }
 }

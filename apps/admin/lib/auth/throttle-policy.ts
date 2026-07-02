@@ -2,6 +2,7 @@
  * Pure brute-force policy (no I/O) — easy to unit-test in isolation.
  * The database-backed operations live in `throttle.ts`.
  */
+import { clientIpFromHeaders } from "@portfolio/core";
 
 /** Consecutive account failures that trigger a lockout. */
 export const MAX_ACCOUNT_FAILURES = 5;
@@ -13,18 +14,15 @@ export const IP_WINDOW_MINUTES = 15;
 export const MAX_IP_FAILURES = 20;
 
 /**
- * Extracts the client IP from an `X-Forwarded-For` header (set by the proxy).
- * The header may list `client, proxy1, ...`; the first entry is the client.
+ * Extracts the trusted client IP from the request headers (`X-Real-IP` posé
+ * par le proxy, non spoofable ; fallback dev X-Forwarded-For — cf. core).
  *
- * @param forwardedFor - The raw header value, or null.
- * @returns The client IP, or null when absent.
+ * @param headers - The incoming request headers.
+ * @returns The client IP, or null when absent (disables the per-IP check).
  */
-export function parseClientIp(forwardedFor: string | null): string | null {
-  if (!forwardedFor) {
-    return null;
-  }
-  const first = forwardedFor.split(",")[0]?.trim();
-  return first ? first : null;
+export function parseClientIp(headers: Headers): string | null {
+  const ip = clientIpFromHeaders(headers);
+  return ip === "unknown" ? null : ip;
 }
 
 /**

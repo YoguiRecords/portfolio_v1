@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { listProjects } from "@/lib/content/project";
 import {
@@ -11,6 +12,7 @@ export const dynamic = "force-dynamic";
 
 /** Liste Projets v2 (DataTable CRUD : recherche, filtres, pagination, suppression confirmée). */
 export default async function ProjectsPage() {
+  await requirePermission("projects");
   const projects = await listProjects(prisma);
   const rows: ProjectRow[] = projects.map((p) => ({
     id: p.id,

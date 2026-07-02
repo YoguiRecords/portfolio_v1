@@ -1,4 +1,5 @@
 import { prisma } from "@portfolio/db";
+import { secretEquals } from "@portfolio/core";
 import { publishDue } from "../../../../lib/publishing/publish-due";
 
 /**
@@ -14,7 +15,7 @@ import { publishDue } from "../../../../lib/publishing/publish-due";
 export async function POST(request: Request): Promise<Response> {
   const secret = process.env.CRON_SECRET;
   const provided = request.headers.get("authorization");
-  if (!secret || provided !== `Bearer ${secret}`) {
+  if (!secret || !provided || !secretEquals(provided, `Bearer ${secret}`)) {
     return new Response("Unauthorized", { status: 401 });
   }
 

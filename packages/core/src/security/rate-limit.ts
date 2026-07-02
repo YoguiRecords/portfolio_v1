@@ -22,6 +22,7 @@ export interface RateLimitOptions {
  * @returns true if allowed, false if the limit is exceeded.
  */
 export function allow(key: string, options: RateLimitOptions, now: number = Date.now()): boolean {
+  sweepIfOversized(options.windowMs, now);
   const recent = (store.get(key) ?? []).filter((t) => now - t < options.windowMs);
   if (recent.length >= options.max) {
     store.set(key, recent);
@@ -30,6 +31,26 @@ export function allow(key: string, options: RateLimitOptions, now: number = Date
   recent.push(now);
   store.set(key, recent);
   return true;
+}
+
+/**
+ * Keeps the store bounded against key-rotation abuse (e.g. an IP sweep): past
+ * the threshold, every bucket with no hit inside the window is evicted.
+ */
+const SWEEP_THRESHOLD = 10_000;
+
+function sweepIfOversized(windowMs: number, now: number): void {
+  if (store.size <= SWEEP_THRESHOLD) return;
+  for (const [key, hits] of store) {
+    if (!hits.some((t) => now - t < windowMs)) {
+      store.delete(key);
+    }
+  }
+}
+
+/** Number of tracked buckets (test helper). */
+export function rateLimitSize(): number {
+  return store.size;
 }
 
 /** Clears all rate-limit buckets (test helper). */

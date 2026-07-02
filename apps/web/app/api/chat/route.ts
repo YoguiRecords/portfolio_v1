@@ -1,37 +1,18 @@
 import { prisma } from "@portfolio/db";
-import { allow, assertBudget, buildContext, recordUsage } from "@portfolio/core";
-import { runChat, type ChatTurn } from "../../../lib/chat/run";
+import {
+  allow,
+  assertBudget,
+  buildContext,
+  clientIpFromHeaders,
+  estimateTokens,
+  parseChatHistory,
+  recordUsage,
+} from "@portfolio/core";
+import { readJsonBody } from "../../../lib/http/public-request";
+import { runChat } from "../../../lib/chat/run";
 import { buildChatLlm } from "../../../lib/chat/llm";
 
 const RATE = { max: 12, windowMs: 10 * 60 * 1000 }; // 12 / 10 min / IP
-
-/** Rough token estimate (≈ 4 chars/token) for the monthly budget guard. */
-function estimateTokens(text: string): number {
-  return Math.ceil(text.length / 4);
-}
-
-function clientIp(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
-
-/** Validates the chat history payload. */
-function parseHistory(body: unknown): ChatTurn[] | null {
-  if (!body || typeof body !== "object" || !Array.isArray((body as { messages?: unknown }).messages)) {
-    return null;
-  }
-  const raw = (body as { messages: unknown[] }).messages;
-  const turns: ChatTurn[] = [];
-  for (const m of raw.slice(-12)) {
-    if (m && typeof m === "object" && "role" in m && "content" in m) {
-      const role = (m as { role: unknown }).role;
-      const content = (m as { content: unknown }).content;
-      if ((role === "user" || role === "assistant") && typeof content === "string") {
-        turns.push({ role, content: content.slice(0, 2000) });
-      }
-    }
-  }
-  return turns.length ? turns : null;
-}
 
 /**
  * Public chatbot endpoint. Disabled by default (`AiAssistantConfig
@@ -44,18 +25,16 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: "disabled" }, { status: 404 });
   }
 
-  const ip = clientIp(request);
+  const ip = clientIpFromHeaders(request.headers);
   if (!allow(`chat:${ip}`, RATE)) {
     return new Response("Too Many Requests", { status: 429 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
+  const body = await readJsonBody(request);
+  if (body === null) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
-  const history = parseHistory(body);
+  const history = parseChatHistory(body);
   if (!history) return Response.json({ error: "invalid" }, { status: 400 });
 
   // Monthly token budget guard (cost / abuse control, on top of the rate-limit).

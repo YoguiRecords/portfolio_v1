@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { generateCvExports } from "@/lib/cv/generate";
 import { buildCvPorts } from "@/lib/cv/ports";
 import {
@@ -23,37 +23,16 @@ import {
   deleteInterest,
   reorderInterests,
 } from "@/lib/content/cv-corpus";
+import { csv, lines, str } from "./form-utils";
 
 /**
  * Generates the CV PDF for FR + EN via the internal `cv-renderer`, stores them in
  * MinIO and upserts the `CvExport` rows. Authenticated admin action.
  */
 export async function generateCvPdfAction(): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await generateCvExports(buildCvPorts());
   revalidatePath("/cv");
-}
-
-/** Reads an optional string FormData field (empty → undefined). */
-function str(form: FormData, key: string): string | undefined {
-  const v = form.get(key);
-  return typeof v === "string" && v.trim() !== "" ? v : undefined;
-}
-
-/** Splits a comma-separated field into trimmed, non-empty values. */
-function csv(form: FormData, key: string): string[] {
-  return (str(form, key) ?? "")
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-}
-
-/** Splits a textarea field into trimmed, non-empty lines (one item per line). */
-function lines(form: FormData, key: string): string[] {
-  return (str(form, key) ?? "")
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
 }
 
 /** Parses a hidden ordered id list (comma-joined) used by drag-reorder. */
@@ -83,14 +62,14 @@ function experienceFields(form: FormData) {
 // ── Experiences ──
 
 export async function createExperienceAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await createExperience(prisma, experienceFields(form));
   revalidatePath("/experiences");
   revalidatePath("/cv");
 }
 
 export async function updateExperienceAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (!id) return;
   await updateExperience(prisma, { id, ...experienceFields(form) });
@@ -99,7 +78,7 @@ export async function updateExperienceAction(form: FormData): Promise<void> {
 }
 
 export async function deleteExperienceAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (id) await deleteExperience(prisma, id);
   revalidatePath("/experiences");
@@ -107,7 +86,7 @@ export async function deleteExperienceAction(form: FormData): Promise<void> {
 }
 
 export async function reorderExperiencesAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await reorderExperiences(prisma, idList(form));
   revalidatePath("/experiences");
   revalidatePath("/cv");
@@ -128,14 +107,14 @@ function educationFields(form: FormData) {
 }
 
 export async function createEducationAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await createEducation(prisma, educationFields(form));
   revalidatePath("/formations");
   revalidatePath("/cv");
 }
 
 export async function updateEducationAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (!id) return;
   await updateEducation(prisma, { id, ...educationFields(form) });
@@ -144,7 +123,7 @@ export async function updateEducationAction(form: FormData): Promise<void> {
 }
 
 export async function deleteEducationAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (id) await deleteEducation(prisma, id);
   revalidatePath("/formations");
@@ -152,7 +131,7 @@ export async function deleteEducationAction(form: FormData): Promise<void> {
 }
 
 export async function reorderEducationAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await reorderEducation(prisma, idList(form));
   revalidatePath("/formations");
   revalidatePath("/cv");
@@ -161,7 +140,7 @@ export async function reorderEducationAction(form: FormData): Promise<void> {
 // ── Languages ──
 
 export async function createLanguageAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await createLanguage(prisma, {
     name: str(form, "name"),
     level: str(form, "level"),
@@ -172,7 +151,7 @@ export async function createLanguageAction(form: FormData): Promise<void> {
 }
 
 export async function updateLanguageAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (!id) return;
   await updateLanguage(prisma, {
@@ -186,7 +165,7 @@ export async function updateLanguageAction(form: FormData): Promise<void> {
 }
 
 export async function deleteLanguageAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (id) await deleteLanguage(prisma, id);
   revalidatePath("/langues");
@@ -194,7 +173,7 @@ export async function deleteLanguageAction(form: FormData): Promise<void> {
 }
 
 export async function reorderLanguagesAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await reorderLanguages(prisma, idList(form));
   revalidatePath("/langues");
   revalidatePath("/cv");
@@ -203,7 +182,7 @@ export async function reorderLanguagesAction(form: FormData): Promise<void> {
 // ── Interests ──
 
 export async function createInterestAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await createInterest(prisma, {
     label: str(form, "label"),
     order: Number(form.get("order") ?? 0),
@@ -213,7 +192,7 @@ export async function createInterestAction(form: FormData): Promise<void> {
 }
 
 export async function updateInterestAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (!id) return;
   await updateInterest(prisma, {
@@ -226,7 +205,7 @@ export async function updateInterestAction(form: FormData): Promise<void> {
 }
 
 export async function deleteInterestAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   const id = str(form, "id");
   if (id) await deleteInterest(prisma, id);
   revalidatePath("/interets");
@@ -234,7 +213,7 @@ export async function deleteInterestAction(form: FormData): Promise<void> {
 }
 
 export async function reorderInterestsAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("content"));
   await reorderInterests(prisma, idList(form));
   revalidatePath("/interets");
   revalidatePath("/cv");

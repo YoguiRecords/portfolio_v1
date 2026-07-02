@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@portfolio/db";
-import { requireEnrolledSession } from "@/lib/auth/guards";
+import { assertCanWrite, requirePermission } from "@/lib/auth/guards";
 import { createUnavailability, deleteUnavailability } from "@/lib/booking/unavailability";
 
 /** Creates an unavailability (holiday / block) from the BO form. */
 export async function createUnavailabilityAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("appointments"));
   const startAt = form.get("startAt");
   const endAt = form.get("endAt");
   const reason = form.get("reason");
@@ -22,7 +22,7 @@ export async function createUnavailabilityAction(form: FormData): Promise<void> 
 
 /** Deletes an unavailability by id. */
 export async function deleteUnavailabilityAction(form: FormData): Promise<void> {
-  await requireEnrolledSession();
+  assertCanWrite(await requirePermission("appointments"));
   const id = form.get("id");
   if (typeof id === "string" && id) await deleteUnavailability(prisma, id);
   revalidatePath("/disponibilites");

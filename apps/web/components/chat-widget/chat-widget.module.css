@@ -187,3 +187,22 @@
   font-size: 13px;
   margin: 0;
 }
+.bookingHint {
+  color: var(--on-dark-2);
+  font-size: 12px;
+  margin: -4px 0 0;
+}
+.typing {
+  opacity: 0.7;
+  font-style: italic;
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+@keyframes typingPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}

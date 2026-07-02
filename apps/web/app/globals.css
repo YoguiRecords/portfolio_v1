@@ -11,8 +11,10 @@
 :root {
   --accent: #f0a800;
   --accent-strong: #c07800;
+  --accent-deep: #9a6000; /* départ des dégradés or (viz « Le cap ») */
   --accent-soft: rgba(240, 168, 0, 0.1);
   --accent-faint: rgba(240, 168, 0, 0.07);
+  --line-subtle: #3a3d41; /* traits discrets sur fond sombre (grilles, pointillés) */
 
   --dark-900: #111111;
   --dark-800: #1c1c1c;

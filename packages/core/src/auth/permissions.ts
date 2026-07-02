@@ -25,6 +25,7 @@ export const BO_MODULES = [
   "contacts",
   "companies",
   "pipeline",
+  "tasks",
   "ai",
   "settings",
   "users",
@@ -52,7 +53,7 @@ export const ROLE_PRESETS: Record<AdminRole, BoModule[]> = {
     "agenda",
     "testimonials",
   ],
-  SECRETARY: ["dashboard", "inbox", "appointments", "calendar", "agenda", "contacts"],
+  SECRETARY: ["dashboard", "inbox", "appointments", "calendar", "agenda", "contacts", "tasks"],
   // VIEWER : tous les modules mais en lecture seule (verrou d'écriture + masquage PII).
   VIEWER: [...BO_MODULES],
 };

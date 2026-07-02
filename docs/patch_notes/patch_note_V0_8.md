@@ -1,5 +1,51 @@
 # Patch notes — v0.8.x
 
+## v0.8.5 — 2026-07-02 — Audit complet + remédiation (sécurité, qualité, UX)
+
+Audit professionnel de tout le code (rapport : `docs/audit/2026-07-01-audit.md`) suivi de
+l'exécution de 3 plans de remédiation (`docs/plans/2026-07-02-audit-remediation-*.md`).
+
+### Sécurité
+- **Caddy bloque `/api/internal/*`** sur l'hôte admin (l'API booking interne aurait été joignable
+  d'Internet en prod, token seul en défense).
+- **CSP + Permissions-Policy par hôte** au proxy (validées navigateur : web, BO, iframe CV — 0 violation).
+- **RBAC câblé partout (DT8, volet enforcement)** : `requirePermission(<module>)` sur ~35 pages BO
+  et `assertCanWrite` sur 85+ Server Actions mutantes (nouveau module `tasks`). Un VIEWER est rejeté
+  serveur-side sur toute écriture.
+- **IP de confiance** : Caddy écrase `X-Real-IP` ; tout le rate-limit public + le throttle login
+  lisent ce header (l'ancien premier saut d'`X-Forwarded-For` était spoofable → contournement).
+- Rate-limiter : **purge anti-fuite mémoire** au-delà de 10 000 buckets.
+- Comparaisons de secrets en **temps constant** (token interne, cron, token CV) ; le token CV
+  n'est plus accepté en query param ; **rétention 90 j** des `LoginAttempt`.
+
+### Qualité / dette
+- **`services/converter` (mort) supprimé** ; `image-processor` durci (limite 10 Mo avant décodage,
+  garde anti décompression-bomb, erreurs génériques, HOME non-root) — upload réel revalidé.
+- `estimateTokens` **unifié dans core** (2 copies divergentes → budget compté pareil partout).
+- Boilerplate des routes publiques (parse JSON + honeypot) et helpers FormData (`str/csv/lines/reqId`)
+  **partagés et testés** (7 copies supprimées).
+- `content-actions.ts` scindé par domaine (**career-actions**, **analysis-actions**).
+- Zod complété : historique du chat (`parseChatHistory`, tolérant, testé), formulaire `/ai`,
+  type d'analyse validé ; codes d'erreur IA **stables** (plus de message brut).
+
+### UX / i18n
+- **Pages 404 / erreur à la DA** (code or géant + CTA retour) — fini la 404 Next brute.
+- **Créneaux groupés par jour** (`optgroup`) + mention « Créneaux de 30 min · heure de Paris »
+  (fini le select plat de 132 options) — chat **et** formulaire RDV de `/contact` (qui propose
+  désormais les **vraies disponibilités** au lieu d'un champ date libre).
+- **Chat + réservation bilingues** : libellés dans les catalogues next-intl (premiers vrais
+  consommateurs) — un visiteur `/en` a Friday en anglais.
+- Chat accessible : fil en **live region** (`role="log"`, annonce des réponses) + indicateur
+  « Friday écrit… » pendant l'attente.
+- BO `/rdv` : onglet **« Annulés »** ; SVG « Le cap » en **tokens DA** (`--accent-deep`,
+  `--line-subtle`) au lieu d'hex en dur.
+
+### Gate
+- 399 tests unit/intégration verts + **23/23 E2E** (serveurs frais) + lint/typecheck OK.
+- Constats restants (P2/P3 non traités cette nuit) : voir le rapport §8 (i18n libellés éditoriaux
+  hardcodés type `public-cv`, suppression de médias au BO, ports dev dans le compose de base,
+  `globals.css` web en `:root` vs `@theme`, cache court du site public).
+
 ## v0.8.4 — 2026-07-01 — Réservation de créneaux par Friday
 
 Friday peut désormais **réserver un rendez-vous** de bout en bout.

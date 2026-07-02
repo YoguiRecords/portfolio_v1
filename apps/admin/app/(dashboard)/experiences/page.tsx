@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { SortableList } from "@/components/ui/sortable-list";
@@ -23,6 +24,7 @@ function dateValue(d: Date | null): string {
 
 /** CV editor — work experiences (drag to reorder, inline edit, delete). */
 export default async function ExperiencesPage() {
+  await requirePermission("content");
   const experiences = await listExperiences(prisma);
 
   const rows = experiences.map((e) => ({

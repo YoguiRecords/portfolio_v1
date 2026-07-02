@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { getMailbox } from "@/lib/integrations/factory";
 import { aggregateInbox } from "@/lib/inbox/aggregate";
@@ -12,6 +13,7 @@ export const dynamic = "force-dynamic";
  * page `[source]/[id]` s'affichent dans le panneau droit (`children`).
  */
 export default async function InboxLayout({ children }: { children: ReactNode }) {
+  await requirePermission("inbox");
   const items = await aggregateInbox(
     {
       mailbox: getMailbox(),

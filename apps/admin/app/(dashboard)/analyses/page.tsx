@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import {
   ANALYSIS_DEFAULTS,
@@ -11,7 +12,7 @@ import {
 } from "@portfolio/core";
 import { ConfirmSubmitButton } from "@/components/ui";
 import { listAnalyses } from "@/lib/content/analysis";
-import { upsertAnalysisAction, deleteAnalysisAction } from "@/lib/actions/content-actions";
+import { upsertAnalysisAction, deleteAnalysisAction } from "@/lib/actions/analysis-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,7 @@ const ORDER: Record<AnalysisType, number> = { SWOT: 0, FOUR_P: 1, GOLDEN_CIRCLE:
 
 /** Profile analyses editor: SWOT / 4P / Golden Circle / Ikigai (one per type). */
 export default async function AnalysesPage() {
+  await requirePermission("analyses");
   const analyses = await listAnalyses(prisma);
   const byType = new Map(analyses.map((a) => [a.type as AnalysisType, a]));
 

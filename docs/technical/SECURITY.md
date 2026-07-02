@@ -33,7 +33,12 @@ Posture de sécurité du portfolio. La cybersécurité prime sur tout le reste :
 ## Reverse proxy
 - HTTPS automatique en production. En-têtes de sécurité appliqués à toutes les réponses :
   `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
-  `Referrer-Policy`. En-tête `Server` masqué.
+  `Referrer-Policy`, `Permissions-Policy` (caméra/micro/géoloc désactivés). En-tête `Server` masqué.
+- **Content-Security-Policy par hôte** : `default-src 'self'` partout, `frame-ancestors 'none'`,
+  `base-uri 'self'`, `form-action 'self'`. Le site public autorise le script/connect Umami
+  (`STATS_SITE`) ; l'admin autorise `img-src https:` (avatars MinIO/Graph) et `frame-src 'self'`
+  (aperçu CV en iframe). L'origine des images est pilotée par `MEDIA_ORIGIN` (vide en prod :
+  `/media/*` est servi même origine).
 
 ## Back office
 Le back office est accessible en ligne et durci : authentification forte (mots de passe hachés
@@ -41,6 +46,10 @@ argon2id), **MFA TOTP obligatoire**, rate-limit par IP et lockout de compte sur 
 session `httpOnly`/`Secure`/`SameSite`, protection CSRF, messages d'erreur génériques (anti-énumération).
 - **Sessions opaques** : token aléatoire 256 bits en cookie ; seul son hash SHA-256 est stocké
   (pas de JWT). Validité vérifiée côté serveur (le proxy ne fait qu'une garde sur la présence du cookie).
+- **RBAC effectif partout** (défense en profondeur) : chaque page du BO appelle
+  `requirePermission(<module>)` et chaque Server Action mutante `assertCanWrite(await
+  requirePermission(<module>))` — un rôle sans le module est renvoyé sur `/403`, un compte
+  VIEWER (lecture seule) est rejeté côté serveur sur toute écriture.
 - **Isolation des secrets** : les tables d'authentification (`AdminUser`, `Session`, `LoginAttempt`)
   sont inaccessibles au rôle `app_web` (REVOKE explicite) → une compromission du site public
   n'expose ni les hashes ni les secrets TOTP.
@@ -94,8 +103,9 @@ Application Access Policy → rayon de souffle limité. Détail : `docs/technica
 ## Réservation de créneaux (chatbot Friday)
 - Le site public (`app_web`, lecture seule) **ne lit jamais** le calendrier ni les RDV privés. Le
   calcul des disponibilités, la réservation et l'annulation sont **centralisés dans `admin`** et
-  exposés via une **API interne** (`/api/internal/*`) : **jamais routée par Caddy**, sur le réseau
-  Docker `internal`, **gardée par token** (`APPOINTMENTS_INTERNAL_TOKEN`, en-tête `x-internal-token`,
+  exposés via une **API interne** (`/api/internal/*`) : **bloquée par Caddy** sur l'hôte admin
+  (`handle /api/internal/* → 404`), joignable uniquement sur le réseau Docker `internal`, et
+  **gardée par token** (`APPOINTMENTS_INTERNAL_TOKEN`, en-tête `x-internal-token`,
   fail-closed si absent). La middleware BO exempte `/api/internal` de la session (c'est le token qui
   protège). `web` proxifie ces routes (`/api/availability`, `/api/booking`, `/api/booking/cancel`).
 - Entrées validées **Zod** (`BookingInput`) aux deux frontières. **Anti double-booking** garanti par

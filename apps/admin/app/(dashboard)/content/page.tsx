@@ -1,3 +1,4 @@
+import { requirePermission } from "@/lib/auth/guards";
 import { prisma } from "@portfolio/db";
 import { Button, ConfirmSubmitButton, PageContainer } from "@/components/ui";
 import { listKpis } from "@/lib/content/kpi";
@@ -16,6 +17,7 @@ const inputCls =
 
 /** Content editor — home sections + KPIs (token-based v2 UI). */
 export default async function ContentPage() {
+  await requirePermission("content");
   const [kpis, sections] = await Promise.all([listKpis(prisma), listSections(prisma)]);
 
   return (
