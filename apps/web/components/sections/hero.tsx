@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "../../i18n/navigation";
 import { Typewriter } from "../typewriter";
 import type { HomeData } from "../../lib/data/home";
@@ -6,13 +7,14 @@ import type { HomeData } from "../../lib/data/home";
  * Hero chapter: credit line, name, animated typewriter, lead (bio), signature,
  * CTAs and the duotone portrait frame. All copy comes from the Profile row.
  */
-export function Hero({
+export async function Hero({
   profile,
   section,
 }: {
   profile: NonNullable<HomeData["profile"]>;
   section?: HomeData["sections"][number];
 }) {
+  const t = await getTranslations("nav");
   const lines =
     profile.typewriterLines.length > 0 ? profile.typewriterLines : [profile.headline];
   const initials = profile.fullName
@@ -34,10 +36,10 @@ export function Hero({
           {profile.sigText ? <span className="sig">{profile.sigText}</span> : null}
           <div className="cta">
             <a href="#about" className="btn btn-primary">
-              Découvrir le profil →
+              {t("discover")} →
             </a>
             <Link href="/cv" className="btn btn-ghost on-dark">
-              Le CV
+              {t("cv")}
             </Link>
           </div>
         </div>
