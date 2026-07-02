@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import styles from "./forms.module.css";
+import { SlotSelect } from "./slot-select";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
@@ -66,8 +67,8 @@ export function AppointmentForm() {
           <input id="a-topic" name="topic" maxLength={150} />
         </div>
         <div className={styles.field}>
-          <label htmlFor="a-when">Créneau souhaité (optionnel)</label>
-          <input id="a-when" name="requestedAt" type="datetime-local" />
+          <label htmlFor="a-when">Créneau souhaité (optionnel — 30 min, sous réserve de confirmation)</label>
+          <SlotSelect id="a-when" name="requestedAt" />
         </div>
       </div>
       <div className={styles.field}>
