@@ -13,10 +13,9 @@
   `requirePermission` sur chaque page et `assertCanWrite` sur chaque action mutante (module `tasks` ajouté).
   **Reste (DT8)** : filtre nav par permissions, UI gestion comptes (`/utilisateurs`), onboarding invitation,
   login isActive, zxcvbn. — `phase-16-bo-users-rbac.md`
-- [ ] **Audit v0.8.5 — reliquats P2/P3** (rapport `docs/audit/2026-07-01-audit.md` §8) : i18n des
-  libellés éditoriaux (public-cv, hero CTA), suppression de médias au BO (avec garde d'usage),
-  ports dev (db/minio/umami) → override compose, `globals.css` web en `@theme`, cache court du
-  site public, décision converter sharp (option A) si besoin.
+- [ ] **i18n restante (mineure)** : formulaires publics `/contact` et libellés de la page
+  d'annulation RDV encore en dur FR (visibles sur `/en`) — basculer sur les catalogues comme le
+  chat. _(hero/chat/booking livrés v0.8.5-0.8.6 ; LABELS colocalisés de `public-cv` = décision actée)._
 - [x] **P17 — Chatbot public IA** — fonctionnel : contexte events à venir (prochain évènement) + contenu public + widget conditionné à l'activation. _Reste : toggle BO d'activation + câblage outil RDV (DT)._
 
 ## Recette QA (2026-07-01) — reste à traiter
