@@ -16,7 +16,7 @@ import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
  * - `/internal/*`   : the CV document printed by `cv-renderer` (`CV_RENDER_TOKEN`).
  * - `/api/internal/*`: the booking API called by `web` (`APPOINTMENTS_INTERNAL_TOKEN`).
  */
-const PUBLIC_PATHS = ["/login", "/internal", "/api/internal"];
+const PUBLIC_PATHS = ["/login", "/internal", "/api/internal", "/robots.txt"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
