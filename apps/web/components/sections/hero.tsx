@@ -2,6 +2,7 @@ import { preload } from "react-dom";
 import { getTranslations } from "next-intl/server";
 import { Link } from "../../i18n/navigation";
 import { Typewriter } from "../typewriter";
+import { sameOriginMediaUrl } from "../../lib/media-url";
 import type { HomeData } from "../../lib/data/home";
 
 /**
@@ -16,9 +17,11 @@ export async function Hero({
   section?: HomeData["sections"][number];
 }) {
   const t = await getTranslations("nav");
-  // LCP element: hint the browser as early as possible (preload + high priority).
-  if (profile.avatar) {
-    preload(profile.avatar.url, { as: "image", fetchPriority: "high" });
+  // LCP element: same-origin URL (no connection handshake on the critical
+  // path) + preload with high priority.
+  const avatarSrc = profile.avatar ? sameOriginMediaUrl(profile.avatar.url) : null;
+  if (avatarSrc) {
+    preload(avatarSrc, { as: "image", fetchPriority: "high" });
   }
   const lines =
     profile.typewriterLines.length > 0 ? profile.typewriterLines : [profile.headline];
@@ -49,12 +52,13 @@ export async function Hero({
           </div>
         </div>
         <figure className="photoframe">
-          {profile.avatar ? (
-            // eslint-disable-next-line @next/next/no-img-element -- external MinIO URL, sized by CSS
+          {avatarSrc && profile.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element -- MinIO object served same-origin, sized by CSS
             <img
-              src={profile.avatar.url}
+              src={avatarSrc}
               alt={profile.fullName}
               fetchPriority="high"
+              decoding="sync"
               width={profile.avatar.width ?? undefined}
               height={profile.avatar.height ?? undefined}
             />

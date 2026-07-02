@@ -12,6 +12,7 @@ import { SiteFooter, type FooterSocial } from "../../components/site-footer";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { LanguageSwitch } from "../../components/language-switch/language-switch";
 import { ChatWidgetLazy } from "../../components/chat-widget/chat-widget-lazy";
+import { sameOriginMediaUrl } from "../../lib/media-url";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,10 +36,16 @@ const SECTION_ANCHORS: Record<string, string> = {
 };
 
 // DB-driven layout (nav/footer/metadata), rendu à la demande puis mis en cache
-// 60 s (ISR). Pas de generateStaticParams : le build des images Docker n'a pas
-// accès à la DB, le premier hit runtime peuple le cache. Bonus : la réponse
-// n'est plus `no-store` → back/forward cache navigateur utilisable.
+// 60 s (ISR). `generateStaticParams` renvoie [] exprès : rien n'est prérendu au
+// build (les images Docker se construisent sans DB) mais la route reste
+// éligible à l'ISR à la demande — sans lui, Next la traite en full dynamic
+// (`no-store`, back/forward cache navigateur bloqué).
 export const revalidate = 60;
+export const dynamicParams = true;
+
+export function generateStaticParams(): Array<{ locale: string }> {
+  return [];
+}
 
 /** Builds metadata from SiteSettings (falls back to the profile). */
 export async function generateMetadata({
@@ -103,7 +110,7 @@ export default async function LocaleLayout({
           <ChatWidgetLazy
             enabled={chatConfig?.isPublicChatEnabled ?? false}
             name={chatConfig?.assistantName ?? "Friday"}
-            avatarUrl={chatConfig?.assistantAvatarUrl ?? null}
+            avatarUrl={chatConfig?.assistantAvatarUrl ? sameOriginMediaUrl(chatConfig.assistantAvatarUrl) : null}
           />
         </NextIntlClientProvider>
       </body>
