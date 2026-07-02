@@ -67,3 +67,6 @@ Thumbs.db
 
 # Visual QA (screenshots / scripts locaux, non versionnés)
 .shots/
+
+# Override Docker local (DEV uniquement : publie 3100/3101 sur localhost). Jamais en prod.
+docker-compose.override.yml

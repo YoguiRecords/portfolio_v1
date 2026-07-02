@@ -16,15 +16,12 @@ services:
       UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD}
       WEB_DB_PASSWORD: ${WEB_DB_PASSWORD}
       ADMIN_DB_PASSWORD: ${ADMIN_DB_PASSWORD}
-    ports:
-      - "5436:5432" # DEV uniquement (outils). Interne en prod.
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./datas/init:/docker-entrypoint-initdb.d:ro
-    # `edge` est requis en DEV pour publier le port 5436 (un réseau `internal: true`
-    # n'est pas routable depuis l'hôte). En PROD : retirer `edge` ET le mapping de port
-    # → `db` redevient strictement interne. À déplacer dans un docker-compose.override.yml.
-    networks: [internal, edge]
+    # Strictement interne. Le port dev (5436) et l'accès `edge` qu'il exige
+    # vivent dans docker-compose.override.yml (git-ignoré, cf. l'example).
+    networks: [internal]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
@@ -54,9 +51,8 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    ports:
-      - "9100:9000" # API S3
-      - "9101:9001" # console (DEV)
+    # Ports dev (API S3 9100 / console 9101) dans docker-compose.override.yml.
+    # `edge` reste requis en prod : Caddy route /media/* vers minio:9000.
     volumes:
       - minio-data:/data
     networks: [internal, edge]
@@ -129,8 +125,7 @@ services:
       DATABASE_TYPE: postgresql
       DATABASE_URL: postgresql://${UMAMI_DB_USER}:${UMAMI_DB_PASSWORD}@db:5432/umami
       APP_SECRET: ${UMAMI_APP_SECRET}
-    ports:
-      - "3102:3000" # DEV (dashboard). Via proxy en prod.
+    # Port dev (3102, dashboard direct) dans docker-compose.override.yml. Via proxy en prod.
     depends_on:
       db:
         condition: service_healthy
