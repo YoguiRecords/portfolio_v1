@@ -1,28 +1,21 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { groupSlotsByDay } from "../../lib/booking/slots";
 import styles from "./chat-widget.module.css";
 
 type Status = "idle" | "sending" | "done" | "taken" | "error";
 
-/** Formats an ISO slot start for display (French, Europe/Paris). */
-function slotLabel(iso: string): string {
-  return new Date(iso).toLocaleString("fr-FR", {
-    timeZone: "Europe/Paris",
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 /**
- * In-chat booking card. Loads the real free slots, collects the visitor's
- * identity (first/last name, email, phone) + reason + chosen slot, and submits
- * to `/api/booking`. Validated server-side (Zod) — no LLM field extraction.
+ * In-chat booking card. Loads the real free slots (grouped by Paris day),
+ * collects the visitor's identity (first/last name, email, phone) + reason +
+ * chosen slot, and submits to `/api/booking`. Validated server-side (Zod) —
+ * no LLM field extraction.
  */
 export function BookingForm({ onClose }: { onClose: () => void }) {
+  const t = useTranslations("chat.booking");
+  const locale = useLocale();
   const [slots, setSlots] = useState<string[] | null>(null);
   const [status, setStatus] = useState<Status>("idle");
 
@@ -84,54 +77,54 @@ export function BookingForm({ onClose }: { onClose: () => void }) {
   if (status === "done") {
     return (
       <div className={styles.booking}>
-        <p className={`${styles.msg} ${styles.assistant}`}>
-          Merci ! Votre demande de rendez-vous est enregistrée. Yohan la validera dès que possible
-          et vous recevrez un email de confirmation. À très vite&nbsp;!
-        </p>
+        <p className={`${styles.msg} ${styles.assistant}`}>{t("done")}</p>
         <button type="button" className={styles.bookingSecondary} onClick={onClose}>
-          Retour au chat
+          {t("back")}
         </button>
       </div>
     );
   }
 
+  const groups = groupSlotsByDay(slots ?? [], locale);
+
   return (
     <form className={styles.booking} onSubmit={onSubmit}>
       <div className={styles.bookingHead}>
-        <strong>Réserver un échange</strong>
-        <button type="button" className={styles.bookingClose} onClick={onClose} aria-label="Fermer le formulaire">
+        <strong>{t("title")}</strong>
+        <button type="button" className={styles.bookingClose} onClick={onClose} aria-label={t("close")}>
           ✕
         </button>
       </div>
 
       <div className={styles.bookingRow}>
-        <input name="firstName" placeholder="Prénom" required maxLength={60} aria-label="Prénom" />
-        <input name="lastName" placeholder="Nom" required maxLength={60} aria-label="Nom" />
+        <input name="firstName" placeholder={t("firstName")} required maxLength={60} aria-label={t("firstName")} />
+        <input name="lastName" placeholder={t("lastName")} required maxLength={60} aria-label={t("lastName")} />
       </div>
-      <input name="email" type="email" placeholder="Email" required maxLength={120} aria-label="Email" />
-      <input name="phone" type="tel" placeholder="Téléphone" required maxLength={30} aria-label="Téléphone" />
-      <input name="reason" placeholder="Motif du rendez-vous" required maxLength={300} aria-label="Motif" />
+      <input name="email" type="email" placeholder={t("email")} required maxLength={120} aria-label={t("email")} />
+      <input name="phone" type="tel" placeholder={t("phone")} required maxLength={30} aria-label={t("phone")} />
+      <input name="reason" placeholder={t("reason")} required maxLength={300} aria-label={t("reason")} />
 
-      <select name="requestedAt" required aria-label="Créneau" defaultValue="">
+      <select name="requestedAt" required aria-label={t("slot")} defaultValue="">
         <option value="" disabled>
-          {slots === null ? "Chargement des créneaux…" : slots.length ? "Choisir un créneau" : "Aucun créneau disponible"}
+          {slots === null ? t("loading") : slots.length ? t("choose") : t("none")}
         </option>
-        {(slots ?? []).map((iso) => (
-          <option key={iso} value={iso}>
-            {slotLabel(iso)}
-          </option>
+        {groups.map((group) => (
+          <optgroup key={group.dayLabel} label={group.dayLabel}>
+            {group.slots.map((slot) => (
+              <option key={slot.iso} value={slot.iso}>
+                {slot.timeLabel}
+              </option>
+            ))}
+          </optgroup>
         ))}
       </select>
+      <p className={styles.bookingHint}>{t("hint")}</p>
 
-      {status === "taken" ? (
-        <p className={styles.bookingError}>Ce créneau vient d’être pris. Choisissez-en un autre.</p>
-      ) : null}
-      {status === "error" ? (
-        <p className={styles.bookingError}>Une erreur est survenue. Réessayez dans un instant.</p>
-      ) : null}
+      {status === "taken" ? <p className={styles.bookingError}>{t("taken")}</p> : null}
+      {status === "error" ? <p className={styles.bookingError}>{t("error")}</p> : null}
 
       <button type="submit" className={styles.bookingSubmit} disabled={status === "sending" || !slots?.length}>
-        {status === "sending" ? "Envoi…" : "Envoyer la demande"}
+        {status === "sending" ? t("sending") : t("submit")}
       </button>
     </form>
   );

@@ -15,5 +15,37 @@
     "thanks": "Merci ! Votre témoignage a été soumis et sera affiché après validation.",
     "error": "Une erreur est survenue. Réessayez dans un instant."
   },
-  "language": { "label": "Langue", "fr": "Français", "en": "English" }
+  "language": { "label": "Langue", "fr": "Français", "en": "English" },
+  "chat": {
+    "open": "Ouvrir le chat avec {name}",
+    "assistantRole": "e-secrétaire de Yohan",
+    "greeting": "Bonjour, je suis {name}, l’e-secrétaire de Yohan. Une question sur son profil, ses projets, ou envie de planifier un échange ?",
+    "placeholder": "Votre message…",
+    "messageLabel": "Message",
+    "unavailable": "Le chat n'est pas disponible pour le moment.",
+    "error": "Une erreur est survenue.",
+    "typing": "{name} écrit…",
+    "book": "Prendre RDV",
+    "backToChat": "Chat",
+    "booking": {
+      "title": "Réserver un échange",
+      "close": "Fermer le formulaire",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "reason": "Motif du rendez-vous",
+      "slot": "Créneau",
+      "loading": "Chargement des créneaux…",
+      "choose": "Choisir un créneau",
+      "none": "Aucun créneau disponible",
+      "hint": "Créneaux de 30 min · heure de Paris",
+      "taken": "Ce créneau vient d’être pris. Choisissez-en un autre.",
+      "error": "Une erreur est survenue. Réessayez dans un instant.",
+      "submit": "Envoyer la demande",
+      "sending": "Envoi…",
+      "done": "Merci ! Votre demande de rendez-vous est enregistrée. Yohan la validera dès que possible et vous recevrez un email de confirmation. À très vite !",
+      "back": "Retour au chat"
+    }
+  }
 }

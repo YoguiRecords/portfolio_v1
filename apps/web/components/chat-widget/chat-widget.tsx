@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./chat-widget.module.css";
 import { BookingForm } from "./booking-form";
 
@@ -12,7 +13,8 @@ interface Turn {
 /**
  * Public chatbot widget (client island). Sends the history to `/api/chat`; if
  * the chat is disabled (404) it shows a graceful notice. Guardrails live
- * server-side.
+ * server-side. The log is a polite live region so assistant replies are
+ * announced to screen readers.
  */
 export function ChatWidget({
   enabled = true,
@@ -23,6 +25,7 @@ export function ChatWidget({
   name?: string;
   avatarUrl?: string | null;
 }) {
+  const t = useTranslations("chat");
   const [open, setOpen] = useState(false);
   const [booking, setBooking] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -47,13 +50,13 @@ export function ChatWidget({
         body: JSON.stringify({ messages: next }),
       });
       if (res.status === 404) {
-        setTurns((t) => [...t, { role: "assistant", content: "Le chat n'est pas disponible pour le moment." }]);
+        setTurns((current) => [...current, { role: "assistant", content: t("unavailable") }]);
         return;
       }
       const data = (await res.json()) as { reply?: string };
-      setTurns((t) => [...t, { role: "assistant", content: data.reply ?? "…" }]);
+      setTurns((current) => [...current, { role: "assistant", content: data.reply ?? "…" }]);
     } catch {
-      setTurns((t) => [...t, { role: "assistant", content: "Une erreur est survenue." }]);
+      setTurns((current) => [...current, { role: "assistant", content: t("error") }]);
     } finally {
       setPending(false);
     }
@@ -64,7 +67,7 @@ export function ChatWidget({
       <button
         type="button"
         className={styles.bubble}
-        aria-label={`Ouvrir le chat avec ${name}`}
+        aria-label={t("open", { name })}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
@@ -82,7 +85,7 @@ export function ChatWidget({
         )}
       </button>
       {open ? (
-        <section className={styles.panel} aria-label={`${name}, e-secrétaire de Yohan`}>
+        <section className={styles.panel} aria-label={`${name} · ${t("assistantRole")}`}>
           <div className={styles.head}>
             {avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -92,14 +95,16 @@ export function ChatWidget({
                 {name.charAt(0).toUpperCase()}
               </span>
             )}
-            <span>{name} · e-secrétaire de Yohan</span>
+            <span>
+              {name} · {t("assistantRole")}
+            </span>
             <button
               type="button"
               className={styles.bookCta}
               onClick={() => setBooking((v) => !v)}
               aria-pressed={booking}
             >
-              {booking ? "Chat" : "Prendre RDV"}
+              {booking ? t("backToChat") : t("book")}
             </button>
           </div>
           {booking ? (
@@ -107,28 +112,28 @@ export function ChatWidget({
               <BookingForm onClose={() => setBooking(false)} />
             </div>
           ) : (
-          <div className={styles.log}>
-            {turns.length === 0 ? (
-              <p className={`${styles.msg} ${styles.assistant}`}>
-                Bonjour, je suis {name}, l’e-secrétaire de Yohan. Une question sur son profil, ses
-                projets, ou envie de planifier un échange ?
-              </p>
-            ) : (
-              turns.map((t, i) => (
-                <p key={i} className={`${styles.msg} ${styles[t.role]}`}>
-                  {t.content}
-                </p>
-              ))
-            )}
-          </div>
+            <div className={styles.log} role="log" aria-live="polite">
+              {turns.length === 0 ? (
+                <p className={`${styles.msg} ${styles.assistant}`}>{t("greeting", { name })}</p>
+              ) : (
+                turns.map((turn, index) => (
+                  <p key={index} className={`${styles.msg} ${styles[turn.role]}`}>
+                    {turn.content}
+                  </p>
+                ))
+              )}
+              {pending ? (
+                <p className={`${styles.msg} ${styles.assistant} ${styles.typing}`}>{t("typing", { name })}</p>
+              ) : null}
+            </div>
           )}
           {booking ? null : (
-          <form className={styles.form} onSubmit={onSubmit}>
-            <input name="q" placeholder="Votre message…" autoComplete="off" aria-label="Message" />
-            <button type="submit" disabled={pending}>
-              →
-            </button>
-          </form>
+            <form className={styles.form} onSubmit={onSubmit}>
+              <input name="q" placeholder={t("placeholder")} autoComplete="off" aria-label={t("messageLabel")} />
+              <button type="submit" disabled={pending}>
+                →
+              </button>
+            </form>
           )}
         </section>
       ) : null}
