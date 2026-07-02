@@ -36,7 +36,11 @@ function minioClient(): Client {
 
 /** Stores an object in the public `media` bucket, returns its public URL. */
 export async function putObject(name: string, data: Buffer, contentType: string): Promise<string> {
-  await minioClient().putObject(BUCKET, name, data, data.length, { "Content-Type": contentType });
+  await minioClient().putObject(BUCKET, name, data, data.length, {
+    "Content-Type": contentType,
+    // Object names are random (content-addressed-ish): safe to cache forever.
+    "Cache-Control": "public, max-age=31536000, immutable",
+  });
   return `${MEDIA_BASE}/${name}`;
 }
 

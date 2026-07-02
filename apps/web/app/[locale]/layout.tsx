@@ -11,7 +11,7 @@ import { SiteNav, type NavLink } from "../../components/site-nav";
 import { SiteFooter, type FooterSocial } from "../../components/site-footer";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { LanguageSwitch } from "../../components/language-switch/language-switch";
-import { ChatWidget } from "../../components/chat-widget/chat-widget";
+import { ChatWidgetLazy } from "../../components/chat-widget/chat-widget-lazy";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,13 +34,11 @@ const SECTION_ANCHORS: Record<string, string> = {
   projets: "work",
 };
 
-// DB-driven layout (nav/footer/metadata) → per-request render, no build-time DB.
-export const dynamic = "force-dynamic";
-
-/** Pre-render both locales. */
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// DB-driven layout (nav/footer/metadata), rendu à la demande puis mis en cache
+// 60 s (ISR). Pas de generateStaticParams : le build des images Docker n'a pas
+// accès à la DB, le premier hit runtime peuple le cache. Bonus : la réponse
+// n'est plus `no-store` → back/forward cache navigateur utilisable.
+export const revalidate = 60;
 
 /** Builds metadata from SiteSettings (falls back to the profile). */
 export async function generateMetadata({
@@ -102,7 +100,7 @@ export default async function LocaleLayout({
             socials={socials}
             legalName={profile?.fullName ?? "Yohan Debusscher"}
           />
-          <ChatWidget
+          <ChatWidgetLazy
             enabled={chatConfig?.isPublicChatEnabled ?? false}
             name={chatConfig?.assistantName ?? "Friday"}
             avatarUrl={chatConfig?.assistantAvatarUrl ?? null}

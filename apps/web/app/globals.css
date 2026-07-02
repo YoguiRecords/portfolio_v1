@@ -362,6 +362,10 @@ body {
   margin: 0;
 }
 .caret {
+  /* Largeur nulle : le glyphe s'affiche sans décaler typed/ghost (zéro CLS). */
+  display: inline-block;
+  width: 0;
+  overflow: visible;
   color: var(--accent);
   font-weight: 400;
   animation: blink 1s steps(1) infinite;
@@ -558,7 +562,7 @@ body {
   letter-spacing: 0.18em;
   color: var(--accent);
 }
-.block .ftitle h4 {
+.block .ftitle h3 {
   font-size: clamp(19px, 3vw, 24px);
   font-weight: 800;
   letter-spacing: -0.02em;

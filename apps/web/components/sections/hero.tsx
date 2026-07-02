@@ -1,3 +1,4 @@
+import { preload } from "react-dom";
 import { getTranslations } from "next-intl/server";
 import { Link } from "../../i18n/navigation";
 import { Typewriter } from "../typewriter";
@@ -15,6 +16,10 @@ export async function Hero({
   section?: HomeData["sections"][number];
 }) {
   const t = await getTranslations("nav");
+  // LCP element: hint the browser as early as possible (preload + high priority).
+  if (profile.avatar) {
+    preload(profile.avatar.url, { as: "image", fetchPriority: "high" });
+  }
   const lines =
     profile.typewriterLines.length > 0 ? profile.typewriterLines : [profile.headline];
   const initials = profile.fullName
@@ -46,7 +51,13 @@ export async function Hero({
         <figure className="photoframe">
           {profile.avatar ? (
             // eslint-disable-next-line @next/next/no-img-element -- external MinIO URL, sized by CSS
-            <img src={profile.avatar.url} alt={profile.fullName} />
+            <img
+              src={profile.avatar.url}
+              alt={profile.fullName}
+              fetchPriority="high"
+              width={profile.avatar.width ?? undefined}
+              height={profile.avatar.height ?? undefined}
+            />
           ) : (
             <span className="monogram" aria-hidden="true">
               {initials}

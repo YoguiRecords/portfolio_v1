@@ -6,7 +6,7 @@ import { Markdown } from "../../../../components/markdown/markdown";
 import { Gallery, type MediaItem } from "../../../../components/gallery/gallery";
 import styles from "../../../../components/feed/feed.module.css";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,

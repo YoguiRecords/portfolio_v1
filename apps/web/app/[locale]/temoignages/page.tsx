@@ -4,7 +4,7 @@ import { TestimonialCard } from "../../../components/testimonial-card/testimonia
 import { TestimonialForm } from "../../../components/testimonial-form/testimonial-form";
 import feedStyles from "../../../components/feed/feed.module.css";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Témoignages",

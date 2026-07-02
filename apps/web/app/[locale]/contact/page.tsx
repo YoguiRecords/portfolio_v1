@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "../../../components/forms/contact-form";
 import { AppointmentForm } from "../../../components/forms/appointment-form";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Contact",

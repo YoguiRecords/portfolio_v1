@@ -4,7 +4,7 @@ import { FaqAccordion } from "../../../components/faq/faq-accordion";
 import { JsonLd } from "../../../components/json-ld/json-ld";
 import { faqPageJsonLd } from "../../../lib/seo/jsonld";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "FAQ",

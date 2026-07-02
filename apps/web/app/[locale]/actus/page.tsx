@@ -3,7 +3,7 @@ import { getArticles } from "../../../lib/data/news";
 import { ArticleCard } from "../../../components/feed/article-card";
 import styles from "../../../components/feed/feed.module.css";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Actualités",

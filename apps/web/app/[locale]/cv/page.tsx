@@ -3,7 +3,7 @@ import { getCv } from "../../../lib/data/cv";
 import { PublicCv } from "../../../components/cv/public-cv";
 
 // Rendered per request from the database; the server still emits full HTML (SEO).
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
