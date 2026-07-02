@@ -49,6 +49,11 @@ export function randomName(): string {
   return randomBytes(12).toString("hex");
 }
 
+/** Removes an object from the public `media` bucket (deletion pipeline). */
+export async function removeObject(name: string): Promise<void> {
+  await minioClient().removeObject(BUCKET, name);
+}
+
 /** Builds the production upload ports (image-processor + MinIO + Prisma). */
 export function buildPorts(): UploadPorts {
   return {

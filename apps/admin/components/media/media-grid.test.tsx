@@ -20,12 +20,12 @@ const assets: MediaRow[] = [
 ];
 
 test("affiche l'état vide sans média", () => {
-  render(<MediaGrid assets={[]} />);
+  render(<MediaGrid assets={[]} deleteAction={async () => ({ ok: true })} />);
   expect(screen.getByText("Aucun média importé.")).toBeInTheDocument();
 });
 
 test("ouvre le panneau de détails au clic", async () => {
-  render(<MediaGrid assets={assets} />);
+  render(<MediaGrid assets={assets} deleteAction={async () => ({ ok: true })} />);
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole("button", { name: "Détails de hero.jpg" }));
   const dialog = screen.getByRole("dialog");

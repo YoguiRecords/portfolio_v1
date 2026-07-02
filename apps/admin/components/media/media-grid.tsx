@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Drawer, EmptyState } from "@/components/ui";
+import { useActionState, useState } from "react";
+import { Button, Drawer, EmptyState } from "@/components/ui";
+import type { DeleteMediaState } from "@/lib/actions/media-actions";
 
 /** Ligne média (sous-ensemble sérialisable de MediaAsset). */
 export interface MediaRow {
@@ -23,6 +24,50 @@ function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} o`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+}
+
+/** Suppression en deux temps (armement anti-clic accidentel) + garde d'usage serveur. */
+function DeleteMediaPanel({
+  asset,
+  action,
+  onDeleted,
+}: {
+  asset: MediaRow;
+  action: (prev: DeleteMediaState, form: FormData) => Promise<DeleteMediaState>;
+  onDeleted: () => void;
+}) {
+  const [armed, setArmed] = useState(false);
+  const [state, formAction, pending] = useActionState(async (prev: DeleteMediaState, form: FormData) => {
+    const next = await action(prev, form);
+    if (next.ok) onDeleted();
+    return next;
+  }, {});
+
+  return (
+    <div className="border-t border-border pt-3">
+      {armed ? (
+        <form action={formAction} className="flex flex-col gap-2">
+          <input type="hidden" name="id" value={asset.id} />
+          <p className="text-sm text-ink-2">
+            Supprimer définitivement « {asset.originalName} » ? Le fichier sera retiré du stockage.
+          </p>
+          <div className="flex gap-2">
+            <Button variant="danger" size="sm" type="submit" disabled={pending}>
+              {pending ? "Suppression…" : "Supprimer définitivement"}
+            </Button>
+            <Button variant="ghost" size="sm" type="button" onClick={() => setArmed(false)}>
+              Annuler
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <Button variant="subtle" size="sm" type="button" onClick={() => setArmed(true)}>
+          Supprimer
+        </Button>
+      )}
+      {state.error ? <p className="mt-2 text-sm text-danger">{state.error}</p> : null}
+    </div>
+  );
 }
 
 function MediaDetails({ asset }: { asset: MediaRow }) {
@@ -57,8 +102,14 @@ function MediaDetails({ asset }: { asset: MediaRow }) {
   );
 }
 
-/** Médiathèque : grille d'assets, sélection → panneau détails. */
-export function MediaGrid({ assets }: { assets: MediaRow[] }) {
+/** Médiathèque : grille d'assets, sélection → panneau détails (+ suppression gardée). */
+export function MediaGrid({
+  assets,
+  deleteAction,
+}: {
+  assets: MediaRow[];
+  deleteAction: (prev: DeleteMediaState, form: FormData) => Promise<DeleteMediaState>;
+}) {
   const [selected, setSelected] = useState<MediaRow | null>(null);
 
   if (assets.length === 0) {
@@ -87,7 +138,12 @@ export function MediaGrid({ assets }: { assets: MediaRow[] }) {
       </div>
 
       <Drawer open={selected !== null} onClose={() => setSelected(null)} title="Détails du média">
-        {selected ? <MediaDetails asset={selected} /> : null}
+        {selected ? (
+          <div className="flex flex-col gap-4">
+            <MediaDetails asset={selected} />
+            <DeleteMediaPanel asset={selected} action={deleteAction} onDeleted={() => setSelected(null)} />
+          </div>
+        ) : null}
       </Drawer>
     </>
   );
